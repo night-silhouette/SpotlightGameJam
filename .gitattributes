@@ -1,0 +1,2 @@
+src/Art/** filter=lfs diff=lfs merge=lfs -text
+src/Music/** filter=lfs diff=lfs merge=lfs -text
