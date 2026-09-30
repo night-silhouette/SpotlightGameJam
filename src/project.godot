@@ -14,6 +14,12 @@ config/name="SpotlightGameJam"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Util="*uid://b1hvelunefia2"
+SignalBus="*uid://cys1wmnhxscfl"
+ExportSettings="*uid://bqckn4tk862os"
+
 [display]
 
 window/stretch/mode="canvas_items"
