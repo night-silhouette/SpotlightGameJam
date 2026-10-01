@@ -16,6 +16,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Util="*uid://b1hvelunefia2"
+SignalBus="*uid://cys1wmnhxscfl"
+ExportSettings="*uid://bqckn4tk862os"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
