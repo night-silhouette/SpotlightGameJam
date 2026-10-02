@@ -43,7 +43,19 @@ var swing_angular_velocity: float = 0.0
 @onready var player: Player = get_parent() as Player
 @onready var line_2d: Line2D = $Line2D
 
+func _sync_from_export_settings() -> void:
+	if ExportSettings:
+		max_rope_length = ExportSettings.rope_max_length
+		window_duration = ExportSettings.rope_window_duration
+		pull_speed = ExportSettings.rope_pull_speed
+		pull_arrive_distance = ExportSettings.rope_pull_arrive_distance
+		swing_gravity_scale = ExportSettings.rope_swing_gravity_scale
+		swing_input_accel = ExportSettings.rope_swing_input_accel
+		swing_damping = ExportSettings.rope_swing_damping
+		collision_mask = ExportSettings.rope_collision_mask
+
 func _ready() -> void:
+	_sync_from_export_settings()
 	if not line_2d:
 		line_2d = Line2D.new()
 		line_2d.name = "Line2D"
@@ -57,8 +69,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if event.is_action_pressed("rope_shoot"):
+		get_viewport().set_input_as_handled()
 		_on_rope_shoot_pressed()
+	elif event.is_action_released("rope_shoot"):
+		get_viewport().set_input_as_handled()
+		_on_rope_shoot_released()
 	elif event.is_action_pressed("rope_swing"):
+		get_viewport().set_input_as_handled()
 		_on_rope_swing_pressed()
 	elif event.is_action_pressed("jump"):
 		_on_jump_pressed()
@@ -116,8 +133,17 @@ func _on_rope_shoot_pressed() -> void:
 			# 再次按射绳键提前脱钩并飞跃
 			_finish_pull(true)
 		RopeState.SWINGING:
-			# 荡绳时按射绳键可转为拉向挂点
+			# 荡绳时再次按左键可转为高速拉向挂点
 			_start_pull()
+
+func _on_rope_shoot_released() -> void:
+	match current_state:
+		RopeState.LATCHED:
+			# 松开左键触发拉过去
+			_start_pull()
+		RopeState.SWINGING:
+			# 长按荡绳后松开左键，脱钩飞出保留惯性
+			_finish_swing(false)
 
 func _on_rope_swing_pressed() -> void:
 	match current_state:
@@ -193,20 +219,30 @@ func _process_latched(delta: float) -> void:
 	window_timer -= delta
 	_update_line()
 
-	# 窗口期内减缓下落速度，给予良好的反应窗口
-	if not player.is_on_floor() and player.velocity.y > 60.0:
+	# 窗口期内：仅当挂钩点在玩家上方（绳索朝上提拉玩家）时才减缓下落速度；若朝下勾中则不产生减速
+	var is_hook_above = hook_point.y < player.global_position.y
+	if is_hook_above and not player.is_on_floor() and player.velocity.y > 60.0:
 		player.velocity.y = move_toward(player.velocity.y, 60.0, 1200.0 * delta)
 
+	# 若玩家一直长按射绳键（左键），并在窗口期过去一定时间（长按判定），则自动转为荡绳（Swing）
+	if Input.is_action_pressed("rope_shoot"):
+		if (window_duration - window_timer) >= 0.16:
+			_start_swing()
+			return
+
+	# 窗口期结束时，拉拽自己过去
 	if window_timer <= 0.0:
-		_release_rope(true)
-	elif player.is_on_floor() and window_timer < window_duration - 0.15:
-		_release_rope(true)
+		_start_pull()
 
 func _start_pull() -> void:
 	_sync_hook_point()
 	current_state = RopeState.PULLING
 	pull_timer = 0.0
 	player.is_special_state = true
+	# 若在地面上拉拽，先给予微小的垂直离地抬升，脱离地面摩擦和地板碰撞阻挡
+	if player.is_on_floor():
+		player.position.y -= 3.0
+		player.velocity.y = -80.0
 	_update_line()
 
 func _process_pulling(delta: float) -> void:
@@ -246,16 +282,20 @@ func _start_swing() -> void:
 	swing_angle = atan2(rel.x, rel.y)
 
 	var tangent = Vector2(cos(swing_angle), -sin(swing_angle))
-	var initial_tangent_speed = player.velocity.dot(tangent)
+	# 自然承接玩家当前已有的切向分速度，绝不主动注入任何反向/倒退速度
+	var current_tangent_speed = player.velocity.dot(tangent)
 
-	# 给予更顺畅的初速度启动感
-	if abs(initial_tangent_speed) < 260.0:
-		var start_dir = float(player.face_dir)
+	# 仅当玩家有明确的左右方向键输入时，才顺着玩家所按的方向给一个初速度
+	if abs(current_tangent_speed) < 100.0:
 		if player.gameInputControl and player.gameInputControl.row_dir != 0.0:
-			start_dir = sign(player.gameInputControl.row_dir)
-		initial_tangent_speed = 420.0 * start_dir
+			var input_dir = sign(player.gameInputControl.row_dir)
+			# tangent.x > 0 时代表顺时针，与向右运动同向
+			var dir_sign = 1.0 if (tangent.x * input_dir >= 0) else -1.0
+			current_tangent_speed = 350.0 * dir_sign
+		else:
+			current_tangent_speed = 0.0
 
-	swing_angular_velocity = initial_tangent_speed / swing_radius
+	swing_angular_velocity = current_tangent_speed / swing_radius
 	_update_line()
 
 func _process_swinging(delta: float) -> void:
@@ -274,21 +314,26 @@ func _process_swinging(delta: float) -> void:
 	swing_angular_velocity *= (1.0 - swing_damping * delta)
 	swing_angular_velocity += alpha * delta
 
-	swing_angle += swing_angular_velocity * delta
-	swing_angle = clamp(swing_angle, -PI * 0.46, PI * 0.46)
+	var next_angle = swing_angle + swing_angular_velocity * delta
+	next_angle = clamp(next_angle, -PI * 0.46, PI * 0.46)
 
-	var target_pos = hook_point + Vector2(sin(swing_angle), cos(swing_angle)) * swing_radius
+	# 计算单摆预期位移并通过 move_and_collide 进行严格物理碰撞检测，杜绝穿墙
+	var target_pos = hook_point + Vector2(sin(next_angle), cos(next_angle)) * swing_radius
+	var motion = target_pos - player.global_position
+
+	var collision = player.move_and_collide(motion)
+	if collision:
+		# 发生碰撞（碰墙或碰地），反弹并阻尼角速度，更新实际角度与绳长
+		swing_angular_velocity = -swing_angular_velocity * 0.35
+		var actual_rel = player.global_position - hook_point
+		swing_radius = clamp(actual_rel.length(), 40.0, max_rope_length)
+		swing_angle = atan2(actual_rel.x, actual_rel.y)
+	else:
+		swing_angle = next_angle
+
 	var tangent = Vector2(cos(swing_angle), -sin(swing_angle))
-	var current_tangent_speed = swing_angular_velocity * swing_radius
-
-	player.velocity = tangent * current_tangent_speed
-	player.global_position = target_pos
-
+	player.velocity = tangent * (swing_angular_velocity * swing_radius)
 	_update_line()
-
-	if player.is_on_wall():
-		# 撞墙微反弹
-		swing_angular_velocity = -swing_angular_velocity * 0.5
 
 func _finish_swing(with_jump_boost: bool) -> void:
 	var tangent = Vector2(cos(swing_angle), -sin(swing_angle))

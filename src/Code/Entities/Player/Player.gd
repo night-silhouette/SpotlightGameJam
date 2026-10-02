@@ -55,7 +55,25 @@ var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
 var wall_jump_lock_dir: int = 0
 
+func _sync_from_export_settings() -> void:
+	if ExportSettings:
+		speed = ExportSettings.player_speed
+		accerleration = ExportSettings.player_acceleration
+		friction = ExportSettings.player_friction
+		jump_speed = ExportSettings.player_jump_speed
+		jump_ability = ExportSettings.player_jump_ability
+		climb_ability = ExportSettings.player_climb_ability
+		max_fall_speed = ExportSettings.player_max_fall_speed
+		dash_time = ExportSettings.player_dash_time
+		dash_speed = ExportSettings.player_dash_speed
+		dash_span = ExportSettings.player_dash_span
+		hurt_time = ExportSettings.player_hurt_time
+		unbeatable_time = ExportSettings.player_unbeatable_time
+		Max_HP = ExportSettings.player_max_hp
+		now_HP = ExportSettings.player_max_hp
+
 func _ready() -> void:
+	_sync_from_export_settings()
 	move_state_machine.init(self, ani_move, gameInputControl)
 	
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
