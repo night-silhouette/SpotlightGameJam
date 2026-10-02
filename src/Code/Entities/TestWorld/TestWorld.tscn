@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://dl12ydxbural3"]
+
+[ext_resource type="PackedScene" uid="uid://c6228ogky1las" path="res://Code/Entities/Player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Dummy/TestDummy.tscn" id="2_dummy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(2578.5789, 36.360565)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(40, 400)
+
+[node name="TestWorld" type="Node2D" unique_id=916660629]
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=902671158]
+position = Vector2(500, 500)
+scale = Vector2(1.0390832, 1.0390832)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1431390624]
+position = Vector2(589.2894, 1.8197327)
+scale = Vector2(0.99999994, 0.99999994)
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="LeftWall" type="StaticBody2D" parent="." unique_id=1641191302]
+position = Vector2(45, 321)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall" unique_id=2071367086]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="LeftWall2" type="StaticBody2D" parent="." unique_id=789970730]
+position = Vector2(183, 321)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall2" unique_id=1698908870]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="LeftWall3" type="StaticBody2D" parent="." unique_id=444993483]
+position = Vector2(1122.0001, 251)
+rotation = -1.5707964
+scale = Vector2(-0.9068033, 0.16785803)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall3" unique_id=1078455052]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightClimbWall" type="StaticBody2D" parent="." unique_id=133342367]
+position = Vector2(450, 360)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightClimbWall" unique_id=724074565]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="Player" parent="." unique_id=1668973208 instance=ExtResource("1_player")]
+position = Vector2(100, 440)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1740111966]
+position_smoothing_enabled = true
+
+[node name="Dummy1" parent="." unique_id=2129259775 instance=ExtResource("2_dummy")]
+position = Vector2(280, 450)
+
+[node name="Dummy2" parent="." unique_id=1367587305 instance=ExtResource("2_dummy")]
+position = Vector2(650, 450)

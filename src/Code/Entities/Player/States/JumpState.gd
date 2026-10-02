@@ -1,0 +1,43 @@
+extends State
+
+signal s_fall
+
+var temp: float = 1440.0
+var frame: float = 0.0
+
+func _fall() -> void:
+	change_use_all(true)
+	finished.emit("fall")
+
+func enter() -> void:
+	obj.velocity.y = -obj.jump_speed
+	s_fall.connect(_fall, CONNECT_ONE_SHOT)
+
+	if obj.is_back_has_rigid:
+		var back_wall_dir = -obj.face_dir
+		if obj.wall_jump_lock_dir != back_wall_dir:
+			obj.wall_jump_lock_dir = back_wall_dir
+			obj.velocity.y = -obj.climb_ability
+			obj.velocity.x = obj.climb_ability * 0.9 * obj.face_dir
+
+	change_use_all(false)
+	var hurt_node = state_machine.get_node_or_null("hurt")
+	if hurt_node:
+		hurt_node.is_use = true
+	var died_node = state_machine.get_node_or_null("died")
+	if died_node:
+		died_node.is_use = true
+
+func exit() -> void:
+	temp = GlobalValue.gravity
+	frame = 0.0
+
+func physics_process(delta: float) -> void:
+	frame += delta * obj.jump_ability
+	temp = (1.0 - ease(frame, 0.32)) * GlobalValue.gravity
+	if Input.is_action_pressed("jump"):
+		obj.velocity.y = move_toward(obj.velocity.y, -obj.jump_speed, temp * delta)
+	if Input.is_action_just_released("jump"):
+		s_fall.emit()
+	if obj.velocity.y >= 0:
+		s_fall.emit()
