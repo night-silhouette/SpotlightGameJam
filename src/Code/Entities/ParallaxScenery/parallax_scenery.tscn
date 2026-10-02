@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bfr88h05lyxfc"]
+
+[ext_resource type="Texture2D" uid="uid://b8eo4brra1thd" path="res://icon.svg" id="1_n3jxw"]
+
+[node name="ParallaxScenery" type="Node2D" unique_id=381839512]
+
+[node name="FarBackground" type="Parallax2D" parent="." unique_id=47769589]
+z_index = -20
+scroll_scale = Vector2(0.2, 0.2)
+repeat_size = Vector2(1152, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="FarBackground" unique_id=1269430755]
+position = Vector2(200, 100)
+scale = Vector2(2, 2)
+texture = ExtResource("1_n3jxw")
+centered = false
+
+[node name="NearBackground" type="Parallax2D" parent="." unique_id=1982365568]
+z_index = -10
+scroll_scale = Vector2(0.55, 0.55)
+repeat_size = Vector2(1152, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="NearBackground" unique_id=1303641309]
+position = Vector2(600, 220)
+scale = Vector2(3, 3)
+texture = ExtResource("1_n3jxw")
+centered = false

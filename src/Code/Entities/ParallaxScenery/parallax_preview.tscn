@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://fn68lrte7bc6"]
+
+[ext_resource type="PackedScene" uid="uid://bfr88h05lyxfc" path="res://Code/Entities/ParallaxScenery/parallax_scenery.tscn" id="1_wn8cu"]
+[ext_resource type="Script" uid="uid://dvnd7nmysrdva" path="res://Code/Entities/ParallaxScenery/ParallaxTestCamera.gd" id="2_hgnge"]
+
+[node name="ParallaxPreview" type="Node2D" unique_id=386262135]
+
+[node name="ParallaxScenery" parent="." unique_id=381839512 instance=ExtResource("1_wn8cu")]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1045674480]
+script = ExtResource("2_hgnge")
