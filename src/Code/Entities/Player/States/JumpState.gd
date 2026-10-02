@@ -14,8 +14,11 @@ func enter() -> void:
 	s_fall.connect(_fall, CONNECT_ONE_SHOT)
 
 	if obj.is_back_has_rigid:
-		obj.velocity.y = -obj.climb_ability
-		obj.velocity.x = obj.climb_ability * 0.9 * obj.face_dir
+		var back_wall_dir = -obj.face_dir
+		if obj.wall_jump_lock_dir != back_wall_dir:
+			obj.wall_jump_lock_dir = back_wall_dir
+			obj.velocity.y = -obj.climb_ability
+			obj.velocity.x = obj.climb_ability * 0.9 * obj.face_dir
 
 	change_use_all(false)
 	var hurt_node = state_machine.get_node_or_null("hurt")

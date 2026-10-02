@@ -52,6 +52,7 @@ var face_dir: int = 1
 var is_front_has_rigid: bool = false
 var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
+var wall_jump_lock_dir: int = 0
 
 func _ready() -> void:
 	move_state_machine.init(self, ani_move, gameInputControl)
@@ -75,6 +76,9 @@ func _physics_process(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
 	move_and_slide()
+
+	if is_on_floor():
+		wall_jump_lock_dir = 0
 
 	if gameInputControl.row_dir != 0:
 		var new_face_dir = int(sign(gameInputControl.row_dir))
