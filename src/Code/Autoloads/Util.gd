@@ -7,6 +7,11 @@ func setTime(time,callback)->SceneTreeTimer:
 	temp.timeout.connect(callback,CONNECT_ONE_SHOT)
 	return temp
 	#输出定时器本身,输出出来,以便于.stop()
+
+## 兼容小写 set_time 调用
+func set_time(time, callback) -> SceneTreeTimer:
+	return setTime(time, callback)
+
 	
 	
 #点击area2D,触发回调

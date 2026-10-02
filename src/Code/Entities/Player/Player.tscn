@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://c6228ogky1las"]
+
+[ext_resource type="Script" uid="uid://drdnkhhkl6d1q" path="res://Code/Entities/Player/Player.gd" id="1_player"]
+[ext_resource type="Shape2D" path="res://Code/Entities/Player/PlayerCollisionNormal.tres" id="2_shape"]
+[ext_resource type="Script" uid="uid://w87wj37sfmph" path="res://Code/Entities/Player/PlayerStateMachine.gd" id="3_machine"]
+[ext_resource type="Script" uid="uid://cqo4h44fyh6vx" path="res://Code/Entities/Player/States/IdleState.gd" id="4_idle"]
+[ext_resource type="Script" uid="uid://es5aghtjfnht" path="res://Code/Entities/Player/States/RunState.gd" id="5_run"]
+[ext_resource type="Script" uid="uid://bffit30k3igd" path="res://Code/Entities/Player/States/DashState.gd" id="6_dash"]
+[ext_resource type="Script" uid="uid://icq7fhypysff" path="res://Code/Entities/Player/States/ClimbState.gd" id="7_climb"]
+[ext_resource type="Script" uid="uid://bcfuqo31yu2w1" path="res://Code/Common/State.gd" id="8_state"]
+[ext_resource type="Script" uid="uid://da8gmnkwc00x2" path="res://Code/Entities/Player/States/HurtState.gd" id="9_hurt"]
+[ext_resource type="Script" uid="uid://bmcgo83kp4isi" path="res://Code/Entities/Player/States/DiedState.gd" id="10_died"]
+[ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
+[ext_resource type="Script" uid="uid://uoa31q2225il" path="res://Code/Entities/Player/PlayerInputControl.gd" id="12_input"]
+
+[node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
+collision_layer = 2
+collision_mask = 5
+script = ExtResource("1_player")
+
+[node name="VisualPlaceholder" type="ColorRect" parent="." unique_id=114581927]
+offset_left = -10.0
+offset_top = -24.0
+offset_right = 10.0
+offset_bottom = 24.0
+color = Color(0.2, 0.65, 0.95, 1)
+
+[node name="ani_move" type="AnimationPlayer" parent="." unique_id=1628733874]
+
+[node name="main_collision" type="CollisionShape2D" parent="." unique_id=1144696377]
+shape = ExtResource("2_shape")
+
+[node name="move_state_machine" type="Node" parent="." unique_id=1241411066]
+script = ExtResource("3_machine")
+init_state = "idle"
+
+[node name="idle" type="Node2D" parent="move_state_machine" unique_id=958066568]
+script = ExtResource("4_idle")
+
+[node name="run" type="Node2D" parent="move_state_machine" unique_id=1199603592]
+script = ExtResource("5_run")
+
+[node name="dash" type="Node2D" parent="move_state_machine" unique_id=236438372]
+script = ExtResource("6_dash")
+
+[node name="climb" type="Node2D" parent="move_state_machine" unique_id=2147150937]
+script = ExtResource("7_climb")
+
+[node name="fall" type="Node2D" parent="move_state_machine" unique_id=1452158928]
+script = ExtResource("8_state")
+
+[node name="hurt" type="Node2D" parent="move_state_machine" unique_id=150361623]
+script = ExtResource("9_hurt")
+
+[node name="died" type="Node2D" parent="move_state_machine" unique_id=1781427994]
+script = ExtResource("10_died")
+
+[node name="air" type="Node2D" parent="move_state_machine" unique_id=1389181584]
+
+[node name="jump" type="Node2D" parent="move_state_machine/air" unique_id=1775576032]
+script = ExtResource("11_jump")
+
+[node name="fall" type="Node2D" parent="move_state_machine/air" unique_id=395742960]
+script = ExtResource("8_state")
+
+[node name="landing" type="Node2D" parent="move_state_machine/air" unique_id=929485405]
+script = ExtResource("8_state")
+
+[node name="GameInputControl" type="Node" parent="." unique_id=1719020235]
+script = ExtResource("12_input")
+
+[node name="front_head" type="RayCast2D" parent="." unique_id=1487164817]
+position = Vector2(0, -24)
+target_position = Vector2(12.5, 0)
+
+[node name="front_body" type="RayCast2D" parent="." unique_id=1106070340]
+target_position = Vector2(12.5, 0)
+
+[node name="front_foot" type="RayCast2D" parent="." unique_id=588955990]
+position = Vector2(0, 24)
+target_position = Vector2(12.5, 0)
+
+[node name="back_head" type="RayCast2D" parent="." unique_id=1925713793]
+position = Vector2(0, -24)
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
+[node name="back_body" type="RayCast2D" parent="." unique_id=1623780014]
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
+[node name="back_foot" type="RayCast2D" parent="." unique_id=106526146]
+position = Vector2(0, 24)
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
+[node name="debug" type="Label" parent="." unique_id=1910247987]
+offset_left = -30.0
+offset_top = -48.0
+offset_right = 50.0
+offset_bottom = -25.0
+
+[node name="hp" type="Label" parent="." unique_id=854688765]
+offset_left = -19.0
+offset_top = 1.0
+offset_right = 21.0
+offset_bottom = 24.0

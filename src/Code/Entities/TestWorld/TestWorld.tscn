@@ -1,0 +1,69 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/Player/Player.tscn" id="1_player"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Dummy/TestDummy.tscn" id="2_dummy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(1400, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(40, 400)
+
+[node name="TestWorld" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(500, 500)
+collision_layer = 1
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="ColorRect" type="ColorRect" parent="Ground"]
+offset_left = -700.0
+offset_top = -20.0
+offset_right = 700.0
+offset_bottom = 20.0
+color = Color(0.2, 0.3, 0.25, 1)
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-150, 320)
+collision_layer = 1
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="ColorRect" type="ColorRect" parent="LeftWall"]
+offset_left = -20.0
+offset_top = -200.0
+offset_right = 20.0
+offset_bottom = 200.0
+color = Color(0.3, 0.35, 0.4, 1)
+
+[node name="RightClimbWall" type="StaticBody2D" parent="."]
+position = Vector2(450, 360)
+collision_layer = 1
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightClimbWall"]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="ColorRect" type="ColorRect" parent="RightClimbWall"]
+offset_left = -20.0
+offset_top = -200.0
+offset_right = 20.0
+offset_bottom = 200.0
+color = Color(0.4, 0.35, 0.3, 1)
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+position = Vector2(100, 440)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position_smoothing_enabled = true
+
+[node name="Dummy1" parent="." instance=ExtResource("2_dummy")]
+position = Vector2(280, 450)
+
+[node name="Dummy2" parent="." instance=ExtResource("2_dummy")]
+position = Vector2(650, 450)
