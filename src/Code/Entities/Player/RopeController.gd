@@ -278,68 +278,48 @@ func _start_swing() -> void:
 	player.is_special_state = true
 
 	var rel = player.global_position - hook_point
-	swing_radius = clamp(rel.length(), 40.0, max_rope_length)
-	swing_angle = atan2(rel.x, rel.y)
-
-	var tangent = Vector2(cos(swing_angle), -sin(swing_angle))
-	# 自然承接玩家当前已有的切向分速度，绝不主动注入任何反向/倒退速度
-	var current_tangent_speed = player.velocity.dot(tangent)
-
-	# 仅当玩家有明确的左右方向键输入时，才顺着玩家所按的方向给一个初速度
-	if abs(current_tangent_speed) < 100.0:
-		if player.gameInputControl and player.gameInputControl.row_dir != 0.0:
-			var input_dir = sign(player.gameInputControl.row_dir)
-			# tangent.x > 0 时代表顺时针，与向右运动同向
-			var dir_sign = 1.0 if (tangent.x * input_dir >= 0) else -1.0
-			current_tangent_speed = 350.0 * dir_sign
-		else:
-			current_tangent_speed = 0.0
-
-	swing_angular_velocity = current_tangent_speed / swing_radius
+	swing_radius = clamp(rel.length(), 30.0, max_rope_length)
 	_update_line()
 
 func _process_swinging(delta: float) -> void:
 	_sync_hook_point()
-	var gravity_val = GlobalValue.gravity * swing_gravity_scale
-	var alpha = -(gravity_val / swing_radius) * sin(swing_angle)
 
-	var row_input = 0.0
-	if player.gameInputControl:
-		row_input = player.gameInputControl.row_dir
+	# 1. 真实受力：重力自然下坠
+	player.velocity.y += GlobalValue.gravity * delta
 
-	if row_input != 0.0:
-		# 玩家顺势加力
-		alpha += (swing_input_accel / swing_radius) * row_input * max(cos(swing_angle), 0.1)
+	# 2. 绳索刚性约束（距离约束）：
+	# 计算假设无约束移动后，玩家相对于锚点的位置
+	var current_rel = player.global_position - hook_point
+	var current_dist = current_rel.length()
 
-	swing_angular_velocity *= (1.0 - swing_damping * delta)
-	swing_angular_velocity += alpha * delta
+	# 只有当绳索被拉直时（距离 >= swing_radius），绳索才产生张力拉拽人物
+	if current_dist >= swing_radius:
+		var rope_dir = current_rel / max(current_dist, 0.001)
 
-	var next_angle = swing_angle + swing_angular_velocity * delta
-	next_angle = clamp(next_angle, -PI * 0.46, PI * 0.46)
+		# 消除沿着绳子往外拉伸的速度分量（法向张力消除），仅保留切向速度（产生天然的圆弧运动）
+		var radial_vel = player.velocity.dot(rope_dir)
+		if radial_vel > 0.0:
+			player.velocity -= rope_dir * radial_vel
 
-	# 计算单摆预期位移并通过 move_and_collide 进行严格物理碰撞检测，杜绝穿墙
-	var target_pos = hook_point + Vector2(sin(next_angle), cos(next_angle)) * swing_radius
-	var motion = target_pos - player.global_position
+		# 施加微弱阻尼（空气阻力），保持长久自然的摆动
+		player.velocity *= (1.0 - swing_damping * delta)
 
-	var collision = player.move_and_collide(motion)
-	if collision:
-		# 发生碰撞（碰墙或碰地），反弹并阻尼角速度，更新实际角度与绳长
-		swing_angular_velocity = -swing_angular_velocity * 0.35
-		var actual_rel = player.global_position - hook_point
-		swing_radius = clamp(actual_rel.length(), 40.0, max_rope_length)
-		swing_angle = atan2(actual_rel.x, actual_rel.y)
-	else:
-		swing_angle = next_angle
+		# 几何位置修正，防止物理积分累计导致绳子变长
+		player.global_position = hook_point + rope_dir * swing_radius
 
-	var tangent = Vector2(cos(swing_angle), -sin(swing_angle))
-	player.velocity = tangent * (swing_angular_velocity * swing_radius)
+	# 3. 正常走角色物理碰撞滑动，绝无穿墙，碰到地形自然受阻滑动
+	player.move_and_slide()
+
+	# 4. 更新实际绳长（若碰撞使角色靠近挂点，动态缩短或维持当前绳长）
+	var after_rel = player.global_position - hook_point
+	var after_dist = after_rel.length()
+	if after_dist < swing_radius:
+		swing_radius = max(after_dist, 30.0)
+
 	_update_line()
 
 func _finish_swing(with_jump_boost: bool) -> void:
-	var tangent = Vector2(cos(swing_angle), -sin(swing_angle))
-	var current_tangent_speed = swing_angular_velocity * swing_radius
-	var exit_velocity = tangent * current_tangent_speed
-
+	var exit_velocity = player.velocity
 	_release_rope(true)
 
 	player.velocity = exit_velocity
