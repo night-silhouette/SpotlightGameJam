@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://d2jk4l1e5s40f"]
+
+[ext_resource type="Shader" uid="uid://dr66ciofmfqfq" path="res://Code/Entities/ParallaxScenery/AmbientFog/AmbientFog.gdshader" id="1_sh08n"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ccsu2"]
+shader = ExtResource("1_sh08n")
+shader_parameter/fog_color = Color(0.8, 0.9, 1, 1)
+shader_parameter/density = 0.35
+shader_parameter/drift_speed = Vector2(0.025, 0.005)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_sh08n"]
+fractal_octaves = 3
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ccsu2"]
+noise = SubResource("FastNoiseLite_sh08n")
+seamless = true
+
+[node name="AmbientFog" type="Node2D" unique_id=941986178]
+
+[node name="FogSprite" type="Sprite2D" parent="." unique_id=525192366]
+texture_filter = 2
+texture_repeat = 2
+material = SubResource("ShaderMaterial_ccsu2")
+texture = SubResource("NoiseTexture2D_ccsu2")

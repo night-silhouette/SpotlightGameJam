@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://bfr88h05lyxfc"]
 
 [ext_resource type="Texture2D" uid="uid://b8eo4brra1thd" path="res://icon.svg" id="1_n3jxw"]
+[ext_resource type="PackedScene" uid="uid://dirhxm85bpqce" path="res://Code/Entities/ParallaxScenery/AmbientGlow/AmbientGlow.tscn" id="2_fhxqj"]
+[ext_resource type="PackedScene" uid="uid://d2jk4l1e5s40f" path="res://Code/Entities/ParallaxScenery/AmbientFog/FogSprite.tscn" id="3_sbhd1"]
 
 [node name="ParallaxScenery" type="Node2D" unique_id=381839512]
 
@@ -27,3 +29,13 @@ position = Vector2(600, 220)
 scale = Vector2(3, 3)
 texture = ExtResource("1_n3jxw")
 centered = false
+
+[node name="AmbientGlow" parent="NearBackground" unique_id=1072626653 instance=ExtResource("2_fhxqj")]
+z_index = 1
+position = Vector2(800, 350)
+scale = Vector2(1.5, 1.5)
+
+[node name="AmbientFog" parent="NearBackground" unique_id=941986178 instance=ExtResource("3_sbhd1")]
+z_index = 2
+position = Vector2(576, 400)
+scale = Vector2(2, 0.6)
