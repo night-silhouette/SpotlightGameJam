@@ -2,15 +2,27 @@
 
 [ext_resource type="PackedScene" uid="uid://bol6s2hhtvbil" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
 [ext_resource type="PackedScene" uid="uid://c6228ogky1las" path="res://Code/Entities/Player/Player.tscn" id="1_sk8ge"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="2_hfiwn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_35sqx"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
+
+[sub_resource type="Resource" id="Resource_yocbw"]
+script = ExtResource("3_35sqx")
 
 [node name="World" type="Node2D" unique_id=2146248688]
 
 [node name="Player" parent="." unique_id=386519068 instance=ExtResource("1_sk8ge")]
 position = Vector2(86, 516)
 scale = Vector2(2.9105504, 2.9105504)
+
+[node name="PhantomCamera2D" type="Node2D" parent="Player" unique_id=650656469]
+scale = Vector2(0.9970579, 1.0247067)
+script = ExtResource("2_hfiwn")
+priority_override = true
+tween_resource = SubResource("Resource_yocbw")
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="Camp" parent="." unique_id=192691445 instance=ExtResource("1_camp")]
 

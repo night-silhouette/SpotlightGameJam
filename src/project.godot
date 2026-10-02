@@ -22,6 +22,7 @@ SignalBus="*uid://cys1wmnhxscfl"
 ExportSettings="*uid://bqckn4tk862os"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 GlobalValue="*res://Code/Autoloads/GlobalValue.gd"
+PhantomCameraManager="*uid://duq6jhf6unyis"
 
 [display]
 
@@ -35,7 +36,7 @@ movie_writer/fps=120
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
 
 [input]
 
