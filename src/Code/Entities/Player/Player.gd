@@ -14,6 +14,7 @@ class_name Player
 @onready var back_body: RayCast2D = $back_body
 @onready var debug: Label = $debug
 @onready var hp_label: Label = $hp
+@onready var rope_controller: RopeController = $RopeController
 
 @export_category("properties")
 @export_group("physical_prop")
@@ -64,7 +65,10 @@ func _physics_process(delta: float) -> void:
 	if hp_label:
 		hp_label.text = "%d hp" % int(now_HP)
 	if debug:
-		debug.text = "速度<%d,%d> %s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name]
+		var rope_info = ""
+		if rope_controller:
+			rope_info = " [绳索:%s]" % RopeController.RopeState.keys()[rope_controller.current_state]
+		debug.text = "速度<%d,%d> %s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info]
 
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * delta

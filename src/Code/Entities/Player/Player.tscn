@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://bmcgo83kp4isi" path="res://Code/Entities/Player/States/DiedState.gd" id="10_died"]
 [ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
 [ext_resource type="Script" uid="uid://uoa31q2225il" path="res://Code/Entities/Player/PlayerInputControl.gd" id="12_input"]
+[ext_resource type="Script" path="res://Code/Entities/Player/RopeController.gd" id="13_rope"]
 
 [node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
 collision_layer = 2
@@ -105,3 +106,11 @@ offset_left = -19.0
 offset_top = 1.0
 offset_right = 21.0
 offset_bottom = 24.0
+
+[node name="RopeController" type="Node2D" parent="." unique_id=2781903456]
+script = ExtResource("13_rope")
+
+[node name="Line2D" type="Line2D" parent="RopeController" unique_id=3194857210]
+width = 2.5
+default_color = Color(0.3, 0.85, 1, 0.9)
+

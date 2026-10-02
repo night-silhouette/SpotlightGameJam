@@ -53,6 +53,22 @@ offset_right = 20.0
 offset_bottom = 200.0
 color = Color(0.3, 0.35, 0.4, 1)
 
+[node name="LeftWall3" type="StaticBody2D" parent="." unique_id=444993483]
+position = Vector2(297, 185.00003)
+rotation = -1.5707964
+scale = Vector2(-0.9068033, 0.16785803)
+collision_mask = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall3" unique_id=1078455052]
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="ColorRect" type="ColorRect" parent="LeftWall3" unique_id=1366769752]
+offset_left = -20.0
+offset_top = -200.0
+offset_right = 20.0
+offset_bottom = 200.0
+color = Color(0.3, 0.35, 0.4, 1)
+
 [node name="RightClimbWall" type="StaticBody2D" parent="." unique_id=133342367]
 position = Vector2(450, 360)
 collision_mask = 6
