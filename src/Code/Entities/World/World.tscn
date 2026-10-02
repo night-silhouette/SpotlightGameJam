@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://bucqdek8jih77"]
+
+[ext_resource type="PackedScene" uid="uid://bol6s2hhtvbil" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
+[ext_resource type="PackedScene" uid="uid://c6228ogky1las" path="res://Code/Entities/Player/Player.tscn" id="1_sk8ge"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
+
+[node name="World" type="Node2D" unique_id=2146248688]
+
+[node name="Player" parent="." unique_id=386519068 instance=ExtResource("1_sk8ge")]
+position = Vector2(86, 516)
+scale = Vector2(2.9105504, 2.9105504)
+
+[node name="Camp" parent="." unique_id=192691445 instance=ExtResource("1_camp")]
+
+[node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
+position = Vector2(0, -1200)
+
+[node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
+position = Vector2(939, 825)
+
+[node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
+position = Vector2(2500, 0)
