@@ -117,6 +117,40 @@ extends Node
 ## 横向/纵向跟随阻尼，数值越大跟随越慢；重新运行后生效。
 @export var player_camera_damping: Vector2 = Vector2(0.12, 0.18)
 
+@export_group("Camera Director", "camera_")
+## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
+@export var camera_transition_duration: float = 1.2
+## 归一化构图位置：0 为左/上，1 为右/下。Zoom 只改镜头，不改美术 Scale。
+@export var camera_desert_frame: Vector2 = Vector2(0.25, 0.7)
+@export var camera_desert_zoom: float = 0.85
+@export var camera_desert_damping: Vector2 = Vector2(0.25, 0.3)
+@export var camera_descent_frame: Vector2 = Vector2(0.5, 0.7)
+@export var camera_descent_zoom: float = 1.0
+@export var camera_descent_damping: Vector2 = Vector2(0.12, 0.4)
+## 补偿下落阻尼延迟，避免角色高速掉出屏幕。
+@export var camera_descent_velocity_compensation: float = 1.0
+@export var camera_boat_frame: Vector2 = Vector2(0.4, 0.6)
+@export var camera_boat_zoom: float = 1.0
+@export var camera_boat_damping: Vector2 = Vector2(0.6, 0.3)
+@export var camera_fixed_zoom: float = 1.0
+@export var camera_ritual_close_zoom: float = 1.35
+@export var camera_ritual_wide_zoom: float = 0.85
+@export var camera_ritual_close_hold: float = 0.6
+@export var camera_ritual_pan_duration: float = 2.8
+@export var camera_intro_duration: float = 1.8
+@export var camera_blur_radius: float = 5.0
+@export var camera_title_hold: float = 1.0
+@export var camera_text_font_size: int = 26
+@export var camera_text_interval: float = 0.12
+@export var camera_text_fade: float = 0.5
+@export var camera_boat_mask_fraction: float = 0.16
+@export var camera_boat_mask_opacity: float = 0.85
+
+@export_group("Camera Showcase", "camera_demo_")
+## 仅用于独立验收场景，不改变正式玩家的物理参数。
+@export var camera_demo_boat_speed: float = 100.0
+@export var camera_demo_fall_speed: float = 420.0
+
 @export_group("Parallax Scenery", "parallax_")
 ## 天空和山体共同使用的横向视差比例；保留二者的横向相对构图。
 @export_range(0.0, 2.0, 0.05) var parallax_far_scroll_x: float = 0.2
