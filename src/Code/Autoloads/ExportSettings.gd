@@ -104,3 +104,35 @@ extends Node
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
 @export var slick_wall_friction: float = 0.0
+
+@export_group("Player Camera", "player_camera_")
+## 玩家跟随镜头的优先级；后续关卡镜头可使用更高优先级接管。
+@export var player_camera_priority: int = 10
+## 镜头统一缩放，1.0 保持素材原始比例。
+@export_range(0.1, 4.0, 0.05) var player_camera_zoom: float = 1.0
+## 镜头中心相对玩家的偏移；负 Y 为人物上方留出更多视野。
+@export var player_camera_offset: Vector2 = Vector2(0, -120)
+## 是否使用插件平滑跟随；不叠加 Camera2D 自带平滑。
+@export var player_camera_smoothing: bool = true
+## 横向/纵向跟随阻尼，数值越大跟随越慢；重新运行后生效。
+@export var player_camera_damping: Vector2 = Vector2(0.12, 0.18)
+
+@export_group("Parallax Scenery", "parallax_")
+## 天空和山体共同使用的横向视差比例；保留二者的横向相对构图。
+@export_range(0.0, 2.0, 0.05) var parallax_far_scroll_x: float = 0.2
+## 浅色后景的横向视差比例；仍慢于人物所在的游戏世界。
+@export_range(0.0, 2.0, 0.05) var parallax_near_scroll_x: float = 0.35
+## 绿色地形和黑色植物共同使用的前景比例；大于 1 时比地面移动更快。
+@export_range(0.0, 2.0, 0.05) var parallax_foreground_scroll_x: float = 1.2
+## 原图对齐的参考取景左边界。这里保持联调出生镜头的 X=96，不移动或缩放素材。
+@export var parallax_reference_view_left: float = 96.0
+## 各层统一使用蓝线对应的循环周期；只裁掉原图重复尾部，不缩放素材。
+@export var parallax_repeat_width: float = 4831.0
+## 绿色装饰在每段开头的接缝过渡宽度；0 关闭过渡，重新运行后生效。
+@export var parallax_green_seam_blend_width: float = 128.0
+## 绿色原图在循环末列和首列的轮廓高差；仅在接缝过渡内补偿，整体位置不变。
+@export var parallax_green_seam_y_offset: float = 14.0
+## 浅黄色后景在每段开头的接缝过渡宽度；0 关闭过渡，重新运行后生效。
+@export var parallax_near_seam_blend_width: float = 256.0
+## 浅黄色后景末列轮廓 Y=898、首列 Y=858，仅在过渡内补偿 40 像素高差。
+@export var parallax_near_seam_y_offset: float = 40.0
