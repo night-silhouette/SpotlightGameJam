@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="6_sec7o"]
 [ext_resource type="PackedScene" uid="uid://cx7n1h3y8p5oq" path="res://Code/Entities/InteractiveComponent/SlickWall/SlickWall.tscn" id="7_sec7o"]
 [ext_resource type="PackedScene" uid="uid://d3v3y4c7t1nar" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="8_pouvd"]
+[ext_resource type="PackedScene" uid="uid://bv8m4a7j2x1kp" path="res://Code/Entities/InteractiveComponent/Stalactite/Stalactite.tscn" id="9_stalactite"]
+[ext_resource type="PackedScene" uid="uid://c7nax1v4r8k2p" path="res://Code/Entities/InteractiveComponent/FallingBlock/FallingBlock.tscn" id="10_falling_block"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2578.5789, 36.360565)
@@ -102,3 +104,33 @@ position = Vector2(1262, 408)
 
 [node name="CrumblingPlatform" parent="." unique_id=1615429677 instance=ExtResource("8_pouvd")]
 position = Vector2(1106, 409)
+
+[node name="Stalactite" parent="." unique_id=1582910482 instance=ExtResource("9_stalactite")]
+position = Vector2(1466, 131)
+
+[node name="Stalactite2" parent="." unique_id=1021911618 instance=ExtResource("9_stalactite")]
+position = Vector2(1508, 131)
+
+[node name="Stalactite4" parent="." unique_id=175727224 instance=ExtResource("9_stalactite")]
+position = Vector2(1528, 131)
+
+[node name="Stalactite5" parent="." unique_id=1546176303 instance=ExtResource("9_stalactite")]
+position = Vector2(1549, 131)
+
+[node name="Stalactite6" parent="." unique_id=188869405 instance=ExtResource("9_stalactite")]
+position = Vector2(1572, 131)
+
+[node name="Stalactite7" parent="." unique_id=1679034325 instance=ExtResource("9_stalactite")]
+position = Vector2(1594, 131)
+
+[node name="Stalactite8" parent="." unique_id=351603021 instance=ExtResource("9_stalactite")]
+position = Vector2(1615, 131)
+
+[node name="Stalactite9" parent="." unique_id=965767423 instance=ExtResource("9_stalactite")]
+position = Vector2(1637, 130)
+
+[node name="Stalactite3" parent="." unique_id=1694040115 instance=ExtResource("9_stalactite")]
+position = Vector2(1486, 132)
+
+[node name="FallingBlock" parent="." unique_id=1849204721 instance=ExtResource("10_falling_block")]
+position = Vector2(1361, 107)

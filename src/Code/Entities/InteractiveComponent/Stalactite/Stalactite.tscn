@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://bv8m4a7j2x1kp"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/Stalactite/Stalactite.gd" id="1_stalactite"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(20, 48)
+
+[sub_resource type="Curve" id="Curve_debris"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_debris"]
+colors = PackedColorArray(0.65, 0.6, 0.52, 1, 0.4, 0.35, 0.3, 0)
+
+[node name="Stalactite" type="Node2D" groups=["hazard", "stalactite"]]
+script = ExtResource("1_stalactite")
+
+[node name="DetectRay" type="RayCast2D" parent="."]
+target_position = Vector2(0, 400)
+collision_mask = 2
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="HitCollision" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0, 24)
+shape = SubResource("RectangleShape2D_hit")
+disabled = true
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="VisualPolygon" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.62, 0.58, 0.52, 1)
+polygon = PackedVector2Array(-12, 0, -5, 24, 0, 48, 5, 24, 12, 0)
+
+[node name="HighlightPolygon" type="Polygon2D" parent="VisualRoot"]
+color = Color(0.78, 0.74, 0.68, 0.7)
+polygon = PackedVector2Array(-8, 2, -3, 20, 0, 44, 1, 20, 2, 2)
+
+[node name="DebrisParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 36)
+emitting = false
+amount = 16
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.95
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector2(0, -1)
+spread = 160.0
+gravity = Vector2(0, 1200)
+initial_velocity_min = 120.0
+initial_velocity_max = 240.0
+scale_amount_min = 2.5
+scale_amount_max = 5.0
+scale_amount_curve = SubResource("Curve_debris")
+color_ramp = SubResource("Gradient_debris")

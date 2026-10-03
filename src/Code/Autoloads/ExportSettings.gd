@@ -104,3 +104,31 @@ extends Node
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
 @export var slick_wall_friction: float = 0.0
+
+@export_group("Interactive - Stalactite", "stalactite_")
+## 钟乳石检测射线向下最大长度 (像素)
+@export var stalactite_ray_length: float = 400.0
+## 钟乳石松动预警晃动时长 (秒)
+@export var stalactite_shake_duration: float = 0.35
+## 钟乳石下落重力加速度 (像素/秒^2)
+@export var stalactite_gravity: float = 1600.0
+## 钟乳石最大下落速度 (像素/秒)
+@export var stalactite_max_fall_speed: float = 900.0
+## 钟乳石基础伤害量
+@export var stalactite_damage: float = 50.0
+## 钟乳石击退力度
+@export var stalactite_knockback_force: float = 350.0
+
+@export_group("Interactive - Falling Block", "falling_block_")
+## 下落方块检测射线向下最大长度 (像素)
+@export var falling_block_ray_length: float = 400.0
+## 下落方块松动预警晃动时长 (秒)
+@export var falling_block_shake_duration: float = 0.4
+## 下落方块下落重力加速度 (像素/秒^2)
+@export var falling_block_gravity: float = 1400.0
+## 下落方块最大下落速度 (像素/秒)
+@export var falling_block_max_fall_speed: float = 800.0
+## 下落方块砸中玩家时的伤害量
+@export var falling_block_damage: float = 30.0
+## 下落方块砸中玩家时的击退力度
+@export var falling_block_knockback_force: float = 300.0
