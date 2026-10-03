@@ -66,3 +66,27 @@ extends Node
 @export var water_flow_min_speed: float = 600.0
 ## 水符文石交互激活有效距离
 @export var water_flow_interact_distance: float = 130.0
+
+@export_group("Interactive - Spikes", "spikes_")
+## 通用地刺基础伤害值
+@export var spikes_damage: float = 40.0
+## 尖刺命中击退力度标量
+@export var spikes_knockback_force: float = 400.0
+
+@export_group("Interactive - Rising Spikes", "rising_spikes_")
+## 时序突刺基础伤害值
+@export var rising_spikes_damage: float = 50.0
+## 时序突刺击退力度标量
+@export var rising_spikes_knockback_force: float = 450.0
+## 突刺缩回安全等待时长 (秒)
+@export var rising_spikes_retracted_duration: float = 2.0
+## 突刺伸出危险保持时长 (秒)
+@export var rising_spikes_extended_duration: float = 1.5
+## 突刺伸出/缩回过渡动画时长 (秒)
+@export var rising_spikes_transition_time: float = 0.2
+
+@export_group("Interactive - Chalice Station", "chalice_")
+## 小圣杯站重置刷新时间 (秒，<= 0 表示单次使用不刷新)
+@export var chalice_reset_time: float = 10.0
+## 小圣杯补水百分比 (1.0 即 100% 满水)
+@export var chalice_heal_ratio: float = 1.0

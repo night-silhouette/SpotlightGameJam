@@ -2,7 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://c6228ogky1las" path="res://Code/Entities/Player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Dummy/TestDummy.tscn" id="2_dummy"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="3_water"]
+[ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="3_water"]
+[ext_resource type="PackedScene" uid="uid://bsh2y1v8km5op" path="res://Code/Entities/InteractiveComponent/Spikes/Spikes.tscn" id="4_3aa7g"]
+[ext_resource type="PackedScene" uid="uid://c85h5y2p6x8r1" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="5_ilfo7"]
+[ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="6_sec7o"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2578.5789, 36.360565)
@@ -70,3 +73,12 @@ position = Vector2(881, 307)
 [node name="WaterFlowArea2" parent="." unique_id=314159265 instance=ExtResource("3_water")]
 position = Vector2(604, 371)
 scale = Vector2(0.16532333, 2.2241392)
+
+[node name="Spikes" parent="." unique_id=1438118032 instance=ExtResource("4_3aa7g")]
+position = Vector2(837, 482)
+
+[node name="RisingSpikes" parent="." unique_id=404706513 instance=ExtResource("5_ilfo7")]
+position = Vector2(910, 488)
+
+[node name="MiniChaliceStation" parent="." unique_id=1420462569 instance=ExtResource("6_sec7o")]
+position = Vector2(984, 479)

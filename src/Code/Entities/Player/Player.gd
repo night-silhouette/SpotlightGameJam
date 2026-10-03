@@ -165,12 +165,22 @@ func _on_stop_player_hp_drain() -> void:
 
 ## 受到伤害的公共方法
 ## @param damage 受到的伤害数值
-func ApplyDamage(damage: float) -> void:
+## @param knockback 击退冲量向量 (可选，默认 Vector2.ZERO)
+func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if hurt_lock:
 		now_HP -= damage
 		hurt_lock = false
+		if knockback != Vector2.ZERO:
+			velocity = knockback
 		move_state_machine.change_state("hurt")
+		if SignalBus:
+			SignalBus.PlayerHurt.emit(damage, knockback)
 		get_tree().create_timer(unbeatable_time).timeout.connect(func(): hurt_lock = true)
+
+## 恢复生命值/水量的公共方法
+## @param amount 恢复数值
+func Heal(amount: float) -> void:
+	now_HP += amount
 
 ## 刷新冲刺与钩索技能状态（供流水区域等交互组件调用）
 func ResetDashAndRope() -> void:

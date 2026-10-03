@@ -4,8 +4,7 @@ func enter() -> void:
 	if gameInputControl:
 		gameInputControl.special_state_start.emit("hurt")
 	change_use_all(false)
-	obj.velocity.y = 0.0
-	obj.velocity.x = 0.0
+	# 允许保留外部施加的击退初速度进行自然减速，而非瞬间静止
 	Util.setTime(obj.hurt_time, func():
 		change_use_all(true)
 		if gameInputControl:

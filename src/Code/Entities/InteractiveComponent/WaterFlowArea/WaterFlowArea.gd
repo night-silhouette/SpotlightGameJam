@@ -3,7 +3,7 @@ class_name WaterFlowArea
 
 ## =============================================================================
 ## WaterFlowArea.gd - 流水区域交互组件
-## 默认状态为坚固刚体地形；靠近后按 F 键使用水符文石转化为流体状态。
+## 默认状态为坚固刚体地形；靠近后按 E 键使用流水符文转化为流体状态。
 ## 处于流体状态时，玩家进入该区域会顺着进入方向获得强力喷射加速。
 ## =============================================================================
 
@@ -97,7 +97,7 @@ func _apply_state(fluid: bool) -> void:
 		_clear_all_bodies_in_water()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact"):
+	if event.is_action_pressed("water_rune"):
 		if _player_in_range:
 			get_viewport().set_input_as_handled()
 			_toggle_rune_fluid()
@@ -128,9 +128,9 @@ func _update_prompt(show_it: bool) -> void:
 		prompt_label.visible = show_it
 		if show_it:
 			if is_fluid:
-				prompt_label.text = "[F] 凝固成石"
+				prompt_label.text = "[E] 流水符文凝固"
 			else:
-				prompt_label.text = "[F] 水符文石化水"
+				prompt_label.text = "[E] 流水符文水化"
 
 func _toggle_rune_fluid() -> void:
 	SetFluidState(not is_fluid)
