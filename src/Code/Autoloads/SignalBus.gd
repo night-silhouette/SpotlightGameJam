@@ -88,6 +88,18 @@ signal PlayerExitedWaterWall(eject_direction: Vector2)
 ## @param knockback_dir 受击击退方向向量
 signal PlayerHurt(damage_amount: float, knockback_dir: Vector2)
 
+## 启动玩家随时间自然流失血量 (可在特定事件或关卡开局时触发)
+## @param drain_rate 每秒流失的血量数值 (默认可传 > 0，若 <= 0 则使用默认速率)
+signal StartPlayerHpDrain(drain_rate: float)
+
+## 停止玩家随时间自然流失血量
+signal StopPlayerHpDrain
+
+## 玩家生命值/当前血量变化时触发 (供 UI 等响应)
+## @param current_hp 当前血量
+## @param max_hp 最大血量
+signal PlayerHealthChanged(current_hp: float, max_hp: float)
+
 ## 玩家死亡流程启动时触发 (冻结输入、触发沙化消散)
 signal PlayerDied
 
@@ -245,3 +257,4 @@ signal Zone3EscapeSequenceEnded(success: bool)
 signal WildlifeScared(wildlife_node: Node2D)
 
 #endregion
+ 

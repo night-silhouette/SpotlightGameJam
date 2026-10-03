@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c6228ogky1las" path="res://Code/Entities/Player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Dummy/TestDummy.tscn" id="2_dummy"]
-[ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea.tscn" id="3_water"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="3_water"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2578.5789, 36.360565)

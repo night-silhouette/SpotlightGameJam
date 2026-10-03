@@ -32,21 +32,30 @@ class_name Player
 @export var climb_ability: float = 480.0
 
 @export_group("state_prop")
-@export var Max_HP: float = 100.0:
+@export var Max_HP: float = 200.0:
 	set(value):
 		Max_HP = value
 		if Max_HP < now_HP:
 			now_HP = Max_HP
-@export var now_HP: float = 100.0:
+		if SignalBus:
+			SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+@export var now_HP: float = 200.0:
 	set(value):
 		if value > Max_HP:
 			now_HP = Max_HP
 		elif value <= 0.0:
 			now_HP = 0.0
-			if move_state_machine:
+			if move_state_machine and move_state_machine.cur_state_name != "died":
 				move_state_machine.change_state("died")
 		else:
 			now_HP = value
+		if SignalBus:
+			SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+
+## 是否正在自然掉血
+@export var is_hp_draining: bool = false
+## 自然掉血速度 (每秒扣除点数)
+@export var hp_drain_rate: float = 5.0
 
 var is_special_state: bool = false
 var face_dir: int = 1
@@ -75,6 +84,7 @@ func _sync_from_export_settings() -> void:
 		unbeatable_time = ExportSettings.player_unbeatable_time
 		Max_HP = ExportSettings.player_max_hp
 		now_HP = ExportSettings.player_max_hp
+		hp_drain_rate = ExportSettings.player_hp_drain_rate
 
 func _ready() -> void:
 	_sync_from_export_settings()
@@ -82,6 +92,15 @@ func _ready() -> void:
 	
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
 	gameInputControl.special_state_end.connect(func(_state): is_special_state = false)
+	
+	if SignalBus:
+		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
+		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
+		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+
+func _process(delta: float) -> void:
+	if is_hp_draining and now_HP > 0.0:
+		now_HP -= hp_drain_rate * delta
 
 func _physics_process(delta: float) -> void:
 	if hp_label:
@@ -126,6 +145,23 @@ func _physics_process(delta: float) -> void:
 
 	is_front_has_rigid = front_foot.is_colliding() or front_head.is_colliding() or front_body.is_colliding()
 	is_back_has_rigid = back_foot.is_colliding() or back_head.is_colliding() or back_body.is_colliding()
+
+## 开启随时间自然掉血
+## @param rate 每秒掉血速率 (若 <= 0 则保留默认速率)
+func StartHpDrain(rate: float = -1.0) -> void:
+	if rate > 0.0:
+		hp_drain_rate = rate
+	is_hp_draining = true
+
+## 停止随时间自然掉血
+func StopHpDrain() -> void:
+	is_hp_draining = false
+
+func _on_start_player_hp_drain(drain_rate: float) -> void:
+	StartHpDrain(drain_rate)
+
+func _on_stop_player_hp_drain() -> void:
+	StopHpDrain()
 
 ## 受到伤害的公共方法
 ## @param damage 受到的伤害数值

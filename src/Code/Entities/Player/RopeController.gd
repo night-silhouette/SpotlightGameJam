@@ -44,9 +44,7 @@ var released_during_flight: bool = false
 ## 绳头飞行变量
 var fly_dir: Vector2 = Vector2.ZERO
 var fly_distance: float = 0.0
-var fly_target_hit: bool = false
-var fly_hit_pos: Vector2 = Vector2.ZERO
-var fly_hit_node: Node2D = null
+var fly_tip_pos: Vector2 = Vector2.ZERO
 
 ## 摆动相关状态
 var swing_radius: float = 0.0
@@ -184,17 +182,13 @@ func _on_jump_pressed() -> void:
 		_finish_swing(true)
 
 func _shoot_rope() -> bool:
-	var space_state = player.get_world_2d().direct_space_state
 	fly_dir = _get_shoot_direction()
 	var ray_target = player.global_position + fly_dir * max_rope_length
-
-	var query = PhysicsRayQueryParameters2D.create(player.global_position, ray_target, collision_mask)
-	query.exclude = [player.get_rid()]
-	var result = space_state.intersect_ray(query)
 
 	SignalBus.PlayerGrappleLaunched.emit(ray_target)
 
 	fly_distance = 0.0
+	fly_tip_pos = player.global_position
 	released_during_flight = false
 	current_state = RopeState.FLYING
 	line_2d.visible = true
@@ -203,45 +197,43 @@ func _shoot_rope() -> bool:
 	line_2d.add_point(to_local(player.global_position))
 	line_2d.add_point(to_local(player.global_position))
 
-	if result and not result.is_empty():
-		fly_target_hit = true
-		fly_hit_pos = result.position
-		fly_hit_node = result.collider as Node2D
-	else:
-		fly_target_hit = false
-		fly_hit_pos = ray_target
-		fly_hit_node = null
-
 	return true
 
 func _process_flying(delta: float) -> void:
-	fly_distance += rope_speed * delta
+	var prev_tip_pos = fly_tip_pos
+	var step = rope_speed * delta
+	fly_distance += step
+	var next_tip_pos = player.global_position + fly_dir * fly_distance
 
-	var current_tip_pos = player.global_position + fly_dir * fly_distance
+	# 随着绳头实际向前飞行，步进式检测当前帧飞过的线段是否碰撞到了墙体表面
+	var space_state = player.get_world_2d().direct_space_state
+	var query = PhysicsRayQueryParameters2D.create(prev_tip_pos, next_tip_pos, collision_mask)
+	query.exclude = [player.get_rid()]
+	var result = space_state.intersect_ray(query)
 
-	# 检查是否已飞抵命中目标
-	if fly_target_hit:
-		var hit_distance = (fly_hit_pos - player.global_position).length()
-		if fly_distance >= hit_distance:
-			# 飞抵目标，正式扣合
-			can_use_rope = false
-			hook_point = fly_hit_pos
-			hook_target_node = fly_hit_node
-			if hook_target_node:
-				hook_target_offset = hook_target_node.to_local(hook_point)
-			else:
-				hook_target_offset = Vector2.ZERO
+	if result and not result.is_empty():
+		# 绳头实际碰撞命中墙体
+		fly_tip_pos = result.position
+		can_use_rope = false
+		hook_point = result.position
+		hook_target_node = result.collider as Node2D
+		if hook_target_node:
+			hook_target_offset = hook_target_node.to_local(hook_point)
+		else:
+			hook_target_offset = Vector2.ZERO
 
-			SignalBus.PlayerGrappleHooked.emit(hook_point)
+		SignalBus.PlayerGrappleHooked.emit(hook_point)
 
-			# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键，立即直接拉过去！绝不延迟等待
-			if released_during_flight or not Input.is_action_pressed("rope_shoot"):
-				_start_pull()
-			else:
-				current_state = RopeState.LATCHED
-				window_timer = window_duration
-				_update_line()
-			return
+		# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键，立即拉过去
+		if released_during_flight or not Input.is_action_pressed("rope_shoot"):
+			_start_pull()
+		else:
+			current_state = RopeState.LATCHED
+			window_timer = window_duration
+			_update_line()
+		return
+
+	fly_tip_pos = next_tip_pos
 
 	# 若超过最大射程仍未命中，绳索落空回收
 	if fly_distance >= max_rope_length:
@@ -252,7 +244,7 @@ func _process_flying(delta: float) -> void:
 	# 绘制飞行中的绳索
 	line_2d.clear_points()
 	line_2d.add_point(to_local(player.global_position))
-	line_2d.add_point(to_local(current_tip_pos))
+	line_2d.add_point(to_local(fly_tip_pos))
 
 func _get_shoot_direction() -> Vector2:
 	var mouse_pos = get_global_mouse_position()

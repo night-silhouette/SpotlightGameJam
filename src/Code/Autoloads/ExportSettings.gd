@@ -31,11 +31,13 @@ extends Node
 
 @export_group("Combat & Health", "player_")
 ## 玩家最大生命值
-@export var player_max_hp: float = 100.0
+@export var player_max_hp: float = 200.0
 ## 受到伤害时的硬直顿挫时间 (秒)
 @export var player_hurt_time: float = 0.15
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
+## 随时间自然掉血速率 (每秒掉血量)
+@export var player_hp_drain_rate: float = 5.0
 
 @export_group("Rope & Grapple", "rope_")
 ## 绳索最大有效射程距离
