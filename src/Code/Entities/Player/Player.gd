@@ -69,6 +69,9 @@ var wall_jump_lock_dir: int = 0
 @export var gravity_scale: float = 1.0
 var _water_flow_area_count: int = 0
 
+## 绳索惯性保留计时器 (脱钩后给予一定的动量保护期，避免地面摩擦力瞬间吸死)
+var rope_momentum_timer: float = 0.0
+
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
 		speed = ExportSettings.player_speed
@@ -114,12 +117,33 @@ func _physics_process(delta: float) -> void:
 
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta
+		if rope_momentum_timer > 0.0:
+			rope_momentum_timer -= delta
 		if _water_flow_area_count > 0:
 			# 水流区域内：若没有方向输入，微弱阻尼滑行；有输入则微调方向，不施加地面强摩擦
 			if gameInputControl.row_dir != 0:
 				velocity.x = move_toward(velocity.x, speed * sign(gameInputControl.row_dir), accerleration * delta)
 			else:
 				velocity.x = move_toward(velocity.x, 0.0, (friction * 0.15) * delta)
+		elif rope_momentum_timer > 0.0:
+			# 仅针对绳索脱钩后的惯性保持逻辑：
+			# 在绳索动量保护期内，不施加普通的急停摩擦力，保留高速惯性方便起跳
+			var target_dir = sign(gameInputControl.row_dir)
+			# 如果玩家按了反方向键，允许快速转向/刹车
+			if target_dir != 0 and sign(velocity.x) != 0 and target_dir != sign(velocity.x):
+				velocity.x = move_toward(velocity.x, speed * target_dir, accerleration * delta)
+			else:
+				# 同向或无输入：
+				if is_on_floor():
+					# 在地面上滑行：采用较平缓的滑行摩擦力，保留足够的前冲速度让玩家可以跳得更远
+					var slide_friction = ExportSettings.rope_ground_slide_friction if ExportSettings else 900.0
+					var target_speed = speed * sign(velocity.x) if target_dir != 0 else 0.0
+					velocity.x = move_toward(velocity.x, target_speed, slide_friction * delta)
+				else:
+					# 在空中飞跃：仅有轻微空气阻尼，保留高速前冲惯性
+					var air_drag = ExportSettings.rope_air_drag if ExportSettings else 250.0
+					var target_speed = speed * sign(velocity.x)
+					velocity.x = move_toward(velocity.x, target_speed, air_drag * delta)
 		else:
 			if gameInputControl.row_dir > 0:
 				velocity.x = move_toward(velocity.x, speed, accerleration * delta)
