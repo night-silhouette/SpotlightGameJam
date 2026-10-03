@@ -1,0 +1,70 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/PlayerWithCamera/CameraPresentation.gd" id="1"]
+[ext_resource type="Shader" path="res://Code/Entities/PlayerWithCamera/CameraBlur.gdshader" id="2"]
+[ext_resource type="Script" path="res://Code/Entities/PlayerWithCamera/CameraNarration.gd" id="3"]
+
+[sub_resource type="ShaderMaterial" id="BlurMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("2")
+
+[node name="CameraPresentation" type="CanvasLayer"]
+layer = 40
+script = ExtResource("1")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Blur" type="ColorRect" parent="Root"]
+visible = false
+material = SubResource("BlurMaterial")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Curtain" type="ColorRect" parent="Root"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TopMask" type="ColorRect" parent="Root"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 0.18
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Title" type="Label" parent="Root"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchor_left = 0.1
+anchor_top = 0.35
+anchor_right = 0.9
+anchor_bottom = 0.55
+mouse_filter = 2
+theme_override_font_sizes/font_size = 36
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Narration" type="Control" parent="Root"]
+layout_mode = 1
+anchor_left = 0.18
+anchor_top = 0.18
+anchor_right = 0.82
+anchor_bottom = 0.48
+mouse_filter = 2
+clip_contents = true
+script = ExtResource("3")

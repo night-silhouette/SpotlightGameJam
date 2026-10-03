@@ -1,10 +1,80 @@
 [gd_scene format=3 uid="uid://dhi8mol2mu8ui"]
 
-[ext_resource type="PackedScene" uid="uid://dl12ydxbural3" path="res://Code/Entities/TestWorld/TestWorld.tscn" id="1_fh6bg"]
+[ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_player"]
 [ext_resource type="PackedScene" uid="uid://bfr88h05lyxfc" path="res://Code/Entities/ParallaxScenery/parallax_scenery.tscn" id="2_ucljk"]
+
+[sub_resource type="RectangleShape2D" id="GroundShape"]
+size = Vector2(24000, 40)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(240, 20)
 
 [node name="ParallaxIntegrationTest" type="Node2D" unique_id=1284534077]
 
-[node name="TestWorld" parent="." unique_id=916660629 instance=ExtResource("1_fh6bg")]
-
 [node name="ParallaxScenery" parent="." unique_id=381839512 instance=ExtResource("2_ucljk")]
+
+[node name="TemporaryPlatforms" type="Node2D" parent="."]
+
+[node name="Ground" type="StaticBody2D" parent="TemporaryPlatforms"]
+position = Vector2(6000, 1130)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TemporaryPlatforms/Ground"]
+shape = SubResource("GroundShape")
+
+[node name="Guide" type="Polygon2D" parent="TemporaryPlatforms/Ground"]
+polygon = PackedVector2Array(-12000, -20, 12000, -20, 12000, -17, -12000, -17)
+color = Color(0.4, 0.85, 0.85, 0.65)
+
+[node name="Step1" type="StaticBody2D" parent="TemporaryPlatforms"]
+position = Vector2(1200, 1000)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TemporaryPlatforms/Step1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Guide" type="Polygon2D" parent="TemporaryPlatforms/Step1"]
+polygon = PackedVector2Array(-120, -10, 120, -10, 120, 10, -120, 10)
+color = Color(0.4, 0.85, 0.85, 0.65)
+
+[node name="Step2" type="StaticBody2D" parent="TemporaryPlatforms"]
+position = Vector2(1480, 880)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TemporaryPlatforms/Step2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Guide" type="Polygon2D" parent="TemporaryPlatforms/Step2"]
+polygon = PackedVector2Array(-120, -10, 120, -10, 120, 10, -120, 10)
+color = Color(0.4, 0.85, 0.85, 0.65)
+
+[node name="PlayerWithCamera" parent="." instance=ExtResource("1_player")]
+position = Vector2(672, 1040)
+
+[node name="Player" parent="PlayerWithCamera" index="0"]
+scale = Vector2(2.9105504, 2.9105504)
+
+[node name="PhantomCamera2D" parent="PlayerWithCamera" index="2"]
+limit_top = 0
+limit_bottom = 1296
+
+[node name="Instructions" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Label" type="Label" parent="Instructions"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -60.0
+offset_right = -20.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+text = "美术与摄像机联调：A / D 移动，空格跳跃，Shift 冲刺。\n青色线与台阶是临时碰撞平台；绿地和植物是美术前景。"
+
+[editable path="PlayerWithCamera"]

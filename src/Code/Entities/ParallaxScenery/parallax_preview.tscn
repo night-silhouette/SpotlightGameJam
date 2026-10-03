@@ -8,4 +8,6 @@
 [node name="ParallaxScenery" parent="." unique_id=381839512 instance=ExtResource("1_wn8cu")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1045674480]
+offset = Vector2(96, 592)
 script = ExtResource("2_hgnge")
+move_speed = 200.0
