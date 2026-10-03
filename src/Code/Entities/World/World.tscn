@@ -20,7 +20,6 @@ scale = Vector2(2.9105504, 2.9105504)
 [node name="PhantomCamera2D" type="Node2D" parent="Player" unique_id=650656469]
 scale = Vector2(0.9970579, 1.0247067)
 script = ExtResource("2_hfiwn")
-priority_override = true
 tween_resource = SubResource("Resource_yocbw")
 metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
