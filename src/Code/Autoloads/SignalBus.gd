@@ -29,6 +29,16 @@ signal PlayerGrappleReleased
 ## @param direction 水化朝向
 signal RuneWallConverted(wall_node: Node2D, direction: Vector2)
 
+## 水符文技能冷却状态变化时触发 (供 UI 刷新冷却进度条/倒计时)
+## @param current_cd 当前剩余冷却时间 (0 为就绪)
+## @param max_cd 最大冷却时间
+signal WaterRuneCooldownChanged(current_cd: float, max_cd: float)
+
+## 玩家成功触发并激活/凝固流水区域符文时触发
+## @param area_node 被操作的流水区域节点
+## @param is_fluid 操作后的流体状态
+signal WaterRuneActivated(area_node: Node2D, is_fluid: bool)
+
 ## 玩家游入水膜内部时触发 (重置冲刺/钩锁)
 signal PlayerEnteredWaterWall
 

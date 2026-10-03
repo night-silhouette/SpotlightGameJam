@@ -15,6 +15,7 @@ class_name Player
 @onready var debug: Label = $debug
 @onready var hp_label: Label = $hp
 @onready var rope_controller: RopeController = $RopeController
+@onready var water_rune_controller: Node2D = $WaterRuneController
 
 @export_category("properties")
 @export_group("physical_prop")
@@ -194,13 +195,15 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 func Heal(amount: float) -> void:
 	now_HP += amount
 
-## 刷新冲刺与钩索技能状态（供流水区域等交互组件调用）
+## 刷新冲刺、钩索与符文技能状态（供流水区域等交互组件调用）
 func ResetDashAndRope() -> void:
 	if gameInputControl:
 		gameInputControl.dash_control_flag = true
 		gameInputControl.dash_span_flag = true
 	if rope_controller:
 		rope_controller.ResetRopeCooldown()
+	if water_rune_controller:
+		water_rune_controller.ResetCooldown()
 
 ## 设置玩家在水流/零重力区域的计数
 ## @param entered true 为进入，false 为离开

@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.gd" id="1_ui"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/StartLoseHpButton/StartLoseHpButton.tscn" id="2_btn"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/RuneUi/RuneUI.tscn" id="3_rune"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.12, 0.12, 0.14, 0.75)
@@ -73,6 +74,9 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 12
 text = "生命流失中..."
+
+[node name="RuneUI" parent="Control/MarginContainer/VBoxContainer" unique_id=1948201948 instance=ExtResource("3_rune")]
+layout_mode = 2
 
 [node name="StartLoseHpButton" parent="Control/MarginContainer/VBoxContainer" unique_id=987162534 instance=ExtResource("2_btn")]
 layout_mode = 2

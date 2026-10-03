@@ -66,6 +66,8 @@ extends Node
 @export var water_flow_min_speed: float = 600.0
 ## 水符文石交互激活有效距离
 @export var water_flow_interact_distance: float = 130.0
+## 水符文激活技能冷却时间 (秒)
+@export var water_rune_cooldown: float = 2.0
 
 @export_group("Interactive - Spikes", "spikes_")
 ## 通用地刺基础伤害值

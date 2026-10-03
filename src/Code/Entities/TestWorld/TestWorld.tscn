@@ -58,7 +58,7 @@ collision_mask = 6
 shape = SubResource("RectangleShape2D_wall")
 
 [node name="Player" parent="." unique_id=1668973208 instance=ExtResource("1_player")]
-position = Vector2(100, 440)
+position = Vector2(-55, 423)
 
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=1740111966]
 position_smoothing_enabled = true
@@ -72,8 +72,20 @@ position = Vector2(650, 450)
 [node name="WaterFlowArea" parent="." unique_id=1809926669 instance=ExtResource("3_water")]
 position = Vector2(881, 307)
 
-[node name="WaterFlowArea2" parent="." unique_id=314159265 instance=ExtResource("3_water")]
+[node name="WaterFlowArea5" parent="." unique_id=314159265 instance=ExtResource("3_water")]
+position = Vector2(883, 492)
+
+[node name="WaterFlowArea2" parent="." unique_id=919277601 instance=ExtResource("3_water")]
 position = Vector2(604, 371)
+scale = Vector2(0.16532333, 2.2241392)
+
+[node name="WaterFlowArea3" parent="." unique_id=838904949 instance=ExtResource("3_water")]
+position = Vector2(558, 464.99994)
+rotation = 1.5896392
+scale = Vector2(0.1451812, 2.674944)
+
+[node name="WaterFlowArea4" parent="." unique_id=696659148 instance=ExtResource("3_water")]
+position = Vector2(532.00006, 369)
 scale = Vector2(0.16532333, 2.2241392)
 
 [node name="Spikes" parent="." unique_id=1438118032 instance=ExtResource("4_3aa7g")]

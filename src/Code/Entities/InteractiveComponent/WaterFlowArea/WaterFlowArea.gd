@@ -96,11 +96,13 @@ func _apply_state(fluid: bool) -> void:
 		# 若凝固时有玩家还在流体中，清除其在流体中的状态
 		_clear_all_bodies_in_water()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("water_rune"):
-		if _player_in_range:
-			get_viewport().set_input_as_handled()
-			_toggle_rune_fluid()
+## 切换符文流水/凝固状态的公共方法
+func ToggleRuneFluid() -> void:
+	SetFluidState(not is_fluid)
+	_update_prompt(true)
+
+func _toggle_rune_fluid() -> void:
+	ToggleRuneFluid()
 
 func _physics_process(_delta: float) -> void:
 	_check_player_distance()
@@ -119,22 +121,42 @@ func _check_player_distance() -> void:
 	var dist = global_position.distance_to(_cached_player.global_position)
 	var in_range = dist <= interact_radius
 
-	if in_range != _player_in_range:
-		_player_in_range = in_range
-		_update_prompt(_player_in_range)
+	_player_in_range = in_range
+	_update_prompt(_player_in_range)
 
 func _update_prompt(show_it: bool) -> void:
-	if prompt_label:
-		prompt_label.visible = show_it
-		if show_it:
-			if is_fluid:
-				prompt_label.text = "[E] 流水符文凝固"
-			else:
-				prompt_label.text = "[E] 流水符文水化"
+	if not prompt_label:
+		return
 
-func _toggle_rune_fluid() -> void:
-	SetFluidState(not is_fluid)
-	_update_prompt(true)
+	if not show_it or not is_instance_valid(_cached_player):
+		prompt_label.visible = false
+		return
+
+	prompt_label.visible = true
+
+	# 检查当前玩家交互范围内是否同时存在多个流水区域
+	var nearby_count = 0
+	var all_areas = get_tree().get_nodes_in_group("water_flow")
+	var p_pos = _cached_player.global_position
+
+	for area in all_areas:
+		if area is WaterFlowArea and is_instance_valid(area):
+			if p_pos.distance_to(area.global_position) <= area.interact_radius:
+				nearby_count += 1
+
+	var action_name = "凝固" if is_fluid else "水化"
+
+	if nearby_count > 1:
+		# 存在多个流水区域冲突，计算该区域相对玩家的大致方向提示
+		var to_self = global_position - p_pos
+		var dir_hint = ""
+		if abs(to_self.x) >= abs(to_self.y):
+			dir_hint = "D+E" if to_self.x > 0 else "A+E"
+		else:
+			dir_hint = "S+E" if to_self.y > 0 else "W+E"
+		prompt_label.text = "[%s] 流水符文%s" % [dir_hint, action_name]
+	else:
+		prompt_label.text = "[E] 流水符文%s" % action_name
 
 func _on_fluid_area_body_entered(body: Node2D) -> void:
 	if not is_fluid:
