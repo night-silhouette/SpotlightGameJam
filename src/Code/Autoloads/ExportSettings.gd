@@ -25,7 +25,7 @@ extends Node
 ## 冲刺持续时间 (秒)
 @export var player_dash_time: float = 0.15
 ## 冲刺位移速度
-@export var player_dash_speed: float = 700.0
+@export var player_dash_speed: float = 650.0
 ## 冲刺冷却间隔 (秒)
 @export var player_dash_span: float = 0.65
 
@@ -56,6 +56,14 @@ extends Node
 @export var rope_swing_input_accel: float = 1800.0
 ## 摆动阻尼衰减系数
 @export var rope_swing_damping: float = 0.15
+## 绳索脱钩后水平动量保留比例
+@export var rope_pull_momentum_ratio: float = 0.95
+## 绳索脱钩后地面高速滑行减速摩擦力 (替代普通地面高摩擦，给予平滑滑行与跳跃窗口)
+@export var rope_ground_slide_friction: float = 900.0
+## 绳索脱钩后空中保留超速动量时的轻微空气阻尼 (替代普通2500高额阻尼，实现超远跳跃)
+@export var rope_air_drag: float = 250.0
+## 绳索脱钩后地面动量滑行保护时间 (秒)
+@export var rope_momentum_duration: float = 0.4
 ## 绳索射线检测碰撞层级掩码 (默认层1 world + 层3 entity = 5)
 @export_flags_2d_physics var rope_collision_mask: int = 5
 

@@ -305,10 +305,6 @@ func _start_pull() -> void:
 	current_state = RopeState.PULLING
 	pull_timer = 0.0
 	player.is_special_state = true
-	# 若在地面上拉拽，先给予微小的垂直离地抬升，脱离地面摩擦和地板碰撞阻挡
-	if player.is_on_floor():
-		player.position.y -= 3.0
-		player.velocity.y = -80.0
 	_update_line()
 
 func _process_pulling(delta: float) -> void:
@@ -331,10 +327,26 @@ func _finish_pull(preserve_momentum: bool, with_jump_boost: bool = false) -> voi
 	_release_rope(true)
 
 	if preserve_momentum:
-		# 保留速度惯性冲量
-		player.velocity = launch_dir * pull_speed * 0.92
-		if launch_dir.y >= -0.2:
-			player.velocity.y = min(player.velocity.y, -320.0)
+		# 获取配置参数
+		var momentum_ratio = ExportSettings.rope_pull_momentum_ratio if ExportSettings else 0.95
+		var momentum_duration = ExportSettings.rope_momentum_duration if ExportSettings else 0.4
+
+		# 记录动量保护期，使玩家在地面上滑行时不被高摩擦骤停
+		player.rope_momentum_timer = momentum_duration
+
+		# 保留水平向前的速度惯性冲量
+		var final_vel_x = launch_dir.x * pull_speed * momentum_ratio
+		if abs(final_vel_x) > 0.01:
+			player.velocity.x = final_vel_x
+
+		# 垂直方向处理：
+		# 如果勾的是地面或水平前方（launch_dir.y >= 0），绝不强加向上弹跳速度（去除弹起来的感觉）
+		if launch_dir.y >= 0.0:
+			player.velocity.y = 0.0
+		else:
+			# 如果确实是朝上方拉（如斜上方挂点脱钩飞出），自然保留向上的速度
+			player.velocity.y = launch_dir.y * pull_speed * momentum_ratio
+
 		if with_jump_boost:
 			player.velocity.y = -player.jump_speed * 1.1
 
@@ -391,6 +403,8 @@ func _finish_swing(with_jump_boost: bool) -> void:
 	var exit_velocity = player.velocity
 	_release_rope(true)
 
+	var momentum_duration = ExportSettings.rope_momentum_duration if ExportSettings else 0.4
+	player.rope_momentum_timer = momentum_duration
 	player.velocity = exit_velocity
 	if with_jump_boost:
 		player.velocity.y = min(player.velocity.y - 200.0, -player.jump_speed * 0.9)
