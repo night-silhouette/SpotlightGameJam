@@ -1,49 +1,78 @@
 [gd_scene format=3 uid="uid://bfr88h05lyxfc"]
 
-[ext_resource type="Texture2D" uid="uid://b8eo4brra1thd" path="res://icon.svg" id="1_n3jxw"]
+[ext_resource type="Texture2D" uid="uid://diyro2um4kmb" path="res://Art/Archived/Oldhuntt/background.png" id="1_v78iy"]
 [ext_resource type="PackedScene" uid="uid://dirhxm85bpqce" path="res://Code/Entities/ParallaxScenery/AmbientGlow/AmbientGlow.tscn" id="2_fhxqj"]
+[ext_resource type="Texture2D" uid="uid://dgy5fbhx1a07l" path="res://Art/Archived/Oldhuntt/mid_shot.png" id="2_u06m4"]
 [ext_resource type="PackedScene" uid="uid://d2jk4l1e5s40f" path="res://Code/Entities/ParallaxScenery/AmbientFog/FogSprite.tscn" id="3_sbhd1"]
+[ext_resource type="Texture2D" uid="uid://bhiiy572envo8" path="res://Art/Archived/Oldhuntt/basemap.png" id="4_fqyhx"]
+[ext_resource type="Texture2D" uid="uid://de22a4fcg8b6" path="res://Art/Archived/Oldhuntt/foreground.png" id="5_u06m4"]
+[ext_resource type="Texture2D" uid="uid://0mraf1vp0mjp" path="res://Art/Archived/Oldhuntt/stars.png" id="7_3xx65"]
+[ext_resource type="Texture2D" uid="uid://dlamv8jn4ylmk" path="res://Art/Archived/Oldhuntt/moon.png" id="8_u2n35"]
 
 [node name="ParallaxScenery" type="Node2D" unique_id=381839512]
 
 [node name="FarBackground" type="Parallax2D" parent="." unique_id=47769589]
 z_index = -20
-scroll_scale = Vector2(0.2, 0.2)
-repeat_size = Vector2(1152, 0)
+scroll_scale = Vector2(0.1, 0.2)
+repeat_size = Vector2(2960, 0)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="FarBackground" unique_id=1269430755]
-position = Vector2(200, 100)
-scale = Vector2(2, 2)
-texture = ExtResource("1_n3jxw")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_v78iy")
 centered = false
 
 [node name="NearBackground" type="Parallax2D" parent="." unique_id=1982365568]
 z_index = -10
-scroll_scale = Vector2(0.55, 0.55)
-repeat_size = Vector2(1152, 0)
+scroll_scale = Vector2(0.7, 0.5)
+repeat_size = Vector2(2960, 0)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="NearBackground" unique_id=1303641309]
-position = Vector2(600, 220)
-scale = Vector2(3, 3)
-texture = ExtResource("1_n3jxw")
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_u06m4")
 centered = false
 
 [node name="AmbientGlow" parent="NearBackground" unique_id=1072626653 instance=ExtResource("2_fhxqj")]
+visible = false
 z_index = 1
 position = Vector2(800, 350)
 scale = Vector2(1.5, 1.5)
 
 [node name="AmbientFog" parent="NearBackground" unique_id=941986178 instance=ExtResource("3_sbhd1")]
+visible = false
 z_index = 2
 position = Vector2(576, 400)
 scale = Vector2(2, 0.6)
 
-[node name="Foreground" type="Node2D" parent="." unique_id=1866994351]
+[node name="Sky" type="Parallax2D" parent="." unique_id=1087840546]
+z_index = -30
+scroll_scale = Vector2(0, 0)
+
+[node name="SkyBase" type="Sprite2D" parent="Sky" unique_id=678388926]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_fqyhx")
+centered = false
+
+[node name="Stars" type="Sprite2D" parent="Sky" unique_id=1903723882]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_3xx65")
+centered = false
+
+[node name="Moon" type="Sprite2D" parent="Sky" unique_id=1984695216]
+position = Vector2(-345, 77)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_u2n35")
+centered = false
+
+[node name="ForegroundLoop" type="Parallax2D" parent="." unique_id=528992163]
+repeat_size = Vector2(2960, 0)
+repeat_times = 3
+
+[node name="Foreground" type="Node2D" parent="ForegroundLoop" unique_id=1866994351]
 z_index = 10
 
-[node name="ForegroundSprite" type="Sprite2D" parent="Foreground" unique_id=1042495340]
-position = Vector2(400, 570)
+[node name="ForegroundSprite" type="Sprite2D" parent="ForegroundLoop/Foreground" unique_id=1042495340]
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_n3jxw")
+texture = ExtResource("5_u06m4")
+centered = false
