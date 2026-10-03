@@ -11,6 +11,8 @@ enum RopeState {
 }
 
 @export_group("Rope Settings")
+## 使用绳索每次消耗的生命值
+@export var rope_hp_cost: float = 10.0
 ## 绳索最大有效射程
 @export var max_rope_length: float = 420.0
 ## 绳索飞行发射速度
@@ -56,6 +58,7 @@ var swing_angular_velocity: float = 0.0
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
+		rope_hp_cost = ExportSettings.rope_hp_cost
 		max_rope_length = ExportSettings.rope_max_length
 		rope_speed = ExportSettings.rope_projectile_speed
 		window_duration = ExportSettings.rope_window_duration
@@ -182,6 +185,13 @@ func _on_jump_pressed() -> void:
 		_finish_swing(true)
 
 func _shoot_rope() -> bool:
+	if not player or player.now_HP <= 0.0:
+		return false
+
+	# 使用钩索消耗血量
+	if rope_hp_cost > 0.0:
+		player.now_HP = max(0.0, player.now_HP - rope_hp_cost)
+
 	fly_dir = _get_shoot_direction()
 	var ray_target = player.global_position + fly_dir * max_rope_length
 

@@ -40,6 +40,8 @@ extends Node
 @export var player_hp_drain_rate: float = 5.0
 
 @export_group("Rope & Grapple", "rope_")
+## 使用绳索每次消耗的生命值
+@export var rope_hp_cost: float = 10.0
 ## 绳索最大有效射程距离
 @export var rope_max_length: float = 450.0
 ## 绳索发射向前飞行的速度 (像素/秒，高速弹射感)
