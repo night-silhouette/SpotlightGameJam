@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://c7t8r2m4vy3p1"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.gd" id="1_water"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_solid"]
+size = Vector2(160, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fluid"]
+size = Vector2(160, 100)
+
+[node name="WaterFlowArea" type="StaticBody2D" unique_id=314159265 groups=["water_flow"]]
+collision_mask = 2
+script = ExtResource("1_water")
+
+[node name="VisualRect" type="ColorRect" parent="." unique_id=141421356]
+offset_left = -80.0
+offset_top = -50.0
+offset_right = 80.0
+offset_bottom = 50.0
+mouse_filter = 2
+color = Color(0.28, 0.42, 0.55, 1)
+
+[node name="SolidCollision" type="CollisionShape2D" parent="." unique_id=173205080]
+shape = SubResource("RectangleShape2D_solid")
+
+[node name="FluidArea" type="Area2D" parent="." unique_id=223606797]
+collision_layer = 0
+collision_mask = 2
+
+[node name="FluidCollision" type="CollisionShape2D" parent="FluidArea" unique_id=244948974]
+shape = SubResource("RectangleShape2D_fluid")
+disabled = true
+
+[node name="PromptLabel" type="Label" parent="." unique_id=264575131]
+visible = false
+offset_left = -80.0
+offset_top = -78.0
+offset_right = 80.0
+offset_bottom = -55.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "[E] 流水符文水化"
+horizontal_alignment = 1
+vertical_alignment = 1

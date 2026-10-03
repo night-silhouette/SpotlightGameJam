@@ -1,0 +1,79 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.gd" id="1_ui"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/StartLoseHpButton/StartLoseHpButton.tscn" id="2_btn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.12, 0.12, 0.14, 0.75)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.35, 0.4, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
+bg_color = Color(0.15, 0.65, 0.95, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="PlayerUI" type="CanvasLayer" unique_id=741029482]
+script = ExtResource("1_ui")
+
+[node name="Control" type="Control" parent="." unique_id=1849204821]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control" unique_id=1984210984]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 264.0
+offset_bottom = 120.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer" unique_id=1284910283]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="HealthBar" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer" unique_id=1498129048]
+custom_minimum_size = Vector2(240, 22)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
+max_value = 200.0
+step = 0.1
+value = 200.0
+show_percentage = false
+
+[node name="HealthLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HealthBar" unique_id=1582910482]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 13
+text = "200 / 200 HP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DrainIndicator" type="Label" parent="Control/MarginContainer/VBoxContainer" unique_id=1620938491]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
+theme_override_font_sizes/font_size = 12
+text = "生命流失中..."
+
+[node name="StartLoseHpButton" parent="Control/MarginContainer/VBoxContainer" unique_id=987162534 instance=ExtResource("2_btn")]
+layout_mode = 2
+

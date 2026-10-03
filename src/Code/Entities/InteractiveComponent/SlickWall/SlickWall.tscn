@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://cx7n1h3y8p5oq"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/SlickWall/SlickWall.gd" id="1_slick"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(32, 160)
+
+[node name="SlickWall" type="StaticBody2D" groups=["no_climb", "no_hook", "slick_wall"]]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_slick")
+
+[node name="BaseRect" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -80.0
+offset_right = 16.0
+offset_bottom = 80.0
+color = Color(0.24, 0.32, 0.36, 1)
+
+[node name="SlickStrip" type="ColorRect" parent="."]
+offset_left = -6.4
+offset_top = -80.0
+offset_right = 6.4
+offset_bottom = 80.0
+color = Color(0.35, 0.58, 0.45, 0.75)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wall")

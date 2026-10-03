@@ -13,6 +13,7 @@
 [ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
 [ext_resource type="Script" uid="uid://uoa31q2225il" path="res://Code/Entities/Player/PlayerInputControl.gd" id="12_input"]
 [ext_resource type="Script" uid="uid://b7bx3j3iqenuf" path="res://Code/Entities/Player/RopeController.gd" id="13_rope"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.tscn" id="14_ui"]
 
 [node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
 collision_layer = 2
@@ -113,3 +114,6 @@ script = ExtResource("13_rope")
 [node name="Line2D" type="Line2D" parent="RopeController" unique_id=-1100110086]
 width = 2.5
 default_color = Color(0.3, 0.85, 1, 0.9)
+
+[node name="PlayerUI" parent="." unique_id=2081948271 instance=ExtResource("14_ui")]
+

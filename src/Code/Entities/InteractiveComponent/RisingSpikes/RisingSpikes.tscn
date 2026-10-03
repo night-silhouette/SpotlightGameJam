@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://c85h5y2p6x8r1"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.gd" id="1_rising"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_spike"]
+size = Vector2(32, 20)
+
+[node name="RisingSpikes" type="Node2D" groups=["hazard", "rising_spikes"]]
+script = ExtResource("1_rising")
+
+[node name="BaseSlot" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -4.0
+offset_right = 16.0
+offset_bottom = 2.0
+color = Color(0.18, 0.18, 0.22, 1)
+
+[node name="SpikeMovingRoot" type="Node2D" parent="."]
+
+[node name="VisualPolygon" type="Polygon2D" parent="SpikeMovingRoot"]
+color = Color(0.9, 0.35, 0.25, 1)
+polygon = PackedVector2Array(-16, 20, -12, 0, -8, 20, -4, 0, 0, 20, 4, 0, 8, 20, 12, 0, 16, 20)
+
+[node name="SpikeArea" type="Area2D" parent="SpikeMovingRoot"]
+collision_layer = 4
+collision_mask = 2
+
+[node name="SpikeCollision" type="CollisionShape2D" parent="SpikeMovingRoot/SpikeArea"]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_spike")
+disabled = true

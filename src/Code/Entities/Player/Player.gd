@@ -32,21 +32,30 @@ class_name Player
 @export var climb_ability: float = 480.0
 
 @export_group("state_prop")
-@export var Max_HP: float = 100.0:
+@export var Max_HP: float = 200.0:
 	set(value):
 		Max_HP = value
 		if Max_HP < now_HP:
 			now_HP = Max_HP
-@export var now_HP: float = 100.0:
+		if SignalBus:
+			SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+@export var now_HP: float = 200.0:
 	set(value):
 		if value > Max_HP:
 			now_HP = Max_HP
 		elif value <= 0.0:
 			now_HP = 0.0
-			if move_state_machine:
+			if move_state_machine and move_state_machine.cur_state_name != "died":
 				move_state_machine.change_state("died")
 		else:
 			now_HP = value
+		if SignalBus:
+			SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+
+## 是否正在自然掉血
+@export var is_hp_draining: bool = false
+## 自然掉血速度 (每秒扣除点数)
+@export var hp_drain_rate: float = 5.0
 
 var is_special_state: bool = false
 var face_dir: int = 1
@@ -54,6 +63,10 @@ var is_front_has_rigid: bool = false
 var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
 var wall_jump_lock_dir: int = 0
+
+## 重力缩放系数（默认为 1.0，流水区域等会将其置为 0.0）
+@export var gravity_scale: float = 1.0
+var _water_flow_area_count: int = 0
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -71,6 +84,7 @@ func _sync_from_export_settings() -> void:
 		unbeatable_time = ExportSettings.player_unbeatable_time
 		Max_HP = ExportSettings.player_max_hp
 		now_HP = ExportSettings.player_max_hp
+		hp_drain_rate = ExportSettings.player_hp_drain_rate
 
 func _ready() -> void:
 	_sync_from_export_settings()
@@ -78,6 +92,15 @@ func _ready() -> void:
 	
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
 	gameInputControl.special_state_end.connect(func(_state): is_special_state = false)
+	
+	if SignalBus:
+		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
+		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
+		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+
+func _process(delta: float) -> void:
+	if is_hp_draining and now_HP > 0.0:
+		now_HP -= hp_drain_rate * delta
 
 func _physics_process(delta: float) -> void:
 	if hp_label:
@@ -89,13 +112,20 @@ func _physics_process(delta: float) -> void:
 		debug.text = "速度<%d,%d> %s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info]
 
 	if not is_special_state:
-		velocity.y += GlobalValue.gravity * delta
-		if gameInputControl.row_dir > 0:
-			velocity.x = move_toward(velocity.x, speed, accerleration * delta)
-		elif gameInputControl.row_dir < 0:
-			velocity.x = move_toward(velocity.x, -speed, accerleration * delta)
+		velocity.y += GlobalValue.gravity * gravity_scale * delta
+		if _water_flow_area_count > 0:
+			# 水流区域内：若没有方向输入，微弱阻尼滑行；有输入则微调方向，不施加地面强摩擦
+			if gameInputControl.row_dir != 0:
+				velocity.x = move_toward(velocity.x, speed * sign(gameInputControl.row_dir), accerleration * delta)
+			else:
+				velocity.x = move_toward(velocity.x, 0.0, (friction * 0.15) * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0.0, friction * delta)
+			if gameInputControl.row_dir > 0:
+				velocity.x = move_toward(velocity.x, speed, accerleration * delta)
+			elif gameInputControl.row_dir < 0:
+				velocity.x = move_toward(velocity.x, -speed, accerleration * delta)
+			else:
+				velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
 	move_and_slide()
 
@@ -113,17 +143,73 @@ func _physics_process(delta: float) -> void:
 			back_body.scale.x *= -1
 		face_dir = new_face_dir
 
-	is_front_has_rigid = front_foot.is_colliding() or front_head.is_colliding() or front_body.is_colliding()
-	is_back_has_rigid = back_foot.is_colliding() or back_head.is_colliding() or back_body.is_colliding()
+	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
+	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body)
+
+## 辅助检测射线碰撞的墙体是否可供攀爬（排除光滑滑石墙）
+func _check_wall_climbable(ray: RayCast2D) -> bool:
+	if not ray or not ray.is_colliding():
+		return false
+	var collider = ray.get_collider()
+	if collider:
+		if collider.is_in_group("slick_wall") or collider.is_in_group("no_climb"):
+			return false
+		if collider.get("is_slick_wall") == true or collider.get("disable_climb") == true:
+			return false
+	return true
+
+## 开启随时间自然掉血
+## @param rate 每秒掉血速率 (若 <= 0 则保留默认速率)
+func StartHpDrain(rate: float = -1.0) -> void:
+	if rate > 0.0:
+		hp_drain_rate = rate
+	is_hp_draining = true
+
+## 停止随时间自然掉血
+func StopHpDrain() -> void:
+	is_hp_draining = false
+
+func _on_start_player_hp_drain(drain_rate: float) -> void:
+	StartHpDrain(drain_rate)
+
+func _on_stop_player_hp_drain() -> void:
+	StopHpDrain()
 
 ## 受到伤害的公共方法
 ## @param damage 受到的伤害数值
-func ApplyDamage(damage: float) -> void:
+## @param knockback 击退冲量向量 (可选，默认 Vector2.ZERO)
+func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if hurt_lock:
 		now_HP -= damage
 		hurt_lock = false
+		if knockback != Vector2.ZERO:
+			velocity = knockback
 		move_state_machine.change_state("hurt")
+		if SignalBus:
+			SignalBus.PlayerHurt.emit(damage, knockback)
 		get_tree().create_timer(unbeatable_time).timeout.connect(func(): hurt_lock = true)
+
+## 恢复生命值/水量的公共方法
+## @param amount 恢复数值
+func Heal(amount: float) -> void:
+	now_HP += amount
+
+## 刷新冲刺与钩索技能状态（供流水区域等交互组件调用）
+func ResetDashAndRope() -> void:
+	if gameInputControl:
+		gameInputControl.dash_control_flag = true
+		gameInputControl.dash_span_flag = true
+	if rope_controller:
+		rope_controller.ResetRopeCooldown()
+
+## 设置玩家在水流/零重力区域的计数
+## @param entered true 为进入，false 为离开
+func SetInWaterFlow(entered: bool) -> void:
+	if entered:
+		_water_flow_area_count += 1
+	else:
+		_water_flow_area_count = max(0, _water_flow_area_count - 1)
+	gravity_scale = 0.0 if _water_flow_area_count > 0 else 1.0
 
 ## 兼容原工程受击方法
 ## @param damage 受到的伤害数值

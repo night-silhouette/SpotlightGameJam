@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://dhi8mol2mu8ui"]
+
+[ext_resource type="PackedScene" uid="uid://dl12ydxbural3" path="res://Code/Entities/TestWorld/TestWorld.tscn" id="1_fh6bg"]
+[ext_resource type="PackedScene" uid="uid://bfr88h05lyxfc" path="res://Code/Entities/ParallaxScenery/parallax_scenery.tscn" id="2_ucljk"]
+
+[node name="ParallaxIntegrationTest" type="Node2D" unique_id=1284534077]
+
+[node name="TestWorld" parent="." unique_id=916660629 instance=ExtResource("1_fh6bg")]
+
+[node name="ParallaxScenery" parent="." unique_id=381839512 instance=ExtResource("2_ucljk")]
