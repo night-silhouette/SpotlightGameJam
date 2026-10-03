@@ -4,6 +4,7 @@ class_name RopeController
 ## 绳索状态枚举
 enum RopeState {
 	IDLE,        ## 空闲未连接
+	FLYING,      ## 绳头正在快速向前飞行伸展
 	LATCHED,     ## 已命中墙面，处于等待选择窗口期
 	PULLING,     ## 正在快速拉向命中点
 	SWINGING     ## 正在以命中点为原点摆动荡跃
@@ -12,6 +13,8 @@ enum RopeState {
 @export_group("Rope Settings")
 ## 绳索最大有效射程
 @export var max_rope_length: float = 420.0
+## 绳索飞行发射速度
+@export var rope_speed: float = 2200.0
 ## 命中后的决策窗口期持续时间 (秒)
 @export var window_duration: float = 0.45
 ## 拉向命中点的飞行速度
@@ -35,6 +38,16 @@ var window_timer: float = 0.0
 var pull_timer: float = 0.0
 var can_use_rope: bool = true
 
+## 是否在命中前就已经松开了左键
+var released_during_flight: bool = false
+
+## 绳头飞行变量
+var fly_dir: Vector2 = Vector2.ZERO
+var fly_distance: float = 0.0
+var fly_target_hit: bool = false
+var fly_hit_pos: Vector2 = Vector2.ZERO
+var fly_hit_node: Node2D = null
+
 ## 摆动相关状态
 var swing_radius: float = 0.0
 var swing_angle: float = 0.0
@@ -46,6 +59,7 @@ var swing_angular_velocity: float = 0.0
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
 		max_rope_length = ExportSettings.rope_max_length
+		rope_speed = ExportSettings.rope_projectile_speed
 		window_duration = ExportSettings.rope_window_duration
 		pull_speed = ExportSettings.rope_pull_speed
 		pull_arrive_distance = ExportSettings.rope_pull_arrive_distance
@@ -91,6 +105,9 @@ func _physics_process(delta: float) -> void:
 		RopeState.IDLE:
 			pass
 
+		RopeState.FLYING:
+			_process_flying(delta)
+
 		RopeState.LATCHED:
 			_process_latched(delta)
 
@@ -99,6 +116,10 @@ func _physics_process(delta: float) -> void:
 
 		RopeState.SWINGING:
 			_process_swinging(delta)
+
+## 刷新钩索使用次数（允许在空中再次使用）
+func ResetRopeCooldown() -> void:
+	can_use_rope = true
 
 ## 发射绳索的公共调用接口
 ## @return 是否成功勾中墙面
@@ -138,8 +159,11 @@ func _on_rope_shoot_pressed() -> void:
 
 func _on_rope_shoot_released() -> void:
 	match current_state:
+		RopeState.FLYING:
+			# 在绳头飞行阶段就已经松开左键，记录标记
+			released_during_flight = true
 		RopeState.LATCHED:
-			# 松开左键触发拉过去
+			# 只要松开左键，立刻零延迟把自己拉过去
 			_start_pull()
 		RopeState.SWINGING:
 			# 长按荡绳后松开左键，脱钩飞出保留惯性
@@ -161,8 +185,8 @@ func _on_jump_pressed() -> void:
 
 func _shoot_rope() -> bool:
 	var space_state = player.get_world_2d().direct_space_state
-	var shoot_dir = _get_shoot_direction()
-	var ray_target = player.global_position + shoot_dir * max_rope_length
+	fly_dir = _get_shoot_direction()
+	var ray_target = player.global_position + fly_dir * max_rope_length
 
 	var query = PhysicsRayQueryParameters2D.create(player.global_position, ray_target, collision_mask)
 	query.exclude = [player.get_rid()]
@@ -170,23 +194,65 @@ func _shoot_rope() -> bool:
 
 	SignalBus.PlayerGrappleLaunched.emit(ray_target)
 
-	if result and not result.is_empty():
-		can_use_rope = false
-		hook_point = result.position
-		hook_target_node = result.collider as Node2D
-		if hook_target_node:
-			hook_target_offset = hook_target_node.to_local(hook_point)
-		else:
-			hook_target_offset = Vector2.ZERO
-		current_state = RopeState.LATCHED
-		window_timer = window_duration
-		_update_line()
-		line_2d.visible = true
-		SignalBus.PlayerGrappleHooked.emit(hook_point)
-		return true
+	fly_distance = 0.0
+	released_during_flight = false
+	current_state = RopeState.FLYING
+	line_2d.visible = true
+	line_2d.default_color = Color(0.3, 0.85, 1.0, 0.9)
+	line_2d.clear_points()
+	line_2d.add_point(to_local(player.global_position))
+	line_2d.add_point(to_local(player.global_position))
 
-	_show_miss_effect(ray_target)
-	return false
+	if result and not result.is_empty():
+		fly_target_hit = true
+		fly_hit_pos = result.position
+		fly_hit_node = result.collider as Node2D
+	else:
+		fly_target_hit = false
+		fly_hit_pos = ray_target
+		fly_hit_node = null
+
+	return true
+
+func _process_flying(delta: float) -> void:
+	fly_distance += rope_speed * delta
+
+	var current_tip_pos = player.global_position + fly_dir * fly_distance
+
+	# 检查是否已飞抵命中目标
+	if fly_target_hit:
+		var hit_distance = (fly_hit_pos - player.global_position).length()
+		if fly_distance >= hit_distance:
+			# 飞抵目标，正式扣合
+			can_use_rope = false
+			hook_point = fly_hit_pos
+			hook_target_node = fly_hit_node
+			if hook_target_node:
+				hook_target_offset = hook_target_node.to_local(hook_point)
+			else:
+				hook_target_offset = Vector2.ZERO
+
+			SignalBus.PlayerGrappleHooked.emit(hook_point)
+
+			# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键，立即直接拉过去！绝不延迟等待
+			if released_during_flight or not Input.is_action_pressed("rope_shoot"):
+				_start_pull()
+			else:
+				current_state = RopeState.LATCHED
+				window_timer = window_duration
+				_update_line()
+			return
+
+	# 若超过最大射程仍未命中，绳索落空回收
+	if fly_distance >= max_rope_length:
+		_show_miss_effect(player.global_position + fly_dir * max_rope_length)
+		_release_rope(true)
+		return
+
+	# 绘制飞行中的绳索
+	line_2d.clear_points()
+	line_2d.add_point(to_local(player.global_position))
+	line_2d.add_point(to_local(current_tip_pos))
 
 func _get_shoot_direction() -> Vector2:
 	var mouse_pos = get_global_mouse_position()
@@ -284,8 +350,11 @@ func _start_swing() -> void:
 func _process_swinging(delta: float) -> void:
 	_sync_hook_point()
 
-	# 1. 真实受力：重力自然下坠
-	player.velocity.y += GlobalValue.gravity * delta
+	# 1. 真实受力：重力自然下坠（支持流水区域等零重力或自定义重力影响）
+	var current_gravity_scale: float = 1.0
+	if "gravity_scale" in player:
+		current_gravity_scale = player.gravity_scale
+	player.velocity.y += GlobalValue.gravity * current_gravity_scale * delta
 
 	# 2. 绳索刚性约束（距离约束）：
 	# 计算假设无约束移动后，玩家相对于锚点的位置

@@ -55,6 +55,10 @@ var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
 var wall_jump_lock_dir: int = 0
 
+## 重力缩放系数（默认为 1.0，流水区域等会将其置为 0.0）
+@export var gravity_scale: float = 1.0
+var _water_flow_area_count: int = 0
+
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
 		speed = ExportSettings.player_speed
@@ -89,13 +93,20 @@ func _physics_process(delta: float) -> void:
 		debug.text = "速度<%d,%d> %s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info]
 
 	if not is_special_state:
-		velocity.y += GlobalValue.gravity * delta
-		if gameInputControl.row_dir > 0:
-			velocity.x = move_toward(velocity.x, speed, accerleration * delta)
-		elif gameInputControl.row_dir < 0:
-			velocity.x = move_toward(velocity.x, -speed, accerleration * delta)
+		velocity.y += GlobalValue.gravity * gravity_scale * delta
+		if _water_flow_area_count > 0:
+			# 水流区域内：若没有方向输入，微弱阻尼滑行；有输入则微调方向，不施加地面强摩擦
+			if gameInputControl.row_dir != 0:
+				velocity.x = move_toward(velocity.x, speed * sign(gameInputControl.row_dir), accerleration * delta)
+			else:
+				velocity.x = move_toward(velocity.x, 0.0, (friction * 0.15) * delta)
 		else:
-			velocity.x = move_toward(velocity.x, 0.0, friction * delta)
+			if gameInputControl.row_dir > 0:
+				velocity.x = move_toward(velocity.x, speed, accerleration * delta)
+			elif gameInputControl.row_dir < 0:
+				velocity.x = move_toward(velocity.x, -speed, accerleration * delta)
+			else:
+				velocity.x = move_toward(velocity.x, 0.0, friction * delta)
 
 	move_and_slide()
 
@@ -124,6 +135,23 @@ func ApplyDamage(damage: float) -> void:
 		hurt_lock = false
 		move_state_machine.change_state("hurt")
 		get_tree().create_timer(unbeatable_time).timeout.connect(func(): hurt_lock = true)
+
+## 刷新冲刺与钩索技能状态（供流水区域等交互组件调用）
+func ResetDashAndRope() -> void:
+	if gameInputControl:
+		gameInputControl.dash_control_flag = true
+		gameInputControl.dash_span_flag = true
+	if rope_controller:
+		rope_controller.ResetRopeCooldown()
+
+## 设置玩家在水流/零重力区域的计数
+## @param entered true 为进入，false 为离开
+func SetInWaterFlow(entered: bool) -> void:
+	if entered:
+		_water_flow_area_count += 1
+	else:
+		_water_flow_area_count = max(0, _water_flow_area_count - 1)
+	gravity_scale = 0.0 if _water_flow_area_count > 0 else 1.0
 
 ## 兼容原工程受击方法
 ## @param damage 受到的伤害数值

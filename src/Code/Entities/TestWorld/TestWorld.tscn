@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://c6228ogky1las" path="res://Code/Entities/Player/Player.tscn" id="1_player"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Dummy/TestDummy.tscn" id="2_dummy"]
+[ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea.tscn" id="3_water"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
 size = Vector2(2578.5789, 36.360565)
@@ -62,3 +63,10 @@ position = Vector2(280, 450)
 
 [node name="Dummy2" parent="." unique_id=1367587305 instance=ExtResource("2_dummy")]
 position = Vector2(650, 450)
+
+[node name="WaterFlowArea" parent="." unique_id=1809926669 instance=ExtResource("3_water")]
+position = Vector2(881, 307)
+
+[node name="WaterFlowArea2" parent="." unique_id=314159265 instance=ExtResource("3_water")]
+position = Vector2(604, 371)
+scale = Vector2(0.16532333, 2.2241392)

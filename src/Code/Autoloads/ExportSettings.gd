@@ -39,7 +39,9 @@ extends Node
 
 @export_group("Rope & Grapple", "rope_")
 ## 绳索最大有效射程距离
-@export var rope_max_length: float = 350.0
+@export var rope_max_length: float = 450.0
+## 绳索发射向前飞行的速度 (像素/秒，高速弹射感)
+@export var rope_projectile_speed: float = 2200.0
 ## 命中目标后处于待命决策窗口期的持续时间 (秒)
 @export var rope_window_duration: float = 0.6
 ## 再次按下射击键将自身高速拉向命中点的飞行速度
@@ -54,3 +56,11 @@ extends Node
 @export var rope_swing_damping: float = 0.15
 ## 绳索射线检测碰撞层级掩码 (默认层1 world + 层3 entity = 5)
 @export_flags_2d_physics var rope_collision_mask: int = 5
+
+@export_group("Interactive - Water Flow", "water_flow_")
+## 流水区域加速系数 (进入速度 * 该倍数)
+@export var water_flow_speed_multiplier: float = 1.9
+## 保证进入流体时的最低喷射加速值
+@export var water_flow_min_speed: float = 600.0
+## 水符文石交互激活有效距离
+@export var water_flow_interact_distance: float = 130.0
