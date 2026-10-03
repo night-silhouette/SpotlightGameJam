@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="TileSet" path="res://Code/Entities/World/Base_TileSet.tres" id="1_tileset"]
+
+[node name="DepthsLibrary" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("1_tileset")
