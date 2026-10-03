@@ -31,15 +31,19 @@ extends Node
 
 @export_group("Combat & Health", "player_")
 ## 玩家最大生命值
-@export var player_max_hp: float = 100.0
+@export var player_max_hp: float = 200.0
 ## 受到伤害时的硬直顿挫时间 (秒)
 @export var player_hurt_time: float = 0.15
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
+## 随时间自然掉血速率 (每秒掉血量)
+@export var player_hp_drain_rate: float = 5.0
 
 @export_group("Rope & Grapple", "rope_")
 ## 绳索最大有效射程距离
-@export var rope_max_length: float = 350.0
+@export var rope_max_length: float = 450.0
+## 绳索发射向前飞行的速度 (像素/秒，高速弹射感)
+@export var rope_projectile_speed: float = 2200.0
 ## 命中目标后处于待命决策窗口期的持续时间 (秒)
 @export var rope_window_duration: float = 0.6
 ## 再次按下射击键将自身高速拉向命中点的飞行速度
@@ -54,3 +58,49 @@ extends Node
 @export var rope_swing_damping: float = 0.15
 ## 绳索射线检测碰撞层级掩码 (默认层1 world + 层3 entity = 5)
 @export_flags_2d_physics var rope_collision_mask: int = 5
+
+@export_group("Interactive - Water Flow", "water_flow_")
+## 流水区域加速系数 (进入速度 * 该倍数)
+@export var water_flow_speed_multiplier: float = 1.9
+## 保证进入流体时的最低喷射加速值
+@export var water_flow_min_speed: float = 600.0
+## 水符文石交互激活有效距离
+@export var water_flow_interact_distance: float = 130.0
+## 水符文激活技能冷却时间 (秒)
+@export var water_rune_cooldown: float = 2.0
+
+@export_group("Interactive - Spikes", "spikes_")
+## 通用地刺基础伤害值
+@export var spikes_damage: float = 40.0
+## 尖刺命中击退力度标量
+@export var spikes_knockback_force: float = 400.0
+
+@export_group("Interactive - Rising Spikes", "rising_spikes_")
+## 时序突刺基础伤害值
+@export var rising_spikes_damage: float = 50.0
+## 时序突刺击退力度标量
+@export var rising_spikes_knockback_force: float = 450.0
+## 突刺缩回安全等待时长 (秒)
+@export var rising_spikes_retracted_duration: float = 2.0
+## 突刺伸出危险保持时长 (秒)
+@export var rising_spikes_extended_duration: float = 1.5
+## 突刺伸出/缩回过渡动画时长 (秒)
+@export var rising_spikes_transition_time: float = 0.2
+
+@export_group("Interactive - Chalice Station", "chalice_")
+## 小圣杯站重置刷新时间 (秒，<= 0 表示单次使用不刷新)
+@export var chalice_reset_time: float = 10.0
+## 小圣杯补水百分比 (1.0 即 100% 满水)
+@export var chalice_heal_ratio: float = 1.0
+
+@export_group("Interactive - Crumbling Platform", "crumble_")
+## 踩踏后震颤延迟坍塌时间 (秒)
+@export var crumble_delay: float = 0.6
+## 坍塌碎裂后在原地重生的等待时长 (秒)
+@export var crumble_respawn_time: float = 3.0
+## 震颤剧烈程度幅度 (像素)
+@export var crumble_shake_offset: float = 2.5
+
+@export_group("Interactive - Slick Wall", "slick_wall_")
+## 光滑滑石墙摩擦系数 (极度光滑)
+@export var slick_wall_friction: float = 0.0
