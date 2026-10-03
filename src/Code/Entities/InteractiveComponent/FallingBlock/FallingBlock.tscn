@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://c7m9x1v4r8k2p"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/FallingBlock/FallingBlock.gd" id="1_block"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_body"]
+size = Vector2(48, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hit"]
+size = Vector2(44, 12)
+
+[sub_resource type="Curve" id="Curve_dust"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_dust"]
+colors = PackedColorArray(0.75, 0.7, 0.62, 0.9, 0.5, 0.45, 0.4, 0)
+
+[node name="FallingBlock" type="CharacterBody2D" groups=["falling_block", "platform"]]
+collision_layer = 1
+collision_mask = 5
+script = ExtResource("1_block")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_body")
+
+[node name="DetectRay" type="RayCast2D" parent="."]
+target_position = Vector2(0, 400)
+collision_mask = 2
+
+[node name="HitArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="HitCollision" type="CollisionShape2D" parent="HitArea"]
+position = Vector2(0, 22)
+shape = SubResource("RectangleShape2D_hit")
+disabled = true
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="VisualRect" type="ColorRect" parent="VisualRoot"]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+mouse_filter = 2
+color = Color(0.55, 0.5, 0.44, 1)
+
+[node name="TopStepRect" type="ColorRect" parent="VisualRoot"]
+offset_left = -22.0
+offset_top = -22.0
+offset_right = 22.0
+offset_bottom = -16.0
+mouse_filter = 2
+color = Color(0.72, 0.67, 0.6, 1)
+
+[node name="BorderRect" type="ReferenceRect" parent="VisualRoot"]
+offset_left = -24.0
+offset_top = -24.0
+offset_right = 24.0
+offset_bottom = 24.0
+mouse_filter = 2
+border_color = Color(0.35, 0.3, 0.25, 1)
+border_width = 2.0
+editor_only = false
+
+[node name="ImpactParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 24)
+emitting = false
+amount = 14
+lifetime = 0.35
+one_shot = true
+explosiveness = 0.9
+emission_shape = 3
+emission_rect_extents = Vector2(24, 2)
+direction = Vector2(0, -1)
+spread = 70.0
+gravity = Vector2(0, 600)
+initial_velocity_min = 60.0
+initial_velocity_max = 140.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_dust")
+color_ramp = SubResource("Gradient_dust")

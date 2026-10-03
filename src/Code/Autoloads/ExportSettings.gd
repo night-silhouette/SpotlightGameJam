@@ -25,7 +25,7 @@ extends Node
 ## 冲刺持续时间 (秒)
 @export var player_dash_time: float = 0.15
 ## 冲刺位移速度
-@export var player_dash_speed: float = 700.0
+@export var player_dash_speed: float = 650.0
 ## 冲刺冷却间隔 (秒)
 @export var player_dash_span: float = 0.65
 
@@ -40,6 +40,8 @@ extends Node
 @export var player_hp_drain_rate: float = 5.0
 
 @export_group("Rope & Grapple", "rope_")
+## 使用绳索每次消耗的生命值
+@export var rope_hp_cost: float = 10.0
 ## 绳索最大有效射程距离
 @export var rope_max_length: float = 450.0
 ## 绳索发射向前飞行的速度 (像素/秒，高速弹射感)
@@ -56,6 +58,14 @@ extends Node
 @export var rope_swing_input_accel: float = 1800.0
 ## 摆动阻尼衰减系数
 @export var rope_swing_damping: float = 0.15
+## 绳索脱钩后水平动量保留比例
+@export var rope_pull_momentum_ratio: float = 0.95
+## 绳索脱钩后地面高速滑行减速摩擦力 (替代普通地面高摩擦，给予平滑滑行与跳跃窗口)
+@export var rope_ground_slide_friction: float = 900.0
+## 绳索脱钩后空中保留超速动量时的轻微空气阻尼 (替代普通2500高额阻尼，实现超远跳跃)
+@export var rope_air_drag: float = 250.0
+## 绳索脱钩后地面动量滑行保护时间 (秒)
+@export var rope_momentum_duration: float = 0.4
 ## 绳索射线检测碰撞层级掩码 (默认层1 world + 层3 entity = 5)
 @export_flags_2d_physics var rope_collision_mask: int = 5
 
@@ -170,3 +180,31 @@ extends Node
 @export var parallax_near_seam_blend_width: float = 256.0
 ## 浅黄色后景末列轮廓 Y=898、首列 Y=858，仅在过渡内补偿 40 像素高差。
 @export var parallax_near_seam_y_offset: float = 40.0
+
+@export_group("Interactive - Stalactite", "stalactite_")
+## 钟乳石检测射线向下最大长度 (像素)
+@export var stalactite_ray_length: float = 400.0
+## 钟乳石松动预警晃动时长 (秒)
+@export var stalactite_shake_duration: float = 0.35
+## 钟乳石下落重力加速度 (像素/秒^2)
+@export var stalactite_gravity: float = 1600.0
+## 钟乳石最大下落速度 (像素/秒)
+@export var stalactite_max_fall_speed: float = 900.0
+## 钟乳石基础伤害量
+@export var stalactite_damage: float = 50.0
+## 钟乳石击退力度
+@export var stalactite_knockback_force: float = 350.0
+
+@export_group("Interactive - Falling Block", "falling_block_")
+## 下落方块检测射线向下最大长度 (像素)
+@export var falling_block_ray_length: float = 400.0
+## 下落方块松动预警晃动时长 (秒)
+@export var falling_block_shake_duration: float = 0.4
+## 下落方块下落重力加速度 (像素/秒^2)
+@export var falling_block_gravity: float = 1400.0
+## 下落方块最大下落速度 (像素/秒)
+@export var falling_block_max_fall_speed: float = 800.0
+## 下落方块砸中玩家时的伤害量
+@export var falling_block_damage: float = 30.0
+## 下落方块砸中玩家时的击退力度
+@export var falling_block_knockback_force: float = 300.0

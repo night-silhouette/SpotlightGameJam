@@ -165,6 +165,32 @@ signal PlatformCollapsed(platform_node: Node2D)
 ## @param platform_node 易碎平台节点
 signal PlatformRespawned(platform_node: Node2D)
 
+## 钟乳石检测到玩家走过开始松动下落时触发
+## @param stalactite_node 钟乳石节点
+signal StalactiteTriggered(stalactite_node: Node2D)
+
+## 钟乳石砸中目标(玩家或地面)瞬间触发
+## @param stalactite_node 钟乳石节点
+## @param target 碰撞目标节点
+signal StalactiteHit(stalactite_node: Node2D, target: Node2D)
+
+## 钟乳石碎裂消失时触发
+## @param stalactite_node 钟乳石节点
+signal StalactiteShattered(stalactite_node: Node2D)
+
+## 下落方块/落石检测到玩家走过开始掉落时触发
+## @param block_node 落石节点
+signal FallingBlockTriggered(block_node: Node2D)
+
+## 下落方块下落砸中目标时触发
+## @param block_node 落石节点
+## @param target 碰撞目标节点
+signal FallingBlockHit(block_node: Node2D, target: Node2D)
+
+## 下落方块落到地面稳定变为可踩平台时触发
+## @param block_node 落石节点
+signal FallingBlockLanded(block_node: Node2D)
+
 #endregion
 
  
