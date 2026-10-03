@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://d3v3y4c7t1m9r"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.gd" id="1_platform"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_solid"]
+size = Vector2(80, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(76, 22)
+
+[node name="CrumblingPlatform" type="StaticBody2D" groups=["crumbling_platform", "platform"]]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_platform")
+
+[node name="SolidCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_solid")
+
+[node name="TriggerArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="TriggerCollision" type="CollisionShape2D" parent="TriggerArea"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="VisualRoot" type="Node2D" parent="."]
+
+[node name="VisualRect" type="ColorRect" parent="VisualRoot"]
+offset_left = -40.0
+offset_top = -8.0
+offset_right = 40.0
+offset_bottom = 8.0
+color = Color(0.72, 0.62, 0.48, 1)
+
+[node name="CrackLine" type="Line2D" parent="VisualRoot"]
+visible = false
+points = PackedVector2Array(-28, -3, -4, 4, 24, -2)
+width = 2.0
+default_color = Color(0.32, 0.22, 0.15, 1)

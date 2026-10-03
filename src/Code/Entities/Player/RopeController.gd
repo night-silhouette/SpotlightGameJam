@@ -212,11 +212,19 @@ func _process_flying(delta: float) -> void:
 	var result = space_state.intersect_ray(query)
 
 	if result and not result.is_empty():
-		# 绳头实际碰撞命中墙体
+		var hit_collider = result.collider as Node2D
+		# 检查命中目标是否为禁止钩锁吸附的物体（如光滑滑石墙）
+		if hit_collider and (hit_collider.is_in_group("slick_wall") or hit_collider.is_in_group("no_hook") or hit_collider.get("disable_hook") == true or hit_collider.get("is_slick_wall") == true):
+			# 无法抓取吸附：播放滑石火花并立刻弹出弹刀落空回收
+			_show_miss_effect(result.position)
+			_release_rope(true)
+			return
+
+		# 绳头实际碰撞命中有效墙体
 		fly_tip_pos = result.position
 		can_use_rope = false
 		hook_point = result.position
-		hook_target_node = result.collider as Node2D
+		hook_target_node = hit_collider
 		if hook_target_node:
 			hook_target_offset = hook_target_node.to_local(hook_point)
 		else:

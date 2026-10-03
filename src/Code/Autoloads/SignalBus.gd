@@ -80,6 +80,18 @@ signal SpikesRetracted(spikes_node: Node2D)
 ## @param station_node 圣杯站节点
 signal ChaliceStationUsed(station_node: Node2D)
 
+## 易碎平台开始开裂震颤时触发
+## @param platform_node 易碎平台节点
+signal PlatformCracked(platform_node: Node2D)
+
+## 易碎平台完全坍塌碎裂时触发
+## @param platform_node 易碎平台节点
+signal PlatformCollapsed(platform_node: Node2D)
+
+## 易碎平台原地重生复原时触发
+## @param platform_node 易碎平台节点
+signal PlatformRespawned(platform_node: Node2D)
+
 #endregion
 
  

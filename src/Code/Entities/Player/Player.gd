@@ -143,8 +143,20 @@ func _physics_process(delta: float) -> void:
 			back_body.scale.x *= -1
 		face_dir = new_face_dir
 
-	is_front_has_rigid = front_foot.is_colliding() or front_head.is_colliding() or front_body.is_colliding()
-	is_back_has_rigid = back_foot.is_colliding() or back_head.is_colliding() or back_body.is_colliding()
+	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
+	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body)
+
+## 辅助检测射线碰撞的墙体是否可供攀爬（排除光滑滑石墙）
+func _check_wall_climbable(ray: RayCast2D) -> bool:
+	if not ray or not ray.is_colliding():
+		return false
+	var collider = ray.get_collider()
+	if collider:
+		if collider.is_in_group("slick_wall") or collider.is_in_group("no_climb"):
+			return false
+		if collider.get("is_slick_wall") == true or collider.get("disable_climb") == true:
+			return false
+	return true
 
 ## 开启随时间自然掉血
 ## @param rate 每秒掉血速率 (若 <= 0 则保留默认速率)

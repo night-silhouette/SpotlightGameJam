@@ -90,3 +90,15 @@ extends Node
 @export var chalice_reset_time: float = 10.0
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
+
+@export_group("Interactive - Crumbling Platform", "crumble_")
+## 踩踏后震颤延迟坍塌时间 (秒)
+@export var crumble_delay: float = 0.6
+## 坍塌碎裂后在原地重生的等待时长 (秒)
+@export var crumble_respawn_time: float = 3.0
+## 震颤剧烈程度幅度 (像素)
+@export var crumble_shake_offset: float = 2.5
+
+@export_group("Interactive - Slick Wall", "slick_wall_")
+## 光滑滑石墙摩擦系数 (极度光滑)
+@export var slick_wall_friction: float = 0.0
