@@ -9,12 +9,14 @@ class_name PlayerUI
 @onready var health_bar: ProgressBar = $Control/MarginContainer/VBoxContainer/HealthBar
 @onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthBar/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
+@onready var virtual_joystick: Control = $Control/VirtualJoystick
 
 ## 目标血量，用于平滑过渡动画（可选效果）
 var _target_hp: float = 200.0
 var _max_hp: float = 200.0
 
 func _ready() -> void:
+	_check_android_joystick()
 	if SignalBus:
 		SignalBus.PlayerHealthChanged.connect(_on_player_health_changed)
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
@@ -25,6 +27,16 @@ func _ready() -> void:
 		_target_hp = _max_hp
 	
 	UpdateHealthDisplay(_target_hp, _max_hp)
+
+func _check_android_joystick() -> void:
+	var is_android = (OS.get_name() == "Android")
+	var force_debug = false
+	if ExportSettings and "mobile_debug_force_touch_controls" in ExportSettings:
+		force_debug = ExportSettings.mobile_debug_force_touch_controls
+
+	if virtual_joystick:
+		virtual_joystick.visible = (is_android or force_debug)
+
 
 func _process(delta: float) -> void:
 	if health_bar:

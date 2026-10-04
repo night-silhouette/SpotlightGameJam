@@ -142,3 +142,7 @@ extends Node
 @export var falling_block_damage: float = 30.0
 ## 下落方块砸中玩家时的击退力度
 @export var falling_block_knockback_force: float = 300.0
+
+@export_group("Mobile & Android", "mobile_")
+## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)
+@export var mobile_debug_force_touch_controls: bool = false

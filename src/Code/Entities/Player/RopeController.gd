@@ -265,8 +265,16 @@ func _process_flying(delta: float) -> void:
 	line_2d.add_point(to_local(fly_tip_pos))
 
 func _get_shoot_direction() -> Vector2:
+	# 移动端/安卓或无鼠标瞄准时，支持从摇杆/朝向自动发射
 	var mouse_pos = get_global_mouse_position()
 	var dir = mouse_pos - player.global_position
+	# 如果是触屏/安卓环境且没有有效鼠标坐标，或者按下了索按钮，优先按玩家面朝斜上方向发射
+	if OS.get_name() == "Android" or (ExportSettings and ExportSettings.mobile_debug_force_touch_controls):
+		var row = Input.get_axis("move_l", "move_r")
+		var col = Input.get_axis("up", "down")
+		if abs(row) > 0.1 or abs(col) > 0.1:
+			return Vector2(row, col).normalized()
+		return Vector2(player.face_dir, -0.65).normalized()
 	if dir.length_squared() < 0.001:
 		return Vector2(player.face_dir, -0.7).normalized()
 	return dir.normalized()
