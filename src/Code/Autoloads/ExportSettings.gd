@@ -201,7 +201,7 @@ extends Node
 ## 钟乳石检测射线向下最大长度 (像素)
 @export var stalactite_ray_length: float = 400.0
 ## 钟乳石松动预警晃动时长 (秒)
-@export var stalactite_shake_duration: float = 0.35
+@export var stalactite_shake_duration: float = 0.25
 ## 钟乳石下落重力加速度 (像素/秒^2)
 @export var stalactite_gravity: float = 1600.0
 ## 钟乳石最大下落速度 (像素/秒)
