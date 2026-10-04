@@ -1,8 +1,32 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene format=3 uid="uid://dklah3ylrtypq"]
 
-[ext_resource type="TileSet" path="res://Code/Entities/World/Base_TileSet.tres" id="1_tileset"]
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
+size = Vector2(96, 32)
 
-[node name="SunkenPalace" type="Node2D"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_base"]
+texture = SubResource("PlaceholderTexture2D_base")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
+1:0/0/custom_data_0 = true
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
+2:0/0/custom_data_1 = true
+3:1/0 = 0
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_set = ExtResource("1_tileset")
+[sub_resource type="TileSet" id="TileSet_qba5b"]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+custom_data_layer_0/name = "is_slick_wall"
+custom_data_layer_0/type = 1
+custom_data_layer_1/name = "is_rune_wall"
+custom_data_layer_1/type = 1
+sources/0 = SubResource("TileSetAtlasSource_base")
+
+[node name="SunkenPalace" type="Node2D" unique_id=715814505]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=566340206]
+tile_set = SubResource("TileSet_qba5b")
