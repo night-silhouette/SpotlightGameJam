@@ -81,3 +81,18 @@ layout_mode = 2
 [node name="StartLoseHpButton" parent="Control/MarginContainer/VBoxContainer" unique_id=987162534 instance=ExtResource("2_btn")]
 layout_mode = 2
 
+[node name="VirtualJoystick" type="VirtualJoystick" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = -40.0
+grow_vertical = 0
+action_left = "move_l"
+action_right = "move_r"
+action_up = "up"
+action_down = "down"
