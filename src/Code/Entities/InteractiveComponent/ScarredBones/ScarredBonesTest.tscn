@@ -1,0 +1,91 @@
+[gd_scene format=3 uid="uid://bivpcvm7410p2"]
+
+[ext_resource type="Script" uid="uid://ds7wyhf3dxp" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBonesTest.gd" id="1_test"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.tscn" id="2_bones"]
+[ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="3_player"]
+
+[sub_resource type="RectangleShape2D" id="GroundShape"]
+size = Vector2(3000, 80)
+
+[node name="ScarredBonesTest" type="Node2D" unique_id=1621515919]
+script = ExtResource("1_test")
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=1302260799]
+position = Vector2(600, 580)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=1663078121]
+shape = SubResource("GroundShape")
+
+[node name="Visual" type="Polygon2D" parent="Ground" unique_id=267466366]
+color = Color(0.18, 0.27, 0.23, 1)
+polygon = PackedVector2Array(-1500, -40, 1500, -40, 1500, 40, -1500, 40)
+
+[node name="ScarredBones" parent="." unique_id=1683116762 instance=ExtResource("2_bones")]
+position = Vector2(600, 540)
+
+[node name="PlayerWithCamera" parent="." unique_id=588461874 instance=ExtResource("3_player")]
+position = Vector2(380, 480)
+
+[node name="TestUI" type="CanvasLayer" parent="." unique_id=438291273]
+layer = 50
+
+[node name="Panel" type="PanelContainer" parent="TestUI" unique_id=1441026467]
+custom_minimum_size = Vector2(660, 190)
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -680.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 210.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="TestUI/Panel" unique_id=1051998072]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="Rows" type="VBoxContainer" parent="TestUI/Panel/Margin" unique_id=1224179201]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="Instructions" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=838267788]
+layout_mode = 2
+text = "枯骨基础交互测试　A / D 移动 · F 拔出
+当前仅展示枯骨占位动作；正式文案、角色动作和镜头演出尚未接入。"
+autowrap_mode = 2
+
+[node name="Status" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=544992898]
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="SaveStatus" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=1300466380]
+layout_mode = 2
+text = "内存样本：尚未保存"
+autowrap_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="TestUI/Panel/Margin/Rows" unique_id=434991840]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Save" type="Button" parent="TestUI/Panel/Margin/Rows/Buttons" unique_id=1632965322]
+layout_mode = 2
+focus_mode = 0
+text = "保存当前状态"
+
+[node name="Load" type="Button" parent="TestUI/Panel/Margin/Rows/Buttons" unique_id=448949261]
+layout_mode = 2
+focus_mode = 0
+disabled = true
+text = "恢复保存状态"
+
+[node name="Reset" type="Button" parent="TestUI/Panel/Margin/Rows/Buttons" unique_id=479000912]
+layout_mode = 2
+focus_mode = 0
+text = "重置为未取得"

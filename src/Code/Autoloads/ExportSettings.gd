@@ -228,3 +228,16 @@ extends Node
 @export var mobile_jump_button_radius: float = 52.0
 ## 冲刺按钮半径 (像素，默认 44)
 @export var mobile_dash_button_radius: float = 44.0
+
+@export_group("Interactive - Scarred Bones", "scarred_bones_")
+## 枯骨交互检测半径（像素）；停止并重新运行后生效。
+@export_range(16.0, 240.0, 1.0) var scarred_bones_interact_radius: float = 80.0
+## 占位拔起动画的上移距离（像素），不是玩家动作参数。
+@export var scarred_bones_lift_height: float = 60.0
+## 占位拔起、展示停留、淡出的时长（秒）。
+@export_range(0.05, 3.0, 0.05) var scarred_bones_lift_duration: float = 0.45
+@export_range(0.0, 5.0, 0.05) var scarred_bones_display_duration: float = 0.8
+@export_range(0.05, 3.0, 0.05) var scarred_bones_fade_duration: float = 0.3
+## 靠近提示内容；按键名称从项目现有 interact 映射读取。
+@export var scarred_bones_prompt_text: String = "拔出刻痕枯骨"
+@export_range(12, 40, 1) var scarred_bones_prompt_font_size: int = 18

@@ -191,6 +191,20 @@ signal FallingBlockHit(block_node: Node2D, target: Node2D)
 ## @param block_node 落石节点
 signal FallingBlockLanded(block_node: Node2D)
 
+## 枯骨交互成功、已取得状态写入时触发一次；此时占位展示尚未结束。
+## @param bones 被取得的枯骨实体；通过关卡内稳定节点路径区分不同实例。
+## @param player 执行交互的原 Player 节点，不是 PlayerWithCamera 外层。
+signal ScarredBonesCollected(bones: Node2D, player: Node2D)
+
+## 枯骨占位拔起与展示播放完毕时触发；不代表正式文案或镜头播放完毕。
+## @param bones 完成展示的枯骨实体。读档跳过展示时不触发。
+signal ScarredBonesPresentationFinished(bones: Node2D)
+
+## 枯骨从存档恢复稳定状态时触发，用于刷新显示，不应据此重播拾取事件。
+## @param bones 恢复状态的枯骨实体。
+## @param collected 是否已取得信物。
+signal ScarredBonesStateRestored(bones: Node2D, collected: bool)
+
 #endregion
 
  

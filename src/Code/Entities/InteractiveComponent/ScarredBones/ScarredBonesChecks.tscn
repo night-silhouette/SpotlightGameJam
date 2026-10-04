@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBonesChecks.gd" id="1_checks"]
+
+[node name="ScarredBonesChecks" type="Node"]
+script = ExtResource("1_checks")
