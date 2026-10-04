@@ -2,6 +2,28 @@ extends Node2D
 ## 原玩家 + Phantom Camera。默认普通跟随，关卡经 SignalBus 请求五种镜头。
 ## 原 Player 和插件均不修改；CG 只暂停本组件的玩家子树。
 
+@export_category("Player Properties")
+@export_group("physical_prop")
+@export var jump_speed: float = 380.0
+@export var hurt_time: float = 0.15
+@export var accerleration: float = 2500.0
+@export var speed: float = 230.0
+@export var friction: float = 3000.0
+@export var jump_ability: float = 0.85
+@export var dash_time: float = 0.15
+@export var dash_speed: float = 700.0
+@export var dash_span: float = 0.65
+@export var max_fall_speed: float = 120.0
+@export var unbeatable_time: float = 0.3
+@export var climb_ability: float = 480.0
+
+@export_group("state_prop")
+@export var Max_HP: float = 200.0
+@export var now_HP: float = 200.0
+@export var is_hp_draining: bool = false
+@export var hp_drain_rate: float = 5.0
+@export var gravity_scale: float = 1.0
+
 const MODES: Array[StringName] = [&"normal", &"desert", &"descent", &"boat", &"ritual", &"fixed"]
 var current_mode: StringName = &"normal"
 var input_locked: bool = false
@@ -33,6 +55,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	_sync_player_properties()
 	_active = _base
 	_target = _player
 	for camera: PhantomCamera2D in [_base, $ShotA, $ShotB]:
@@ -50,6 +73,26 @@ func _ready() -> void:
 	SignalBus.CameraFixedRequested.connect(_on_fixed_requested)
 	SignalBus.CameraShotRequested.connect(_on_shot_requested)
 	SignalBus.CameraShotEndRequested.connect(_on_end_requested)
+
+
+func _sync_player_properties() -> void:
+	_player.jump_speed = jump_speed
+	_player.hurt_time = hurt_time
+	_player.accerleration = accerleration
+	_player.speed = speed
+	_player.friction = friction
+	_player.jump_ability = jump_ability
+	_player.dash_time = dash_time
+	_player.dash_speed = dash_speed
+	_player.dash_span = dash_span
+	_player.max_fall_speed = max_fall_speed
+	_player.unbeatable_time = unbeatable_time
+	_player.climb_ability = climb_ability
+	_player.Max_HP = Max_HP
+	_player.now_HP = now_HP
+	_player.is_hp_draining = is_hp_draining
+	_player.hp_drain_rate = hp_drain_rate
+	_player.gravity_scale = gravity_scale
 
 
 func _physics_process(delta: float) -> void:
