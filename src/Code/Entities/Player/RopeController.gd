@@ -40,8 +40,15 @@ var window_timer: float = 0.0
 var pull_timer: float = 0.0
 var can_use_rope: bool = true
 
-## 是否在命中前就已经松开了左键
+## 是否在命中前就已经松开了左键/手指
 var released_during_flight: bool = false
+
+## 触屏输入管理
+var touch_screen_pressed: bool = false
+var touch_screen_hold_timer: float = 0.0
+var active_touch_index: int = -1
+var touch_aim_direction: Vector2 = Vector2.ZERO
+var has_touch_aim: bool = false
 
 ## 绳头飞行变量
 var fly_dir: Vector2 = Vector2.ZERO
@@ -83,17 +90,74 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not player or player.now_HP <= 0.0:
 		return
 
+	# 移动端触屏事件拦截与处理
+	if event is InputEventScreenTouch:
+		var touch = event as InputEventScreenTouch
+		if touch.pressed:
+			# 检查触控点是否落在了 UI 控件上（如果是则不触发钩索）
+			if _is_pos_over_ui(touch.position):
+				return
+			# 记录主触控点
+			if active_touch_index == -1:
+				active_touch_index = touch.index
+				touch_screen_pressed = true
+				touch_screen_hold_timer = 0.0
+				_update_touch_aim_from_screen_pos(touch.position)
+				get_viewport().set_input_as_handled()
+				_on_rope_shoot_pressed()
+		else:
+			if touch.index == active_touch_index:
+				active_touch_index = -1
+				touch_screen_pressed = false
+				touch_screen_hold_timer = 0.0
+				get_viewport().set_input_as_handled()
+				_on_rope_shoot_released()
+		return
+	elif event is InputEventScreenDrag:
+		var drag = event as InputEventScreenDrag
+		if drag.index == active_touch_index:
+			_update_touch_aim_from_screen_pos(drag.position)
+			get_viewport().set_input_as_handled()
+		return
+
 	if event.is_action_pressed("rope_shoot"):
+		var mouse_event = event as InputEventMouseButton
+		if mouse_event and _is_pos_over_ui(mouse_event.position):
+			return
 		get_viewport().set_input_as_handled()
 		_on_rope_shoot_pressed()
 	elif event.is_action_released("rope_shoot"):
 		get_viewport().set_input_as_handled()
 		_on_rope_shoot_released()
 	elif event.is_action_pressed("rope_swing"):
+		var mouse_event = event as InputEventMouseButton
+		if mouse_event and _is_pos_over_ui(mouse_event.position):
+			return
 		get_viewport().set_input_as_handled()
 		_on_rope_swing_pressed()
 	elif event.is_action_pressed("jump"):
 		_on_jump_pressed()
+
+## 检测屏幕坐标是否处于可交互 UI 元素上，防止按钮点击穿透到场景中触发钩索
+func _is_pos_over_ui(screen_pos: Vector2) -> bool:
+	var viewport = get_viewport()
+	if not viewport:
+		return false
+	var control = viewport.gui_get_hovered_control()
+	if control and control.is_visible_in_tree() and control.mouse_filter != Control.MOUSE_FILTER_IGNORE:
+		return true
+	return false
+
+func _update_touch_aim_from_screen_pos(screen_pos: Vector2) -> void:
+	var canvas_xform = get_canvas_transform()
+	var world_pos = canvas_xform.affine_inverse() * screen_pos
+	var aim = (world_pos - player.global_position)
+	if aim.length_squared() > 1.0:
+		touch_aim_direction = aim.normalized()
+		has_touch_aim = true
+
+func _is_rope_shoot_held() -> bool:
+	return Input.is_action_pressed("rope_shoot") or touch_screen_pressed
 
 func _physics_process(delta: float) -> void:
 	if not player:
@@ -242,8 +306,8 @@ func _process_flying(delta: float) -> void:
 
 		SignalBus.PlayerGrappleHooked.emit(hook_point)
 
-		# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键，立即拉过去
-		if released_during_flight or not Input.is_action_pressed("rope_shoot"):
+		# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键/触屏，立即拉过去
+		if released_during_flight or not _is_rope_shoot_held():
 			_start_pull()
 		else:
 			current_state = RopeState.LATCHED
@@ -265,6 +329,10 @@ func _process_flying(delta: float) -> void:
 	line_2d.add_point(to_local(fly_tip_pos))
 
 func _get_shoot_direction() -> Vector2:
+	# 优先检查触屏瞄准方向
+	if has_touch_aim and touch_aim_direction.length_squared() > 0.001:
+		return touch_aim_direction.normalized()
+
 	# 移动端/安卓或无鼠标瞄准时，支持从摇杆/朝向自动发射
 	var mouse_pos = get_global_mouse_position()
 	var dir = mouse_pos - player.global_position
@@ -308,9 +376,13 @@ func _process_latched(delta: float) -> void:
 	if is_hook_above and not player.is_on_floor() and player.velocity.y > 60.0:
 		player.velocity.y = move_toward(player.velocity.y, 60.0, 1200.0 * delta)
 
-	# 若玩家一直长按射绳键（左键），并在窗口期过去一定时间（长按判定），则自动转为荡绳（Swing）
-	if Input.is_action_pressed("rope_shoot"):
-		if (window_duration - window_timer) >= 0.16:
+	# 若玩家一直长按射绳键（左键/触屏长按），并在窗口期过去一定时间（长按判定），则自动转为荡绳（Swing）
+	var hold_threshold = 0.16
+	if ExportSettings and "mobile_touch_hold_threshold" in ExportSettings:
+		hold_threshold = ExportSettings.mobile_touch_hold_threshold
+
+	if _is_rope_shoot_held():
+		if (window_duration - window_timer) >= hold_threshold:
 			_start_swing()
 			return
 
@@ -343,6 +415,7 @@ func _finish_pull(preserve_momentum: bool, with_jump_boost: bool = false) -> voi
 	_sync_hook_point()
 	var launch_dir = (hook_point - player.global_position).normalized()
 	_release_rope(true)
+	has_touch_aim = false
 
 	if preserve_momentum:
 		# 获取配置参数
@@ -426,6 +499,7 @@ func _finish_swing(with_jump_boost: bool) -> void:
 	player.velocity = exit_velocity
 	if with_jump_boost:
 		player.velocity.y = min(player.velocity.y - 200.0, -player.jump_speed * 0.9)
+	has_touch_aim = false
 
 func _release_rope(preserve_velocity: bool) -> void:
 	current_state = RopeState.IDLE

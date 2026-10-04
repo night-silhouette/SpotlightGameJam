@@ -10,13 +10,17 @@ class_name PlayerUI
 @onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthBar/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
 @onready var virtual_joystick: Control = $Control/VirtualJoystick
+@onready var right_action_buttons: Control = $Control/RightActionButtons
+@onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
+@onready var btn_dash: TouchActionButton = $Control/RightActionButtons/BtnDash
 
 ## 目标血量，用于平滑过渡动画（可选效果）
 var _target_hp: float = 200.0
 var _max_hp: float = 200.0
 
 func _ready() -> void:
-	_check_android_joystick()
+	_sync_mobile_ui_sizes()
+	_check_mobile_controls()
 	if SignalBus:
 		SignalBus.PlayerHealthChanged.connect(_on_player_health_changed)
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
@@ -28,14 +32,33 @@ func _ready() -> void:
 	
 	UpdateHealthDisplay(_target_hp, _max_hp)
 
-func _check_android_joystick() -> void:
+func _sync_mobile_ui_sizes() -> void:
+	if not ExportSettings:
+		return
+
+	if virtual_joystick:
+		if "mobile_joystick_size" in ExportSettings and virtual_joystick.has_method("set_joystick_size"):
+			virtual_joystick.set_joystick_size(ExportSettings.mobile_joystick_size)
+		if "mobile_joystick_tip_size" in ExportSettings and virtual_joystick.has_method("set_tip_size"):
+			virtual_joystick.set_tip_size(ExportSettings.mobile_joystick_tip_size)
+
+	if btn_jump and "mobile_jump_button_radius" in ExportSettings:
+		btn_jump.SetButtonRadius(ExportSettings.mobile_jump_button_radius)
+
+	if btn_dash and "mobile_dash_button_radius" in ExportSettings:
+		btn_dash.SetButtonRadius(ExportSettings.mobile_dash_button_radius)
+
+func _check_mobile_controls() -> void:
 	var is_android = (OS.get_name() == "Android")
 	var force_debug = false
 	if ExportSettings and "mobile_debug_force_touch_controls" in ExportSettings:
 		force_debug = ExportSettings.mobile_debug_force_touch_controls
 
+	var should_show = (is_android or force_debug)
 	if virtual_joystick:
-		virtual_joystick.visible = (is_android or force_debug)
+		virtual_joystick.visible = should_show
+	if right_action_buttons:
+		right_action_buttons.visible = should_show
 
 
 func _process(delta: float) -> void:
