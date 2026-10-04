@@ -19,10 +19,10 @@ config/icon="res://icon.svg"
 
 Util="*uid://b1hvelunefia2"
 SignalBus="*uid://cys1wmnhxscfl"
-ExportSettings="*uid://bqckn4tk862os"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 GlobalValue="*res://Code/Autoloads/GlobalValue.gd"
 PhantomCameraManager="*uid://duq6jhf6unyis"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
+ExportSettings="*uid://c311fu2k7fel3"
 
 [display]
 

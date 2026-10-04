@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.gd" id="1_ui"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/StartLoseHpButton/StartLoseHpButton.tscn" id="2_btn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/RuneUi/RuneUI.tscn" id="3_rune"]
+[ext_resource type="Script" path="res://Code/Common/TouchActionButton.gd" id="4_touch_btn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.12, 0.12, 0.14, 0.75)
@@ -88,11 +89,63 @@ anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
 offset_left = 40.0
-offset_top = -200.0
-offset_right = 200.0
+offset_top = -280.0
+offset_right = 280.0
 offset_bottom = -40.0
 grow_vertical = 0
 action_left = "move_l"
 action_right = "move_r"
 action_up = "up"
 action_down = "down"
+
+[node name="RightActionButtons" type="Control" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -280.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="BtnJump" type="Control" parent="Control/RightActionButtons"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 25.0
+offset_top = 10.0
+offset_right = 129.0
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_touch_btn")
+action_name = "jump"
+button_text = "跳"
+button_radius = 52.0
+
+[node name="BtnDash" type="Control" parent="Control/RightActionButtons"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -35.0
+offset_right = -17.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_touch_btn")
+action_name = "dash"
+button_text = "冲"
+button_radius = 44.0

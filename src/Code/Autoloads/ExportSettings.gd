@@ -45,6 +45,16 @@ extends Node
 ## 随时间自然掉血速率 (每秒掉血量)
 @export var player_hp_drain_rate: float = 5.0
 
+@export_group("Audio & Footsteps", "player_footstep_")
+## 行走/奔跑时脚步声播放间隔时长 (秒)
+@export var player_footstep_interval: float = 0.22
+## 起步迈出第一步时的前置延迟 (秒)
+@export var player_footstep_initial_delay: float = 0.05
+## 脚步声音量分贝 (dB)
+@export var player_footstep_volume_db: float = -2.0
+## 脚步声音调微机随机变化范围 (pitch_scale: 1.0 ± 变化值，0 为固定音调)
+@export var player_footstep_pitch_randomness: float = 0.08
+
 @export_group("Rope & Grapple", "rope_")
 ## 使用绳索每次消耗的生命值
 @export var rope_hp_cost: float = 10.0
@@ -191,7 +201,7 @@ extends Node
 ## 钟乳石检测射线向下最大长度 (像素)
 @export var stalactite_ray_length: float = 400.0
 ## 钟乳石松动预警晃动时长 (秒)
-@export var stalactite_shake_duration: float = 0.35
+@export var stalactite_shake_duration: float = 0.25
 ## 钟乳石下落重力加速度 (像素/秒^2)
 @export var stalactite_gravity: float = 1600.0
 ## 钟乳石最大下落速度 (像素/秒)
@@ -218,3 +228,13 @@ extends Node
 @export_group("Mobile & Android", "mobile_")
 ## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)
 @export var mobile_debug_force_touch_controls: bool = false
+## 触屏长按判定时间 (秒)
+@export var mobile_touch_hold_threshold: float = 0.2
+## 虚拟摇杆基础尺寸 (像素直径，默认 240)
+@export var mobile_joystick_size: float = 240.0
+## 虚拟摇杆中心手柄尺寸 (像素直径，默认 90)
+@export var mobile_joystick_tip_size: float = 90.0
+## 跳跃按钮半径 (像素，默认 52)
+@export var mobile_jump_button_radius: float = 52.0
+## 冲刺按钮半径 (像素，默认 44)
+@export var mobile_dash_button_radius: float = 44.0
