@@ -2,17 +2,48 @@
 
 [ext_resource type="PackedScene" uid="uid://bol6s2hhtvbil" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_sk8ge"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_mkscu"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 
+[sub_resource type="Resource" id="Resource_hfiwn"]
+script = ExtResource("2_mkscu")
+
+[sub_resource type="Resource" id="Resource_35sqx"]
+script = ExtResource("2_mkscu")
+
+[sub_resource type="Resource" id="Resource_yocbw"]
+script = ExtResource("2_mkscu")
+
 [node name="World" type="Node2D" unique_id=2146248688]
 
-[node name="PlayerWithCamera" parent="." instance=ExtResource("1_sk8ge")]
+[node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
 position = Vector2(86, 516)
+scale = Vector2(0.75341123, 0.75341123)
 
 [node name="Player" parent="PlayerWithCamera" index="0"]
 scale = Vector2(2.9105504, 2.9105504)
+
+[node name="Camera2D" parent="PlayerWithCamera" index="1"]
+top_level = true
+position = Vector2(86, 516)
+scale = Vector2(0.75341123, 0.75341123)
+
+[node name="PhantomCameraHost" parent="PlayerWithCamera/Camera2D" index="0"]
+process_priority = 300
+process_physics_priority = 300
+
+[node name="PhantomCamera2D" parent="PlayerWithCamera" index="2"]
+top_level = true
+position = Vector2(86, 516)
+tween_resource = SubResource("Resource_hfiwn")
+
+[node name="ShotA" parent="PlayerWithCamera" index="3"]
+tween_resource = SubResource("Resource_35sqx")
+
+[node name="ShotB" parent="PlayerWithCamera" index="4"]
+tween_resource = SubResource("Resource_yocbw")
 
 [node name="Camp" parent="." unique_id=192691445 instance=ExtResource("1_camp")]
 

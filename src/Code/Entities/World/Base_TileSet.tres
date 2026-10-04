@@ -5,6 +5,7 @@ size = Vector2(96, 32)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_base"]
 texture = SubResource("PlaceholderTexture2D_base")
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
 1:0/0 = 0
