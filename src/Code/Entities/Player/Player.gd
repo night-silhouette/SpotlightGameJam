@@ -20,6 +20,9 @@ class_name Player
 @export_category("properties")
 @export_group("physical_prop")
 @export var jump_speed: float = 380.0
+@export var double_jump_speed: float = 380.0
+@export var max_double_jumps: int = 1
+@export var enable_double_jump: bool = true
 @export var hurt_time: float = 0.15
 @export var accerleration: float = 2500.0
 @export var speed: float = 230.0
@@ -65,6 +68,9 @@ var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
 var wall_jump_lock_dir: int = 0
 
+## 当前剩余二段跳可用次数
+var double_jump_count: int = 1
+
 ## 重力缩放系数（默认为 1.0，流水区域等会将其置为 0.0）
 @export var gravity_scale: float = 1.0
 var _water_flow_area_count: int = 0
@@ -79,6 +85,10 @@ func _sync_from_export_settings() -> void:
 		friction = ExportSettings.player_friction
 		jump_speed = ExportSettings.player_jump_speed
 		jump_ability = ExportSettings.player_jump_ability
+		double_jump_speed = ExportSettings.player_double_jump_speed
+		max_double_jumps = ExportSettings.player_max_double_jumps
+		enable_double_jump = ExportSettings.player_enable_double_jump
+		double_jump_count = max_double_jumps
 		climb_ability = ExportSettings.player_climb_ability
 		max_fall_speed = ExportSettings.player_max_fall_speed
 		dash_time = ExportSettings.player_dash_time
@@ -113,7 +123,8 @@ func _physics_process(delta: float) -> void:
 		var rope_info = ""
 		if rope_controller:
 			rope_info = " [绳索:%s]" % RopeController.RopeState.keys()[rope_controller.current_state]
-		debug.text = "速度<%d,%d> %s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info]
+		var dj_info = " [二段跳:%d]" % double_jump_count
+		debug.text = "速度<%d,%d> %s%s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info, dj_info]
 
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta
@@ -156,6 +167,7 @@ func _physics_process(delta: float) -> void:
 
 	if is_on_floor():
 		wall_jump_lock_dir = 0
+		ResetDoubleJump()
 
 	if gameInputControl.row_dir != 0:
 		var new_face_dir = int(sign(gameInputControl.row_dir))
@@ -170,6 +182,11 @@ func _physics_process(delta: float) -> void:
 
 	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
 	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body)
+
+	# 扒墙也可以刷新二段跳与蹬墙跳方向锁定
+	if is_front_has_rigid:
+		ResetDoubleJump()
+		wall_jump_lock_dir = 0
 
 ## 辅助检测射线碰撞的墙体是否可供攀爬（排除光滑滑石墙）
 func _check_wall_climbable(ray: RayCast2D) -> bool:
@@ -219,8 +236,13 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 func Heal(amount: float) -> void:
 	now_HP += amount
 
+## 重置/刷新二段跳次数
+func ResetDoubleJump() -> void:
+	double_jump_count = max_double_jumps
+
 ## 刷新冲刺、钩索与符文技能状态（供流水区域等交互组件调用）
 func ResetDashAndRope() -> void:
+	ResetDoubleJump()
 	if gameInputControl:
 		gameInputControl.dash_control_flag = true
 		gameInputControl.dash_span_flag = true

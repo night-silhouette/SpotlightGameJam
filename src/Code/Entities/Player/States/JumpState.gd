@@ -10,8 +10,21 @@ func _fall() -> void:
 	finished.emit("fall")
 
 func enter() -> void:
-	obj.velocity.y = -obj.jump_speed
-	s_fall.connect(_fall, CONNECT_ONE_SHOT)
+	if not s_fall.is_connected(_fall):
+		s_fall.connect(_fall, CONNECT_ONE_SHOT)
+
+	if obj.is_on_floor():
+		obj.velocity.y = -obj.jump_speed
+	elif not obj.is_back_has_rigid and not obj.is_front_has_rigid:
+		# 空中二段跳
+		if "double_jump_count" in obj and obj.double_jump_count > 0:
+			obj.double_jump_count -= 1
+			var d_speed = obj.double_jump_speed if "double_jump_speed" in obj else obj.jump_speed
+			obj.velocity.y = -d_speed
+		else:
+			obj.velocity.y = -obj.jump_speed
+	else:
+		obj.velocity.y = -obj.jump_speed
 
 	if obj.is_back_has_rigid:
 		var back_wall_dir = -obj.face_dir
@@ -29,6 +42,8 @@ func enter() -> void:
 		died_node.is_use = true
 
 func exit() -> void:
+	if s_fall.is_connected(_fall):
+		s_fall.disconnect(_fall)
 	temp = GlobalValue.gravity
 	frame = 0.0
 
