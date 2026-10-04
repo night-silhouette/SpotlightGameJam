@@ -13,8 +13,80 @@
 [ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
 [ext_resource type="Script" uid="uid://uoa31q2225il" path="res://Code/Entities/Player/PlayerInputControl.gd" id="12_input"]
 [ext_resource type="Script" uid="uid://b7bx3j3iqenuf" path="res://Code/Entities/Player/RopeController.gd" id="13_rope"]
-[ext_resource type="Script" path="res://Code/Entities/Player/WaterRuneController.gd" id="14_water_rune"]
+[ext_resource type="Script" uid="uid://c7yjbrupcw0qc" path="res://Code/Entities/Player/WaterRuneController.gd" id="14_water_rune"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.tscn" id="15_ui"]
+[ext_resource type="Texture2D" uid="uid://cglbm3bsxlwso" path="res://Art/Archived/Character/walk.png" id="16_lrxyo"]
+[ext_resource type="Texture2D" uid="uid://dkomsgecplgu2" path="res://Art/Archived/Character/standbytime.png" id="17_kpm6d"]
+
+[sub_resource type="Animation" id="Animation_8p301"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite/Standbytime:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite/Walk:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_n7ipn"]
+resource_name = "idle"
+length = 0.679
+loop_mode = 1
+step = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite/Standbytime:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.001, 0.101, 0.205, 0.31, 0.415),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4]
+}
+
+[sub_resource type="Animation" id="Animation_eki5f"]
+resource_name = "run"
+length = 1.641
+loop_mode = 1
+step = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite/Walk:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.223, 0.465, 0.721, 0.997, 1.192, 1.524),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 3, 6, 9, 1, 4, 2]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cab0y"]
+_data = {
+&"RESET": SubResource("Animation_8p301"),
+&"idle": SubResource("Animation_n7ipn"),
+&"run": SubResource("Animation_eki5f")
+}
 
 [node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
 collision_layer = 2
@@ -29,6 +101,7 @@ offset_bottom = 24.0
 color = Color(0.2, 0.65, 0.95, 1)
 
 [node name="ani_move" type="AnimationPlayer" parent="." unique_id=1628733874]
+libraries/ = SubResource("AnimationLibrary_cab0y")
 
 [node name="main_collision" type="CollisionShape2D" parent="." unique_id=1144696377]
 shape = ExtResource("2_shape")
@@ -121,3 +194,21 @@ script = ExtResource("14_water_rune")
 
 [node name="PlayerUI" parent="." unique_id=2081948271 instance=ExtResource("15_ui")]
 
+[node name="sprite" type="Node2D" parent="." unique_id=1048294822]
+visible = false
+
+[node name="Walk" type="Sprite2D" parent="sprite" unique_id=1352150479]
+visible = false
+position = Vector2(55, -12)
+scale = Vector2(0.4284111, 0.4284111)
+texture = ExtResource("16_lrxyo")
+hframes = 3
+vframes = 4
+
+[node name="Standbytime" type="Sprite2D" parent="sprite" unique_id=1632125495]
+visible = false
+position = Vector2(32, -13.000001)
+scale = Vector2(0.43470114, 0.43470114)
+texture = ExtResource("17_kpm6d")
+hframes = 4
+vframes = 2

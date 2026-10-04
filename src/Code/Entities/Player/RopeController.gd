@@ -252,6 +252,10 @@ func _shoot_rope() -> bool:
 	if not player or player.now_HP <= 0.0:
 		return false
 
+	# 检查下一次钩索消耗血量是否足够，扣除后若导致死亡（<= 0）则禁止使用绳索
+	if rope_hp_cost > 0.0 and player.now_HP <= rope_hp_cost:
+		return false
+
 	# 使用钩索消耗血量
 	if rope_hp_cost > 0.0:
 		player.now_HP = max(0.0, player.now_HP - rope_hp_cost)
