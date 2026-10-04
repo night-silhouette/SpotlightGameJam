@@ -1,0 +1,105 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/PlayerWithCamera/CameraShowcase.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://Code/Entities/ParallaxScenery/parallax_scenery.tscn" id="3"]
+
+[sub_resource type="RectangleShape2D" id="Ground"]
+size = Vector2(40000, 60)
+
+[node name="CameraShowcase" type="Node2D"]
+script = ExtResource("1")
+
+[node name="ParallaxScenery" parent="." instance=ExtResource("3")]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(0, 1140)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("Ground")
+
+[node name="Boat" type="Node2D" parent="."]
+position = Vector2(672, 1090)
+
+[node name="Hull" type="Polygon2D" parent="Boat"]
+polygon = PackedVector2Array(-100, -8, 100, -8, 65, 20, -65, 20)
+color = Color(0.67, 0.48, 0.3, 1)
+
+[node name="RitualAnchor" type="Marker2D" parent="."]
+position = Vector2(1200, 780)
+
+[node name="RoomAnchor" type="Marker2D" parent="."]
+position = Vector2(700, 820)
+
+[node name="PlayerWithCamera" parent="." instance=ExtResource("2")]
+
+[node name="Player" parent="PlayerWithCamera" index="0"]
+scale = Vector2(2.9105504, 2.9105504)
+
+[node name="Controls" type="CanvasLayer" parent="."]
+layer = 50
+
+[node name="Panel" type="PanelContainer" parent="Controls"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 12.0
+offset_top = 8.0
+offset_right = -12.0
+grow_horizontal = 2
+
+[node name="Rows" type="VBoxContainer" parent="Controls/Panel"]
+layout_mode = 2
+
+[node name="Buttons" type="HBoxContainer" parent="Controls/Panel/Rows"]
+layout_mode = 2
+
+[node name="Shot0" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "0 普通"
+
+[node name="Shot1" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "1 沙漠"
+
+[node name="Shot2" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "2 下落"
+
+[node name="Shot3" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "3 渡舟"
+
+[node name="Shot4" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "4 遗物 CG"
+
+[node name="Shot5" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "5 固定"
+
+[node name="End" type="Button" parent="Controls/Panel/Rows/Buttons"]
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+text = "结束 CG"
+
+[node name="Status" type="Label" parent="Controls/Panel/Rows"]
+layout_mode = 2
+text = "镜头验收台 · 所有文本、船与小室均为演示占位"
+autowrap_mode = 2
+
+[editable path="PlayerWithCamera"]
+

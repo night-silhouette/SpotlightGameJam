@@ -1,49 +1,124 @@
 [gd_scene format=3 uid="uid://bfr88h05lyxfc"]
 
-[ext_resource type="Texture2D" uid="uid://b8eo4brra1thd" path="res://icon.svg" id="1_n3jxw"]
+[ext_resource type="Texture2D" uid="uid://qfu2b4by57mq" path="res://Art/Archived/Oldhuntt/background.png" id="1_v78iy"]
 [ext_resource type="PackedScene" uid="uid://dirhxm85bpqce" path="res://Code/Entities/ParallaxScenery/AmbientGlow/AmbientGlow.tscn" id="2_fhxqj"]
+[ext_resource type="Texture2D" uid="uid://cerblpvuqhtbo" path="res://Art/Archived/Oldhuntt/mid_shot.png" id="2_u06m4"]
 [ext_resource type="PackedScene" uid="uid://d2jk4l1e5s40f" path="res://Code/Entities/ParallaxScenery/AmbientFog/FogSprite.tscn" id="3_sbhd1"]
+[ext_resource type="Texture2D" uid="uid://huhc085hrsfk" path="res://Art/Archived/Oldhuntt/basemap.png" id="4_fqyhx"]
+[ext_resource type="Texture2D" uid="uid://cxigiyyvq33h4" path="res://Art/Archived/Oldhuntt/foreground.png" id="5_u06m4"]
+[ext_resource type="Texture2D" uid="uid://bksi4kbkwcuiu" path="res://Art/Archived/Oldhuntt/stars.png" id="7_3xx65"]
+[ext_resource type="Texture2D" uid="uid://d0ipe53b3g433" path="res://Art/Archived/Oldhuntt/moon.png" id="8_u2n35"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/platform.png" id="9_green"]
+[ext_resource type="Script" path="res://Code/Entities/ParallaxScenery/ParallaxScenery.gd" id="10_config"]
+[ext_resource type="Shader" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="11_seam"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_green_seam"]
+resource_local_to_scene = true
+shader = ExtResource("11_seam")
+shader_parameter/repeat_width = 4831.0
+shader_parameter/blend_width = 128.0
+shader_parameter/seam_y_offset = 14.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_near_seam"]
+resource_local_to_scene = true
+shader = ExtResource("11_seam")
+shader_parameter/repeat_width = 4831.0
+shader_parameter/blend_width = 256.0
+shader_parameter/seam_y_offset = 40.0
 
 [node name="ParallaxScenery" type="Node2D" unique_id=381839512]
+script = ExtResource("10_config")
 
 [node name="FarBackground" type="Parallax2D" parent="." unique_id=47769589]
 z_index = -20
-scroll_scale = Vector2(0.2, 0.2)
-repeat_size = Vector2(1152, 0)
+scroll_scale = Vector2(0.2, 1)
+scroll_offset = Vector2(-76.8, 0)
+repeat_size = Vector2(4831, 0)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="FarBackground" unique_id=1269430755]
-position = Vector2(200, 100)
-scale = Vector2(2, 2)
-texture = ExtResource("1_n3jxw")
+texture = ExtResource("1_v78iy")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
 
 [node name="NearBackground" type="Parallax2D" parent="." unique_id=1982365568]
 z_index = -10
-scroll_scale = Vector2(0.55, 0.55)
-repeat_size = Vector2(1152, 0)
+scroll_scale = Vector2(0.35, 1)
+scroll_offset = Vector2(-62.4, 0)
+repeat_size = Vector2(4831, 0)
 repeat_times = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="NearBackground" unique_id=1303641309]
-position = Vector2(600, 220)
-scale = Vector2(3, 3)
-texture = ExtResource("1_n3jxw")
+material = SubResource("ShaderMaterial_near_seam")
+texture = ExtResource("2_u06m4")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
 
 [node name="AmbientGlow" parent="NearBackground" unique_id=1072626653 instance=ExtResource("2_fhxqj")]
+visible = false
 z_index = 1
 position = Vector2(800, 350)
 scale = Vector2(1.5, 1.5)
 
 [node name="AmbientFog" parent="NearBackground" unique_id=941986178 instance=ExtResource("3_sbhd1")]
+visible = false
 z_index = 2
 position = Vector2(576, 400)
 scale = Vector2(2, 0.6)
 
-[node name="Foreground" type="Node2D" parent="." unique_id=1866994351]
+[node name="Sky" type="Parallax2D" parent="." unique_id=1087840546]
+z_index = -30
+scroll_scale = Vector2(0.2, 1)
+scroll_offset = Vector2(-76.8, 0)
+repeat_size = Vector2(4831, 0)
+repeat_times = 3
+
+[node name="SkyBase" type="Sprite2D" parent="Sky" unique_id=678388926]
+texture = ExtResource("4_fqyhx")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="Stars" type="Sprite2D" parent="Sky" unique_id=1903723882]
+texture = ExtResource("7_3xx65")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="Moon" type="Sprite2D" parent="Sky" unique_id=1984695216]
+texture = ExtResource("8_u2n35")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="ForegroundLoop" type="Parallax2D" parent="." unique_id=528992163]
+scroll_scale = Vector2(1.2, 1)
+scroll_offset = Vector2(19.2, 0)
+repeat_size = Vector2(4831, 0)
+repeat_times = 3
+
+[node name="GreenDecoration" type="Sprite2D" parent="ForegroundLoop"]
+z_index = 5
+material = SubResource("ShaderMaterial_green_seam")
+texture = ExtResource("9_green")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="Foreground" type="Node2D" parent="ForegroundLoop" unique_id=1866994351]
 z_index = 10
 
-[node name="ForegroundSprite" type="Sprite2D" parent="Foreground" unique_id=1042495340]
-position = Vector2(400, 570)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_n3jxw")
+[node name="ForegroundSprite" type="Sprite2D" parent="ForegroundLoop/Foreground" unique_id=1042495340]
+texture = ExtResource("5_u06m4")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true

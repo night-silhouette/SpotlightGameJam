@@ -38,6 +38,10 @@ movie_writer/fps=120
 
 enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/phantom_camera/plugin.cfg")
 
+[gui]
+
+theme/custom_font="uid://vc5orrg08vl5"
+
 [input]
 
 move_l={

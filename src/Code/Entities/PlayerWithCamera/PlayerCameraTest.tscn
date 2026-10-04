@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_player"]
+
+[sub_resource type="RectangleShape2D" id="GroundShape"]
+size = Vector2(6000, 80)
+
+[sub_resource type="RectangleShape2D" id="StepShape"]
+size = Vector2(200, 24)
+
+[node name="PlayerCameraTest" type="Node2D"]
+
+[node name="Ground" type="StaticBody2D" parent="."]
+position = Vector2(1800, 640)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+shape = SubResource("GroundShape")
+
+[node name="Visual" type="Polygon2D" parent="Ground"]
+polygon = PackedVector2Array(-3000, -40, 3000, -40, 3000, 40, -3000, 40)
+color = Color(0.16, 0.24, 0.3, 1)
+
+[node name="Step1" type="StaticBody2D" parent="."]
+position = Vector2(800, 490)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step1"]
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+color = Color(0.32, 0.7, 0.68, 1)
+
+[node name="Step2" type="StaticBody2D" parent="."]
+position = Vector2(1060, 370)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step2"]
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+color = Color(0.38, 0.66, 0.84, 1)
+
+[node name="Step3" type="StaticBody2D" parent="."]
+position = Vector2(1320, 250)
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+shape = SubResource("StepShape")
+one_way_collision = true
+
+[node name="Visual" type="Polygon2D" parent="Step3"]
+polygon = PackedVector2Array(-100, -12, 100, -12, 100, 12, -100, 12)
+color = Color(0.72, 0.62, 0.88, 1)
+
+[node name="Landmark" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(150, 600, 150, 200, 156, 200, 156, 600)
+color = Color(0.5, 0.59, 0.68, 1)
+
+[node name="PlayerWithCamera" parent="." instance=ExtResource("1_player")]
+position = Vector2(300, 570)
+
+[node name="Instructions" type="CanvasLayer" parent="."]
+layer = 20
+
+[node name="Label" type="Label" parent="Instructions"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -64.0
+offset_right = -20.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+text = "摄像机测试：A / D 或方向键移动，空格跳跃，Shift 冲刺。\n观察横向跟随、跳跃抬镜、落地回稳。彩色台阶仅用于测试。"

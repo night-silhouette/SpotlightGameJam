@@ -1,5 +1,68 @@
 extends Node
 
+## 恢复普通玩家跟随。
+## @param player PlayerWithCamera 内的原 Player 节点。
+signal CameraNormalRequested(player: Node2D)
+
+## 第一幕沙漠：人物左下、右上留白，正文纵排。
+## @param player PlayerWithCamera 内的原 Player。
+## @param title 章节标题；传 "" 跳过标题。
+## @param text 纵排正文；传 "" 不显示。
+## @param intro 是否播放黑幕/模糊开场。
+## @param bounds 世界坐标镜头范围；传 Rect2() 沿用基础镜头边界。
+signal CameraDesertRequested(player: Node2D, title: String, text: String, intro: bool, bounds: Rect2)
+
+## 第二幕下落：锁 X，平滑跟随玩家 Y；正文显示在上方。
+## @param player PlayerWithCamera 内的原 Player。
+## @param title 章节标题；传 "" 跳过标题。
+## @param text 上方叙事正文；传 "" 不显示。
+## @param bounds 世界坐标镜头范围；传 Rect2() 沿用基础镜头边界。
+signal CameraDescentRequested(player: Node2D, title: String, text: String, bounds: Rect2)
+
+## 第三幕渡舟：锁 Y，平滑横移跟随目标；顶部遮罩，正文显示在水面区域。
+## @param player PlayerWithCamera 内的原 Player。
+## @param follow_target 跟随的船体节点；传 null 跟随玩家。
+## @param title 章节标题；传 "" 跳过标题。
+## @param text 水面区域的叙事正文；传 "" 不显示。
+## @param bounds 世界坐标镜头范围；传 Rect2() 沿用基础镜头边界。
+signal CameraBoatRequested(player: Node2D, follow_target: Node2D, title: String, text: String, bounds: Rect2)
+
+## 遗物 CG：暂停玩家子树，从玩家近景过渡到 anchor 空镜；最终就位后播放文字。
+## @param player PlayerWithCamera 内的原 Player。
+## @param anchor 空镜中心节点（不可为空）；取请求时的世界坐标。
+## @param title 空镜就位后的标题；传 "" 跳过标题。
+## @param text 标题退去后的仪式正文；传 "" 不显示。
+## @param bounds 世界坐标镜头范围；传 Rect2() 沿用基础镜头边界。
+signal CameraRitualRequested(player: Node2D, anchor: Node2D, title: String, text: String, bounds: Rect2)
+
+## 小室固定镜头：锁在 anchor 的请求时位置，玩家可以自由移动。
+## @param player PlayerWithCamera 内的原 Player。
+## @param anchor 房间镜头中心节点（不可为空）；取请求时的世界坐标。
+## @param title 房间标题；传 "" 跳过标题。
+## @param text 房间叙事正文；传 "" 不显示。
+## @param bounds 世界坐标镜头范围；传 Rect2() 沿用基础镜头边界。
+signal CameraFixedRequested(player: Node2D, anchor: Node2D, title: String, text: String, bounds: Rect2)
+
+## 旧版通用切镜请求；新接入优先使用上方具名信号。
+## @param player PlayerWithCamera 内的原 Player。
+## @param mode normal 普通、desert 沙漠、descent 下落、boat 渡舟、ritual 仪式、fixed 固定。
+## @param options 镜头参数字典；字段和示例见 CameraDirector_README.md 的“旧接口兼容”。
+signal CameraShotRequested(player: Node2D, mode: StringName, options: Dictionary)
+
+## 由关卡发送：结束 CG 并回到此前镜头，回镜后恢复操作；非 CG 时返回普通跟随。
+## @param player PlayerWithCamera 内的原 Player。
+signal CameraShotEndRequested(player: Node2D)
+
+## 镜头就位时触发（不代表文字播完）；仪式镜头仅在最终空镜就位时触发。
+## @param player 本次切镜对应的原 Player。
+## @param mode normal 普通、desert 沙漠、descent 下落、boat 渡舟、ritual 仪式、fixed 固定。
+signal CameraShotReady(player: Node2D, mode: StringName)
+
+## CG 暂停/恢复玩家子树时触发；外部机关不会自动暂停。
+## @param player 被暂停/恢复的原 Player。
+## @param locked true 暂停玩家子树；false 恢复进入 CG 前的处理模式。
+signal CameraInputLockChanged(player: Node2D, locked: bool)
+
 ## =============================================================================
 ## SignalBus.gd - 全局信号总线
 ## 依据 GameBible 设定与实体规范定义，集中管理全局事件通信与状态解耦

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bhbabjwum4cyl"]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/Player/Player.tscn" id="1_player"]
+[ext_resource type="Script" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.gd" id="2_rig"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="3_host"]
+[ext_resource type="Script" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="4_phantom"]
+[ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/CameraPresentation.tscn" id="5_presentation"]
+
+[node name="PlayerWithCamera" type="Node2D" unique_id=1904895834]
+script = ExtResource("2_rig")
+
+[node name="Player" parent="." instance=ExtResource("1_player")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="PhantomCameraHost" type="Node" parent="Camera2D"]
+script = ExtResource("3_host")
+
+[node name="PhantomCamera2D" type="Node2D" parent="." node_paths=PackedStringArray("follow_target")]
+script = ExtResource("4_phantom")
+follow_mode = 2
+follow_target = NodePath("../Player")
+tween_on_load = false
+
+[node name="ShotA" type="Node2D" parent="."]
+script = ExtResource("4_phantom")
+priority = 0
+tween_on_load = false
+
+[node name="ShotB" type="Node2D" parent="."]
+script = ExtResource("4_phantom")
+priority = 0
+tween_on_load = false
+
+[node name="CameraPresentation" parent="." instance=ExtResource("5_presentation")]
+
+[node name="AnchorA" type="Marker2D" parent="."]
+
+[node name="AnchorB" type="Marker2D" parent="."]
