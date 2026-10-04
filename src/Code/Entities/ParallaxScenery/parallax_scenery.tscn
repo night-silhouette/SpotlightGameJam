@@ -8,16 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://cxigiyyvq33h4" path="res://Art/Archived/Oldhuntt/foreground.png" id="5_u06m4"]
 [ext_resource type="Texture2D" uid="uid://bksi4kbkwcuiu" path="res://Art/Archived/Oldhuntt/stars.png" id="7_3xx65"]
 [ext_resource type="Texture2D" uid="uid://d0ipe53b3g433" path="res://Art/Archived/Oldhuntt/moon.png" id="8_u2n35"]
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/platform.png" id="9_green"]
-[ext_resource type="Script" path="res://Code/Entities/ParallaxScenery/ParallaxScenery.gd" id="10_config"]
-[ext_resource type="Shader" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="11_seam"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_green_seam"]
-resource_local_to_scene = true
-shader = ExtResource("11_seam")
-shader_parameter/repeat_width = 4831.0
-shader_parameter/blend_width = 128.0
-shader_parameter/seam_y_offset = 14.0
+[ext_resource type="Texture2D" uid="uid://tolls27qjvi" path="res://Art/Archived/Oldhuntt/platform.png" id="9_green"]
+[ext_resource type="Script" uid="uid://crccddw8m0g41" path="res://Code/Entities/ParallaxScenery/ParallaxScenery.gd" id="10_config"]
+[ext_resource type="Shader" uid="uid://cxke4sshjkdxe" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="11_seam"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_near_seam"]
 resource_local_to_scene = true
@@ -25,6 +18,13 @@ shader = ExtResource("11_seam")
 shader_parameter/repeat_width = 4831.0
 shader_parameter/blend_width = 256.0
 shader_parameter/seam_y_offset = 40.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_green_seam"]
+resource_local_to_scene = true
+shader = ExtResource("11_seam")
+shader_parameter/repeat_width = 4831.0
+shader_parameter/blend_width = 128.0
+shader_parameter/seam_y_offset = 14.0
 
 [node name="ParallaxScenery" type="Node2D" unique_id=381839512]
 script = ExtResource("10_config")
@@ -78,6 +78,8 @@ repeat_size = Vector2(4831, 0)
 repeat_times = 3
 
 [node name="SkyBase" type="Sprite2D" parent="Sky" unique_id=678388926]
+position = Vector2(0, -1042)
+scale = Vector2(1, 1.8040123)
 texture = ExtResource("4_fqyhx")
 centered = false
 region_enabled = true
@@ -104,7 +106,8 @@ scroll_offset = Vector2(19.2, 0)
 repeat_size = Vector2(4831, 0)
 repeat_times = 3
 
-[node name="GreenDecoration" type="Sprite2D" parent="ForegroundLoop"]
+[node name="GreenDecoration" type="Sprite2D" parent="ForegroundLoop" unique_id=1150958719]
+self_modulate = Color(1, 1, 1, 0.6862745)
 z_index = 5
 material = SubResource("ShaderMaterial_green_seam")
 texture = ExtResource("9_green")

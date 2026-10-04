@@ -27,7 +27,7 @@ speed = 250.0
 scale = Vector2(2.9105504, 2.9105504)
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(2732, 1265.0001)
+position = Vector2(-12050, -95.99988)
 scale = Vector2(1.3, 1.3)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
@@ -41,6 +41,7 @@ tween_resource = SubResource("Resource_35sqx")
 tween_resource = SubResource("Resource_yocbw")
 
 [node name="Camp" parent="." unique_id=192691445 instance=ExtResource("1_camp")]
+position = Vector2(-33, -1261)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(0, -1200)
@@ -49,6 +50,6 @@ position = Vector2(0, -1200)
 position = Vector2(939, 825)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
-position = Vector2(2500, 0)
+position = Vector2(-12282, -1361)
 
 [editable path="PlayerWithCamera"]
