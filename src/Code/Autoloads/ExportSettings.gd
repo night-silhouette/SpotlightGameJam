@@ -45,6 +45,16 @@ extends Node
 ## 随时间自然掉血速率 (每秒掉血量)
 @export var player_hp_drain_rate: float = 5.0
 
+@export_group("Audio & Footsteps", "player_footstep_")
+## 行走/奔跑时脚步声播放间隔时长 (秒)
+@export var player_footstep_interval: float = 0.22
+## 起步迈出第一步时的前置延迟 (秒)
+@export var player_footstep_initial_delay: float = 0.05
+## 脚步声音量分贝 (dB)
+@export var player_footstep_volume_db: float = -2.0
+## 脚步声音调微机随机变化范围 (pitch_scale: 1.0 ± 变化值，0 为固定音调)
+@export var player_footstep_pitch_randomness: float = 0.08
+
 @export_group("Rope & Grapple", "rope_")
 ## 使用绳索每次消耗的生命值
 @export var rope_hp_cost: float = 10.0
