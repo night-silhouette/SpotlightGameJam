@@ -183,10 +183,9 @@ func _physics_process(delta: float) -> void:
 	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
 	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body)
 
-	# 扒墙也可以刷新二段跳与蹬墙跳方向锁定
+	# 扒墙时刷新二段跳（蹬墙跳方向锁定仅在落地或反向蹬墙时解锁）
 	if is_front_has_rigid:
 		ResetDoubleJump()
-		wall_jump_lock_dir = 0
 
 ## 辅助检测射线碰撞的墙体是否可供攀爬（排除光滑滑石墙）
 func _check_wall_climbable(ray: RayCast2D) -> bool:
