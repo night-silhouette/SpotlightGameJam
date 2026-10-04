@@ -25,6 +25,7 @@ func _check_dash() -> bool:
 
 var column_dir: float = 0.0
 var is_jump: bool = false
+var is_double_jump: bool = false
 var is_dash: bool = false
 var is_idle: bool = false
 var is_run: bool = false
@@ -41,7 +42,16 @@ func _physics_process(_delta: float) -> void:
 	row_dir = Input.get_axis("move_l", "move_r")
 	column_dir = Input.get_axis("up", "down")
 
-	is_jump = obj.is_on_floor() and Input.is_action_just_pressed("jump")
+	var jump_pressed = Input.is_action_just_pressed("jump")
+	is_jump = obj.is_on_floor() and jump_pressed
+	is_double_jump = (
+		not obj.is_on_floor()
+		and jump_pressed
+		and not obj.is_front_has_rigid
+		and not obj.is_back_has_rigid
+		and obj.get("enable_double_jump") == true
+		and obj.get("double_jump_count") > 0
+	)
 	is_dash = _check_dash()
 
 	is_normal = not obj.is_front_has_rigid

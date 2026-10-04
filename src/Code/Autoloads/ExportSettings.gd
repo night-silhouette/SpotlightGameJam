@@ -16,6 +16,12 @@ extends Node
 @export var player_jump_speed: float = 380.0
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)
 @export var player_jump_ability: float = 0.85
+## 二段跳初速度
+@export var player_double_jump_speed: float = 380.0
+## 二段跳最大可用次数 (通常为 1)
+@export var player_max_double_jumps: int = 1
+## 是否开启二段跳功能
+@export var player_enable_double_jump: bool = true
 ## 蹬墙跳垂直弹跳力与水平反冲基数
 @export var player_climb_ability: float = 480.0
 ## 贴墙滑落时的最大下落速度限制
