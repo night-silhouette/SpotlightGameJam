@@ -42,6 +42,20 @@ func ResetCooldown() -> void:
 	if SignalBus:
 		SignalBus.WaterRuneCooldownChanged.emit(0.0, cooldown)
 
+## 尝试激活指定的目标流水区域（供点击提示 UI 或外部直接调用）
+## @param target_area 目标流水区域
+## @return 是否成功激活
+func TryActivateTargetArea(target_area: WaterFlowArea) -> bool:
+	if current_cd > 0.0 or not is_instance_valid(target_area):
+		return false
+
+	target_area.ToggleRuneFluid()
+	current_cd = cooldown
+	if SignalBus:
+		SignalBus.WaterRuneCooldownChanged.emit(current_cd, cooldown)
+		SignalBus.WaterRuneActivated.emit(target_area, target_area.is_fluid)
+	return true
+
 ## 尝试使用水符文
 ## @return 是否成功激活/切换了流水区域
 func TryActivateWaterRune() -> bool:
@@ -63,12 +77,7 @@ func TryActivateWaterRune() -> bool:
 		target_area = _resolve_conflicting_target(nearby_areas, input_dir)
 
 	if target_area:
-		target_area.ToggleRuneFluid()
-		current_cd = cooldown
-		if SignalBus:
-			SignalBus.WaterRuneCooldownChanged.emit(current_cd, cooldown)
-			SignalBus.WaterRuneActivated.emit(target_area, target_area.is_fluid)
-		return true
+		return TryActivateTargetArea(target_area)
 
 	return false
 
@@ -84,13 +93,15 @@ func GetNearbyWaterAreas() -> Array[WaterFlowArea]:
 
 	for node in areas:
 		if node is WaterFlowArea and is_instance_valid(node):
-			var dist = p_pos.distance_to(node.global_position)
+			var dist = node.GetDistanceToPlayer(p_pos) if node.has_method("GetDistanceToPlayer") else p_pos.distance_to(node.global_position)
 			if dist <= node.interact_radius:
 				results.append(node)
 
-	# 按距玩家由近到远排序
+	# 按距玩家边缘由近到远排序
 	results.sort_custom(func(a: WaterFlowArea, b: WaterFlowArea):
-		return p_pos.distance_to(a.global_position) < p_pos.distance_to(b.global_position)
+		var da = a.GetDistanceToPlayer(p_pos) if a.has_method("GetDistanceToPlayer") else p_pos.distance_to(a.global_position)
+		var db = b.GetDistanceToPlayer(p_pos) if b.has_method("GetDistanceToPlayer") else p_pos.distance_to(b.global_position)
+		return da < db
 	)
 	return results
 

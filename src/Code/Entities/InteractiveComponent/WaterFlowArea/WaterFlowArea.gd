@@ -32,7 +32,10 @@ class_name WaterFlowArea
 @onready var fluid_area: Area2D = $FluidArea
 @onready var fluid_collision: CollisionShape2D = $FluidArea/FluidCollision
 @onready var visual_rect: ColorRect = $VisualRect
-@onready var prompt_label: Label = $PromptLabel
+@onready var prompt_container: Control = $PromptContainer
+@onready var prompt_button: Button = $PromptContainer/PromptButton
+@onready var key_badge: Label = $PromptContainer/HBox/KeyBadge
+@onready var action_label: Label = $PromptContainer/HBox/ActionLabel
 
 var _player_in_range: bool = false
 var _cached_player: CharacterBody2D = null
@@ -46,6 +49,9 @@ func _ready() -> void:
 	if fluid_area:
 		fluid_area.body_entered.connect(_on_fluid_area_body_entered)
 		fluid_area.body_exited.connect(_on_fluid_area_body_exited)
+
+	if prompt_button:
+		prompt_button.pressed.connect(_on_prompt_pressed)
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -69,8 +75,16 @@ func _update_dimensions() -> void:
 		visual_rect.size = area_size
 		visual_rect.position = -area_size * 0.5
 
-	if prompt_label:
-		prompt_label.position = Vector2(-prompt_label.size.x * 0.5, -area_size.y * 0.5 - 28.0)
+	if prompt_container:
+		# 保持提示按钮在世界中始终朝上且不受父节点非均匀缩放引起的文字拉伸变形
+		var parent_scale = scale
+		var sx = 1.0 / parent_scale.x if abs(parent_scale.x) > 0.0001 else 1.0
+		var sy = 1.0 / parent_scale.y if abs(parent_scale.y) > 0.0001 else 1.0
+		prompt_container.scale = Vector2(sx, sy)
+		prompt_container.rotation = -rotation
+		# 计算在父节点局部坐标系下的顶部偏移位置
+		var top_local_offset = Vector2(0.0, -area_size.y * 0.5 - 32.0 * sy)
+		prompt_container.position = top_local_offset - (prompt_container.size * 0.5) * Vector2(sx, sy)
 
 ## 将流水区域切换为流体或固态刚体状态
 ## @param to_fluid 是否切换为流体
@@ -104,6 +118,26 @@ func ToggleRuneFluid() -> void:
 func _toggle_rune_fluid() -> void:
 	ToggleRuneFluid()
 
+## 点击提示 UI 触发水符文交互
+func _on_prompt_pressed() -> void:
+	if not _player_in_range or not is_instance_valid(_cached_player):
+		return
+	# 如果玩家身上有水符文控制器组件，优先走控制器的冷却和状态同步流程
+	var rune_ctrl = _cached_player.get_node_or_null("WaterRuneController")
+	if rune_ctrl and rune_ctrl.has_method("TryActivateTargetArea"):
+		rune_ctrl.TryActivateTargetArea(self)
+	elif rune_ctrl and "current_cd" in rune_ctrl:
+		if rune_ctrl.current_cd <= 0.0:
+			ToggleRuneFluid()
+			rune_ctrl.current_cd = rune_ctrl.cooldown
+			if SignalBus:
+				SignalBus.WaterRuneCooldownChanged.emit(rune_ctrl.current_cd, rune_ctrl.cooldown)
+				SignalBus.WaterRuneActivated.emit(self, is_fluid)
+	else:
+		ToggleRuneFluid()
+		if SignalBus:
+			SignalBus.WaterRuneActivated.emit(self, is_fluid)
+
 func _physics_process(_delta: float) -> void:
 	_check_player_distance()
 
@@ -118,21 +152,33 @@ func _check_player_distance() -> void:
 		_update_prompt(false)
 		return
 
-	var dist = global_position.distance_to(_cached_player.global_position)
+	var dist = GetDistanceToPlayer(_cached_player.global_position)
 	var in_range = dist <= interact_radius
 
 	_player_in_range = in_range
 	_update_prompt(_player_in_range)
 
+## 计算给定世界坐标到本流水区域外边缘的最短距离（考虑区域尺寸与全局缩放）
+func GetDistanceToPlayer(p_pos: Vector2) -> float:
+	# 转换到流水区域的局部坐标系
+	var local_pos = to_local(p_pos)
+	var half_size = area_size * 0.5
+	# 计算到轴对齐矩形边界的距离
+	var dx = max(0.0, abs(local_pos.x) - half_size.x)
+	var dy = max(0.0, abs(local_pos.y) - half_size.y)
+	# 还原为全局世界坐标尺度距离
+	var effective_scale = global_transform.get_scale()
+	return Vector2(dx * effective_scale.x, dy * effective_scale.y).length()
+
 func _update_prompt(show_it: bool) -> void:
-	if not prompt_label:
+	if not prompt_container:
 		return
 
 	if not show_it or not is_instance_valid(_cached_player):
-		prompt_label.visible = false
+		prompt_container.visible = false
 		return
 
-	prompt_label.visible = true
+	prompt_container.visible = true
 
 	# 检查当前玩家交互范围内是否同时存在多个流水区域
 	var nearby_count = 0
@@ -141,7 +187,7 @@ func _update_prompt(show_it: bool) -> void:
 
 	for area in all_areas:
 		if area is WaterFlowArea and is_instance_valid(area):
-			if p_pos.distance_to(area.global_position) <= area.interact_radius:
+			if area.GetDistanceToPlayer(p_pos) <= area.interact_radius:
 				nearby_count += 1
 
 	var action_name = "凝固" if is_fluid else "水化"
@@ -154,9 +200,14 @@ func _update_prompt(show_it: bool) -> void:
 			dir_hint = "D+E" if to_self.x > 0 else "A+E"
 		else:
 			dir_hint = "S+E" if to_self.y > 0 else "W+E"
-		prompt_label.text = "[%s] 流水符文%s" % [dir_hint, action_name]
+		if key_badge:
+			key_badge.text = dir_hint
 	else:
-		prompt_label.text = "[E] 流水符文%s" % action_name
+		if key_badge:
+			key_badge.text = "E"
+
+	if action_label:
+		action_label.text = action_name
 
 func _on_fluid_area_body_entered(body: Node2D) -> void:
 	if not is_fluid:
