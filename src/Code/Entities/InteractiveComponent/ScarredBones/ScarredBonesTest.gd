@@ -1,5 +1,5 @@
 extends Node2D
-## F6 测试入口：ScarredBonesTest.tscn。A/D 移动，F 取得，顶部按钮测试状态恢复。
+## F6 测试入口：ScarredBonesTest.tscn。A/D 移动，F 或点击提示取得，顶部按钮测试状态恢复。
 ## 按钮只在内存保存本实体数据，不写正式存档；停止运行后样本丢失。
 ## 玩家和镜头直接实例化队友现有场景，本测试不覆盖其参数。
 
@@ -11,6 +11,19 @@ var _saved_data: Dictionary = {}
 var _collected_events: int = 0
 var _finished_events: int = 0
 var _inspection_events: int = 0
+var _previous_auto_load: bool = true
+
+
+func _enter_tree() -> void:
+	# 先于玩家子树中的设置界面执行，防止 F6 被正式 1 号存档切换到其他地图。
+	# 只改变本次运行的单例值，不修改 ExportSettings 文件或磁盘存档。
+	_previous_auto_load = ExportSettings.setting_auto_load_slot_1
+	ExportSettings.setting_auto_load_slot_1 = false
+
+
+func _exit_tree() -> void:
+	if is_instance_valid(ExportSettings):
+		ExportSettings.setting_auto_load_slot_1 = _previous_auto_load
 
 
 func _ready() -> void:
@@ -21,7 +34,7 @@ func _ready() -> void:
 	$TestUI/Panel/Margin/Rows/Buttons/Save.pressed.connect(_save_sample)
 	_load_button.pressed.connect(_load_sample)
 	$TestUI/Panel/Margin/Rows/Buttons/Reset.pressed.connect(_reset_bones)
-	_update_status("走近枯骨，出现提示后按 F。")
+	_update_status("走近枯骨，按交互键或点击提示按钮。")
 
 
 func _on_interaction_requested(target: Node2D, _player: Node2D) -> void:
@@ -39,7 +52,7 @@ func _on_collected(bones: Node2D, _player: Node2D) -> void:
 func _on_finished(bones: Node2D) -> void:
 	if bones == _bones:
 		_finished_events += 1
-		_update_status("展示完成：再次按 F 不应重复取得。")
+		_update_status("展示完成：再次按键或点击不应重复取得。")
 
 
 func _on_restored(bones: Node2D, collected: bool) -> void:

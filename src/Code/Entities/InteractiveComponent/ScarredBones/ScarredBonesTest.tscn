@@ -58,7 +58,7 @@ theme_override_constants/separation = 6
 
 [node name="Instructions" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=838267788]
 layout_mode = 2
-text = "通用交互复用测试　A / D 移动 · F 交互
+text = "通用交互复用测试　A / D 移动 · F 或点击提示交互
 枯骨可拔出，蓝色方块可反复调查；重叠范围只提示较近目标。
 当前为占位演示；正式文案、角色动作和镜头尚未接入。"
 autowrap_mode = 2

@@ -271,6 +271,12 @@ extends Node
 ## 临时测试描述，不是正式剧情文案；接入文案系统时由该系统替换。
 @export_multiline var inspection_example_description: String = "这是一件调查测试物：可以反复查看，不会被拾取。"
 
+@export_group("Interactive - Prompt", "interaction_prompt_")
+## 鼠标交互提示的最小高度（界面像素）；字体较大时容器自动撑高，重启运行生效。
+@export_range(24.0, 64.0, 1.0) var interaction_prompt_min_height: float = 32.0
+## 提示左侧按键标识的字号（界面像素），重启运行生效。
+@export_range(10, 32, 1) var interaction_prompt_key_font_size: int = 14
+
 @export_group("Setting & Save System", "setting_")
 ## 最大允许的存档槽位数 (固定为 5)
 @export var setting_max_save_slots: int = 5

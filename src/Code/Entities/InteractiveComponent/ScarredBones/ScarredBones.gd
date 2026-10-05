@@ -6,7 +6,7 @@ extends Node2D
 @onready var _detection: Area2D = $DetectionArea
 @onready var _interaction: ProximityInteraction = $Interaction
 @onready var _visual: Node2D = $VisualRoot
-@onready var _prompt: Label = $PromptAnchor/Prompt
+@onready var _prompt: Control = $PromptAnchor/Prompt
 
 var _collected: bool = false
 var _presentation: Tween

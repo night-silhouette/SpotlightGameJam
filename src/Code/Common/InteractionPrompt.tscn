@@ -1,0 +1,61 @@
+[gd_scene format=3 uid="uid://c3tedcr2djnww"]
+
+[ext_resource type="Theme" uid="uid://yp0tiglm3jjc" path="res://Code/Common/InteractionPromptTheme.tres" id="1_lx1mk"]
+[ext_resource type="Script" uid="uid://cupy6xhi6qwr7" path="res://Code/Common/InteractionPrompt.gd" id="2_a74tq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lx1mk"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.18, 0.28, 0.42, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.85, 1, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="InteractionPrompt" type="PanelContainer" unique_id=374430850]
+visible = false
+custom_minimum_size = Vector2(0, 32)
+mouse_filter = 2
+theme = ExtResource("1_lx1mk")
+script = ExtResource("2_a74tq")
+
+[node name="PromptButton" type="Button" parent="." unique_id=939354004]
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1338632783]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 4
+
+[node name="Content" type="HBoxContainer" parent="Margin" unique_id=512702793]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="KeyBadge" type="Label" parent="Margin/Content" unique_id=1565287491]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_lx1mk")
+text = "F"
+vertical_alignment = 1
+
+[node name="ActionLabel" type="Label" parent="Margin/Content" unique_id=467742890]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 18
+text = "交互"
+vertical_alignment = 1

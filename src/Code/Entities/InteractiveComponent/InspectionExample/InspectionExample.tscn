@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://bjoctln8qf2s7"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/InspectionExample/InspectionExample.gd" id="1_8l8st"]
+[ext_resource type="Script" uid="uid://cuh81v3vs0d8h" path="res://Code/Entities/InteractiveComponent/InspectionExample/InspectionExample.gd" id="1_8l8st"]
 [ext_resource type="Script" uid="uid://c4wvsq2r85icn" path="res://Code/Common/ProximityInteraction.gd" id="2_24in5"]
+[ext_resource type="PackedScene" uid="uid://c3tedcr2djnww" path="res://Code/Common/InteractionPrompt.tscn" id="2_85gso"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_85gso"]
 radius = 80.0
@@ -26,15 +27,9 @@ monitorable = false
 shape = SubResource("CircleShape2D_85gso")
 
 [node name="PromptAnchor" type="Node2D" parent="." unique_id=1347151279]
-position = Vector2(0, -100)
+position = Vector2(0, -140)
 
-[node name="Prompt" type="Label" parent="PromptAnchor" unique_id=1844243883]
-visible = false
-offset_left = -180.0
-offset_right = 180.0
-offset_bottom = 32.0
-text = "[F] 调查测试物"
-horizontal_alignment = 1
+[node name="Prompt" parent="PromptAnchor" unique_id=374430850 instance=ExtResource("2_85gso")]
 
 [node name="Interaction" type="Node" parent="." unique_id=1260132805]
 script = ExtResource("2_24in5")

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="2_8krur"]
 [ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="3_lv1pm"]
 [ext_resource type="PackedScene" uid="uid://bv8m4a7j2x1kp" path="res://Code/Entities/InteractiveComponent/Stalactite/Stalactite.tscn" id="5_lgbqx"]
+[ext_resource type="PackedScene" uid="uid://blj0rdomfhoyt" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.tscn" id="6_7p3u0"]
 [ext_resource type="PackedScene" uid="uid://bfr88h05lyxfc" path="res://Code/Entities/ParallaxScenery/parallax_scenery.tscn" id="6_lv1pm"]
 [ext_resource type="PackedScene" uid="uid://bsh2y1v8km5op" path="res://Code/Entities/InteractiveComponent/Spikes/Spikes.tscn" id="6_p11k8"]
 
@@ -72,3 +73,7 @@ position = Vector2(7304, 1057)
 
 [node name="ParallaxScenery" parent="." unique_id=381839512 instance=ExtResource("6_lv1pm")]
 position = Vector2(4831, 223)
+
+[node name="ScarredBones" parent="." unique_id=286190526 instance=ExtResource("6_7p3u0")]
+editor_description = "临时测试位置：出生点右侧地面；正式位置应由关卡负责人移到古战场尽头。保留节点名 ScarredBones 以维持存档路径。"
+position = Vector2(220, 1312)

@@ -6,25 +6,34 @@ extends Node
 const INTERACTION_GROUP: StringName = &"proximity_interactions"
 var _target: Node2D
 var _area: Area2D
-var _prompt: Label
+var _prompt: Control
+var _prompt_text: String
+var _prompt_font_size: int
 var _enabled: bool = true
 
 
 ## 配置组件；实体 _ready 中调用，重复配置也安全。
 ## @param target 交互实体根节点；area 须包含名为 CollisionShape2D 的圆形检测形状。
-## @param prompt 预置的提示 Label；radius 是世界像素半径（场景缩放保持 1）。
+## @param prompt 预置的 InteractionPrompt，兼容旧 Label；radius 是世界像素半径（场景缩放保持 1）。
 ## @param text 不含按键的提示文字；font_size 是字体像素大小。返回 void。
-func Configure(target: Node2D, area: Area2D, prompt: Label, radius: float, text: String, font_size: int) -> void:
+func Configure(target: Node2D, area: Area2D, prompt: Control, radius: float, text: String, font_size: int) -> void:
 	if is_instance_valid(_prompt):
 		_prompt.hide()
+		if _prompt is InteractionPrompt and _prompt.Pressed.is_connected(_on_prompt_pressed):
+			_prompt.Pressed.disconnect(_on_prompt_pressed)
 	_target = target
 	_area = area
 	_prompt = prompt
 	var collider := _area.get_node("CollisionShape2D") as CollisionShape2D
 	collider.shape = collider.shape.duplicate()
 	(collider.shape as CircleShape2D).radius = maxf(1.0, radius)
-	_prompt.add_theme_font_size_override("font_size", font_size)
-	_prompt.text = "[%s] %s" % [_interaction_key_label(), text]
+	_prompt_text = text
+	_prompt_font_size = font_size
+	if _prompt is InteractionPrompt:
+		_prompt.Pressed.connect(_on_prompt_pressed)
+	if not SignalBus.KeybindChanged.is_connected(_on_keybind_changed):
+		SignalBus.KeybindChanged.connect(_on_keybind_changed)
+	_refresh_prompt()
 	_prompt.hide()
 	if not is_in_group(INTERACTION_GROUP):
 		add_to_group(INTERACTION_GROUP)
@@ -62,12 +71,36 @@ func _process(_delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("interact"):
 		return
+	_request_interaction(true)
+
+
+func _on_prompt_pressed() -> void:
+	if is_instance_valid(_prompt) and _prompt.is_visible_in_tree():
+		_request_interaction(false)
+
+
+func _request_interaction(consume_input: bool) -> void:
+	# 鼠标和键盘共享校验；按钮显示后玩家离开、死亡或目标失效，也不会误触。
 	var player := _find_player()
 	if player == null or _nearest_interaction(player) != self:
 		return
-	# 先消费本次输入，再通知实体；领取后其他目标变可选，也不能共享这次按键。
-	get_viewport().set_input_as_handled()
+	if consume_input:
+		# 先消费按键，避免领取后下一个目标共享本次输入。鼠标由 Button 消费。
+		get_viewport().set_input_as_handled()
 	SignalBus.InteractionRequested.emit(_target, player)
+
+
+func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
+	if action_name == &"interact":
+		_refresh_prompt()
+
+
+func _refresh_prompt() -> void:
+	if _prompt is InteractionPrompt:
+		_prompt.ConfigurePresentation(_interaction_key_label(), _prompt_text, _prompt_font_size)
+	elif _prompt is Label:
+		_prompt.add_theme_font_size_override("font_size", _prompt_font_size)
+		_prompt.text = "[%s] %s" % [_interaction_key_label(), _prompt_text]
 
 
 func _find_player() -> Node2D:
