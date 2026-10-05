@@ -17,6 +17,9 @@ class_name Player
 @onready var rope_controller: RopeController = $RopeController
 @onready var water_rune_controller: Node2D = $WaterRuneController
 @onready var footstep_audio: AudioStreamPlayer2D = $FootstepAudio
+@onready var move_audio: AudioStreamPlayer2D = $MoveAudio
+@onready var slide_audio: AudioStreamPlayer2D = $SlideAudio
+@onready var fall_audio: AudioStreamPlayer2D = $FallAudio
 
 @export_category("properties")
 @export_group("physical_prop")
@@ -88,7 +91,7 @@ var rope_momentum_timer: float = 0.0
 
 @export_group("audio_prop")
 ## 脚步声音频总线名称
-@export var footstep_bus: StringName = &"SFX_Move_Wet"
+@export var footstep_bus: StringName = &"SFX_Footstep_Wet"
 ## 脚步声音效资源数组 (5个脚步声)
 @export var footstep_sounds: Array[AudioStream] = []
 ## 脚步声播放间隔
@@ -100,8 +103,42 @@ var rope_momentum_timer: float = 0.0
 ## 脚步声音调微机随机变化范围
 @export var footstep_pitch_randomness: float = 0.08
 
+## 动作音效音频总线名称
+@export var sfx_move_bus: StringName = &"SFX_Move_Wet"
+## 动作音效基础音量分贝 (dB)
+@export var sfx_move_volume_db: float = 0.0
+## 冲刺音效
+@export var sfx_dash: AudioStream = null
+@export var sfx_dash_volume_db: float = 0.0
+## 一段跳音效
+@export var sfx_jump_first: AudioStream = null
+@export var sfx_jump_first_volume_db: float = 0.0
+## 二段跳音效
+@export var sfx_jump_second: AudioStream = null
+@export var sfx_jump_second_volume_db: float = 0.0
+## 蹬墙跳音效
+@export var sfx_wall_jump: AudioStream = null
+@export var sfx_wall_jump_volume_db: float = 0.0
+## 贴墙下滑音效
+@export var sfx_wall_sliding: AudioStream = null
+@export var sfx_wall_sliding_volume_db: float = -2.0
+## 下落/滞空起落呼啸音效
+@export var sfx_rising_falling: AudioStream = null
+@export var sfx_rising_falling_volume_db: float = -4.0
+## 受伤音效
+@export var sfx_hurt: AudioStream = null
+@export var sfx_hurt_volume_db: float = 0.0
+## 死亡音效
+@export var sfx_death: AudioStream = null
+@export var sfx_death_volume_db: float = 0.0
+## 动作音效音调随机浮动范围
+@export var sfx_move_pitch_randomness: float = 0.05
+## 触发下落呼啸音效的垂直下落速度阈值
+@export var sfx_move_falling_speed_threshold: float = 260.0
+
 var _footstep_timer: float = 0.0
 var _last_footstep_index: int = -1
+var _is_wall_sliding: bool = false
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -134,9 +171,34 @@ func _sync_from_export_settings() -> void:
 			footstep_volume_db = ExportSettings.player_footstep_volume_db
 		if "player_footstep_pitch_randomness" in ExportSettings:
 			footstep_pitch_randomness = ExportSettings.player_footstep_pitch_randomness
+		if "sfx_move_bus" in ExportSettings:
+			sfx_move_bus = ExportSettings.sfx_move_bus
+		if "sfx_move_volume_db" in ExportSettings:
+			sfx_move_volume_db = ExportSettings.sfx_move_volume_db
+		if "sfx_move_dash_volume_db" in ExportSettings:
+			sfx_dash_volume_db = ExportSettings.sfx_move_dash_volume_db
+		if "sfx_move_jump_first_volume_db" in ExportSettings:
+			sfx_jump_first_volume_db = ExportSettings.sfx_move_jump_first_volume_db
+		if "sfx_move_jump_second_volume_db" in ExportSettings:
+			sfx_jump_second_volume_db = ExportSettings.sfx_move_jump_second_volume_db
+		if "sfx_move_wall_jump_volume_db" in ExportSettings:
+			sfx_wall_jump_volume_db = ExportSettings.sfx_move_wall_jump_volume_db
+		if "sfx_move_wall_sliding_volume_db" in ExportSettings:
+			sfx_wall_sliding_volume_db = ExportSettings.sfx_move_wall_sliding_volume_db
+		if "sfx_move_rising_falling_volume_db" in ExportSettings:
+			sfx_rising_falling_volume_db = ExportSettings.sfx_move_rising_falling_volume_db
+		if "sfx_move_hurt_volume_db" in ExportSettings:
+			sfx_hurt_volume_db = ExportSettings.sfx_move_hurt_volume_db
+		if "sfx_move_death_volume_db" in ExportSettings:
+			sfx_death_volume_db = ExportSettings.sfx_move_death_volume_db
+		if "sfx_move_pitch_randomness" in ExportSettings:
+			sfx_move_pitch_randomness = ExportSettings.sfx_move_pitch_randomness
+		if "sfx_move_falling_speed_threshold" in ExportSettings:
+			sfx_move_falling_speed_threshold = ExportSettings.sfx_move_falling_speed_threshold
 
 func _ready() -> void:
 	_init_footstep_sounds()
+	_init_move_sounds()
 	_sync_from_export_settings()
 	move_state_machine.init(self, ani_move, gameInputControl)
 	
@@ -229,6 +291,97 @@ func _physics_process(delta: float) -> void:
 		ResetDoubleJump()
 
 	_handle_footstep_audio(delta)
+	_handle_continuous_move_audio(delta)
+
+## 初始化加载动作音频资源
+func _init_move_sounds() -> void:
+	if not sfx_dash and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/Dash.wav"):
+		sfx_dash = load("res://Music/SFX/Move-SFX_Move_DryOrWet/Dash.wav")
+	if not sfx_jump_first and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/JumpFirst.wav"):
+		sfx_jump_first = load("res://Music/SFX/Move-SFX_Move_DryOrWet/JumpFirst.wav")
+	if not sfx_jump_second and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/JumpSecond.wav"):
+		sfx_jump_second = load("res://Music/SFX/Move-SFX_Move_DryOrWet/JumpSecond.wav")
+	if not sfx_wall_jump and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallJump.wav"):
+		sfx_wall_jump = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallJump.wav")
+	if not sfx_wall_sliding and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav"):
+		sfx_wall_sliding = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav")
+	if not sfx_rising_falling and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/RisingFalling.wav"):
+		sfx_rising_falling = load("res://Music/SFX/Move-SFX_Move_DryOrWet/RisingFalling.wav")
+	if not sfx_hurt and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/Hurt.wav"):
+		sfx_hurt = load("res://Music/SFX/Move-SFX_Move_DryOrWet/Hurt.wav")
+	if not sfx_death and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/Death.wav"):
+		sfx_death = load("res://Music/SFX/Move-SFX_Move_DryOrWet/Death.wav")
+
+## 播放动作音效通用接口
+## @param stream 音频资源
+## @param volume_offset 分贝偏移
+## @param custom_pitch 自定义基准音调
+func PlayMoveSFX(stream: AudioStream, volume_offset: float = 0.0, custom_pitch: float = 1.0) -> void:
+	if not stream or not move_audio:
+		return
+	if move_audio.bus != sfx_move_bus:
+		move_audio.bus = sfx_move_bus
+	move_audio.stream = stream
+	move_audio.volume_db = sfx_move_volume_db + volume_offset
+	if sfx_move_pitch_randomness > 0.0:
+		move_audio.pitch_scale = custom_pitch * randf_range(1.0 - sfx_move_pitch_randomness, 1.0 + sfx_move_pitch_randomness)
+	else:
+		move_audio.pitch_scale = custom_pitch
+	move_audio.play()
+
+## 播放冲刺音效
+func PlayDashSFX() -> void:
+	PlayMoveSFX(sfx_dash, sfx_dash_volume_db)
+
+## 播放一段跳起跳音效
+func PlayJumpFirstSFX() -> void:
+	PlayMoveSFX(sfx_jump_first, sfx_jump_first_volume_db)
+
+## 播放二段跳起跳音效
+func PlayJumpSecondSFX() -> void:
+	PlayMoveSFX(sfx_jump_second, sfx_jump_second_volume_db)
+
+## 播放蹬墙跳音效
+func PlayWallJumpSFX() -> void:
+	PlayMoveSFX(sfx_wall_jump, sfx_wall_jump_volume_db)
+
+## 播放受击音效
+func PlayHurtSFX() -> void:
+	PlayMoveSFX(sfx_hurt, sfx_hurt_volume_db)
+
+## 播放死亡音效
+func PlayDeathSFX() -> void:
+	PlayMoveSFX(sfx_death, sfx_death_volume_db)
+
+## 处理持续性动作音效（贴墙滑落、空中高速下落呼啸）
+func _handle_continuous_move_audio(_delta: float) -> void:
+	var cur_state = move_state_machine.cur_state_name if move_state_machine else ""
+
+	# 1. 贴墙下滑音效：在 climb 状态且正在沿墙下滑
+	var should_slide = (cur_state == "climb" and is_front_has_rigid and not is_on_floor() and velocity.y > 10.0)
+	if should_slide:
+		if slide_audio and not slide_audio.playing and sfx_wall_sliding:
+			if slide_audio.bus != sfx_move_bus:
+				slide_audio.bus = sfx_move_bus
+			slide_audio.stream = sfx_wall_sliding
+			slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db
+			slide_audio.play()
+	else:
+		if slide_audio and slide_audio.playing:
+			slide_audio.stop()
+
+	# 2. 空中起伏与下落呼啸音效：在空中且下落速度较快时播放，落地或进入特殊状态停止
+	var should_fall = (not is_on_floor() and velocity.y >= sfx_move_falling_speed_threshold and cur_state != "climb" and cur_state != "died" and not is_special_state)
+	if should_fall:
+		if fall_audio and not fall_audio.playing and sfx_rising_falling:
+			if fall_audio.bus != sfx_move_bus:
+				fall_audio.bus = sfx_move_bus
+			fall_audio.stream = sfx_rising_falling
+			fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db
+			fall_audio.play()
+	else:
+		if fall_audio and fall_audio.playing:
+			fall_audio.stop()
 
 ## 初始化加载脚步声音频资源
 func _init_footstep_sounds() -> void:
@@ -325,6 +478,10 @@ func SetRespawnPosition(new_pos: Vector2) -> void:
 
 ## 执行玩家重生并恢复满血
 func Respawn() -> void:
+	if slide_audio and slide_audio.playing:
+		slide_audio.stop()
+	if fall_audio and fall_audio.playing:
+		fall_audio.stop()
 	global_position = respawn_position
 	velocity = Vector2.ZERO
 	ResetDashAndRope()
@@ -344,6 +501,7 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 		hurt_lock = false
 		if knockback != Vector2.ZERO:
 			velocity = knockback
+		PlayHurtSFX()
 		move_state_machine.change_state("hurt")
 		if SignalBus:
 			SignalBus.PlayerHurt.emit(damage, knockback)

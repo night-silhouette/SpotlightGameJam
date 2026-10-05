@@ -2,6 +2,8 @@ extends State
 
 func enter() -> void:
 	change_use_all(false)
+	if obj and obj.has_method("PlayDashSFX"):
+		obj.PlayDashSFX()
 	Util.setTime(obj.dash_time, func():
 		change_use_all(true)
 	)

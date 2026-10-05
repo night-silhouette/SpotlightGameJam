@@ -13,4 +13,6 @@ func physics_process(_delta: float) -> void:
 			obj.wall_jump_lock_dir = obj.face_dir
 			obj.velocity.y = -obj.climb_ability
 			obj.velocity.x = -obj.climb_ability * 0.9 * obj.face_dir
+			if obj.has_method("PlayWallJumpSFX"):
+				obj.PlayWallJumpSFX()
 			finished.emit("fall")

@@ -13,6 +13,8 @@ func enter() -> void:
 	
 	if obj:
 		obj.velocity = Vector2.ZERO
+		if obj.has_method("PlayDeathSFX"):
+			obj.PlayDeathSFX()
 	
 	var delay = 1.0
 	if ExportSettings and "tent_respawn_delay" in ExportSettings:

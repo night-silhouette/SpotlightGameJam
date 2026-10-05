@@ -214,4 +214,13 @@ hframes = 4
 vframes = 2
 
 [node name="FootstepAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742819]
+bus = &"SFX_Footstep_Wet"
+
+[node name="MoveAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742820]
+bus = &"SFX_Move_Wet"
+
+[node name="SlideAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742821]
+bus = &"SFX_Move_Wet"
+
+[node name="FallAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742822]
 bus = &"SFX_Move_Wet"

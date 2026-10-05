@@ -15,16 +15,24 @@ func enter() -> void:
 
 	if obj.is_on_floor():
 		obj.velocity.y = -obj.jump_speed
+		if obj.has_method("PlayJumpFirstSFX"):
+			obj.PlayJumpFirstSFX()
 	elif not obj.is_back_has_rigid and not obj.is_front_has_rigid:
 		# 空中二段跳
 		if "double_jump_count" in obj and obj.double_jump_count > 0:
 			obj.double_jump_count -= 1
 			var d_speed = obj.double_jump_speed if "double_jump_speed" in obj else obj.jump_speed
 			obj.velocity.y = -d_speed
+			if obj.has_method("PlayJumpSecondSFX"):
+				obj.PlayJumpSecondSFX()
 		else:
 			obj.velocity.y = -obj.jump_speed
+			if obj.has_method("PlayJumpFirstSFX"):
+				obj.PlayJumpFirstSFX()
 	else:
 		obj.velocity.y = -obj.jump_speed
+		if obj.has_method("PlayJumpFirstSFX"):
+			obj.PlayJumpFirstSFX()
 
 	if obj.is_back_has_rigid:
 		var back_wall_dir = -obj.face_dir
@@ -32,6 +40,8 @@ func enter() -> void:
 			obj.wall_jump_lock_dir = back_wall_dir
 			obj.velocity.y = -obj.climb_ability
 			obj.velocity.x = obj.climb_ability * 0.9 * obj.face_dir
+			if obj.has_method("PlayWallJumpSFX"):
+				obj.PlayWallJumpSFX()
 
 	change_use_all(false)
 	var hurt_node = state_machine.get_node_or_null("hurt")

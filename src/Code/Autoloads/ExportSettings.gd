@@ -47,7 +47,7 @@ extends Node
 
 @export_group("Audio & Footsteps", "player_footstep_")
 ## 脚步声使用的音频总线名称 (Audio Bus)
-@export var player_footstep_bus: StringName = &"SFX_Move_Wet"
+@export var player_footstep_bus: StringName = &"SFX_Footstep_Wet"
 ## 行走/奔跑时脚步声播放间隔时长 (秒)
 @export var player_footstep_interval: float = 0.22
 ## 起步迈出第一步时的前置延迟 (秒)
@@ -56,6 +56,36 @@ extends Node
 @export var player_footstep_volume_db: float = -2.0
 ## 脚步声音调微机随机变化范围 (pitch_scale: 1.0 ± 变化值，0 为固定音调)
 @export var player_footstep_pitch_randomness: float = 0.08
+
+@export_group("Audio & Move SFX", "sfx_move_")
+## 动作音效使用的音频总线名称 (Audio Bus，如 SFX_Move_Wet 或 SFX_Move_Dry)
+@export var sfx_move_bus: StringName = &"SFX_Move_Wet"
+## 动作音效音量分贝 (dB)
+@export var sfx_move_volume_db: float = 0.0
+## 冲刺音效音量分贝 (dB)
+@export var sfx_move_dash_volume_db: float = 0.0
+## 一段跳起跳音效音量分贝 (dB)
+@export var sfx_move_jump_first_volume_db: float = 0.0
+## 二段跳音效音量分贝 (dB)
+@export var sfx_move_jump_second_volume_db: float = 0.0
+## 蹬墙跳音效音量分贝 (dB)
+@export var sfx_move_wall_jump_volume_db: float = 0.0
+## 贴墙滑落音效音量分贝 (dB)
+@export var sfx_move_wall_sliding_volume_db: float = -2.0
+## 下落/滞空起落呼啸音效音量分贝 (dB)
+@export var sfx_move_rising_falling_volume_db: float = -4.0
+## 钩索发射音效音量分贝 (dB)
+@export var sfx_move_shoot_hook_volume_db: float = 0.0
+## 钩索拉拽飞行音效音量分贝 (dB)
+@export var sfx_move_pulling_hook_volume_db: float = 0.0
+## 受伤音效音量分贝 (dB)
+@export var sfx_move_hurt_volume_db: float = 0.0
+## 死亡音效音量分贝 (dB)
+@export var sfx_move_death_volume_db: float = 0.0
+## 动作音效音调随机浮动范围 (0 为固定音调)
+@export var sfx_move_pitch_randomness: float = 0.05
+## 触发下落呼啸音效的垂直下落速度阈值
+@export var sfx_move_falling_speed_threshold: float = 260.0
 
 @export_group("Rope & Grapple", "rope_")
 ## 使用绳索每次消耗的生命值
