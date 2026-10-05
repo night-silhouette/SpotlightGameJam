@@ -202,4 +202,31 @@ signal FallingBlockLanded(block_node: Node2D)
 
 #endregion
 
+
+#region 5. 设置与存档系统事件
+
+## 按键绑定变更并持久化保存时触发
+## @param action_name 变更的输入动作名
+## @param event 绑定的输入事件描述
+signal KeybindChanged(action_name: StringName, event_desc: String)
+
+## 请求打开或关闭设置界面
+## @param is_open 是否打开
+signal SettingVisibilityRequested(is_open: bool)
+
+## 存档已成功保存/新建时触发
+## @param slot_index 槽位索引 (1-5)
+signal SaveSlotSaved(slot_index: int)
+
+## 存档被载入应用时触发
+## @param slot_index 槽位索引 (1-5)
+signal SaveSlotLoaded(slot_index: int)
+
+## 存档槽位被删除时触发
+## @param slot_index 槽位索引 (1-5)
+signal SaveSlotDeleted(slot_index: int)
+
+#endregion
+
+
  

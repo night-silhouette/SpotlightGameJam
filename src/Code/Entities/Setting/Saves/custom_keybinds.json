@@ -1,0 +1,50 @@
+{
+	"dash": {
+		"keycode": 0,
+		"physical_keycode": 4194327,
+		"type": "key"
+	},
+	"down": {
+		"keycode": 0,
+		"physical_keycode": 83,
+		"type": "key"
+	},
+	"interact": {
+		"keycode": 71,
+		"physical_keycode": 71,
+		"type": "key"
+	},
+	"jump": {
+		"keycode": 0,
+		"physical_keycode": 32,
+		"type": "key"
+	},
+	"move_l": {
+		"keycode": 65,
+		"physical_keycode": 65,
+		"type": "key"
+	},
+	"move_r": {
+		"keycode": 0,
+		"physical_keycode": 68,
+		"type": "key"
+	},
+	"rope_shoot": {
+		"button_index": 1,
+		"type": "mouse_button"
+	},
+	"rope_swing": {
+		"button_index": 2,
+		"type": "mouse_button"
+	},
+	"up": {
+		"keycode": 0,
+		"physical_keycode": 87,
+		"type": "key"
+	},
+	"water_rune": {
+		"keycode": 0,
+		"physical_keycode": 69,
+		"type": "key"
+	}
+}

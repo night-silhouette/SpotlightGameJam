@@ -246,3 +246,13 @@ extends Node
 @export var mobile_jump_button_radius: float = 52.0
 ## 冲刺按钮半径 (像素，默认 44)
 @export var mobile_dash_button_radius: float = 44.0
+
+@export_group("Setting & Save System", "setting_")
+## 最大允许的存档槽位数 (固定为 5)
+@export var setting_max_save_slots: int = 5
+## 存档文件路径前缀模版 (支持 res://Saves/save_slot_ 或 user://save_slot_)
+@export var setting_save_path_prefix: String = "res://Code/Entities/Setting/Saves/save_slot_"
+## 按键绑定持久化文件路径 (独立于存档槽位)
+@export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
+## 设置界面背景透明度
+@export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
