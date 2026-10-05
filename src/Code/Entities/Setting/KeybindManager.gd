@@ -18,7 +18,6 @@ const CONFIGURABLE_ACTIONS: Array[StringName] = [
 	&"jump",
 	&"dash",
 	&"rope_shoot",
-	&"rope_swing",
 	&"water_rune",
 	&"interact"
 ]
@@ -33,10 +32,10 @@ static func GetActionDisplayName(action: StringName) -> String:
 		&"jump": return "跳跃"
 		&"dash": return "冲刺"
 		&"rope_shoot": return "绳索发射/拉取"
-		&"rope_swing": return "绳索摆动"
 		&"water_rune": return "水符文技能"
 		&"interact": return "场景交互"
 		_: return String(action)
+
 
 ## 获取保存文件路径
 static func GetSavePath() -> String:
@@ -105,6 +104,27 @@ static func GetPrimaryEventForAction(action: StringName) -> InputEvent:
 	if events.size() > 0:
 		return events[0]
 	return null
+
+## 获取指定动作绑定的快捷按键友好显示短文本 (例如 "F", "E", "Space", "左键" 等)
+## @param action 动作名称
+## @param fallback_text 未找到时的保底文本
+static func GetActionKeyBadgeText(action: StringName, fallback_text: String = "") -> String:
+	var ev = GetPrimaryEventForAction(action)
+	if not ev:
+		return fallback_text
+	if ev is InputEventKey:
+		var code = ev.physical_keycode if ev.physical_keycode != 0 else ev.keycode
+		if code != 0:
+			var s = OS.get_keycode_string(code)
+			return s.to_upper()
+	elif ev is InputEventMouseButton:
+		match ev.button_index:
+			MOUSE_BUTTON_LEFT: return "左键"
+			MOUSE_BUTTON_RIGHT: return "右键"
+			MOUSE_BUTTON_MIDDLE: return "中键"
+			_: return "M" + str(ev.button_index)
+	return fallback_text
+
 
 ## 保存所有动作的主绑定到独立 json
 static func SaveKeybinds() -> Error:
