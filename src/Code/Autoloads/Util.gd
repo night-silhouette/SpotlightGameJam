@@ -123,6 +123,47 @@ class AreaHoldHelper extends Node:
 func Area2dConnectHold(area2d: Area2D, press_callback: Callable, release_callback: Callable = Callable()) -> void:
 	var helper = AreaHoldHelper.new(area2d, press_callback, release_callback)
 	area2d.add_child(helper)
+
+## 播放音效辅助函数（自动挂接到对应总线并在播放完毕后释放）
+## @param stream 要播放的音频资源 (AudioStream)
+## @param bus_name 总线名称 (如 "SFX_Interact", "SFX_Move_Dry", "SFX_Footstep_Dry" 等)
+## @param volume_db 音量分贝调节
+## @param pitch 音调缩放
+## @return 生成的 AudioStreamPlayer 实例
+func PlaySFX(stream: AudioStream, bus_name: StringName = &"SFX_Interact", volume_db: float = 0.0, pitch: float = 1.0) -> AudioStreamPlayer:
+	if not stream:
+		return null
+	var player = AudioStreamPlayer.new()
+	player.stream = stream
+	player.bus = bus_name
+	player.volume_db = volume_db
+	player.pitch_scale = pitch
+	get_tree().root.add_child(player)
+	player.play()
+	player.finished.connect(player.queue_free)
+	return player
+
+## 2D空间位置播放音效辅助函数（自动挂接到对应总线并在播放完毕后释放）
+## @param stream 要播放的音频资源 (AudioStream)
+## @param global_pos 播放的世界坐标
+## @param bus_name 总线名称 (如 "SFX_Interact", "SFX_Move_Dry" 等)
+## @param volume_db 音量分贝调节
+## @param pitch 音调缩放
+## @return 生成的 AudioStreamPlayer2D 实例
+func PlaySFX2D(stream: AudioStream, global_pos: Vector2, bus_name: StringName = &"SFX_Interact", volume_db: float = 0.0, pitch: float = 1.0) -> AudioStreamPlayer2D:
+	if not stream:
+		return null
+	var player = AudioStreamPlayer2D.new()
+	player.stream = stream
+	player.bus = bus_name
+	player.volume_db = volume_db
+	player.pitch_scale = pitch
+	player.global_position = global_pos
+	get_tree().root.add_child(player)
+	player.play()
+	player.finished.connect(player.queue_free)
+	return player
+
 	
 	
 

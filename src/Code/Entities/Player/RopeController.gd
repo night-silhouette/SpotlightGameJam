@@ -32,6 +32,19 @@ enum RopeState {
 ## 绳索检测的物理层级掩码 (默认层1 world + 层3 enemy/实体 = 1 | 4 = 5)
 @export_flags_2d_physics var collision_mask: int = 5
 
+@export_group("Rope SFX", "sfx_rope_")
+## 钩索发射音效
+@export var sfx_shoot_hook: AudioStream = null
+@export var sfx_shoot_hook_volume_db: float = 0.0
+## 钩索拉拽音效
+@export var sfx_pulling_hook: AudioStream = null
+@export var sfx_pulling_hook_volume_db: float = 0.0
+## 钩索音效音频总线
+@export var sfx_rope_bus: StringName = &"SFX_Move_Wet"
+
+var _pull_audio: AudioStreamPlayer2D = null
+var _shoot_audio: AudioStreamPlayer2D = null
+
 var current_state: RopeState = RopeState.IDLE
 var hook_point: Vector2 = Vector2.ZERO
 var hook_target_node: Node2D = null
@@ -75,8 +88,32 @@ func _sync_from_export_settings() -> void:
 		swing_input_accel = ExportSettings.rope_swing_input_accel
 		swing_damping = ExportSettings.rope_swing_damping
 		collision_mask = ExportSettings.rope_collision_mask
+		if "sfx_move_bus" in ExportSettings:
+			sfx_rope_bus = ExportSettings.sfx_move_bus
+		if "sfx_move_shoot_hook_volume_db" in ExportSettings:
+			sfx_shoot_hook_volume_db = ExportSettings.sfx_move_shoot_hook_volume_db
+		if "sfx_move_pulling_hook_volume_db" in ExportSettings:
+			sfx_pulling_hook_volume_db = ExportSettings.sfx_move_pulling_hook_volume_db
+
+func _init_rope_sounds() -> void:
+	if not sfx_shoot_hook and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/ShootHook.wav"):
+		sfx_shoot_hook = load("res://Music/SFX/Move-SFX_Move_DryOrWet/ShootHook.wav")
+	if not sfx_pulling_hook and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/PullingHook.wav"):
+		sfx_pulling_hook = load("res://Music/SFX/Move-SFX_Move_DryOrWet/PullingHook.wav")
+	
+	if not _shoot_audio:
+		_shoot_audio = AudioStreamPlayer2D.new()
+		_shoot_audio.name = "ShootHookAudio"
+		_shoot_audio.bus = sfx_rope_bus
+		add_child(_shoot_audio)
+	if not _pull_audio:
+		_pull_audio = AudioStreamPlayer2D.new()
+		_pull_audio.name = "PullHookAudio"
+		_pull_audio.bus = sfx_rope_bus
+		add_child(_pull_audio)
 
 func _ready() -> void:
+	_init_rope_sounds()
 	_sync_from_export_settings()
 	if not line_2d:
 		line_2d = Line2D.new()
@@ -129,12 +166,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_released("rope_shoot"):
 		get_viewport().set_input_as_handled()
 		_on_rope_shoot_released()
-	elif event.is_action_pressed("rope_swing"):
-		var mouse_event = event as InputEventMouseButton
-		if mouse_event and _is_pos_over_ui(mouse_event.position):
-			return
-		get_viewport().set_input_as_handled()
-		_on_rope_swing_pressed()
 	elif event.is_action_pressed("jump"):
 		_on_jump_pressed()
 
@@ -264,6 +295,13 @@ func _shoot_rope() -> bool:
 	var ray_target = player.global_position + fly_dir * max_rope_length
 
 	SignalBus.PlayerGrappleLaunched.emit(ray_target)
+
+	if _shoot_audio and sfx_shoot_hook:
+		if _shoot_audio.bus != sfx_rope_bus:
+			_shoot_audio.bus = sfx_rope_bus
+		_shoot_audio.stream = sfx_shoot_hook
+		_shoot_audio.volume_db = sfx_shoot_hook_volume_db
+		_shoot_audio.play()
 
 	fly_distance = 0.0
 	fly_tip_pos = player.global_position
@@ -401,6 +439,13 @@ func _start_pull() -> void:
 	player.is_special_state = true
 	_update_line()
 
+	if _pull_audio and sfx_pulling_hook:
+		if _pull_audio.bus != sfx_rope_bus:
+			_pull_audio.bus = sfx_rope_bus
+		_pull_audio.stream = sfx_pulling_hook
+		_pull_audio.volume_db = sfx_pulling_hook_volume_db
+		_pull_audio.play()
+
 func _process_pulling(delta: float) -> void:
 	_sync_hook_point()
 	pull_timer += delta
@@ -512,6 +557,9 @@ func _release_rope(preserve_velocity: bool) -> void:
 	window_timer = 0.0
 	pull_timer = 0.0
 	line_2d.visible = false
+
+	if _pull_audio and _pull_audio.playing:
+		_pull_audio.stop()
 
 	if player:
 		player.is_special_state = false
