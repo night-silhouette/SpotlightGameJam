@@ -69,6 +69,9 @@ var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
 var wall_jump_lock_dir: int = 0
 
+## 玩家重生点坐标 (初始为出生点，交互帐篷后刷新)
+var respawn_position: Vector2 = Vector2.ZERO
+
 ## 当前剩余二段跳可用次数
 var double_jump_count: int = 1
 
@@ -132,9 +135,12 @@ func _ready() -> void:
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
 	gameInputControl.special_state_end.connect(func(_state): is_special_state = false)
 	
+	respawn_position = global_position
+	
 	if SignalBus:
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
+		SignalBus.TentActivated.connect(_on_tent_activated)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
 
 func _process(delta: float) -> void:
@@ -297,6 +303,26 @@ func _on_start_player_hp_drain(drain_rate: float) -> void:
 func _on_stop_player_hp_drain() -> void:
 	StopHpDrain()
 
+func _on_tent_activated(_tent_node: Node2D, spawn_pos: Vector2) -> void:
+	SetRespawnPosition(spawn_pos)
+
+## 设置重生点坐标
+## @param new_pos 新的重生点世界坐标
+func SetRespawnPosition(new_pos: Vector2) -> void:
+	respawn_position = new_pos
+
+## 执行玩家重生并恢复满血
+func Respawn() -> void:
+	global_position = respawn_position
+	velocity = Vector2.ZERO
+	ResetDashAndRope()
+	hurt_lock = true
+	now_HP = Max_HP
+	if SignalBus:
+		SignalBus.PlayerRespawned.emit(respawn_position)
+	if move_state_machine:
+		move_state_machine.change_state("idle")
+
 ## 受到伤害的公共方法
 ## @param damage 受到的伤害数值
 ## @param knockback 击退冲量向量 (可选，默认 Vector2.ZERO)
@@ -351,7 +377,9 @@ func ExportSaveData() -> Dictionary:
 		"position_x": global_position.x,
 		"position_y": global_position.y,
 		"now_hp": now_HP,
-		"max_hp": Max_HP
+		"max_hp": Max_HP,
+		"respawn_x": respawn_position.x,
+		"respawn_y": respawn_position.y
 	}
 
 ## 实体数据加载
@@ -363,3 +391,5 @@ func LoadSaveData(data: Dictionary) -> void:
 		Max_HP = data["max_hp"]
 	if data.has("now_hp"):
 		now_HP = data["now_hp"]
+	if data.has("respawn_x") and data.has("respawn_y"):
+		respawn_position = Vector2(data["respawn_x"], data["respawn_y"])

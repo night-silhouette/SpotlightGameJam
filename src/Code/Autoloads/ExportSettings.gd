@@ -119,6 +119,14 @@ extends Node
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
 
+@export_group("Interactive - Tent", "tent_")
+## 帐篷重生延迟时长 (秒，玩家死亡后多久在帐篷重生)
+@export var tent_respawn_delay: float = 1.0
+## 重生时相对帐篷中心的原点偏移 (Vector2)
+@export var tent_respawn_offset: Vector2 = Vector2(0, 0)
+## 帐篷交互检测交互范围宽度/高度
+@export var tent_interaction_size: Vector2 = Vector2(48.0, 40.0)
+
 @export_group("Interactive - Crumbling Platform", "crumble_")
 ## 踩踏后震颤延迟坍塌时间 (秒)
 @export var crumble_delay: float = 0.6

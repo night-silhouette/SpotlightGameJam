@@ -1,17 +1,17 @@
-[gd_scene format=3 uid="uid://ddy27q8b8l3ox"]
+[gd_scene format=3 uid="uid://c7mxy8v3k1q1w"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.gd" id="1_chalice"]
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/Tent/Tent.gd" id="1_tent"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_chalice"]
-size = Vector2(28, 36)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tent"]
+size = Vector2(48, 40)
 
-[sub_resource type="Gradient" id="Gradient_light"]
-colors = PackedColorArray(0.3, 0.8, 1, 1, 0, 0, 0, 0)
+[sub_resource type="Gradient" id="Gradient_tent_light"]
+colors = PackedColorArray(1, 0.8, 0.4, 1, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_light"]
-gradient = SubResource("Gradient_light")
-width = 64
-height = 64
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tent_light"]
+gradient = SubResource("Gradient_tent_light")
+width = 128
+height = 128
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
@@ -68,47 +68,49 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="MiniChaliceStation" type="Area2D" groups=["chalice", "interactive"]]
+[node name="Tent" type="Area2D" groups=["interactive", "tent"]]
 collision_layer = 0
 collision_mask = 2
-script = ExtResource("1_chalice")
-
-[node name="ChaliceBase" type="ColorRect" parent="."]
-offset_left = -10.0
-offset_top = -6.0
-offset_right = 10.0
-offset_bottom = 0.0
-color = Color(0.65, 0.55, 0.35, 1)
-
-[node name="GlowCup" type="ColorRect" parent="."]
-offset_left = -7.0
-offset_top = -24.0
-offset_right = 7.0
-offset_bottom = -6.0
-color = Color(0.2, 0.85, 1, 0.9)
+script = ExtResource("1_tent")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -14)
-shape = SubResource("RectangleShape2D_chalice")
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_tent")
+
+[node name="TentVisual" type="Node2D" parent="."]
+
+[node name="TentFabric" type="Polygon2D" parent="TentVisual"]
+color = Color(0.42, 0.34, 0.26, 1)
+polygon = PackedVector2Array(-24, 0, 0, -36, 24, 0)
+
+[node name="TentDoor" type="Polygon2D" parent="TentVisual"]
+color = Color(0.22, 0.16, 0.12, 1)
+polygon = PackedVector2Array(-10, 0, 0, -22, 10, 0)
+
+[node name="TentPole" type="Line2D" parent="TentVisual"]
+points = PackedVector2Array(0, -38, 0, 0)
+width = 2.0
+default_color = Color(0.65, 0.52, 0.35, 1)
 
 [node name="LightGlow" type="PointLight2D" parent="."]
-position = Vector2(0, -15)
-color = Color(0.3, 0.85, 1, 1)
-energy = 1.2
-texture = SubResource("GradientTexture2D_light")
-texture_scale = 1.8
+position = Vector2(0, -18)
+enabled = false
+color = Color(1, 0.85, 0.5, 1)
+energy = 1.0
+texture = SubResource("GradientTexture2D_tent_light")
+texture_scale = 1.5
 
-[node name="PromptContainer" type="Control" parent="." unique_id=264575131]
+[node name="PromptContainer" type="Control" parent="."]
 visible = false
 layout_mode = 3
 anchors_preset = 0
-offset_left = -44.0
-offset_top = -54.0
-offset_right = 44.0
-offset_bottom = -28.0
+offset_left = -56.0
+offset_top = -64.0
+offset_right = 56.0
+offset_bottom = -38.0
 mouse_filter = 2
 
-[node name="PromptButton" type="Button" parent="PromptContainer" unique_id=381920412]
+[node name="PromptButton" type="Button" parent="PromptContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -122,7 +124,7 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_prompt_normal")
 theme_override_styles/hover = SubResource("StyleBoxFlat_prompt_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_prompt_pressed")
 
-[node name="HBox" type="HBoxContainer" parent="PromptContainer" unique_id=402194812]
+[node name="HBox" type="HBoxContainer" parent="PromptContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,7 +137,7 @@ mouse_filter = 2
 theme_override_constants/separation = 5
 alignment = 1
 
-[node name="KeyBadge" type="Label" parent="PromptContainer/HBox" unique_id=712903482]
+[node name="KeyBadge" type="Label" parent="PromptContainer/HBox"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
@@ -145,25 +147,25 @@ text = "F"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ActionLabel" type="Label" parent="PromptContainer/HBox" unique_id=892301948]
+[node name="ActionLabel" type="Label" parent="PromptContainer/HBox"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 13
-text = "饮用"
+text = "设为重生点"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CooldownLabel" type="Label" parent="."]
+[node name="StatusLabel" type="Label" parent="."]
 visible = false
-offset_left = -50.0
-offset_top = -46.0
-offset_right = 50.0
-offset_bottom = -26.0
-theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.9)
+offset_left = -60.0
+offset_top = -54.0
+offset_right = 60.0
+offset_bottom = -34.0
+theme_override_colors/font_color = Color(1, 0.88, 0.5, 0.9)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
 theme_override_font_sizes/font_size = 11
-text = "充能中..."
+text = "重生点已设置"
 horizontal_alignment = 1
 vertical_alignment = 1

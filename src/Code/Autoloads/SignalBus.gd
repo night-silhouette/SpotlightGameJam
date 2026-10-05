@@ -153,6 +153,15 @@ signal SpikesRetracted(spikes_node: Node2D)
 ## @param station_node 圣杯站节点
 signal ChaliceStationUsed(station_node: Node2D)
 
+## 玩家激活帐篷设置重生点时触发
+## @param tent_node 帐篷节点
+## @param respawn_position 重生点世界坐标
+signal TentActivated(tent_node: Node2D, respawn_position: Vector2)
+
+## 玩家在重生点完成重生时触发
+## @param respawn_position 重生点世界坐标
+signal PlayerRespawned(respawn_position: Vector2)
+
 ## 易碎平台开始开裂震颤时触发
 ## @param platform_node 易碎平台节点
 signal PlatformCracked(platform_node: Node2D)
