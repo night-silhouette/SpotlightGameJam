@@ -72,6 +72,10 @@ var wall_jump_lock_dir: int = 0
 ## 玩家重生点坐标 (初始为出生点，交互帐篷后刷新)
 var respawn_position: Vector2 = Vector2.ZERO
 
+## 玩家初始关卡出生点坐标
+var spawn_position: Vector2 = Vector2.ZERO
+
+
 ## 当前剩余二段跳可用次数
 var double_jump_count: int = 1
 
@@ -83,6 +87,8 @@ var _water_flow_area_count: int = 0
 var rope_momentum_timer: float = 0.0
 
 @export_group("audio_prop")
+## 脚步声音频总线名称
+@export var footstep_bus: StringName = &"SFX_Move_Wet"
 ## 脚步声音效资源数组 (5个脚步声)
 @export var footstep_sounds: Array[AudioStream] = []
 ## 脚步声播放间隔
@@ -118,6 +124,8 @@ func _sync_from_export_settings() -> void:
 		Max_HP = ExportSettings.player_max_hp
 		now_HP = ExportSettings.player_max_hp
 		hp_drain_rate = ExportSettings.player_hp_drain_rate
+		if "player_footstep_bus" in ExportSettings:
+			footstep_bus = ExportSettings.player_footstep_bus
 		if "player_footstep_interval" in ExportSettings:
 			footstep_interval = ExportSettings.player_footstep_interval
 		if "player_footstep_initial_delay" in ExportSettings:
@@ -136,6 +144,8 @@ func _ready() -> void:
 	gameInputControl.special_state_end.connect(func(_state): is_special_state = false)
 	
 	respawn_position = global_position
+	spawn_position = global_position
+
 	
 	if SignalBus:
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
@@ -266,6 +276,8 @@ func PlayRandomFootstep() -> void:
 		pick_idx = (pick_idx + 1 + (randi() % (count - 1))) % count
 	_last_footstep_index = pick_idx
 
+	if footstep_audio.bus != footstep_bus:
+		footstep_audio.bus = footstep_bus
 	footstep_audio.stream = footstep_sounds[pick_idx]
 	footstep_audio.volume_db = footstep_volume_db
 	if footstep_pitch_randomness > 0.0:
@@ -378,6 +390,8 @@ func ExportSaveData() -> Dictionary:
 		"position_y": global_position.y,
 		"now_hp": now_HP,
 		"max_hp": Max_HP,
+		"spawn_x": spawn_position.x,
+		"spawn_y": spawn_position.y,
 		"respawn_x": respawn_position.x,
 		"respawn_y": respawn_position.y
 	}
@@ -391,5 +405,7 @@ func LoadSaveData(data: Dictionary) -> void:
 		Max_HP = data["max_hp"]
 	if data.has("now_hp"):
 		now_HP = data["now_hp"]
+	if data.has("spawn_x") and data.has("spawn_y"):
+		spawn_position = Vector2(data["spawn_x"], data["spawn_y"])
 	if data.has("respawn_x") and data.has("respawn_y"):
 		respawn_position = Vector2(data["respawn_x"], data["respawn_y"])

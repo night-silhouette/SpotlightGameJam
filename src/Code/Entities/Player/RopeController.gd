@@ -129,12 +129,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_released("rope_shoot"):
 		get_viewport().set_input_as_handled()
 		_on_rope_shoot_released()
-	elif event.is_action_pressed("rope_swing"):
-		var mouse_event = event as InputEventMouseButton
-		if mouse_event and _is_pos_over_ui(mouse_event.position):
-			return
-		get_viewport().set_input_as_handled()
-		_on_rope_swing_pressed()
 	elif event.is_action_pressed("jump"):
 		_on_jump_pressed()
 

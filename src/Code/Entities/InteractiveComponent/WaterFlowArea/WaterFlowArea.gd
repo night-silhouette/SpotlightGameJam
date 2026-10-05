@@ -28,7 +28,10 @@ class_name WaterFlowArea
 ## 靠近使用水符文石交互的有效距离
 @export var interact_radius: float = 120.0
 
+const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
+
 @onready var solid_collision: CollisionShape2D = $SolidCollision
+
 @onready var fluid_area: Area2D = $FluidArea
 @onready var fluid_collision: CollisionShape2D = $FluidArea/FluidCollision
 @onready var visual_rect: ColorRect = $VisualRect
@@ -52,6 +55,13 @@ func _ready() -> void:
 
 	if prompt_button:
 		prompt_button.pressed.connect(_on_prompt_pressed)
+	if SignalBus:
+		SignalBus.KeybindChanged.connect(_on_keybind_changed)
+
+func _on_keybind_changed(_action_name: StringName, _event_desc: String) -> void:
+	if _player_in_range:
+		_update_prompt(true)
+
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -191,22 +201,24 @@ func _update_prompt(show_it: bool) -> void:
 				nearby_count += 1
 
 	var action_name = "凝固" if is_fluid else "水化"
+	var rune_key_str = KeybindManagerRef.GetActionKeyBadgeText(&"water_rune", "E")
 
 	if nearby_count > 1:
 		# 存在多个流水区域冲突，计算该区域相对玩家的大致方向提示
 		var to_self = global_position - p_pos
-		var dir_hint = ""
+		var dir_key_str = ""
 		if abs(to_self.x) >= abs(to_self.y):
-			dir_hint = "D+E" if to_self.x > 0 else "A+E"
+			dir_key_str = KeybindManagerRef.GetActionKeyBadgeText(&"move_r", "D") if to_self.x > 0 else KeybindManagerRef.GetActionKeyBadgeText(&"move_l", "A")
 		else:
-			dir_hint = "S+E" if to_self.y > 0 else "W+E"
+			dir_key_str = KeybindManagerRef.GetActionKeyBadgeText(&"down", "S") if to_self.y > 0 else KeybindManagerRef.GetActionKeyBadgeText(&"up", "W")
 		if key_badge:
-			key_badge.text = dir_hint
+			key_badge.text = "%s+%s" % [dir_key_str, rune_key_str]
 	else:
 		if key_badge:
-			key_badge.text = "E"
+			key_badge.text = rune_key_str
 
 	if action_label:
+
 		action_label.text = action_name
 
 func _on_fluid_area_body_entered(body: Node2D) -> void:

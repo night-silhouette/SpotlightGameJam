@@ -19,7 +19,10 @@ class_name Tent
 ## 重生点相对帐篷的局部位置偏移
 @export var respawn_offset: Vector2 = Vector2.ZERO
 
+const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
+
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+
 @onready var tent_sprite: CanvasItem = $TentVisual
 @onready var light_glow: PointLight2D = $LightGlow
 @onready var prompt_container: Control = $PromptContainer
@@ -42,8 +45,10 @@ func _ready() -> void:
 	
 	if SignalBus:
 		SignalBus.TentActivated.connect(_on_tent_activated_externally)
+		SignalBus.KeybindChanged.connect(_on_keybind_changed)
 
 	_update_visual_state()
+
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -95,7 +100,12 @@ func _on_tent_activated_externally(tent_node: Node2D, _spawn_pos: Vector2) -> vo
 			is_active = false
 			_update_visual_state()
 
+func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
+	if action_name == &"interact":
+		_update_visual_state()
+
 func _update_visual_state() -> void:
+
 	if not is_inside_tree():
 		return
 
@@ -125,8 +135,9 @@ func _update_visual_state() -> void:
 		if action_label:
 			action_label.text = "重设重生点" if is_active else "设为重生点"
 		if key_badge:
-			key_badge.text = "F"
+			key_badge.text = KeybindManagerRef.GetActionKeyBadgeText(&"interact", "F")
 	else:
+
 		if prompt_container:
 			prompt_container.visible = false
 
@@ -135,6 +146,10 @@ func ExportSaveData() -> Dictionary:
 	return {
 		"position_x": global_position.x,
 		"position_y": global_position.y,
+		"respawn_offset_x": respawn_offset.x,
+		"respawn_offset_y": respawn_offset.y,
+		"respawn_world_x": GetRespawnPosition().x,
+		"respawn_world_y": GetRespawnPosition().y,
 		"is_active": is_active
 	}
 
@@ -143,6 +158,11 @@ func ExportSaveData() -> Dictionary:
 func LoadSaveData(data: Dictionary) -> void:
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(data["position_x"], data["position_y"])
+	if data.has("respawn_offset_x") and data.has("respawn_offset_y"):
+		respawn_offset = Vector2(data["respawn_offset_x"], data["respawn_offset_y"])
 	if data.has("is_active"):
 		is_active = data["is_active"]
 		_update_visual_state()
+		if is_active and SignalBus:
+			SignalBus.TentActivated.emit(self, GetRespawnPosition())
+

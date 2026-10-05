@@ -46,6 +46,8 @@ extends Node
 @export var player_hp_drain_rate: float = 5.0
 
 @export_group("Audio & Footsteps", "player_footstep_")
+## 脚步声使用的音频总线名称 (Audio Bus)
+@export var player_footstep_bus: StringName = &"SFX_Move_Wet"
 ## 行走/奔跑时脚步声播放间隔时长 (秒)
 @export var player_footstep_interval: float = 0.22
 ## 起步迈出第一步时的前置延迟 (秒)
@@ -250,8 +252,11 @@ extends Node
 @export_group("Setting & Save System", "setting_")
 ## 最大允许的存档槽位数 (固定为 5)
 @export var setting_max_save_slots: int = 5
+## 游戏启动时是否自动载入第一个存档 (若存在)
+@export var setting_auto_load_slot_1: bool = true
 ## 存档文件路径前缀模版 (支持 res://Saves/save_slot_ 或 user://save_slot_)
 @export var setting_save_path_prefix: String = "res://Code/Entities/Setting/Saves/save_slot_"
+
 ## 按键绑定持久化文件路径 (独立于存档槽位)
 @export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
 ## 设置界面背景透明度

@@ -49,6 +49,21 @@ func _ready() -> void:
 	# 默认隐藏，通过按 ESC 或 UI 齿轮打开
 	HideSetting()
 
+	# 打开游戏默认载入第一个存档（若存在）
+	_check_auto_load_first_slot()
+
+func _check_auto_load_first_slot() -> void:
+	var should_auto_load: bool = true
+	if ExportSettings and "setting_auto_load_slot_1" in ExportSettings:
+		should_auto_load = ExportSettings.setting_auto_load_slot_1
+	if should_auto_load and SaveManagerRef.HasSlot(1):
+		# 等待场景全部就绪后载入
+		call_deferred("_do_initial_load_slot_1")
+
+func _do_initial_load_slot_1() -> void:
+	SaveManagerRef.LoadFromSlot(get_tree(), 1)
+
+
 func _input(event: InputEvent) -> void:
 	# 如果正在监听新按键输入
 	if _is_waiting_for_input:

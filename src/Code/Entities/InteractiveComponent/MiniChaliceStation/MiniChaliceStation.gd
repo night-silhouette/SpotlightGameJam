@@ -20,7 +20,10 @@ class_name MiniChaliceStation
 ## 补水比例 (1.0 代表回满至 100%)
 @export var heal_ratio: float = 1.0
 
+const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
+
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+
 @onready var chalice_base: ColorRect = $ChaliceBase
 @onready var glow_cup: ColorRect = $GlowCup
 @onready var light_glow: PointLight2D = $LightGlow
@@ -41,7 +44,10 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	if prompt_button:
 		prompt_button.pressed.connect(_on_prompt_pressed)
+	if SignalBus:
+		SignalBus.KeybindChanged.connect(_on_keybind_changed)
 	_setup_reset_timer()
+
 	_update_visual_state(is_available)
 
 func _sync_from_export_settings() -> void:
@@ -85,8 +91,9 @@ func _update_visual_state(available: bool) -> void:
 			if action_label:
 				action_label.text = "饮用"
 			if key_badge:
-				key_badge.text = "F"
+				key_badge.text = KeybindManagerRef.GetActionKeyBadgeText(&"interact", "F")
 		else:
+
 			if prompt_container:
 				prompt_container.visible = false
 		
@@ -121,7 +128,12 @@ func _on_body_exited(body: Node2D) -> void:
 		_cached_player = null
 		_update_visual_state(is_available)
 
+func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
+	if action_name == &"interact":
+		_update_visual_state(is_available)
+
 func _drink_chalice(player: Node2D) -> void:
+
 	is_available = false
 	_update_visual_state(false)
 	

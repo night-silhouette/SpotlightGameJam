@@ -159,11 +159,89 @@ static func LoadFromSlot(tree: SceneTree, slot_index: int) -> bool:
 	var root = tree.current_scene
 	if not root:
 		root = tree.root
-		
-	_apply_save_data_recursive(root, root, entities_data)
+
+	# 1. 检查存档所记录的原始场景路径
+	var saved_scene_path: String = data.get("scene_path", "")
+	var current_scene_path: String = root.scene_file_path if (root and "scene_file_path" in root) else ""
+
+	# 2. 如果当前场景与存档保存的场景不一致，且存档场景文件有效，则先切换场景
+	if saved_scene_path != "" and saved_scene_path != current_scene_path and ResourceLoader.exists(saved_scene_path):
+		var err = tree.change_scene_to_file(saved_scene_path)
+		if err == OK:
+			# 等待新场景实例化就绪后，恢复数据
+			_wait_and_apply_scene(tree, entities_data, slot_index)
+			return true
+
+	# 3. 若同场景或直接在当前场景恢复，执行双重匹配（相对路径 + 实体全局/类型兜底）
+	_apply_save_data_smart(root, entities_data)
 	
 	_emit_signal_bus("SaveSlotLoaded", [slot_index])
 	return true
+
+## 延迟等待新场景就绪并还原
+static func _wait_and_apply_scene(tree: SceneTree, entities_data: Dictionary, slot_index: int) -> void:
+	await tree.process_frame
+	await tree.process_frame
+	var new_root = tree.current_scene
+	if not new_root:
+		new_root = tree.root
+	_apply_save_data_smart(new_root, entities_data)
+	_emit_signal_bus("SaveSlotLoaded", [slot_index])
+
+## 智能实体匹配与数据应用
+## 优先使用相对节点路径精准匹配；若场景结构变化（如放入了 PlayerWithCamera 或别的父节点），自动使用节点名/实体类别/特征进行兜底匹配
+static func _apply_save_data_smart(root: Node, entities_data: Dictionary) -> void:
+	if not root or entities_data.is_empty():
+		return
+
+	# 先收集当前场景树中所有具备 LoadSaveData 的节点
+	var current_entities: Array[Node] = []
+	_gather_entities_recursive(root, current_entities)
+
+	var applied_nodes: Array[Node] = []
+
+	# 1. 第一轮：相对路径精准匹配
+	for rel_path in entities_data.keys():
+		var node = root.get_node_or_null(rel_path)
+		if is_instance_valid(node) and node.has_method("LoadSaveData"):
+			node.call("LoadSaveData", entities_data[rel_path])
+			applied_nodes.append(node)
+
+	# 2. 第二轮：对未精准匹配到的数据进行节点名/类型兜底匹配（例如 Player、Tent 等）
+	for rel_path in entities_data.keys():
+		var data = entities_data[rel_path]
+		var path_node_name = rel_path.get_file() # 获取末级节点名称，如 "Player"
+
+		for candidate in current_entities:
+			if candidate in applied_nodes:
+				continue
+			
+			var is_match = false
+			# 规则 A: 节点名称完全相同 (例如两者都叫 Player)
+			if candidate.name == path_node_name:
+				is_match = true
+			# 规则 B: 候选者为 Player 且存档数据包含 player 特征 (now_hp / respawn_x)
+			elif (candidate is CharacterBody2D or candidate.is_in_group("player")) and data.has("now_hp") and data.has("respawn_x"):
+				is_match = true
+			# 规则 C: 候选者与数据具有相同位置或者帐篷特征
+			elif candidate.is_in_group("tent") and data.has("is_active"):
+				# 同名或者同类型帐篷
+				if candidate.name == path_node_name:
+					is_match = true
+
+			if is_match:
+				candidate.call("LoadSaveData", data)
+				applied_nodes.append(candidate)
+				break
+
+static func _gather_entities_recursive(node: Node, out_list: Array[Node]) -> void:
+	if not is_instance_valid(node):
+		return
+	if node.has_method("LoadSaveData"):
+		out_list.append(node)
+	for child in node.get_children():
+		_gather_entities_recursive(child, out_list)
+
 
 ## 删除指定槽位存档
 ## @param slot_index 槽位编号 (1 到 5)
