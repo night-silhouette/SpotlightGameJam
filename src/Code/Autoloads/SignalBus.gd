@@ -153,6 +153,15 @@ signal SpikesRetracted(spikes_node: Node2D)
 ## @param station_node 圣杯站节点
 signal ChaliceStationUsed(station_node: Node2D)
 
+## 玩家激活帐篷设置重生点时触发
+## @param tent_node 帐篷节点
+## @param respawn_position 重生点世界坐标
+signal TentActivated(tent_node: Node2D, respawn_position: Vector2)
+
+## 玩家在重生点完成重生时触发
+## @param respawn_position 重生点世界坐标
+signal PlayerRespawned(respawn_position: Vector2)
+
 ## 易碎平台开始开裂震颤时触发
 ## @param platform_node 易碎平台节点
 signal PlatformCracked(platform_node: Node2D)
@@ -211,5 +220,32 @@ signal ScarredBonesStateRestored(bones: Node2D, collected: bool)
 signal InteractionRequested(target: Node2D, player: Node2D)
 
 #endregion
+
+
+#region 5. 设置与存档系统事件
+
+## 按键绑定变更并持久化保存时触发
+## @param action_name 变更的输入动作名
+## @param event 绑定的输入事件描述
+signal KeybindChanged(action_name: StringName, event_desc: String)
+
+## 请求打开或关闭设置界面
+## @param is_open 是否打开
+signal SettingVisibilityRequested(is_open: bool)
+
+## 存档已成功保存/新建时触发
+## @param slot_index 槽位索引 (1-5)
+signal SaveSlotSaved(slot_index: int)
+
+## 存档被载入应用时触发
+## @param slot_index 槽位索引 (1-5)
+signal SaveSlotLoaded(slot_index: int)
+
+## 存档槽位被删除时触发
+## @param slot_index 槽位索引 (1-5)
+signal SaveSlotDeleted(slot_index: int)
+
+#endregion
+
 
  

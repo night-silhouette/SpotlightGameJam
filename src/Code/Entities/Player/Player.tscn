@@ -212,3 +212,6 @@ scale = Vector2(0.43470114, 0.43470114)
 texture = ExtResource("17_kpm6d")
 hframes = 4
 vframes = 2
+
+[node name="FootstepAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742819]
+bus = &"SFX_Move_Wet"

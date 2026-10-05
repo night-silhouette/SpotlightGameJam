@@ -8,6 +8,58 @@ size = Vector2(160, 100)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fluid"]
 size = Vector2(160, 100)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_key_badge"]
+bg_color = Color(0.18, 0.28, 0.42, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.85, 1, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_normal"]
+bg_color = Color(0.08, 0.12, 0.18, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.65, 0.95, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_hover"]
+bg_color = Color(0.12, 0.22, 0.35, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.85, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_pressed"]
+bg_color = Color(0.18, 0.32, 0.48, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.7, 0.95, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="WaterFlowArea" type="StaticBody2D" unique_id=314159265 groups=["water_flow"]]
 collision_mask = 2
 script = ExtResource("1_water")
@@ -31,15 +83,59 @@ collision_mask = 2
 shape = SubResource("RectangleShape2D_fluid")
 disabled = true
 
-[node name="PromptLabel" type="Label" parent="." unique_id=264575131]
+[node name="PromptContainer" type="Control" parent="." unique_id=264575131]
 visible = false
-offset_left = -80.0
-offset_top = -78.0
-offset_right = 80.0
-offset_bottom = -55.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 14
-text = "[E] 流水符文水化"
+layout_mode = 3
+anchors_preset = 0
+offset_left = -44.0
+offset_top = -80.0
+offset_right = 44.0
+offset_bottom = -54.0
+mouse_filter = 2
+
+[node name="PromptButton" type="Button" parent="PromptContainer" unique_id=381920412]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_prompt_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_prompt_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_prompt_pressed")
+
+[node name="HBox" type="HBoxContainer" parent="PromptContainer" unique_id=402194812]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_right = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="KeyBadge" type="Label" parent="PromptContainer/HBox" unique_id=712903482]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_key_badge")
+text = "E"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ActionLabel" type="Label" parent="PromptContainer/HBox" unique_id=892301948]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 13
+text = "水化"
+horizontal_alignment = 1
+vertical_alignment = 1
+

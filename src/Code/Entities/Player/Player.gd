@@ -16,6 +16,7 @@ class_name Player
 @onready var hp_label: Label = $hp
 @onready var rope_controller: RopeController = $RopeController
 @onready var water_rune_controller: Node2D = $WaterRuneController
+@onready var footstep_audio: AudioStreamPlayer2D = $FootstepAudio
 
 @export_category("properties")
 @export_group("physical_prop")
@@ -68,6 +69,13 @@ var is_back_has_rigid: bool = false
 var hurt_lock: bool = true
 var wall_jump_lock_dir: int = 0
 
+## 玩家重生点坐标 (初始为出生点，交互帐篷后刷新)
+var respawn_position: Vector2 = Vector2.ZERO
+
+## 玩家初始关卡出生点坐标
+var spawn_position: Vector2 = Vector2.ZERO
+
+
 ## 当前剩余二段跳可用次数
 var double_jump_count: int = 1
 
@@ -77,6 +85,23 @@ var _water_flow_area_count: int = 0
 
 ## 绳索惯性保留计时器 (脱钩后给予一定的动量保护期，避免地面摩擦力瞬间吸死)
 var rope_momentum_timer: float = 0.0
+
+@export_group("audio_prop")
+## 脚步声音频总线名称
+@export var footstep_bus: StringName = &"SFX_Move_Wet"
+## 脚步声音效资源数组 (5个脚步声)
+@export var footstep_sounds: Array[AudioStream] = []
+## 脚步声播放间隔
+@export var footstep_interval: float = 0.22
+## 起步迈出第一步的前置延迟
+@export var footstep_initial_delay: float = 0.05
+## 脚步声音量 (dB)
+@export var footstep_volume_db: float = -2.0
+## 脚步声音调微机随机变化范围
+@export var footstep_pitch_randomness: float = 0.08
+
+var _footstep_timer: float = 0.0
+var _last_footstep_index: int = -1
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -99,17 +124,33 @@ func _sync_from_export_settings() -> void:
 		Max_HP = ExportSettings.player_max_hp
 		now_HP = ExportSettings.player_max_hp
 		hp_drain_rate = ExportSettings.player_hp_drain_rate
+		if "player_footstep_bus" in ExportSettings:
+			footstep_bus = ExportSettings.player_footstep_bus
+		if "player_footstep_interval" in ExportSettings:
+			footstep_interval = ExportSettings.player_footstep_interval
+		if "player_footstep_initial_delay" in ExportSettings:
+			footstep_initial_delay = ExportSettings.player_footstep_initial_delay
+		if "player_footstep_volume_db" in ExportSettings:
+			footstep_volume_db = ExportSettings.player_footstep_volume_db
+		if "player_footstep_pitch_randomness" in ExportSettings:
+			footstep_pitch_randomness = ExportSettings.player_footstep_pitch_randomness
 
 func _ready() -> void:
+	_init_footstep_sounds()
 	_sync_from_export_settings()
 	move_state_machine.init(self, ani_move, gameInputControl)
 	
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
 	gameInputControl.special_state_end.connect(func(_state): is_special_state = false)
 	
+	respawn_position = global_position
+	spawn_position = global_position
+
+	
 	if SignalBus:
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
+		SignalBus.TentActivated.connect(_on_tent_activated)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
 
 func _process(delta: float) -> void:
@@ -187,6 +228,64 @@ func _physics_process(delta: float) -> void:
 	if is_front_has_rigid:
 		ResetDoubleJump()
 
+	_handle_footstep_audio(delta)
+
+## 初始化加载脚步声音频资源
+func _init_footstep_sounds() -> void:
+	if footstep_sounds.is_empty():
+		var paths = [
+			"res://Music/footStep/Footstep_01.wav",
+			"res://Music/footStep/Footstep_02.wav",
+			"res://Music/footStep/Footstep_03.wav",
+			"res://Music/footStep/Footstep_04.wav",
+			"res://Music/footStep/Footstep_05.wav"
+		]
+		for p in paths:
+			if ResourceLoader.exists(p):
+				var stream = load(p) as AudioStream
+				if stream:
+					footstep_sounds.append(stream)
+
+## 处理行走时的脚步声随机播放逻辑
+func _handle_footstep_audio(delta: float) -> void:
+	# 判定条件：必须在地面上、有横向移动输入、有横向速度、非受伤/死亡等硬直状态
+	var is_moving_on_ground: bool = is_on_floor() and abs(velocity.x) > 10.0 and gameInputControl and gameInputControl.row_dir != 0.0
+	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt"):
+		is_moving_on_ground = false
+
+	if is_moving_on_ground:
+		_footstep_timer -= delta
+		if _footstep_timer <= 0.0:
+			PlayRandomFootstep()
+			_footstep_timer = footstep_interval
+	else:
+		# 停止移动或离地时，重置定时器为起步延迟，这样停下再走时稍有起步缓冲，不会瞬间连击
+		_footstep_timer = footstep_initial_delay
+
+## 播放随机脚步声音效
+func PlayRandomFootstep() -> void:
+	if footstep_sounds.is_empty():
+		return
+	if not footstep_audio:
+		return
+	
+	var count = footstep_sounds.size()
+	var pick_idx = randi() % count
+	# 如果有多个音效，避免连续播放同一段
+	if count > 1 and pick_idx == _last_footstep_index:
+		pick_idx = (pick_idx + 1 + (randi() % (count - 1))) % count
+	_last_footstep_index = pick_idx
+
+	if footstep_audio.bus != footstep_bus:
+		footstep_audio.bus = footstep_bus
+	footstep_audio.stream = footstep_sounds[pick_idx]
+	footstep_audio.volume_db = footstep_volume_db
+	if footstep_pitch_randomness > 0.0:
+		footstep_audio.pitch_scale = randf_range(1.0 - footstep_pitch_randomness, 1.0 + footstep_pitch_randomness)
+	else:
+		footstep_audio.pitch_scale = 1.0
+	footstep_audio.play()
+
 ## 辅助检测射线碰撞的墙体是否可供攀爬（排除光滑滑石墙）
 func _check_wall_climbable(ray: RayCast2D) -> bool:
 	if not ray or not ray.is_colliding():
@@ -215,6 +314,26 @@ func _on_start_player_hp_drain(drain_rate: float) -> void:
 
 func _on_stop_player_hp_drain() -> void:
 	StopHpDrain()
+
+func _on_tent_activated(_tent_node: Node2D, spawn_pos: Vector2) -> void:
+	SetRespawnPosition(spawn_pos)
+
+## 设置重生点坐标
+## @param new_pos 新的重生点世界坐标
+func SetRespawnPosition(new_pos: Vector2) -> void:
+	respawn_position = new_pos
+
+## 执行玩家重生并恢复满血
+func Respawn() -> void:
+	global_position = respawn_position
+	velocity = Vector2.ZERO
+	ResetDashAndRope()
+	hurt_lock = true
+	now_HP = Max_HP
+	if SignalBus:
+		SignalBus.PlayerRespawned.emit(respawn_position)
+	if move_state_machine:
+		move_state_machine.change_state("idle")
 
 ## 受到伤害的公共方法
 ## @param damage 受到的伤害数值
@@ -270,7 +389,11 @@ func ExportSaveData() -> Dictionary:
 		"position_x": global_position.x,
 		"position_y": global_position.y,
 		"now_hp": now_HP,
-		"max_hp": Max_HP
+		"max_hp": Max_HP,
+		"spawn_x": spawn_position.x,
+		"spawn_y": spawn_position.y,
+		"respawn_x": respawn_position.x,
+		"respawn_y": respawn_position.y
 	}
 
 ## 实体数据加载
@@ -282,3 +405,7 @@ func LoadSaveData(data: Dictionary) -> void:
 		Max_HP = data["max_hp"]
 	if data.has("now_hp"):
 		now_HP = data["now_hp"]
+	if data.has("spawn_x") and data.has("spawn_y"):
+		spawn_position = Vector2(data["spawn_x"], data["spawn_y"])
+	if data.has("respawn_x") and data.has("respawn_y"):
+		respawn_position = Vector2(data["respawn_x"], data["respawn_y"])

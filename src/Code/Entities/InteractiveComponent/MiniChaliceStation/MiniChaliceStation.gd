@@ -20,11 +20,18 @@ class_name MiniChaliceStation
 ## 补水比例 (1.0 代表回满至 100%)
 @export var heal_ratio: float = 1.0
 
+const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
+
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+
 @onready var chalice_base: ColorRect = $ChaliceBase
 @onready var glow_cup: ColorRect = $GlowCup
 @onready var light_glow: PointLight2D = $LightGlow
-@onready var prompt_label: Label = $PromptLabel
+@onready var prompt_container: Control = $PromptContainer
+@onready var prompt_button: Button = $PromptContainer/PromptButton
+@onready var key_badge: Label = $PromptContainer/HBox/KeyBadge
+@onready var action_label: Label = $PromptContainer/HBox/ActionLabel
+@onready var cooldown_label: Label = $CooldownLabel
 
 var _reset_timer: Timer = null
 var _glow_tween: Tween = null
@@ -35,7 +42,12 @@ func _ready() -> void:
 	_sync_from_export_settings()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	if prompt_button:
+		prompt_button.pressed.connect(_on_prompt_pressed)
+	if SignalBus:
+		SignalBus.KeybindChanged.connect(_on_keybind_changed)
 	_setup_reset_timer()
+
 	_update_visual_state(is_available)
 
 func _sync_from_export_settings() -> void:
@@ -55,6 +67,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 			_drink_chalice(_cached_player)
 
+## 鼠标点击提示 UI 触发饮用交互
+func _on_prompt_pressed() -> void:
+	if _player_in_range and is_available and is_instance_valid(_cached_player):
+		_drink_chalice(_cached_player)
+
 func _update_visual_state(available: bool) -> void:
 	if not is_inside_tree():
 		return
@@ -66,11 +83,19 @@ func _update_visual_state(available: bool) -> void:
 		glow_cup.color = Color(0.2, 0.85, 1.0, 0.9)
 		if light_glow:
 			light_glow.enabled = true
+		if cooldown_label:
+			cooldown_label.visible = false
 		if _player_in_range:
-			prompt_label.visible = true
-			prompt_label.text = "[F] 饮用微光圣水"
+			if prompt_container:
+				prompt_container.visible = true
+			if action_label:
+				action_label.text = "饮用"
+			if key_badge:
+				key_badge.text = KeybindManagerRef.GetActionKeyBadgeText(&"interact", "F")
 		else:
-			prompt_label.visible = false
+
+			if prompt_container:
+				prompt_container.visible = false
 		
 		# 循环呼吸闪烁微光
 		_glow_tween = create_tween().set_loops()
@@ -81,11 +106,15 @@ func _update_visual_state(available: bool) -> void:
 		glow_cup.modulate.a = 1.0
 		if light_glow:
 			light_glow.enabled = false
+		if prompt_container:
+			prompt_container.visible = false
 		if reset_time > 0:
-			prompt_label.visible = true
-			prompt_label.text = "充能中..."
+			if cooldown_label:
+				cooldown_label.visible = true
+				cooldown_label.text = "充能中..."
 		else:
-			prompt_label.visible = false
+			if cooldown_label:
+				cooldown_label.visible = false
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player") or body is CharacterBody2D:
@@ -99,7 +128,12 @@ func _on_body_exited(body: Node2D) -> void:
 		_cached_player = null
 		_update_visual_state(is_available)
 
+func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
+	if action_name == &"interact":
+		_update_visual_state(is_available)
+
 func _drink_chalice(player: Node2D) -> void:
+
 	is_available = false
 	_update_visual_state(false)
 	
