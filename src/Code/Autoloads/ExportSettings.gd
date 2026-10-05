@@ -127,6 +127,16 @@ extends Node
 ## 震颤剧烈程度幅度 (像素)
 @export var crumble_shake_offset: float = 2.5
 
+@export_group("Interactive - Moving Platform", "moving_platform_")
+## 移动平台默认尺寸 (宽, 高)
+@export var moving_platform_size: Vector2 = Vector2(112.0, 20.0)
+## 移动平台默认移动速度 (像素/秒)
+@export var moving_platform_speed: float = 90.0
+## 移动平台抵达路径端点后的默认停顿时间 (秒)
+@export var moving_platform_endpoint_wait_time: float = 0.45
+## 移动平台抵达另一端后是否默认反向循环
+@export var moving_platform_loop: bool = true
+
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
 @export var slick_wall_friction: float = 0.0

@@ -165,6 +165,16 @@ signal PlatformCollapsed(platform_node: Node2D)
 ## @param platform_node 易碎平台节点
 signal PlatformRespawned(platform_node: Node2D)
 
+## 移动平台抵达路径端点并进入停顿时触发
+## @param platform_node 移动平台节点
+## @param endpoint_index 端点编号：0 为起点，1 为终点
+signal MovingPlatformEndpointReached(platform_node: Node2D, endpoint_index: int)
+
+## 移动平台结束端点停顿并反向启程时触发
+## @param platform_node 移动平台节点
+## @param direction 新移动方向：1 前往终点，-1 返回起点
+signal MovingPlatformDirectionChanged(platform_node: Node2D, direction: int)
+
 ## 钟乳石检测到玩家走过开始松动下落时触发
 ## @param stalactite_node 钟乳石节点
 signal StalactiteTriggered(stalactite_node: Node2D)
