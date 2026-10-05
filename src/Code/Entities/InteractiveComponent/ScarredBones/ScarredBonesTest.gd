@@ -10,9 +10,11 @@ extends Node2D
 var _saved_data: Dictionary = {}
 var _collected_events: int = 0
 var _finished_events: int = 0
+var _inspection_events: int = 0
 
 
 func _ready() -> void:
+	SignalBus.InteractionRequested.connect(_on_interaction_requested)
 	SignalBus.ScarredBonesCollected.connect(_on_collected)
 	SignalBus.ScarredBonesPresentationFinished.connect(_on_finished)
 	SignalBus.ScarredBonesStateRestored.connect(_on_restored)
@@ -20,6 +22,12 @@ func _ready() -> void:
 	_load_button.pressed.connect(_load_sample)
 	$TestUI/Panel/Margin/Rows/Buttons/Reset.pressed.connect(_reset_bones)
 	_update_status("走近枯骨，出现提示后按 F。")
+
+
+func _on_interaction_requested(target: Node2D, _player: Node2D) -> void:
+	if target == $InspectionExample:
+		_inspection_events += 1
+		$TestUI/Panel/Margin/Rows/InspectionStatus.text = "调查 %d 次：%s" % [_inspection_events, ExportSettings.inspection_example_description]
 
 
 func _on_collected(bones: Node2D, _player: Node2D) -> void:

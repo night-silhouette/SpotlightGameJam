@@ -3,6 +3,8 @@ extends Node
 ## 使用小型物理替身隔离玩家移动、摄像头与剧情导入，与手动集成场景互补。
 
 const BONES_SCENE = preload("res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.tscn")
+const INSPECTION_SCENE = preload("res://Code/Entities/InteractiveComponent/InspectionExample/InspectionExample.tscn")
+var _inspection_events: int = 0
 var _failures: Array[String] = []
 var _checks: int = 0
 var _collected_events: int = 0
@@ -62,12 +64,10 @@ func _run() -> void:
 	echo.physical_keycode = KEY_F
 	echo.pressed = true
 	echo.echo = true
-	bones._unhandled_input(echo)
+	Input.parse_input_event(echo)
+	await get_tree().process_frame
 	_check(not bones.IsCollected(), "held key echo does not collect")
-	var press := InputEventAction.new()
-	press.action = "interact"
-	press.pressed = true
-	bones._unhandled_input(press)
+	await _press_interact()
 	_check(bones.IsCollected() and _collected_events == 1, "interact input commits once")
 	_check(not bones.TryCollect(player) and _collected_events == 1, "repeated input cannot duplicate pickup")
 	var saved: Dictionary = bones.ExportSaveData()
@@ -94,6 +94,39 @@ func _run() -> void:
 	_check(restored.IsCollected() and not restored.get_node("VisualRoot").visible, "load before ready safely restores collected")
 	_check(bones.get_node("DetectionArea/CollisionShape2D").shape != restored.get_node("DetectionArea/CollisionShape2D").shape, "instances do not share mutable detection shapes")
 	_check(_collected_events == 2, "pre-ready restore emits no pickup")
+	var inspection = INSPECTION_SCENE.instantiate()
+	inspection.position = Vector2(120, 0)
+	add_child(inspection)
+	SignalBus.InteractionRequested.connect(func(target, _player):
+		if target == inspection:
+			_inspection_events += 1
+	)
+	player.position = Vector2(70, 0)
+	await _settle_physics()
+	_check(inspection.get_node("PromptAnchor/Prompt").visible and not bones.get_node("PromptAnchor/Prompt").visible, "overlap shows only nearest target prompt")
+	await _press_interact()
+	_check(_inspection_events == 1 and not bones.IsCollected(), "nearest inspection consumes input without collecting farther bone")
+	await _press_interact()
+	_check(_inspection_events == 2 and inspection.visible, "inspection can repeat without removing its entity")
+	player.position = Vector2(50, 0)
+	await _settle_physics()
+	_check(bones.get_node("PromptAnchor/Prompt").visible and not inspection.get_node("PromptAnchor/Prompt").visible, "focus transfers when player moves closer to bone")
+	await _press_interact()
+	_check(bones.IsCollected() and _collected_events == 3 and _inspection_events == 2, "one key cannot activate next target after bone disables itself")
+	await _settle_physics()
+	_check(inspection.get_node("PromptAnchor/Prompt").visible, "collected target yields focus to remaining inspection")
+	inspection.hide()
+	await _settle_physics()
+	await _press_interact()
+	_check(_inspection_events == 2 and not inspection.get_node("PromptAnchor/Prompt").visible, "hidden target rejects interaction")
+	inspection.show()
+	bones.LoadSaveData({"collected": false})
+	player.position = Vector2(60, 0)
+	await _settle_physics()
+	_check(int(bones.get_node("PromptAnchor/Prompt").visible) + int(inspection.get_node("PromptAnchor/Prompt").visible) == 1, "equal distance selects exactly one prompt")
+	inspection.queue_free()
+	await _settle_physics()
+	_check(bones.get_node("PromptAnchor/Prompt").visible, "removed target no longer competes for focus")
 	player.queue_free()
 	await _settle_physics()
 	_check(not bones.get_node("PromptAnchor/Prompt").visible and not bones.TryCollect(null), "removed player clears prompt and null input is safe")
@@ -101,6 +134,19 @@ func _run() -> void:
 	for failure in _failures:
 		push_error(failure)
 	get_tree().quit(0 if _failures.is_empty() else 1)
+
+
+func _press_interact() -> void:
+	var press := InputEventKey.new()
+	press.physical_keycode = KEY_F
+	press.pressed = true
+	Input.parse_input_event(press)
+	await get_tree().process_frame
+	var release := InputEventKey.new()
+	release.physical_keycode = KEY_F
+	release.pressed = false
+	Input.parse_input_event(release)
+	await get_tree().process_frame
 
 
 func _settle_physics() -> void:

@@ -1,48 +1,51 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://blj0rdomfhoyt"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.gd" id="1_bones"]
+[ext_resource type="Script" uid="uid://ifc2chtosdg0" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.gd" id="1_bones"]
+[ext_resource type="Script" uid="uid://c4wvsq2r85icn" path="res://Code/Common/ProximityInteraction.gd" id="2_e4d8j"]
 
 [sub_resource type="CircleShape2D" id="DetectionShape"]
 radius = 80.0
 
-[node name="ScarredBones" type="Node2D"]
+[node name="ScarredBones" type="Node2D" unique_id=286190526]
 script = ExtResource("1_bones")
 
-[node name="GroundMark" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-25, 0, -14, -5, 18, -4, 28, 0, 10, 5, -15, 5)
+[node name="GroundMark" type="Polygon2D" parent="." unique_id=2142186140]
 color = Color(0.34, 0.3, 0.2, 1)
+polygon = PackedVector2Array(-25, 0, -14, -5, 18, -4, 28, 0, 10, 5, -15, 5)
 
-[node name="VisualRoot" type="Node2D" parent="."]
+[node name="VisualRoot" type="Node2D" parent="." unique_id=22639129]
 
-[node name="BonePlaceholder" type="Polygon2D" parent="VisualRoot"]
-polygon = PackedVector2Array(-7, 0, -6, -30, -12, -38, -10, -47, -4, -49, 0, -45, 6, -49, 12, -46, 12, -38, 6, -30, 6, 0)
+[node name="BonePlaceholder" type="Polygon2D" parent="VisualRoot" unique_id=1255312219]
 color = Color(0.88, 0.84, 0.68, 1)
+polygon = PackedVector2Array(-7, 0, -6, -30, -12, -38, -10, -47, -4, -49, 0, -45, 6, -49, 12, -46, 12, -38, 6, -30, 6, 0)
 
-[node name="Scars" type="Line2D" parent="VisualRoot"]
+[node name="Scars" type="Line2D" parent="VisualRoot" unique_id=972313515]
 points = PackedVector2Array(-4, -12, 4, -17, -4, -23, 4, -29, -4, -34)
 width = 2.0
 default_color = Color(0.35, 0.72, 0.58, 1)
 
-[node name="DetectionArea" type="Area2D" parent="."]
+[node name="DetectionArea" type="Area2D" parent="." unique_id=153129028]
 position = Vector2(0, -20)
 collision_layer = 0
 collision_mask = 2
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=973034407]
 shape = SubResource("DetectionShape")
 
-[node name="PromptAnchor" type="Node2D" parent="."]
+[node name="PromptAnchor" type="Node2D" parent="." unique_id=1470836048]
 position = Vector2(0, -100)
 
-[node name="Prompt" type="Label" parent="PromptAnchor"]
+[node name="Prompt" type="Label" parent="PromptAnchor" unique_id=1970962907]
 visible = false
 offset_left = -180.0
 offset_right = 180.0
 offset_bottom = 32.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.96, 0.92, 0.73, 1)
 theme_override_colors/font_outline_color = Color(0.06, 0.09, 0.1, 1)
 theme_override_constants/outline_size = 5
 text = "[F] 拔出刻痕枯骨"
 horizontal_alignment = 1
+
+[node name="Interaction" type="Node" parent="." unique_id=2121359603]
+script = ExtResource("2_e4d8j")

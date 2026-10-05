@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://bivpcvm7410p2"]
 
 [ext_resource type="Script" uid="uid://ds7wyhf3dxp" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBonesTest.gd" id="1_test"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.tscn" id="2_bones"]
+[ext_resource type="PackedScene" uid="uid://blj0rdomfhoyt" path="res://Code/Entities/InteractiveComponent/ScarredBones/ScarredBones.tscn" id="2_bones"]
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="3_player"]
+[ext_resource type="PackedScene" uid="uid://bjoctln8qf2s7" path="res://Code/Entities/InteractiveComponent/InspectionExample/InspectionExample.tscn" id="4_3re13"]
 
 [sub_resource type="RectangleShape2D" id="GroundShape"]
 size = Vector2(3000, 80)
@@ -31,7 +32,7 @@ position = Vector2(380, 480)
 layer = 50
 
 [node name="Panel" type="PanelContainer" parent="TestUI" unique_id=1441026467]
-custom_minimum_size = Vector2(660, 190)
+custom_minimum_size = Vector2(660, 240)
 anchors_preset = -1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -57,8 +58,9 @@ theme_override_constants/separation = 6
 
 [node name="Instructions" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=838267788]
 layout_mode = 2
-text = "枯骨基础交互测试　A / D 移动 · F 拔出
-当前仅展示枯骨占位动作；正式文案、角色动作和镜头演出尚未接入。"
+text = "通用交互复用测试　A / D 移动 · F 交互
+枯骨可拔出，蓝色方块可反复调查；重叠范围只提示较近目标。
+当前为占位演示；正式文案、角色动作和镜头尚未接入。"
 autowrap_mode = 2
 
 [node name="Status" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=544992898]
@@ -89,3 +91,11 @@ text = "恢复保存状态"
 layout_mode = 2
 focus_mode = 0
 text = "重置为未取得"
+
+[node name="InspectionStatus" type="Label" parent="TestUI/Panel/Margin/Rows" unique_id=1107358719]
+layout_mode = 2
+text = "调查测试物（蓝色方块）：尚未调查。"
+autowrap_mode = 2
+
+[node name="InspectionExample" parent="." unique_id=743989442 instance=ExtResource("4_3re13")]
+position = Vector2(720, 540)

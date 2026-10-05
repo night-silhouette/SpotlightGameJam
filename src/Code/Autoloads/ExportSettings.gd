@@ -241,3 +241,12 @@ extends Node
 ## 靠近提示内容；按键名称从项目现有 interact 映射读取。
 @export var scarred_bones_prompt_text: String = "拔出刻痕枯骨"
 @export_range(12, 40, 1) var scarred_bones_prompt_font_size: int = 18
+
+@export_group("Interactive - Inspection Example", "inspection_example_")
+## 仅复用演示物件使用：检测半径（像素），停止并重新运行后生效。
+@export_range(16.0, 240.0, 1.0) var inspection_example_interact_radius: float = 80.0
+## 演示提示文字与字号（像素），不会改变枯骨提示。
+@export var inspection_example_prompt_text: String = "调查测试物"
+@export_range(12, 40, 1) var inspection_example_prompt_font_size: int = 18
+## 临时测试描述，不是正式剧情文案；接入文案系统时由该系统替换。
+@export_multiline var inspection_example_description: String = "这是一件调查测试物：可以反复查看，不会被拾取。"

@@ -205,6 +205,11 @@ signal ScarredBonesPresentationFinished(bones: Node2D)
 ## @param collected 是否已取得信物。
 signal ScarredBonesStateRestored(bones: Node2D, collected: bool)
 
+## 通用靠近交互组件收到有效 interact 输入时触发；只通知当前最近的可用目标。
+## @param target 交互实体根节点；接收者必须先筛选 target 是否为自己。
+## @param player 执行交互的原 Player 节点。事件表示请求，具体结果由实体决定。
+signal InteractionRequested(target: Node2D, player: Node2D)
+
 #endregion
 
  
