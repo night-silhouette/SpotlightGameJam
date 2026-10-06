@@ -43,6 +43,9 @@ func enter() -> void:
 			if obj.has_method("PlayWallJumpSFX"):
 				obj.PlayWallJumpSFX()
 
+	if animation_player:
+		animation_player.play("jump")
+
 	change_use_all(false)
 	var hurt_node = state_machine.get_node_or_null("hurt")
 	if hurt_node:

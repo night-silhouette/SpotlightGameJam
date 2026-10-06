@@ -4,6 +4,8 @@ class_name Player
 @onready var ani_move: AnimationPlayer = $ani_move
 @onready var move_state_machine: Node = $move_state_machine
 @onready var gameInputControl: Node = $GameInputControl
+@onready var sprite: Node2D = $sprite
+@onready var visual_placeholder: ColorRect = $VisualPlaceholder
 
 
 @onready var front_foot: RayCast2D = $front_foot
@@ -202,6 +204,10 @@ func _ready() -> void:
 	_init_footstep_sounds()
 	_init_move_sounds()
 	_sync_from_export_settings()
+	if sprite:
+		sprite.visible = true
+	if visual_placeholder:
+		visual_placeholder.visible = false
 	move_state_machine.init(self, ani_move, gameInputControl)
 	
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
@@ -283,6 +289,8 @@ func _physics_process(delta: float) -> void:
 			back_foot.scale.x *= -1
 			back_head.scale.x *= -1
 			back_body.scale.x *= -1
+			if sprite:
+				sprite.scale.x = abs(sprite.scale.x) * new_face_dir
 		face_dir = new_face_dir
 
 	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
