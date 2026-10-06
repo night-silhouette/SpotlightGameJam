@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="SpotlightGameJam"
-run/main_scene="res://Code/Entities/TestWorld/TestWorld.tscn"
+run/main_scene="res://Code/Entities/StartMenu/StartMenu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 

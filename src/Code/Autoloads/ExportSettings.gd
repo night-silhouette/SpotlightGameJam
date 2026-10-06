@@ -283,7 +283,7 @@ extends Node
 ## 最大允许的存档槽位数 (固定为 5)
 @export var setting_max_save_slots: int = 5
 ## 游戏启动时是否自动载入第一个存档 (若存在)
-@export var setting_auto_load_slot_1: bool = true
+@export var setting_auto_load_slot_1: bool = false
 ## 存档文件路径前缀模版 (支持 res://Saves/save_slot_ 或 user://save_slot_)
 @export var setting_save_path_prefix: String = "res://Code/Entities/Setting/Saves/save_slot_"
 
@@ -291,3 +291,9 @@ extends Node
 @export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
 ## 设置界面背景透明度
 @export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
+
+@export_group("Start Menu", "start_menu_")
+## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)
+@export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
+## 开始菜单背景音乐总线
+@export var start_menu_music_bus: StringName = &"MUS_StartMenu"

@@ -1,0 +1,391 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/StartMenu/StartMenu.gd" id="1_menu"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/background.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/stars.png" id="3_stars"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/moon.png" id="4_moon"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/mid_shot.png" id="5_mid"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/foreground.png" id="6_fg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
+bg_color = Color(0.07, 0.09, 0.14, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.65, 0.9, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_btn"]
+bg_color = Color(0.28, 0.14, 0.16, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.4, 0.4, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="StartMenu" type="Control" unique_id=1001001]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_menu")
+
+[node name="BackgroundLayers" type="Control" parent="." unique_id=1001002]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Sky" type="TextureRect" parent="BackgroundLayers" unique_id=1001003]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Stars" type="TextureRect" parent="BackgroundLayers" unique_id=1001004]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_stars")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Moon" type="TextureRect" parent="BackgroundLayers" unique_id=1001005]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_moon")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MidMountains" type="TextureRect" parent="BackgroundLayers" unique_id=1001006]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_mid")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Foreground" type="TextureRect" parent="BackgroundLayers" unique_id=1001007]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_fg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VignetteMask" type="ColorRect" parent="BackgroundLayers" unique_id=1001008]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.02, 0.04, 0.08, 0.45)
+
+[node name="MainUI" type="MarginContainer" parent="." unique_id=1001009]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainUI" unique_id=1001010]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_constants/separation = 28
+
+[node name="TitleBox" type="VBoxContainer" parent="MainUI/VBoxContainer" unique_id=1001011]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="MainUI/VBoxContainer/TitleBox" unique_id=1001012]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 46
+text = "Spotlight Game Jam"
+
+[node name="SubtitleLabel" type="Label" parent="MainUI/VBoxContainer/TitleBox" unique_id=1001013]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.75, 0.95, 0.9)
+theme_override_font_sizes/font_size = 18
+text = "水之行者 · 永涸之源"
+
+[node name="MenuButtons" type="VBoxContainer" parent="MainUI/VBoxContainer" unique_id=1001014]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="BtnStart" type="Button" parent="MainUI/VBoxContainer/MenuButtons" unique_id=1001015]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 18
+text = "开始游戏"
+
+[node name="BtnSetting" type="Button" parent="MainUI/VBoxContainer/MenuButtons" unique_id=1001016]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "系统设置"
+
+[node name="BtnCredits" type="Button" parent="MainUI/VBoxContainer/MenuButtons" unique_id=1001017]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "制作人名单"
+
+[node name="BtnQuit" type="Button" parent="MainUI/VBoxContainer/MenuButtons" unique_id=1001018]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_font_sizes/font_size = 16
+text = "退出游戏"
+
+[node name="SavesModal" type="Control" parent="." unique_id=1001019]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalDim" type="ColorRect" parent="SavesModal" unique_id=1001020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="PanelContainer" type="PanelContainer" parent="SavesModal" unique_id=1001021]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -240.0
+offset_right = 340.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+
+[node name="Margin" type="MarginContainer" parent="SavesModal/PanelContainer" unique_id=1001022]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="SavesModal/PanelContainer/Margin" unique_id=1001023]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderHBox" type="HBoxContainer" parent="SavesModal/PanelContainer/Margin/VBox" unique_id=1001024]
+layout_mode = 2
+
+[node name="ModalTitle" type="Label" parent="SavesModal/PanelContainer/Margin/VBox/HeaderHBox" unique_id=1001025]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "选择游戏存档"
+
+[node name="BtnCloseSaves" type="Button" parent="SavesModal/PanelContainer/Margin/VBox/HeaderHBox" unique_id=1001026]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_close_btn")
+text = "✕"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SavesModal/PanelContainer/Margin/VBox" unique_id=1001027]
+custom_minimum_size = Vector2(0, 360)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SavesList" type="VBoxContainer" parent="SavesModal/PanelContainer/Margin/VBox/ScrollContainer" unique_id=1001028]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="CreditsModal" type="Control" parent="." unique_id=1001029]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalDim" type="ColorRect" parent="CreditsModal" unique_id=1001030]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="PanelContainer" type="PanelContainer" parent="CreditsModal" unique_id=1001031]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.0
+offset_top = -180.0
+offset_right = 260.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal_panel")
+
+[node name="Margin" type="MarginContainer" parent="CreditsModal/PanelContainer" unique_id=1001032]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 18
+
+[node name="VBox" type="VBoxContainer" parent="CreditsModal/PanelContainer/Margin" unique_id=1001033]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeaderHBox" type="HBoxContainer" parent="CreditsModal/PanelContainer/Margin/VBox" unique_id=1001034]
+layout_mode = 2
+
+[node name="CreditsTitle" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/HeaderHBox" unique_id=1001035]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "制作人名单"
+
+[node name="BtnCloseCredits" type="Button" parent="CreditsModal/PanelContainer/Margin/VBox/HeaderHBox" unique_id=1001036]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_close_btn")
+text = "✕"
+
+[node name="CreditsScroll" type="ScrollContainer" parent="CreditsModal/PanelContainer/Margin/VBox" unique_id=1001037]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CreditsContent" type="VBoxContainer" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll" unique_id=1001038]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 16
+
+[node name="PlaceholderSection" type="VBoxContainer" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent" unique_id=1001039]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Sec1" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001040]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "【制作人员】"
+
+[node name="Sec1Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001041]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.85)
+theme_override_font_sizes/font_size = 13
+text = "（待填充...）"
+
+[node name="Sec2" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001042]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "【美术 & 音乐】"
+
+[node name="Sec2Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001043]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.85)
+theme_override_font_sizes/font_size = 13
+text = "（待填充...）"
+
+[node name="Sec3" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001044]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "【特别鸣谢】"
+
+[node name="Sec3Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001045]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.85)
+theme_override_font_sizes/font_size = 13
+text = "Spotlight Game Jam 2026
+所有参与体验测试的玩家"
+
+[node name="QuitConfirmDialog" type="ConfirmationDialog" parent="." unique_id=1001046]
+unique_name_in_owner = true
+title = "退出游戏"
+initial_position = 2
+size = Vector2i(320, 110)
+ok_button_text = "确认退出"
+cancel_button_text = "取消"
+dialog_text = "是否确定退出游戏？"

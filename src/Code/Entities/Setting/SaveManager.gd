@@ -81,6 +81,54 @@ static func GetAllSlotsInfo() -> Array[Dictionary]:
 		list.append(GetSlotInfo(i))
 	return list
 
+## 创建新存档并直接切换载入至目标场景（如 World.tscn）
+## @param tree 场景树 SceneTree
+## @param slot_index 槽位编号 (1 到 5)
+## @param target_scene_path 目标场景路径 (留空时取 ExportSettings.start_menu_world_scene_path)
+static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_path: String = "") -> bool:
+	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
+		return false
+	
+	var world_path = target_scene_path
+	if world_path == "":
+		world_path = "res://Code/Entities/World/World.tscn"
+		if ExportSettings and "start_menu_world_scene_path" in ExportSettings:
+			world_path = ExportSettings.start_menu_world_scene_path
+	
+	if not ResourceLoader.exists(world_path):
+		push_error("StartNewGameInSlot 目标场景不存在: %s" % world_path)
+		return false
+
+	var current_datetime = Time.get_datetime_dict_from_system()
+	var time_str = "%04d-%02d-%02d %02d:%02d:%02d" % [
+		current_datetime.year, current_datetime.month, current_datetime.day,
+		current_datetime.hour, current_datetime.minute, current_datetime.second
+	]
+
+	var save_dict: Dictionary = {
+		"slot_index": slot_index,
+		"timestamp": time_str,
+		"scene_path": world_path,
+		"entities": {}
+	}
+
+	var path = GetSlotPath(slot_index)
+	var base_dir = path.get_base_dir()
+	if not DirAccess.dir_exists_absolute(base_dir):
+		DirAccess.make_dir_recursive_absolute(base_dir)
+
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(save_dict, "\t"))
+		file.close()
+		_emit_signal_bus("SaveSlotSaved", [slot_index])
+
+	var err = tree.change_scene_to_file(world_path)
+	if err == OK:
+		_emit_signal_bus("SaveSlotLoaded", [slot_index])
+		return true
+	return false
+
 ## 保存/新建存档到指定槽位
 ## 递归查找场景树中所有实现了 ExportSaveData 的节点，收集其状态并写入
 ## @param tree 场景树 SceneTree
@@ -162,6 +210,13 @@ static func LoadFromSlot(tree: SceneTree, slot_index: int) -> bool:
 
 	# 1. 检查存档所记录的原始场景路径
 	var saved_scene_path: String = data.get("scene_path", "")
+	# 如果存档里的 scene_path 为空或指向已被废弃场景，兜底为 World.tscn
+	var default_world_path = "res://Code/Entities/World/World.tscn"
+	if ExportSettings and "start_menu_world_scene_path" in ExportSettings:
+		default_world_path = ExportSettings.start_menu_world_scene_path
+	if saved_scene_path == "" or not ResourceLoader.exists(saved_scene_path):
+		saved_scene_path = default_world_path
+
 	var current_scene_path: String = root.scene_file_path if (root and "scene_file_path" in root) else ""
 
 	# 2. 如果当前场景与存档保存的场景不一致，且存档场景文件有效，则先切换场景
