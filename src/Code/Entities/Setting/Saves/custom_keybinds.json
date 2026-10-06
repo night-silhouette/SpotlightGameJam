@@ -1,7 +1,7 @@
 {
 	"dash": {
-		"keycode": 0,
-		"physical_keycode": 4194327,
+		"keycode": 4194325,
+		"physical_keycode": 4194325,
 		"type": "key"
 	},
 	"down": {
@@ -39,8 +39,7 @@
 		"type": "key"
 	},
 	"water_rune": {
-		"keycode": 0,
-		"physical_keycode": 69,
-		"type": "key"
+		"button_index": 2,
+		"type": "mouse_button"
 	}
 }
