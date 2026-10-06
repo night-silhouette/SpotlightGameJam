@@ -413,7 +413,7 @@ func _init_footstep_sounds() -> void:
 func _handle_footstep_audio(delta: float) -> void:
 	# 判定条件：必须在地面上、有横向移动输入、有横向速度、非受伤/死亡等硬直状态
 	var is_moving_on_ground: bool = is_on_floor() and abs(velocity.x) > 10.0 and gameInputControl and gameInputControl.row_dir != 0.0
-	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt"):
+	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt" or move_state_machine.cur_state_name == "shuttle"):
 		is_moving_on_ground = false
 
 	if is_moving_on_ground:
@@ -539,6 +539,12 @@ func ResetDashAndRope() -> void:
 	if water_rune_controller:
 		water_rune_controller.ResetCooldown()
 
+## 中断并退出冲刺状态
+func InterruptDash() -> void:
+	is_special_state = false
+	if gameInputControl and gameInputControl.has_method("InterruptDash"):
+		gameInputControl.InterruptDash()
+
 ## 设置玩家在水流/零重力区域的计数
 ## @param entered true 为进入，false 为离开
 func SetInWaterFlow(entered: bool) -> void:
@@ -547,6 +553,10 @@ func SetInWaterFlow(entered: bool) -> void:
 	else:
 		_water_flow_area_count = max(0, _water_flow_area_count - 1)
 	gravity_scale = 0.0 if _water_flow_area_count > 0 else 1.0
+
+## 查询玩家当前是否处于流水区域内
+func IsInWaterFlow() -> bool:
+	return _water_flow_area_count > 0
 
 ## 兼容原工程受击方法
 ## @param damage 受到的伤害数值

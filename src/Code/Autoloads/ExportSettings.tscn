@@ -7,4 +7,4 @@ script = ExtResource("1_hob1f")
 player_footstep_interval = 0.36
 player_footstep_initial_delay = 0.15
 player_footstep_volume_db = -4.0
-water_flow_speed_multiplier = 2.4
+water_flow_speed_multiplier = 1.4
