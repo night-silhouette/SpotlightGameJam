@@ -45,7 +45,6 @@ var _wait_remaining: float = 0.0
 var _movement_finished: bool = false
 
 func _ready() -> void:
-	_sync_from_export_settings()
 	_origin_position = position
 	_direction = -1 if start_from_end else 1
 	_path_progress = 1.0 if start_from_end else 0.0
@@ -59,40 +58,34 @@ func _physics_process(delta: float) -> void:
 
 	if _wait_remaining > 0.0:
 		_wait_remaining = maxf(_wait_remaining - delta, 0.0)
-		if is_zero_approx(_wait_remaining):
+		if _wait_remaining <= 0.0 and loop_movement:
 			_direction *= -1
 			SignalBus.MovingPlatformDirectionChanged.emit(self, _direction)
 		return
 
 	var path_length := movement_offset.length()
-	_path_progress = clampf(
-		_path_progress + float(_direction) * movement_speed * delta / path_length,
-		0.0,
-		1.0
-	)
+	_path_progress += float(_direction) * movement_speed * delta / path_length
+	var reached_endpoint := false
+	if _direction > 0 and _path_progress >= 1.0:
+		_path_progress = 1.0
+		reached_endpoint = true
+	elif _direction < 0 and _path_progress <= 0.0:
+		_path_progress = 0.0
+		reached_endpoint = true
+
 	position = _origin_position + movement_offset * _path_progress
 	_update_path_preview()
 
-	if (_direction > 0 and is_equal_approx(_path_progress, 1.0)) \
-			or (_direction < 0 and is_zero_approx(_path_progress)):
-		_wait_remaining = maxf(endpoint_wait_time, 0.0)
+	if reached_endpoint:
 		var endpoint_index := 1 if _direction > 0 else 0
 		SignalBus.MovingPlatformEndpointReached.emit(self, endpoint_index)
 		if not loop_movement:
-			_wait_remaining = 0.0
 			_movement_finished = true
 			return
-		if is_zero_approx(_wait_remaining):
+		_wait_remaining = maxf(endpoint_wait_time, 0.0)
+		if _wait_remaining <= 0.0:
 			_direction *= -1
 			SignalBus.MovingPlatformDirectionChanged.emit(self, _direction)
-
-func _sync_from_export_settings() -> void:
-	if not ExportSettings:
-		return
-	platform_size = ExportSettings.moving_platform_size
-	movement_speed = ExportSettings.moving_platform_speed
-	endpoint_wait_time = ExportSettings.moving_platform_endpoint_wait_time
-	loop_movement = ExportSettings.moving_platform_loop
 
 func _update_dimensions() -> void:
 	if not is_inside_tree():

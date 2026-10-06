@@ -9,6 +9,12 @@ size = Vector2(112, 20)
 collision_layer = 1
 collision_mask = 2
 sync_to_physics = true
+platform_size = Vector2(112, 20)
+movement_speed = 90.0
+endpoint_wait_time = 0.45
+loop_movement = true
+start_from_end = false
+show_path_preview = true
 script = ExtResource("1_moving_platform")
 
 [node name="SolidCollision" type="CollisionShape2D" parent="."]
