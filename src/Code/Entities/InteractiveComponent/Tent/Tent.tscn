@@ -1,0 +1,171 @@
+[gd_scene format=3 uid="uid://c7mxy8v3k1q1w"]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/Tent/Tent.gd" id="1_tent"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tent"]
+size = Vector2(48, 40)
+
+[sub_resource type="Gradient" id="Gradient_tent_light"]
+colors = PackedColorArray(1, 0.8, 0.4, 1, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tent_light"]
+gradient = SubResource("Gradient_tent_light")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_key_badge"]
+bg_color = Color(0.18, 0.28, 0.42, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.85, 1, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_normal"]
+bg_color = Color(0.08, 0.12, 0.18, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 0.65, 0.95, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_hover"]
+bg_color = Color(0.12, 0.22, 0.35, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.85, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_pressed"]
+bg_color = Color(0.18, 0.32, 0.48, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.7, 0.95, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Tent" type="Area2D" groups=["interactive", "tent"]]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_tent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -20)
+shape = SubResource("RectangleShape2D_tent")
+
+[node name="TentVisual" type="Node2D" parent="."]
+
+[node name="TentFabric" type="Polygon2D" parent="TentVisual"]
+color = Color(0.42, 0.34, 0.26, 1)
+polygon = PackedVector2Array(-24, 0, 0, -36, 24, 0)
+
+[node name="TentDoor" type="Polygon2D" parent="TentVisual"]
+color = Color(0.22, 0.16, 0.12, 1)
+polygon = PackedVector2Array(-10, 0, 0, -22, 10, 0)
+
+[node name="TentPole" type="Line2D" parent="TentVisual"]
+points = PackedVector2Array(0, -38, 0, 0)
+width = 2.0
+default_color = Color(0.65, 0.52, 0.35, 1)
+
+[node name="LightGlow" type="PointLight2D" parent="."]
+position = Vector2(0, -18)
+enabled = false
+color = Color(1, 0.85, 0.5, 1)
+energy = 1.0
+texture = SubResource("GradientTexture2D_tent_light")
+texture_scale = 1.5
+
+[node name="PromptContainer" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -56.0
+offset_top = -64.0
+offset_right = 56.0
+offset_bottom = -38.0
+mouse_filter = 2
+
+[node name="PromptButton" type="Button" parent="PromptContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+mouse_filter = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_prompt_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_prompt_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_prompt_pressed")
+
+[node name="HBox" type="HBoxContainer" parent="PromptContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_right = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="KeyBadge" type="Label" parent="PromptContainer/HBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 11
+theme_override_styles/normal = SubResource("StyleBoxFlat_key_badge")
+text = "F"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ActionLabel" type="Label" parent="PromptContainer/HBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+theme_override_font_sizes/font_size = 13
+text = "设为重生点"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="."]
+visible = false
+offset_left = -60.0
+offset_top = -54.0
+offset_right = 60.0
+offset_bottom = -34.0
+theme_override_colors/font_color = Color(1, 0.88, 0.5, 0.9)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 11
+text = "重生点已设置"
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -9,7 +9,9 @@ class_name PlayerUI
 @onready var health_bar: ProgressBar = $Control/MarginContainer/VBoxContainer/HealthBar
 @onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthBar/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
+@onready var setting_button: Button = $Control/MarginContainer/VBoxContainer/SettingButton
 @onready var virtual_joystick: Control = $Control/VirtualJoystick
+
 @onready var right_action_buttons: Control = $Control/RightActionButtons
 @onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
 @onready var btn_dash: TouchActionButton = $Control/RightActionButtons/BtnDash
@@ -30,7 +32,15 @@ func _ready() -> void:
 		_max_hp = ExportSettings.player_max_hp
 		_target_hp = _max_hp
 	
+	if setting_button:
+		setting_button.pressed.connect(_on_setting_button_pressed)
+	
 	UpdateHealthDisplay(_target_hp, _max_hp)
+
+func _on_setting_button_pressed() -> void:
+	if SignalBus:
+		SignalBus.SettingVisibilityRequested.emit(true)
+
 
 func _sync_mobile_ui_sizes() -> void:
 	if not ExportSettings:

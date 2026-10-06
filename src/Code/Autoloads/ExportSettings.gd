@@ -46,6 +46,8 @@ extends Node
 @export var player_hp_drain_rate: float = 5.0
 
 @export_group("Audio & Footsteps", "player_footstep_")
+## 脚步声使用的音频总线名称 (Audio Bus)
+@export var player_footstep_bus: StringName = &"SFX_Footstep_Wet"
 ## 行走/奔跑时脚步声播放间隔时长 (秒)
 @export var player_footstep_interval: float = 0.22
 ## 起步迈出第一步时的前置延迟 (秒)
@@ -54,6 +56,36 @@ extends Node
 @export var player_footstep_volume_db: float = -2.0
 ## 脚步声音调微机随机变化范围 (pitch_scale: 1.0 ± 变化值，0 为固定音调)
 @export var player_footstep_pitch_randomness: float = 0.08
+
+@export_group("Audio & Move SFX", "sfx_move_")
+## 动作音效使用的音频总线名称 (Audio Bus，如 SFX_Move_Wet 或 SFX_Move_Dry)
+@export var sfx_move_bus: StringName = &"SFX_Move_Wet"
+## 动作音效音量分贝 (dB)
+@export var sfx_move_volume_db: float = 0.0
+## 冲刺音效音量分贝 (dB)
+@export var sfx_move_dash_volume_db: float = 0.0
+## 一段跳起跳音效音量分贝 (dB)
+@export var sfx_move_jump_first_volume_db: float = 0.0
+## 二段跳音效音量分贝 (dB)
+@export var sfx_move_jump_second_volume_db: float = 0.0
+## 蹬墙跳音效音量分贝 (dB)
+@export var sfx_move_wall_jump_volume_db: float = 0.0
+## 贴墙滑落音效音量分贝 (dB)
+@export var sfx_move_wall_sliding_volume_db: float = -2.0
+## 下落/滞空起落呼啸音效音量分贝 (dB)
+@export var sfx_move_rising_falling_volume_db: float = -4.0
+## 钩索发射音效音量分贝 (dB)
+@export var sfx_move_shoot_hook_volume_db: float = 0.0
+## 钩索拉拽飞行音效音量分贝 (dB)
+@export var sfx_move_pulling_hook_volume_db: float = 0.0
+## 受伤音效音量分贝 (dB)
+@export var sfx_move_hurt_volume_db: float = 0.0
+## 死亡音效音量分贝 (dB)
+@export var sfx_move_death_volume_db: float = 0.0
+## 动作音效音调随机浮动范围 (0 为固定音调)
+@export var sfx_move_pitch_randomness: float = 0.05
+## 触发下落呼啸音效的垂直下落速度阈值
+@export var sfx_move_falling_speed_threshold: float = 260.0
 
 @export_group("Rope & Grapple", "rope_")
 ## 使用绳索每次消耗的生命值
@@ -118,6 +150,14 @@ extends Node
 @export var chalice_reset_time: float = 10.0
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
+
+@export_group("Interactive - Tent", "tent_")
+## 帐篷重生延迟时长 (秒，玩家死亡后多久在帐篷重生)
+@export var tent_respawn_delay: float = 1.0
+## 重生时相对帐篷中心的原点偏移 (Vector2)
+@export var tent_respawn_offset: Vector2 = Vector2(0, 0)
+## 帐篷交互检测交互范围宽度/高度
+@export var tent_interaction_size: Vector2 = Vector2(48.0, 40.0)
 
 @export_group("Interactive - Crumbling Platform", "crumble_")
 ## 踩踏后震颤延迟坍塌时间 (秒)
@@ -248,3 +288,22 @@ extends Node
 @export var mobile_jump_button_radius: float = 52.0
 ## 冲刺按钮半径 (像素，默认 44)
 @export var mobile_dash_button_radius: float = 44.0
+
+@export_group("Setting & Save System", "setting_")
+## 最大允许的存档槽位数 (固定为 5)
+@export var setting_max_save_slots: int = 5
+## 游戏启动时是否自动载入第一个存档 (若存在)
+@export var setting_auto_load_slot_1: bool = false
+## 存档文件路径前缀模版 (支持 res://Saves/save_slot_ 或 user://save_slot_)
+@export var setting_save_path_prefix: String = "res://Code/Entities/Setting/Saves/save_slot_"
+
+## 按键绑定持久化文件路径 (独立于存档槽位)
+@export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
+## 设置界面背景透明度
+@export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
+
+@export_group("Start Menu", "start_menu_")
+## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)
+@export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
+## 开始菜单背景音乐总线
+@export var start_menu_music_bus: StringName = &"MUS_StartMenu"
