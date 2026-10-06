@@ -27,6 +27,12 @@ class_name WaterFlowArea
 @export var min_boost_speed: float = 480.0
 ## 靠近使用水符文石交互的有效距离
 @export var interact_radius: float = 120.0
+## 穿过流水区域划水音效
+@export var sfx_water_pass: AudioStream = preload("res://Music/SFX/Interactive-SFX_Interactive/HuaShui.wav")
+## 划水音效音量分贝 (dB)
+@export var sfx_water_pass_volume_db: float = 0.0
+## 划水音效音频总线
+@export var sfx_water_pass_bus: StringName = &"SFX_Interact"
 
 const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
 
@@ -68,6 +74,10 @@ func _sync_from_export_settings() -> void:
 		boost_multiplier = ExportSettings.water_flow_speed_multiplier
 		min_boost_speed = ExportSettings.water_flow_min_speed
 		interact_radius = ExportSettings.water_flow_interact_distance
+		if "water_flow_pass_volume_db" in ExportSettings:
+			sfx_water_pass_volume_db = ExportSettings.water_flow_pass_volume_db
+		if "water_flow_audio_bus" in ExportSettings:
+			sfx_water_pass_bus = ExportSettings.water_flow_audio_bus
 
 func _update_dimensions() -> void:
 	if not is_inside_tree():
@@ -258,6 +268,10 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 			player_body.ResetDashAndRope()
 
 		SignalBus.PlayerEnteredWaterWall.emit()
+
+		# 播放穿过流水区域的划水音效
+		if sfx_water_pass and Util:
+			Util.PlaySFX2D(sfx_water_pass, global_position, sfx_water_pass_bus, sfx_water_pass_volume_db)
 
 		# 水花波纹微动视觉反馈
 		var tween = create_tween()

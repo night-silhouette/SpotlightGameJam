@@ -461,6 +461,8 @@ func _process_pulling(delta: float) -> void:
 	_update_line()
 
 func _finish_pull(preserve_momentum: bool, with_jump_boost: bool = false) -> void:
+	if _pull_audio and _pull_audio.playing:
+		_pull_audio.stop()
 	_sync_hook_point()
 	var launch_dir = (hook_point - player.global_position).normalized()
 	_release_rope(true)
@@ -492,6 +494,9 @@ func _finish_pull(preserve_momentum: bool, with_jump_boost: bool = false) -> voi
 
 func _start_swing() -> void:
 	_sync_hook_point()
+	# 如果是从拉拽中切换到荡绳，停止拉拽音效
+	if _pull_audio and _pull_audio.playing:
+		_pull_audio.stop()
 	current_state = RopeState.SWINGING
 	player.is_special_state = true
 

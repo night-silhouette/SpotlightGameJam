@@ -4,3 +4,4 @@
 
 [node name="ExportSettings" type="Node2D" unique_id=636711994]
 script = ExtResource("1_hob1f")
+water_flow_speed_multiplier = 2.4

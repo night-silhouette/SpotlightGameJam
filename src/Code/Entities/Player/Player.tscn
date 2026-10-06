@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://b7bx3j3iqenuf" path="res://Code/Entities/Player/RopeController.gd" id="13_rope"]
 [ext_resource type="Script" uid="uid://c7yjbrupcw0qc" path="res://Code/Entities/Player/WaterRuneController.gd" id="14_water_rune"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.tscn" id="15_ui"]
-[ext_resource type="Texture2D" uid="uid://cglbm3bsxlwso" path="res://Art/Archived/Character/walk.png" id="16_lrxyo"]
+[ext_resource type="Texture2D" uid="uid://cj4ys25ekaauy" path="res://Art/Archived/Character/walk.png" id="16_lrxyo"]
 [ext_resource type="Texture2D" uid="uid://dkomsgecplgu2" path="res://Art/Archived/Character/standbytime.png" id="17_kpm6d"]
 
 [sub_resource type="Animation" id="Animation_8p301"]
@@ -224,3 +224,7 @@ bus = &"SFX_Move_Wet"
 
 [node name="FallAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742822]
 bus = &"SFX_Move_Wet"
+
+[node name="Walk" type="Sprite2D" parent="." unique_id=17612008]
+position = Vector2(-150, 560)
+texture = ExtResource("16_lrxyo")

@@ -53,6 +53,8 @@ class_name Player
 			now_HP = Max_HP
 		elif value <= 0.0:
 			now_HP = 0.0
+			if rope_controller:
+				rope_controller.ReleaseRope(false)
 			if move_state_machine and move_state_machine.cur_state_name != "died":
 				move_state_machine.change_state("died")
 		else:
@@ -502,6 +504,8 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 		if knockback != Vector2.ZERO:
 			velocity = knockback
 		PlayHurtSFX()
+		if rope_controller:
+			rope_controller.ReleaseRope(false)
 		move_state_machine.change_state("hurt")
 		if SignalBus:
 			SignalBus.PlayerHurt.emit(damage, knockback)
