@@ -184,6 +184,22 @@ signal MovingPlatformEndpointReached(platform_node: Node2D, endpoint_index: int)
 ## @param direction 新移动方向：1 前往终点，-1 返回起点
 signal MovingPlatformDirectionChanged(platform_node: Node2D, direction: int)
 
+## 定向追逐移动组件进入新速度阶段时触发。
+## @param mover_node 发生阶段变化的移动组件。
+## @param stage_index 阶段编号，从 1 开始。
+## @param base_speed 新阶段的基础速度。
+signal ChaseMoverStageChanged(mover_node: Node2D, stage_index: int, base_speed: float)
+
+## 定向追逐移动组件开始或暂停时触发。
+## @param mover_node 状态发生变化的移动组件。
+## @param active true 为开始或继续，false 为暂停。
+signal ChaseMoverActiveChanged(mover_node: Node2D, active: bool)
+
+## 致命追逐体接触玩家并请求立即死亡时触发。
+## @param player_node 被接触的玩家节点。
+## @param source_node 发出致死请求的追逐体节点。
+signal PlayerInstantDeathRequested(player_node: Node2D, source_node: Node2D)
+
 ## 钟乳石检测到玩家走过开始松动下落时触发
 ## @param stalactite_node 钟乳石节点
 signal StalactiteTriggered(stalactite_node: Node2D)

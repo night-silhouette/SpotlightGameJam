@@ -177,6 +177,28 @@ extends Node
 ## 移动平台抵达另一端后是否默认反向循环
 @export var moving_platform_loop: bool = true
 
+@export_group("Interactive - Directional Chase Mover", "chase_mover_")
+## 第一阶段持续时间，作为玩家熟悉追逐节奏的热身段。
+@export var chase_mover_stage_1_duration: float = 28.0
+## 第二阶段持续时间，进入连续跳跃和障碍压力段。
+@export var chase_mover_stage_2_duration: float = 32.0
+## 第一阶段基础速度。
+@export var chase_mover_stage_1_speed: float = 190.0
+## 第二阶段基础速度。
+@export var chase_mover_stage_2_speed: float = 230.0
+## 第三阶段基础速度，持续到钩锁逃脱终点。
+@export var chase_mover_stage_3_speed: float = 275.0
+## 分阶段切速时的加速度，避免速度瞬间跳变。
+@export var chase_mover_acceleration: float = 125.0
+## 追逐体希望与玩家维持的前向距离。
+@export var chase_mover_follow_distance: float = 520.0
+## 玩家领先超过此距离时进入追赶速度。
+@export var chase_mover_max_follow_distance: float = 900.0
+## 靠近玩家时的速度倍率；保持接近 1，避免减速表现过于明显。
+@export_range(0.5, 1.0, 0.01) var chase_mover_near_speed_multiplier: float = 0.9
+## 玩家领先较远时的速度倍率；保持轻微提升，避免突兀追赶。
+@export_range(1.0, 1.5, 0.01) var chase_mover_far_speed_multiplier: float = 1.16
+
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
 @export var slick_wall_friction: float = 0.0

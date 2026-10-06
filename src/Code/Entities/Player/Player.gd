@@ -213,6 +213,7 @@ func _ready() -> void:
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
 		SignalBus.TentActivated.connect(_on_tent_activated)
+		SignalBus.PlayerInstantDeathRequested.connect(_on_player_instant_death_requested)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
 
 func _process(delta: float) -> void:
@@ -467,6 +468,10 @@ func _on_start_player_hp_drain(drain_rate: float) -> void:
 
 func _on_stop_player_hp_drain() -> void:
 	StopHpDrain()
+
+func _on_player_instant_death_requested(player_node: Node2D, _source_node: Node2D) -> void:
+	if player_node == self:
+		now_HP = 0.0
 
 func _on_tent_activated(_tent_node: Node2D, spawn_pos: Vector2) -> void:
 	SetRespawnPosition(spawn_pos)
