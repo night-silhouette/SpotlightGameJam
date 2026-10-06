@@ -1,7 +1,8 @@
 extends State
 
 func enter() -> void:
-	pass
+	if animation_player:
+		animation_player.play("run")
 
 func exit() -> void:
 	pass

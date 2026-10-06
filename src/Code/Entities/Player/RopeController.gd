@@ -51,6 +51,8 @@ var hook_target_node: Node2D = null
 var hook_target_offset: Vector2 = Vector2.ZERO
 var window_timer: float = 0.0
 var pull_timer: float = 0.0
+var _last_pull_dist: float = 999999.0
+var _pull_stuck_timer: float = 0.0
 var can_use_rope: bool = true
 
 ## 是否在命中前就已经松开了左键/手指
@@ -436,6 +438,8 @@ func _start_pull() -> void:
 	_sync_hook_point()
 	current_state = RopeState.PULLING
 	pull_timer = 0.0
+	_last_pull_dist = (hook_point - player.global_position).length() if player else 999999.0
+	_pull_stuck_timer = 0.0
 	player.is_special_state = true
 	_update_line()
 
@@ -452,7 +456,26 @@ func _process_pulling(delta: float) -> void:
 	var to_hook = hook_point - player.global_position
 	var dist = to_hook.length()
 
-	if dist <= pull_arrive_distance or pull_timer >= 1.2:
+	# 考虑玩家世界缩放（如 World 场景中缩放叠加），动态调整到达距离阈值
+	var effective_arrive_dist = pull_arrive_distance
+	if player:
+		var avg_scale = (abs(player.global_scale.x) + abs(player.global_scale.y)) * 0.5
+		effective_arrive_dist = max(pull_arrive_distance, pull_arrive_distance * avg_scale)
+
+	# 贴墙/碰撞阻挡检测：若玩家已无法进一步靠近挂点并被阻挡（如撞上瓦片地形），判定为拉拽完成
+	if pull_timer > 0.08:
+		var dist_delta = _last_pull_dist - dist
+		# 若当前帧向挂点前进距离极小（甚至因碰撞反弹后退）
+		if dist_delta < (pull_speed * delta * 0.2):
+			_pull_stuck_timer += delta
+			if _pull_stuck_timer >= 0.08:
+				_finish_pull(true)
+				return
+		else:
+			_pull_stuck_timer = max(0.0, _pull_stuck_timer - delta * 0.5)
+	_last_pull_dist = dist
+
+	if dist <= effective_arrive_dist or pull_timer >= 1.2:
 		_finish_pull(true)
 		return
 
@@ -461,6 +484,8 @@ func _process_pulling(delta: float) -> void:
 	_update_line()
 
 func _finish_pull(preserve_momentum: bool, with_jump_boost: bool = false) -> void:
+	if _pull_audio and _pull_audio.playing:
+		_pull_audio.stop()
 	_sync_hook_point()
 	var launch_dir = (hook_point - player.global_position).normalized()
 	_release_rope(true)
@@ -492,6 +517,9 @@ func _finish_pull(preserve_momentum: bool, with_jump_boost: bool = false) -> voi
 
 func _start_swing() -> void:
 	_sync_hook_point()
+	# 如果是从拉拽中切换到荡绳，停止拉拽音效
+	if _pull_audio and _pull_audio.playing:
+		_pull_audio.stop()
 	current_state = RopeState.SWINGING
 	player.is_special_state = true
 

@@ -126,6 +126,10 @@ extends Node
 @export var water_flow_interact_distance: float = 130.0
 ## 水符文激活技能冷却时间 (秒)
 @export var water_rune_cooldown: float = 2.0
+## 穿过流水区域时划水音效音量分贝 (dB)
+@export var water_flow_pass_volume_db: float = 0.0
+## 穿过流水区域音效所使用的音频总线
+@export var water_flow_audio_bus: StringName = &"SFX_Interact"
 
 @export_group("Interactive - Spikes", "spikes_")
 ## 通用地刺基础伤害值

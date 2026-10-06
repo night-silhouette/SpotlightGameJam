@@ -4,6 +4,8 @@ class_name Player
 @onready var ani_move: AnimationPlayer = $ani_move
 @onready var move_state_machine: Node = $move_state_machine
 @onready var gameInputControl: Node = $GameInputControl
+@onready var sprite: Node2D = $sprite
+@onready var visual_placeholder: ColorRect = $VisualPlaceholder
 
 
 @onready var front_foot: RayCast2D = $front_foot
@@ -53,6 +55,8 @@ class_name Player
 			now_HP = Max_HP
 		elif value <= 0.0:
 			now_HP = 0.0
+			if rope_controller:
+				rope_controller.ReleaseRope(false)
 			if move_state_machine and move_state_machine.cur_state_name != "died":
 				move_state_machine.change_state("died")
 		else:
@@ -200,6 +204,10 @@ func _ready() -> void:
 	_init_footstep_sounds()
 	_init_move_sounds()
 	_sync_from_export_settings()
+	if sprite:
+		sprite.visible = true
+	if visual_placeholder:
+		visual_placeholder.visible = false
 	move_state_machine.init(self, ani_move, gameInputControl)
 	
 	gameInputControl.special_state_start.connect(func(_state): is_special_state = true)
@@ -282,6 +290,8 @@ func _physics_process(delta: float) -> void:
 			back_foot.scale.x *= -1
 			back_head.scale.x *= -1
 			back_body.scale.x *= -1
+			if sprite:
+				sprite.scale.x = abs(sprite.scale.x) * new_face_dir
 		face_dir = new_face_dir
 
 	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
@@ -404,7 +414,7 @@ func _init_footstep_sounds() -> void:
 func _handle_footstep_audio(delta: float) -> void:
 	# 判定条件：必须在地面上、有横向移动输入、有横向速度、非受伤/死亡等硬直状态
 	var is_moving_on_ground: bool = is_on_floor() and abs(velocity.x) > 10.0 and gameInputControl and gameInputControl.row_dir != 0.0
-	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt"):
+	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt" or move_state_machine.cur_state_name == "shuttle"):
 		is_moving_on_ground = false
 
 	if is_moving_on_ground:
@@ -507,6 +517,8 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 		if knockback != Vector2.ZERO:
 			velocity = knockback
 		PlayHurtSFX()
+		if rope_controller:
+			rope_controller.ReleaseRope(false)
 		move_state_machine.change_state("hurt")
 		if SignalBus:
 			SignalBus.PlayerHurt.emit(damage, knockback)
@@ -532,6 +544,12 @@ func ResetDashAndRope() -> void:
 	if water_rune_controller:
 		water_rune_controller.ResetCooldown()
 
+## 中断并退出冲刺状态
+func InterruptDash() -> void:
+	is_special_state = false
+	if gameInputControl and gameInputControl.has_method("InterruptDash"):
+		gameInputControl.InterruptDash()
+
 ## 设置玩家在水流/零重力区域的计数
 ## @param entered true 为进入，false 为离开
 func SetInWaterFlow(entered: bool) -> void:
@@ -540,6 +558,10 @@ func SetInWaterFlow(entered: bool) -> void:
 	else:
 		_water_flow_area_count = max(0, _water_flow_area_count - 1)
 	gravity_scale = 0.0 if _water_flow_area_count > 0 else 1.0
+
+## 查询玩家当前是否处于流水区域内
+func IsInWaterFlow() -> bool:
+	return _water_flow_area_count > 0
 
 ## 兼容原工程受击方法
 ## @param damage 受到的伤害数值
