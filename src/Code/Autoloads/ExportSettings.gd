@@ -135,13 +135,13 @@ extends Node
 ## 通用地刺基础伤害值
 @export var spikes_damage: float = 40.0
 ## 尖刺命中击退力度标量
-@export var spikes_knockback_force: float = 400.0
+@export var spikes_knockback_force: float = 650.0
 
 @export_group("Interactive - Rising Spikes", "rising_spikes_")
 ## 时序突刺基础伤害值
 @export var rising_spikes_damage: float = 50.0
 ## 时序突刺击退力度标量
-@export var rising_spikes_knockback_force: float = 450.0
+@export var rising_spikes_knockback_force: float = 700.0
 ## 突刺缩回安全等待时长 (秒)
 @export var rising_spikes_retracted_duration: float = 2.0
 ## 突刺伸出危险保持时长 (秒)
@@ -277,7 +277,7 @@ extends Node
 ## 钟乳石检测射线向下最大长度 (像素)
 @export var stalactite_ray_length: float = 400.0
 ## 钟乳石松动预警晃动时长 (秒)
-@export var stalactite_shake_duration: float = 0.25
+@export var stalactite_shake_duration: float = 0.35
 ## 钟乳石下落重力加速度 (像素/秒^2)
 @export var stalactite_gravity: float = 1600.0
 ## 钟乳石最大下落速度 (像素/秒)
@@ -285,7 +285,7 @@ extends Node
 ## 钟乳石基础伤害量
 @export var stalactite_damage: float = 50.0
 ## 钟乳石击退力度
-@export var stalactite_knockback_force: float = 350.0
+@export var stalactite_knockback_force: float = 600.0
 
 @export_group("Interactive - Falling Block", "falling_block_")
 ## 下落方块检测射线向下最大长度 (像素)

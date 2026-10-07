@@ -39,7 +39,8 @@
 		"type": "key"
 	},
 	"water_rune": {
-		"button_index": 2,
-		"type": "mouse_button"
+		"keycode": 69,
+		"physical_keycode": 69,
+		"type": "key"
 	}
 }

@@ -63,17 +63,31 @@ func _on_body_entered(body: Node2D) -> void:
 		_trigger_spike_damage(body)
 
 func _trigger_spike_damage(player: Node2D) -> void:
-	# 击退方向优先使用人物当前运动速度的反方向 (-velocity)
-	var knockback_dir: Vector2 = Vector2.ZERO
-	if "velocity" in player and (player.velocity as Vector2).length_squared() > 100.0:
-		knockback_dir = -player.velocity.normalized()
+	# 尖刺向外的法线方向（局部坐标-Y轴对应尖刺尖端朝向）
+	var spike_normal: Vector2 = -global_transform.y.normalized()
+	if spike_normal == Vector2.ZERO:
+		spike_normal = Vector2.UP
+
+	# 计算水平横向弹开方向：根据玩家相对于尖刺中心的X位置远离刺中心
+	var horiz_dir: float = 1.0
+	if player.global_position.x < global_position.x:
+		horiz_dir = -1.0
+	elif player.global_position.x > global_position.x:
+		horiz_dir = 1.0
 	else:
-		# 若玩家当前速度几乎为零（例如静止受击），则使用背离尖刺的朝向或尖刺法线向外击退
-		var relative_dir: Vector2 = (player.global_position - global_position).normalized()
-		var outward_dir: Vector2 = -global_transform.y.normalized()
-		knockback_dir = outward_dir if outward_dir != Vector2.ZERO else relative_dir
-		if knockback_dir == Vector2.ZERO:
-			knockback_dir = Vector2.UP
+		# 正中心时按玩家反方向弹开
+		horiz_dir = -1.0 if ("face_dir" in player and player.face_dir > 0) else 1.0
+
+	var knockback_dir: Vector2 = Vector2.ZERO
+	# 若尖刺基本朝上（地面地刺），合成斜向上方的挑飞击退
+	if spike_normal.y < -0.3:
+		knockback_dir = Vector2(horiz_dir * 0.7, -0.85).normalized()
+	# 若尖刺基本朝下（顶刺），向下并向外弹开
+	elif spike_normal.y > 0.3:
+		knockback_dir = Vector2(horiz_dir * 0.7, 0.7).normalized()
+	# 若尖刺在左右墙壁（壁刺），主要沿刺法线向外推，并给予适度向上弹跳
+	else:
+		knockback_dir = Vector2(spike_normal.x * 0.85, -0.55).normalized()
 
 	var knockback_vector: Vector2 = knockback_dir * knockback_force
 	

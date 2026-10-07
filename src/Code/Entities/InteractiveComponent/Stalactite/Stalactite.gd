@@ -147,7 +147,7 @@ func _on_hit_area_body_entered(body: Node2D) -> void:
 	if current_state != StalactiteState.FALLING:
 		return
 
-	# 命中玩家：造成伤害并击退（向两侧斜下方/斜上方弹开，避免直接向下压进地面）
+	# 命中玩家：造成伤害并击退（向两侧斜上方挑飞弹开，避免直接向下压进地面）
 	if body.is_in_group("player") or body is CharacterBody2D:
 		var push_dir_x: float = 1.0
 		if body.global_position.x < global_position.x:
@@ -157,7 +157,7 @@ func _on_hit_area_body_entered(body: Node2D) -> void:
 		else:
 			push_dir_x = -1.0 if ("face_dir" in body and body.face_dir < 0) else 1.0
 
-		var knockback_dir = Vector2(push_dir_x, -0.3).normalized()
+		var knockback_dir = Vector2(push_dir_x * 0.7, -0.7).normalized()
 		var knockback_vector = knockback_dir * knockback_force
 
 		if body.has_method("ApplyDamage"):

@@ -274,6 +274,13 @@ func _physics_process(delta: float) -> void:
 				velocity.x = move_toward(velocity.x, -speed, accerleration * delta)
 			else:
 				velocity.x = move_toward(velocity.x, 0.0, friction * delta)
+	else:
+		# 特殊状态下（如受伤硬直 hurt），依然受重力和空气阻力自然移动，保留击退冲量飞出
+		if move_state_machine and move_state_machine.cur_state_name == "hurt":
+			velocity.y += GlobalValue.gravity * gravity_scale * delta
+			# 在受击硬直期间水平速度平缓衰减，不被地面强行刹死
+			var hurt_damping = 800.0 if is_on_floor() else 200.0
+			velocity.x = move_toward(velocity.x, 0.0, hurt_damping * delta)
 
 	move_and_slide()
 
@@ -515,6 +522,9 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 		now_HP -= damage
 		hurt_lock = false
 		if knockback != Vector2.ZERO:
+			# 如果角色在地面且受击冲量向上，则先轻微浮空 2 像素脱离地面吸附
+			if is_on_floor() and knockback.y < 0:
+				global_position.y -= 2.0
 			velocity = knockback
 		PlayHurtSFX()
 		if rope_controller:
