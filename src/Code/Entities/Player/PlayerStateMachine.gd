@@ -3,6 +3,9 @@ extends StateMachine
 func phy_middleware() -> void:
 	if not gameInputControl:
 		return
+	# 受伤硬直期间不接受键盘物理转向输入覆盖状态
+	if cur_state_name == "hurt" or cur_state_name == "died":
+		return
 	# 如果处于流水穿梭状态且仍在水流区域内，保持穿梭状态，不被 run / idle 打断
 	if cur_state_name == "shuttle":
 		if obj and obj.has_method("IsInWaterFlow") and obj.IsInWaterFlow():
