@@ -521,14 +521,16 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 	if hurt_lock:
 		now_HP -= damage
 		hurt_lock = false
+		# 先解除绳索约束并清除原有绳索动量，再施加本次受击冲量。
+		# ReleaseRope(false) 会将 velocity 清零，若放在击退赋值之后会吞掉所有陷阱击退。
+		if rope_controller:
+			rope_controller.ReleaseRope(false)
 		if knockback != Vector2.ZERO:
 			# 如果角色在地面且受击冲量向上，则先轻微浮空 2 像素脱离地面吸附
 			if is_on_floor() and knockback.y < 0:
 				global_position.y -= 2.0
 			velocity = knockback
 		PlayHurtSFX()
-		if rope_controller:
-			rope_controller.ReleaseRope(false)
 		move_state_machine.change_state("hurt")
 		if SignalBus:
 			SignalBus.PlayerHurt.emit(damage, knockback)
