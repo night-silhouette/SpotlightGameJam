@@ -1,0 +1,12 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Playtest.gd" id="script"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.tscn" id="map"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2PreviewPlayer.tscn" id="player"]
+[node name="Level2Playtest" type="Node2D"]
+script = ExtResource("script")
+[node name="Level2Map" parent="." instance=ExtResource("map")]
+[node name="PreviewPlayer" parent="." instance=ExtResource("player")]
+position = Vector2(100, -365)
+[node name="PreviewCamera" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0

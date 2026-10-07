@@ -1,5 +1,12 @@
 extends Node
 
+## 第二关物件请求交互。source 为关卡内设备，player 为靠近的角色。
+signal Level2InteractionRequested(source: Node2D, player: Node2D)
+## 第二关钥匙、谜题或出口状态改变。level 为对应关卡实例。
+signal Level2StateChanged(level: Node2D)
+## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
+signal Level2Completed(level: Node2D, player: Node2D)
+
 ## 恢复普通玩家跟随。
 ## @param player PlayerWithCamera 内的原 Player 节点。
 signal CameraNormalRequested(player: Node2D)

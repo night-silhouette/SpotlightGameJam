@@ -1,5 +1,19 @@
 extends Node
 
+@export_group("Level 2 - Blockout", "level2_")
+## 物品提示出现距离，像素。
+@export var level2_interact_radius: float = 85.0
+## 测试镜头显示的世界宽度；越大可看见越多地图。
+@export var level2_view_width: float = 1000.0
+## 第二关水道移动平台速度，像素/秒。
+@export var level2_platform_speed: float = 85.0
+## 机关顺序：日、月、交织。
+@export var level2_rune_order: PackedStringArray = ["sun", "moon", "weave"]
+## 逆流水柱上升速度（像素/秒），沿实体水井推动玩家。
+@export var level2_fountain_speed: float = 720.0
+## 井口喷流水平速度；保持物理移动离开井口。
+@export var level2_fountain_exit_speed: float = 320.0
+
 ## 玩家与全局导出配置项 (ExportSettings)
 ## 供设计人员与开发者统一调整角色移动、跳跃、冲刺、受击、绳索等各项数值
 
