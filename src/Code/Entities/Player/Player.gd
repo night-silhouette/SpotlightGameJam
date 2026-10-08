@@ -22,6 +22,10 @@ class_name Player
 @onready var move_audio: AudioStreamPlayer2D = $MoveAudio
 @onready var slide_audio: AudioStreamPlayer2D = $SlideAudio
 @onready var fall_audio: AudioStreamPlayer2D = $FallAudio
+@onready var sand_fall_particles: CPUParticles2D = $SandFallParticles
+@onready var water_droplet_particles: CPUParticles2D = $WaterDropletParticles
+@onready var water_droplet_timer: Timer = $WaterDropletTimer
+@onready var low_water_outline_material: ShaderMaterial = $sprite/Standbytime.material as ShaderMaterial
 
 @export_category("properties")
 @export_group("physical_prop")
@@ -68,6 +72,21 @@ class_name Player
 @export var is_hp_draining: bool = false
 ## 自然掉血速度 (每秒扣除点数)
 @export var hp_drain_rate: float = 5.0
+## 触发缺水视觉效果的水量比例
+@export_range(0.0, 1.0, 0.01) var low_water_threshold: float = 0.15
+## 缺水时主角的沙土色
+@export var low_water_color: Color = Color("f8f4ed")
+## 缺水时主角边缘的描线颜色
+@export var low_water_outline_color: Color = Color.BLACK
+## 缺水时主角描线宽度（纹理像素）
+@export_range(1.0, 8.0, 0.5) var low_water_outline_width: float = 3.0
+## 缺水时边缘缺口的密度
+@export_range(0.0, 0.5, 0.01) var low_water_edge_damage: float = 0.16
+## 缺水颜色和描线渐变速度
+@export_range(0.1, 10.0, 0.1) var low_water_color_fade_speed: float = 2.0
+
+var _is_low_water: bool = false
+var _low_water_effect_strength: float = 0.0
 
 var is_special_state: bool = false
 var face_dir: int = 1
@@ -165,6 +184,35 @@ func _sync_from_export_settings() -> void:
 		Max_HP = ExportSettings.player_max_hp
 		now_HP = ExportSettings.player_max_hp
 		hp_drain_rate = ExportSettings.player_hp_drain_rate
+		low_water_threshold = ExportSettings.player_low_water_threshold
+		low_water_color = ExportSettings.player_low_water_color
+		low_water_outline_color = ExportSettings.player_low_water_outline_color
+		low_water_outline_width = ExportSettings.player_low_water_outline_width
+		low_water_edge_damage = ExportSettings.player_low_water_edge_damage
+		low_water_color_fade_speed = ExportSettings.player_low_water_color_fade_speed
+		if low_water_outline_material:
+			low_water_outline_material.set_shader_parameter("outline_color", low_water_outline_color)
+			low_water_outline_material.set_shader_parameter("outline_width", low_water_outline_width)
+			low_water_outline_material.set_shader_parameter("edge_damage", low_water_edge_damage)
+		if sand_fall_particles:
+			sand_fall_particles.amount = ExportSettings.player_low_water_sand_amount
+			sand_fall_particles.lifetime = ExportSettings.player_low_water_sand_lifetime
+		if water_droplet_particles:
+			water_droplet_particles.amount = ExportSettings.player_water_droplet_amount
+			water_droplet_particles.lifetime = ExportSettings.player_water_droplet_lifetime
+			water_droplet_particles.emission_rect_extents = ExportSettings.player_water_droplet_emission_extents
+			water_droplet_particles.gravity = ExportSettings.player_water_droplet_gravity
+			water_droplet_particles.initial_velocity_min = ExportSettings.player_water_droplet_velocity_min
+			water_droplet_particles.initial_velocity_max = ExportSettings.player_water_droplet_velocity_max
+			water_droplet_particles.scale_amount_min = ExportSettings.player_water_droplet_size_min
+			water_droplet_particles.scale_amount_max = ExportSettings.player_water_droplet_size_max
+			var droplet_color: Color = ExportSettings.player_water_droplet_color
+			water_droplet_particles.color_ramp.colors = PackedColorArray([
+				droplet_color,
+				Color(droplet_color.r, droplet_color.g, droplet_color.b, 0.0)
+			])
+		if water_droplet_timer:
+			water_droplet_timer.wait_time = ExportSettings.player_water_droplet_duration
 		if "player_footstep_bus" in ExportSettings:
 			footstep_bus = ExportSettings.player_footstep_bus
 		if "player_footstep_interval" in ExportSettings:
@@ -204,6 +252,8 @@ func _ready() -> void:
 	_init_footstep_sounds()
 	_init_move_sounds()
 	_sync_from_export_settings()
+	if water_droplet_timer and not water_droplet_timer.timeout.is_connected(_on_water_droplet_timer_timeout):
+		water_droplet_timer.timeout.connect(_on_water_droplet_timer_timeout)
 	if sprite:
 		sprite.visible = true
 	if visual_placeholder:
@@ -227,6 +277,28 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if is_hp_draining and now_HP > 0.0:
 		now_HP -= hp_drain_rate * delta
+	_update_low_water_effect(delta)
+
+func _update_low_water_effect(delta: float) -> void:
+	var water_ratio: float = now_HP / Max_HP if Max_HP > 0.0 else 0.0
+	var should_be_low_water: bool = now_HP > 0.0 and water_ratio < low_water_threshold
+	if should_be_low_water != _is_low_water:
+		_is_low_water = should_be_low_water
+		if sand_fall_particles:
+			sand_fall_particles.emitting = _is_low_water
+		if SignalBus:
+			SignalBus.PlayerLowWaterStateChanged.emit(self, _is_low_water)
+
+	var target_strength: float = 1.0 if _is_low_water else 0.0
+	_low_water_effect_strength = move_toward(
+		_low_water_effect_strength,
+		target_strength,
+		low_water_color_fade_speed * delta
+	)
+	if sprite:
+		sprite.modulate = Color.WHITE.lerp(low_water_color, _low_water_effect_strength)
+	if low_water_outline_material:
+		low_water_outline_material.set_shader_parameter("outline_strength", _low_water_effect_strength)
 
 func _physics_process(delta: float) -> void:
 	if hp_label:
@@ -565,11 +637,21 @@ func InterruptDash() -> void:
 ## 设置玩家在水流/零重力区域的计数
 ## @param entered true 为进入，false 为离开
 func SetInWaterFlow(entered: bool) -> void:
+	var was_in_water_flow := _water_flow_area_count > 0
 	if entered:
 		_water_flow_area_count += 1
+		water_droplet_particles.emitting = false
+		water_droplet_timer.stop()
 	else:
 		_water_flow_area_count = max(0, _water_flow_area_count - 1)
 	gravity_scale = 0.0 if _water_flow_area_count > 0 else 1.0
+
+	if was_in_water_flow and _water_flow_area_count == 0:
+		water_droplet_particles.emitting = true
+		water_droplet_timer.start()
+
+func _on_water_droplet_timer_timeout() -> void:
+	water_droplet_particles.emitting = false
 
 ## 查询玩家当前是否处于流水区域内
 func IsInWaterFlow() -> bool:
