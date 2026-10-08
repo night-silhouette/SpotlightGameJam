@@ -1,12 +1,40 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Playtest.gd" id="script"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.tscn" id="map"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2PreviewPlayer.tscn" id="player"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2PlayerWithCamera.tscn" id="player"]
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2CameraDirector.gd" id="director"]
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2ShaftOcclusion.gd" id="mask"]
 [node name="Level2Playtest" type="Node2D"]
 script = ExtResource("script")
+[node name="Backdrop" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="Fill" type="ColorRect" parent="Backdrop"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.025, 0.04, 0.055, 1)
+
 [node name="Level2Map" parent="." instance=ExtResource("map")]
-[node name="PreviewPlayer" parent="." instance=ExtResource("player")]
-position = Vector2(100, -365)
-[node name="PreviewCamera" type="Camera2D" parent="."]
-position_smoothing_enabled = true
-position_smoothing_speed = 8.0
+[node name="Level2PlayerWithCamera" parent="." instance=ExtResource("player")]
+[node name="CameraDirector" type="Node2D" parent="."]
+process_physics_priority = -10
+script = ExtResource("director")
+
+[node name="ShaftFollowTarget" type="Marker2D" parent="CameraDirector"]
+
+[node name="ShaftOcclusion" type="CanvasLayer" parent="CameraDirector"]
+layer = 1
+
+[node name="Mask" type="Control" parent="CameraDirector/ShaftOcclusion"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("mask")

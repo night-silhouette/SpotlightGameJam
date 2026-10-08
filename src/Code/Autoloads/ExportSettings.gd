@@ -3,7 +3,7 @@ extends Node
 @export_group("Level 2 - Blockout", "level2_")
 ## 物品提示出现距离，像素。
 @export var level2_interact_radius: float = 85.0
-## 测试镜头显示的世界宽度；越大可看见越多地图。
+## 第二关镜头的目标世界宽度；沿用正式镜头系统，窗口变化时自动适配。
 @export var level2_view_width: float = 1000.0
 ## 第二关水道移动平台速度，像素/秒。
 @export var level2_platform_speed: float = 85.0
@@ -13,6 +13,28 @@ extends Node
 @export var level2_fountain_speed: float = 720.0
 ## 井口喷流水平速度；保持物理移动离开井口。
 @export var level2_fountain_exit_speed: float = 320.0
+
+@export_group("Level 2 - Camera", "level2_camera_")
+## 窄屏时限制可见高度，避免露出上下相邻房间；不改项目全局分辨率。
+@export var level2_camera_max_view_height: float = 800.0
+## 第二关普通跟随偏移，负 Y 在人物上方留白。
+@export var level2_camera_offset: Vector2 = Vector2(0, -80)
+## 普通跟随沿用项目默认阻尼风格。
+@export var level2_camera_damping: Vector2 = Vector2(0.12, 0.18)
+## 竖井跟随阻尼，减少高速落下和上升时的滞后。
+@export var level2_camera_shaft_damping: Vector2 = Vector2(0.10, 0.12)
+## 下落时人物位于画面高度的比例，为下方落脚点留出视野。
+@export_range(0.2, 0.8) var level2_camera_descent_frame_y: float = 0.42
+## 上升时人物位于画面高度的比例，为上方出口留出视野。
+@export_range(0.2, 0.8) var level2_camera_ascent_frame_y: float = 0.62
+## 第二关模式切换时间。
+@export var level2_camera_transition_time: float = 0.45
+## 竖井侧面遮挡，防止看到平行水井；不改变物理路线。
+@export var level2_camera_shaft_occlusion: bool = true
+## 竖井两侧显示的墙体余量。
+@export var level2_camera_wall_margin: float = 24.0
+## 竖井口附近遮挡淡入淡出的距离。
+@export var level2_camera_occlusion_fade: float = 160.0
 
 ## 玩家与全局导出配置项 (ExportSettings)
 ## 供设计人员与开发者统一调整角色移动、跳跃、冲刺、受击、绳索等各项数值
