@@ -371,3 +371,12 @@ extends Node
 @export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
+
+@export_group("Interactable Component", "interactable_")
+@export var interactable_action: StringName = &"interact"
+@export var interactable_description_lines: Array[String] = []
+@export var interactable_monologue_lines: Array[String] = []
+
+@export_group("Vanishing Blocker", "vanishing_blocker_")
+@export var vanishing_blocker_zone_group: StringName = &"VanishZone"
+@export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5

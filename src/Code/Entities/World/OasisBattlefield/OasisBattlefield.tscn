@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://cdq48ot4um03o"]
 
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/OasisBoat/OasisBoat.tscn" id="2_1ev11"]
+[ext_resource type="PackedScene" uid="uid://yhp6y1bc4ewn" path="res://Code/Entities/InteractiveComponent/OasisBoat/OasisBoat.tscn" id="2_1ev11"]
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="2_8krur"]
 [ext_resource type="TileSet" uid="uid://c2kfbr6u44m8m" path="res://Code/Entities/World/collision_tile_set.tres" id="2_101n4"]
 [ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="3_lv1pm"]
@@ -13,6 +13,12 @@
 [ext_resource type="PackedScene" uid="uid://c85h5y2p6x8r1" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="11_rising_spikes"]
 [ext_resource type="Script" uid="uid://dk54k02xio8mt" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.gd" id="12_oasis_battlefield"]
 
+[sub_resource type="Curve2D" id="Curve2D_1ev11"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 390, 0)
+}
+point_count = 2
+
 [node name="OasisBattlefield" type="Node2D" unique_id=1726602721]
 script = ExtResource("12_oasis_battlefield")
 metadata/_edit_lock_ = true
@@ -21,6 +27,7 @@ metadata/_edit_lock_ = true
 
 [node name="OasisBoat" parent="OutwardPhase" unique_id=1388656376 instance=ExtResource("2_1ev11")]
 position = Vector2(15482, 1239)
+curve = SubResource("Curve2D_1ev11")
 
 [node name="OutwardTileMap" type="TileMapLayer" parent="OutwardPhase" unique_id=1830326908]
 position = Vector2(4796, -51)
