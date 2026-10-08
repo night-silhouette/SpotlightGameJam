@@ -11,14 +11,23 @@
 [ext_resource type="Script" uid="uid://da8gmnkwc00x2" path="res://Code/Entities/Player/States/HurtState.gd" id="9_hurt"]
 [ext_resource type="Script" uid="uid://bmcgo83kp4isi" path="res://Code/Entities/Player/States/DiedState.gd" id="10_died"]
 [ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
-[ext_resource type="Script" path="res://Code/Entities/Player/States/ShuttleState.gd" id="12_shuttle"]
 [ext_resource type="Script" uid="uid://uoa31q2225il" path="res://Code/Entities/Player/PlayerInputControl.gd" id="12_input"]
+[ext_resource type="Script" uid="uid://4osrcpriqosx" path="res://Code/Entities/Player/States/ShuttleState.gd" id="12_shuttle"]
 [ext_resource type="Script" uid="uid://b7bx3j3iqenuf" path="res://Code/Entities/Player/RopeController.gd" id="13_rope"]
 [ext_resource type="Script" uid="uid://c7yjbrupcw0qc" path="res://Code/Entities/Player/WaterRuneController.gd" id="14_water_rune"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.tscn" id="15_ui"]
 [ext_resource type="Texture2D" uid="uid://cj4ys25ekaauy" path="res://Art/Archived/Character/walk.png" id="16_lrxyo"]
 [ext_resource type="Texture2D" uid="uid://dkomsgecplgu2" path="res://Art/Archived/Character/standbytime.png" id="17_kpm6d"]
-[ext_resource type="Texture2D" uid="uid://burmptgivexvw" path="res://Art/Archived/Character/jump.png" id="18_jump"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/jump/jump_start.png" id="18_jump_start"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/jump/jump_rise.png" id="20_jump_rise"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/jump/fall.png" id="21_fall"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/jump/Onland.png" id="22_onland"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/dash.png" id="23_dash"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/hit.png" id="24_hit"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/death.png" id="25_death"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/wall_grab.png" id="26_wall_grab"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/wall_kick.png" id="27_wall_kick"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Character/water_dash.png" id="28_water_dash"]
 [ext_resource type="Texture2D" uid="uid://bbj1stubt0wpu" path="res://Art/Archived/Character/turn.png" id="19_turn"]
 
 [sub_resource type="Animation" id="Animation_8p301"]
@@ -50,7 +59,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("sprite/Jump:frame")
+tracks/2/path = NodePath("sprite/Action:frame")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -98,7 +107,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Jump:visible")
+tracks/6/path = NodePath("sprite/Action:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -164,7 +173,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Jump:visible")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -186,74 +195,156 @@ tracks/4/keys = {
 "values": [false]
 }
 
-[sub_resource type="Animation" id="Animation_jump"]
-resource_name = "jump"
+[sub_resource type="Animation" id="Animation_jump_start"]
+resource_name = "jump_start"
 length = 0.4
 step = 0.1
 tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("sprite/Jump:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3), "transitions": PackedFloat32Array(1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3]}
 tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("sprite/Jump:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("18_jump_start")]}
 tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("sprite/Standbytime:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [4]}
 tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Walk:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -14)]}
 tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Turn:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_jump_rise"]
+resource_name = "jump_rise"
+length = 0.3
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2), "transitions": PackedFloat32Array(1, 1, 1), "update": 1, "values": [0, 1, 2]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("20_jump_rise")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [3]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -15)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_fall"]
+resource_name = "fall"
+length = 0.3
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2), "transitions": PackedFloat32Array(1, 1, 1), "update": 1, "values": [0, 1, 2]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("21_fall")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [3]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -20)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_onland"]
+resource_name = "Onland"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3), "transitions": PackedFloat32Array(1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("22_onland")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [4]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -19)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_dash"]
+resource_name = "dash"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3), "transitions": PackedFloat32Array(1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("23_dash")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [4]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -12)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
 
 [sub_resource type="Animation" id="Animation_eki5f"]
 resource_name = "run"
-length = 0.7
+length = 0.6
 loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
@@ -263,10 +354,10 @@ tracks/0/path = NodePath("sprite/Walk:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5, 6]
+"values": [1, 2, 3, 4, 5, 6]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -295,7 +386,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Jump:visible")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -372,7 +463,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Jump:visible")
+tracks/4/path = NodePath("sprite/Action:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -382,15 +473,188 @@ tracks/4/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_hit"]
+resource_name = "hit"
+length = 0.2
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1), "transitions": PackedFloat32Array(1, 1), "update": 1, "values": [0, 1]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("24_hit")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [2]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -14)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_death"]
+resource_name = "death"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3), "transitions": PackedFloat32Array(1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("25_death")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [4]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -14)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_wall_grab"]
+resource_name = "wall_grab"
+length = 0.4
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3), "transitions": PackedFloat32Array(1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("26_wall_grab")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [4]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -16)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_wall_kick"]
+resource_name = "wall_kick"
+length = 0.4
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3), "transitions": PackedFloat32Array(1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("27_wall_kick")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [4]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -18)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_water_dash"]
+resource_name = "water_dash"
+length = 0.6
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite/Action:frame")
+tracks/0/keys = {"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5), "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1), "update": 1, "values": [0, 1, 2, 3, 4, 5]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite/Action:texture")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [ExtResource("28_water_dash")]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("sprite/Action:hframes")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [6]}
+tracks/3/type = "value"
+tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [Vector2(-8.862, -18)]}
+tracks/4/type = "value"
+tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [true]}
+tracks/5/type = "value"
+tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/6/type = "value"
+tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+tracks/7/type = "value"
+tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cab0y"]
 _data = {
 &"RESET": SubResource("Animation_8p301"),
+&"Onland": SubResource("Animation_onland"),
+&"dash": SubResource("Animation_dash"),
+&"death": SubResource("Animation_death"),
+&"fall": SubResource("Animation_fall"),
+&"hit": SubResource("Animation_hit"),
 &"idle": SubResource("Animation_n7ipn"),
-&"jump": SubResource("Animation_jump"),
+&"jump": SubResource("Animation_jump_start"),
+&"jump_rise": SubResource("Animation_jump_rise"),
+&"jump_start": SubResource("Animation_jump_start"),
 &"run": SubResource("Animation_eki5f"),
 &"trun": SubResource("Animation_turn"),
-&"turn": SubResource("Animation_turn")
+&"turn": SubResource("Animation_turn"),
+&"wall_grab": SubResource("Animation_wall_grab"),
+&"wall_kick": SubResource("Animation_wall_kick"),
+&"water_dash": SubResource("Animation_water_dash")
 }
+
+[sub_resource type="Gradient" id="Gradient_sand_fall"]
+colors = PackedColorArray(0.972549, 0.956863, 0.929412, 0.95, 0.78, 0.7, 0.55, 0)
+
+[sub_resource type="Gradient" id="Gradient_water_droplet"]
+colors = PackedColorArray(0.18, 0.72, 1, 0.9, 0.18, 0.72, 1, 0)
+
+[sub_resource type="Shader" id="Shader_low_water_outline"]
+code = "shader_type canvas_item;\n\nuniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);\nuniform float outline_strength : hint_range(0.0, 1.0) = 0.0;\nuniform float outline_width : hint_range(1.0, 8.0) = 3.0;\nuniform float edge_damage : hint_range(0.0, 0.5) = 0.16;\n\nfloat pixel_noise(vec2 pixel_position) {\n\treturn fract(sin(dot(pixel_position, vec2(12.9898, 78.233))) * 43758.5453);\n}\n\nvoid fragment() {\n\tvec4 base_color = COLOR;\n\tvec2 offset = TEXTURE_PIXEL_SIZE * outline_width;\n\tfloat neighbor_alpha = min(\n\t\tmin(texture(TEXTURE, UV + vec2(offset.x, 0.0)).a, texture(TEXTURE, UV - vec2(offset.x, 0.0)).a),\n\t\tmin(texture(TEXTURE, UV + vec2(0.0, offset.y)).a, texture(TEXTURE, UV - vec2(0.0, offset.y)).a)\n\t);\n\tfloat edge = base_color.a * (1.0 - neighbor_alpha) * outline_strength;\n\tfloat noise = pixel_noise(floor(UV / TEXTURE_PIXEL_SIZE));\n\tfloat rough_edge = edge * mix(0.55, 1.0, noise);\n\tfloat chip = edge * step(1.0 - edge_damage, noise);\n\tbase_color.rgb = mix(base_color.rgb, outline_color.rgb, rough_edge * outline_color.a);\n\tbase_color.a *= 1.0 - chip * 0.85;\n\tCOLOR = base_color;\n}\n"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_low_water_outline"]
+resource_local_to_scene = true
+shader = SubResource("Shader_low_water_outline")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_strength = 0.0
+shader_parameter/outline_width = 3.0
+shader_parameter/edge_damage = 0.16
 
 [node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
 collision_layer = 2
@@ -507,6 +771,7 @@ script = ExtResource("14_water_rune")
 [node name="sprite" type="Node2D" parent="." unique_id=1048294822]
 
 [node name="Standbytime" type="Sprite2D" parent="sprite" unique_id=1632125495]
+material = SubResource("ShaderMaterial_low_water_outline")
 visible = false
 position = Vector2(32, -13)
 scale = Vector2(0.43470114, 0.43470114)
@@ -515,25 +780,66 @@ hframes = 4
 vframes = 2
 
 [node name="Walk" type="Sprite2D" parent="sprite" unique_id=1352150479]
+material = SubResource("ShaderMaterial_low_water_outline")
 visible = false
 position = Vector2(-18.425, -9.305)
 scale = Vector2(0.43470114, 0.43470114)
 texture = ExtResource("16_lrxyo")
 hframes = 7
 
-[node name="Jump" type="Sprite2D" parent="sprite" unique_id=1352150480]
+[node name="Action" type="Sprite2D" parent="sprite" unique_id=1352150480]
+material = SubResource("ShaderMaterial_low_water_outline")
 visible = false
-position = Vector2(-8.862, -13)
+position = Vector2(-8.862, -14)
 scale = Vector2(0.43470114, 0.43470114)
-texture = ExtResource("18_jump")
+texture = ExtResource("18_jump_start")
 hframes = 4
 
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]
+material = SubResource("ShaderMaterial_low_water_outline")
 visible = false
 position = Vector2(-9.949, -10.174)
 scale = Vector2(0.43470114, 0.43470114)
 texture = ExtResource("19_turn")
 hframes = 3
+
+[node name="SandFallParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, 4)
+emitting = false
+amount = 12
+lifetime = 1.0
+randomness = 0.65
+emission_shape = 3
+emission_rect_extents = Vector2(11, 25)
+direction = Vector2(0, 1)
+spread = 28.0
+gravity = Vector2(0, 240)
+initial_velocity_min = 18.0
+initial_velocity_max = 48.0
+scale_amount_min = 1.2
+scale_amount_max = 2.8
+color_ramp = SubResource("Gradient_sand_fall")
+
+[node name="WaterDropletParticles" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 18
+lifetime = 1.2
+randomness = 0.65
+local_coords = false
+emission_shape = 3
+emission_rect_extents = Vector2(10, 20)
+direction = Vector2(0, 1)
+spread = 32.0
+gravity = Vector2(0, 420)
+initial_velocity_min = 25.0
+initial_velocity_max = 70.0
+scale_amount_min = 1.2
+scale_amount_max = 2.4
+color_ramp = SubResource("Gradient_water_droplet")
+
+[node name="WaterDropletTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [node name="FootstepAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742819]
 bus = &"SFX_Footstep_Wet"

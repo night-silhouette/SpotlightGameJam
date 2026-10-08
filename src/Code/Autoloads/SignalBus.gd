@@ -126,6 +126,11 @@ signal StopPlayerHpDrain
 ## @param max_hp 最大血量
 signal PlayerHealthChanged(current_hp: float, max_hp: float)
 
+## 玩家进入或离开低水量状态时触发
+## @param player_node 状态发生变化的玩家节点
+## @param is_low_water true 表示进入低水量状态，false 表示恢复
+signal PlayerLowWaterStateChanged(player_node: Node2D, is_low_water: bool)
+
 ## 玩家受到伤害/触碰陷阱扣水瞬间触发 (驱动闪白 + Hit-stop 顿帧 + 震屏)
 ## @param damage_amount 扣除的水量/伤害量
 ## @param knockback_dir 受击击退方向向量

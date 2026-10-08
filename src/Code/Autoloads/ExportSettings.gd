@@ -44,6 +44,44 @@ extends Node
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
 @export var player_hp_drain_rate: float = 5.0
+## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
+@export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
+## 缺水时主角最终呈现的沙土色
+@export var player_low_water_color: Color = Color("f8f4ed")
+## 缺水时主角边缘的描线颜色
+@export var player_low_water_outline_color: Color = Color.BLACK
+## 缺水时主角描线宽度（纹理像素）
+@export_range(1.0, 8.0, 0.5) var player_low_water_outline_width: float = 3.0
+## 缺水时边缘缺口的密度
+@export_range(0.0, 0.5, 0.01) var player_low_water_edge_damage: float = 0.16
+## 主角颜色与描线向缺水状态渐变的速度
+@export_range(0.1, 10.0, 0.1) var player_low_water_color_fade_speed: float = 2.0
+## 缺水时持续掉落的沙粒数量
+@export_range(1, 128, 1) var player_low_water_sand_amount: int = 12
+## 沙粒存活时间 (秒)
+@export_range(0.1, 5.0, 0.1) var player_low_water_sand_lifetime: float = 1.0
+
+@export_group("Water Droplets", "player_water_droplet_")
+## 离开最后一个流水区域后持续发射水滴的时间 (秒)
+@export_range(0.1, 10.0, 0.1) var player_water_droplet_duration: float = 2.0
+## 同时参与发射的水滴粒子数量
+@export_range(1, 128, 1) var player_water_droplet_amount: int = 18
+## 单颗水滴存活时间 (秒)
+@export_range(0.1, 5.0, 0.1) var player_water_droplet_lifetime: float = 1.2
+## 水滴在人物身上的矩形发射范围半径
+@export var player_water_droplet_emission_extents: Vector2 = Vector2(10.0, 20.0)
+## 水滴下落重力
+@export var player_water_droplet_gravity: Vector2 = Vector2(0.0, 420.0)
+## 水滴初始速度下限
+@export_range(0.0, 500.0, 1.0) var player_water_droplet_velocity_min: float = 25.0
+## 水滴初始速度上限
+@export_range(0.0, 500.0, 1.0) var player_water_droplet_velocity_max: float = 70.0
+## 水滴尺寸下限
+@export_range(0.1, 10.0, 0.1) var player_water_droplet_size_min: float = 1.2
+## 水滴尺寸上限
+@export_range(0.1, 10.0, 0.1) var player_water_droplet_size_max: float = 2.4
+## 水滴颜色（生命周期末尾自动淡出）
+@export var player_water_droplet_color: Color = Color(0.18, 0.72, 1.0, 0.9)
 
 @export_group("Audio & Footsteps", "player_footstep_")
 ## 脚步声使用的音频总线名称 (Audio Bus)
