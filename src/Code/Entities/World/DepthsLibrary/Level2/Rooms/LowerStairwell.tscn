@@ -1,0 +1,336 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
+[sub_resource type="RectangleShape2D" id="shape1"]
+size = Vector2(24, 1450)
+
+[sub_resource type="RectangleShape2D" id="shape2"]
+size = Vector2(24, 1120)
+
+[sub_resource type="RectangleShape2D" id="shape3"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape4"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape5"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape6"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape7"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape8"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape9"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape10"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape11"]
+size = Vector2(140, 18)
+
+[sub_resource type="RectangleShape2D" id="shape16"]
+size = Vector2(600, 90)
+[node name="LowerStairwell" type="Node2D"]
+metadata/width = 600
+metadata/title = "折返阶梯"
+metadata/height = 1400
+
+[node name="Background" type="Polygon2D" parent="."]
+position = Vector2(0, 0)
+z_index = -20
+polygon = PackedVector2Array(0, 0, 600, 0, 600, 1450, 0, 1450)
+color = Color(0.035,0.065,0.105,1)
+
+[node name="RoomTitle" type="Label" parent="."]
+offset_left = 30
+offset_top = 0
+offset_right = 530
+offset_bottom = 80
+theme_override_font_sizes/font_size = 22
+mouse_filter = 2
+text = "折返阶梯"
+
+[node name="RoomHint" type="Label" parent="."]
+offset_left = 20
+offset_top = 50
+offset_right = 580
+offset_bottom = 130
+theme_override_font_sizes/font_size = 22
+mouse_filter = 2
+text = "实心石台：从侧边二段跳上一级，不能从台底穿过。沿阶梯往返档案室。"
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-24, 0)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(12, 725)
+shape = SubResource("shape1")
+
+[node name="Stone" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 1450, 0, 1450)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(600, 80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(12, 560)
+shape = SubResource("shape2")
+
+[node name="Stone" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 1120, 0, 1120)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step0" type="StaticBody2D" parent="."]
+position = Vector2(60, 90)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step0"]
+position = Vector2(70, 9)
+shape = SubResource("shape3")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step0"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step0"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step1" type="StaticBody2D" parent="."]
+position = Vector2(220, 240)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step1"]
+position = Vector2(70, 9)
+shape = SubResource("shape4")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step1"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step1"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step2" type="StaticBody2D" parent="."]
+position = Vector2(60, 390)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step2"]
+position = Vector2(70, 9)
+shape = SubResource("shape5")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step2"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step2"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step3" type="StaticBody2D" parent="."]
+position = Vector2(280, 540)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step3"]
+position = Vector2(70, 9)
+shape = SubResource("shape6")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step3"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step3"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step4" type="StaticBody2D" parent="."]
+position = Vector2(60, 690)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step4"]
+position = Vector2(70, 9)
+shape = SubResource("shape7")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step4"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step4"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step5" type="StaticBody2D" parent="."]
+position = Vector2(280, 840)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step5"]
+position = Vector2(70, 9)
+shape = SubResource("shape8")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step5"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step5"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step6" type="StaticBody2D" parent="."]
+position = Vector2(60, 990)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step6"]
+position = Vector2(70, 9)
+shape = SubResource("shape9")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step6"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step6"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step7" type="StaticBody2D" parent="."]
+position = Vector2(280, 1140)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step7"]
+position = Vector2(70, 9)
+shape = SubResource("shape10")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step7"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step7"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Step8" type="StaticBody2D" parent="."]
+position = Vector2(60, 1290)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Step8"]
+position = Vector2(70, 9)
+shape = SubResource("shape11")
+one_way_collision = false
+
+[node name="Stone" type="Polygon2D" parent="Step8"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 18, 0, 18)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Step8"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="BottomFloor" type="StaticBody2D" parent="."]
+position = Vector2(0, 1400)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomFloor"]
+position = Vector2(300, 45)
+shape = SubResource("shape16")
+
+[node name="Stone" type="Polygon2D" parent="BottomFloor"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 600, 0, 600, 90, 0, 90)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="BottomFloor"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 600, 0, 600, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(130, 60)
+
+[node name="ReturnSpawn" type="Marker2D" parent="."]
+position = Vector2(530, 1365)

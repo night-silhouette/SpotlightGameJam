@@ -1,0 +1,103 @@
+[gd_scene format=3]
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.gd" id="script"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EntryCollapse.tscn" id="EntryCollapse"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/Hub.tscn" id="Hub"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WestPassage.tscn" id="WestPassage"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/SunStacks.tscn" id="SunStacks"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/RestArchive.tscn" id="RestArchive"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EastPassage.tscn" id="EastPassage"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/MoonAqueduct.tscn" id="MoonAqueduct"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/LowerStairwell.tscn" id="LowerStairwell"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WeaveArchive.tscn" id="WeaveArchive"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/FountainShaft.tscn" id="FountainShaft"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/SurfaceExit.tscn" id="SurfaceExit"]
+[node name="Level2Map" type="Node2D" groups=["level2_map"]]
+script = ExtResource("script")
+[node name="Rooms" type="Node2D" parent="."]
+[node name="EntryCollapse" parent="Rooms" instance=ExtResource("EntryCollapse")]
+position = Vector2(0, -3000)
+[node name="DescentShaft" parent="Rooms" instance=ExtResource("DescentShaft")]
+position = Vector2(560, -2700)
+[node name="Hub" parent="Rooms" instance=ExtResource("Hub")]
+position = Vector2(0, 0)
+[node name="WestPassage" parent="Rooms" instance=ExtResource("WestPassage")]
+position = Vector2(-500, 0)
+[node name="SunStacks" parent="Rooms" instance=ExtResource("SunStacks")]
+position = Vector2(-2700, 0)
+[node name="ArchivePassage" parent="Rooms" instance=ExtResource("ArchivePassage")]
+position = Vector2(-2900, 0)
+[node name="RestArchive" parent="Rooms" instance=ExtResource("RestArchive")]
+position = Vector2(-4300, 0)
+[node name="EastPassage" parent="Rooms" instance=ExtResource("EastPassage")]
+position = Vector2(1400, 0)
+[node name="MoonAqueduct" parent="Rooms" instance=ExtResource("MoonAqueduct")]
+position = Vector2(1900, 0)
+[node name="LowerStairwell" parent="Rooms" instance=ExtResource("LowerStairwell")]
+position = Vector2(1050, 520)
+[node name="WeaveArchive" parent="Rooms" instance=ExtResource("WeaveArchive")]
+position = Vector2(1650, 1400)
+[node name="FountainShaft" parent="Rooms" instance=ExtResource("FountainShaft")]
+position = Vector2(900, -2820)
+[node name="SurfaceExit" parent="Rooms" instance=ExtResource("SurfaceExit")]
+position = Vector2(900, -3300)
+[node name="HUD" type="CanvasLayer" parent="."]
+layer = 5
+[node name="Root" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+[node name="Status" type="Label" parent="HUD/Root"]
+offset_left = 24.0
+offset_top = 16.0
+anchor_right = 1.0
+offset_right = -24.0
+autowrap_mode = 3
+offset_bottom = 54.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_outline_color = Color(0.02,0.04,0.06,1)
+theme_override_constants/outline_size = 8
+text = "第二关 · 地底图书馆"
+mouse_filter = 2
+[node name="Controls" type="Label" parent="HUD/Root"]
+offset_left = 24.0
+offset_top = 54.0
+anchor_right = 1.0
+offset_right = -24.0
+autowrap_mode = 3
+offset_bottom = 90.0
+theme_override_font_sizes/font_size = 18
+theme_override_constants/outline_size = 6
+text = "A/D 移动  ·  空格跳跃，再按二段跳  ·  靠近按 F / 点击物品上方提示  ·  无钩锁"
+mouse_filter = 2
+[node name="Toast" type="Label" parent="HUD/Root"]
+layout_mode = 1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = -110.0
+offset_right = -24.0
+offset_bottom = -24.0
+theme_override_font_sizes/font_size = 22
+theme_override_constants/outline_size = 8
+horizontal_alignment = 1
+autowrap_mode = 3
+mouse_filter = 2
+
+[node name="Objective" type="Label" parent="HUD/Root"]
+anchor_right = 1.0
+offset_left = 24.0
+offset_top = 95.0
+offset_right = -24.0
+offset_bottom = 155.0
+theme_override_font_sizes/font_size = 18
+theme_override_constants/outline_size = 8
+autowrap_mode = 3
+mouse_filter = 2
+text = ""

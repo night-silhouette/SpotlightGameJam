@@ -1,0 +1,236 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
+[sub_resource type="RectangleShape2D" id="shape1"]
+size = Vector2(30, 380)
+
+[sub_resource type="RectangleShape2D" id="shape2"]
+size = Vector2(30, 380)
+
+[sub_resource type="RectangleShape2D" id="shape3"]
+size = Vector2(900, 20)
+
+[sub_resource type="RectangleShape2D" id="shape4"]
+size = Vector2(720, 90)
+
+[sub_resource type="RectangleShape2D" id="area5"]
+size = Vector2(500, 140)
+[sub_resource type="RectangleShape2D" id="spout"]
+size = Vector2(400, 300)
+[node name="SurfaceExit" type="Node2D"]
+metadata/width = 900
+metadata/title = "地表枯井出口"
+
+[node name="Background" type="Node2D" parent="."]
+
+
+[node name="Base" type="Polygon2D" parent="Background"]
+position = Vector2(0, -80)
+z_index = -20
+polygon = PackedVector2Array(0, 0, 900, 0, 900, 800, 0, 800)
+color = Color(0.035, 0.065, 0.105, 1)
+
+[node name="Pillar50" type="Polygon2D" parent="Background"]
+position = Vector2(50, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window50" type="Polygon2D" parent="Background"]
+position = Vector2(95, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight50" type="Polygon2D" parent="Background"]
+position = Vector2(95, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar270" type="Polygon2D" parent="Background"]
+position = Vector2(270, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window270" type="Polygon2D" parent="Background"]
+position = Vector2(315, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight270" type="Polygon2D" parent="Background"]
+position = Vector2(315, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar490" type="Polygon2D" parent="Background"]
+position = Vector2(490, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window490" type="Polygon2D" parent="Background"]
+position = Vector2(535, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight490" type="Polygon2D" parent="Background"]
+position = Vector2(535, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar710" type="Polygon2D" parent="Background"]
+position = Vector2(710, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window710" type="Polygon2D" parent="Background"]
+position = Vector2(755, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight710" type="Polygon2D" parent="Background"]
+position = Vector2(755, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="RoomTitle" type="Label" parent="."]
+offset_left = 45
+offset_top = 10
+offset_right = 855
+offset_bottom = 90
+theme_override_font_sizes/font_size = 30
+mouse_filter = 2
+text = "地表枯井出口"
+
+[node name="RoomHint" type="Label" parent="."]
+offset_left = 45
+offset_top = 58
+offset_right = 855
+offset_bottom = 138
+theme_override_font_sizes/font_size = 18
+mouse_filter = 2
+text = "由另一个井口返回地表。右侧预留主城连接口。"
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-30, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(15, 190)
+shape = SubResource("shape1")
+
+[node name="Stone" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 380, 0, 380)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(900, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(15, 190)
+shape = SubResource("shape2")
+
+[node name="Stone" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 380, 0, 380)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Ceiling" type="StaticBody2D" parent="."]
+position = Vector2(0, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+position = Vector2(450, 10)
+shape = SubResource("shape3")
+
+[node name="Stone" type="Polygon2D" parent="Ceiling"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 900, 0, 900, 20, 0, 20)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="Ceiling"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 900, 0, 900, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="ExitFloor" type="StaticBody2D" parent="."]
+position = Vector2(180, 520)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitFloor"]
+position = Vector2(360, 45)
+shape = SubResource("shape4")
+
+[node name="Stone" type="Polygon2D" parent="ExitFloor"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 720, 0, 720, 90, 0, 90)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="ExitFloor"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 720, 0, 720, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(350, 485)
+
+[node name="FinishArea" type="Area2D" parent="."]
+position = Vector2(480, 450)
+collision_layer = 0
+collision_mask = 2
+
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FinishArea"]
+shape = SubResource("area5")
+
+[node name="ExitSign" type="Label" parent="."]
+offset_left = 300
+offset_top = 280
+offset_right = 820
+offset_bottom = 360
+theme_override_font_sizes/font_size = 25
+mouse_filter = 2
+text = "→ 主城连接口（待整合）"
+
+[node name="Spout" type="Area2D" parent="."]
+position = Vector2(220, 370)
+collision_layer = 0
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spout"]
+shape = SubResource("spout")

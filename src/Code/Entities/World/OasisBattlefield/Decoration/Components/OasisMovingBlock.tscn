@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="1"]
+[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+
+[node name="OasisMovingBlock" instance=ExtResource("1")]
+show_path_preview = false
+
+[node name="VisualRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="TopHighlight" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="OasisArt" type="Node2D" parent="."]
+script = ExtResource("2")
+metadata/kind = "block"
+metadata/target_path = ".."

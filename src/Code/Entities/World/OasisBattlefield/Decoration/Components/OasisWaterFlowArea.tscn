@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="1"]
+[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+
+[node name="OasisWaterFlowArea" instance=ExtResource("1")]
+
+[node name="VisualRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="OasisArt" type="Node2D" parent="."]
+script = ExtResource("2")
+metadata/kind = "water"
+metadata/target_path = ".."
