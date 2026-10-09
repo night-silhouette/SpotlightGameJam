@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://yhp6y1bc4ewn"]
+
+[ext_resource type="Script" uid="uid://p3vkhdwhtj5y" path="res://Code/Entities/InteractiveComponent/OasisBoat/OasisBoat.gd" id="1_oasis_boat"]
+
+[sub_resource type="Curve2D" id="Curve2D_boat"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 6, -7, 0, 0, 0, 0, 6, -7)
+}
+point_count = 2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_deck"]
+size = Vector2(120, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_detector"]
+size = Vector2(110, 24)
+
+[node name="OasisBoat" type="Path2D" unique_id=1923686483 groups=["interactive_component", "oasis_boat"]]
+curve = SubResource("Curve2D_boat")
+script = ExtResource("1_oasis_boat")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="." unique_id=1298488608]
+position = Vector2(-0.2685547, 0)
+rotates = false
+loop = false
+
+[node name="AnimatableBody2D" type="AnimatableBody2D" parent="PathFollow2D" unique_id=1190610176]
+collision_mask = 2
+
+[node name="SolidDeck" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D" unique_id=1361617645]
+position = Vector2(0, 8)
+shape = SubResource("RectangleShape2D_deck")
+
+[node name="BoardingDetector" type="Area2D" parent="PathFollow2D/AnimatableBody2D" unique_id=801204866]
+position = Vector2(0, -6)
+collision_layer = 0
+collision_mask = 2
+
+[node name="DetectorShape" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D/BoardingDetector" unique_id=326992002]
+shape = SubResource("RectangleShape2D_detector")
+
+[node name="VisualRoot" type="Node2D" parent="PathFollow2D/AnimatableBody2D" unique_id=135589554]
+
+[node name="HullPolygon" type="Polygon2D" parent="PathFollow2D/AnimatableBody2D/VisualRoot" unique_id=128229200]
+color = Color(0.55, 0.38, 0.22, 1)
+polygon = PackedVector2Array(-60, 0, 60, 0, 50, 16, -50, 16)
+
+[node name="DeckHighlight" type="Line2D" parent="PathFollow2D/AnimatableBody2D/VisualRoot" unique_id=458044422]
+points = PackedVector2Array(-56, 1, 56, 1)
+width = 2.0
+default_color = Color(0.85, 0.72, 0.5, 1)
