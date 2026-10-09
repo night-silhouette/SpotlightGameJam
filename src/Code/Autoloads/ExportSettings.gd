@@ -377,3 +377,12 @@ extends Node
 @export_range(0.1, 1.0) var oasis_art_water_opacity: float = 0.78
 ## 第三关水纹滚动速度，只控制装饰动画。
 @export_range(0.0, 5.0) var oasis_art_water_scroll_speed: float = 1.5
+
+@export_group("Interactable Component", "interactable_")
+@export var interactable_action: StringName = &"interact"
+@export var interactable_description_lines: Array[String] = []
+@export var interactable_monologue_lines: Array[String] = []
+
+@export_group("Vanishing Blocker", "vanishing_blocker_")
+@export var vanishing_blocker_zone_group: StringName = &"VanishZone"
+@export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5

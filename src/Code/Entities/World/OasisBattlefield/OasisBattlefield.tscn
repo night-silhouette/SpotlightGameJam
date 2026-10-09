@@ -16,6 +16,12 @@
 [ext_resource type="TileSet" uid="uid://5kb7joqm70qv" path="res://Code/Entities/World/OasisBattlefield/OasisTerrainTileSet.tres" id="14_stone"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisMovingBlock.tscn" id="15_block_skin"]
 
+[sub_resource type="Curve2D" id="Curve2D_1ev11"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 390, 0)
+}
+point_count = 2
+
 [node name="OasisBattlefield" type="Node2D" unique_id=1726602721]
 script = ExtResource("12_oasis_battlefield")
 start_in_return_phase = true
@@ -26,6 +32,7 @@ visible = false
 
 [node name="OasisBoat" parent="OutwardPhase" unique_id=1388656376 instance=ExtResource("2_1ev11")]
 position = Vector2(15482, 1239)
+curve = SubResource("Curve2D_1ev11")
 
 [node name="OutwardTileMap" type="TileMapLayer" parent="OutwardPhase" unique_id=1830326908]
 self_modulate = Color(1, 1, 1, 0)

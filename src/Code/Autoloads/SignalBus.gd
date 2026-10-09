@@ -1,5 +1,16 @@
 extends Node
 
+## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
+signal ComponentInteracted(component: Node2D, interactor: Node2D)
+## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。
+signal ComponentDescriptionRequested(component: Node2D, lines: Array[String])
+## 请求展示第二阶段内心独白文本；lines 为按顺序展示的文本数组。
+signal ComponentMonologueRequested(component: Node2D, lines: Array[String])
+## 当障碍物开始清除碰撞并淡出时触发。
+signal BlockerVanishStarted(blocker: Node2D)
+## 当障碍物淡出完成、即将被释放前触发。
+signal BlockerVanished(blocker: Node2D)
+
 ## 恢复普通玩家跟随。
 ## @param player PlayerWithCamera 内的原 Player 节点。
 signal CameraNormalRequested(player: Node2D)

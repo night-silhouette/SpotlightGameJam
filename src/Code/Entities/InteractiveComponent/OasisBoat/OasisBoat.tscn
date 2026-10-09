@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://p3vkhdwhtj5y" path="res://Code/Entities/InteractiveComponent/OasisBoat/OasisBoat.gd" id="1_oasis_boat"]
 
 [sub_resource type="Curve2D" id="Curve2D_boat"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 6, -7, 0, 0, 0, 0, 6, -7)
+}
+point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_deck"]
 size = Vector2(120, 16)
