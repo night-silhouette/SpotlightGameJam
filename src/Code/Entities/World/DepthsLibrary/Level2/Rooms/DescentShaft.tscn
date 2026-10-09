@@ -1,0 +1,264 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
+[sub_resource type="RectangleShape2D" id="shape1"]
+size = Vector2(24, 2620)
+
+[sub_resource type="RectangleShape2D" id="shape2"]
+size = Vector2(24, 2620)
+
+[sub_resource type="RectangleShape2D" id="shape3"]
+size = Vector2(70, 24)
+
+[sub_resource type="RectangleShape2D" id="shape4"]
+size = Vector2(70, 24)
+
+[sub_resource type="RectangleShape2D" id="shape5"]
+size = Vector2(70, 24)
+
+[sub_resource type="RectangleShape2D" id="shape6"]
+size = Vector2(70, 24)
+
+[sub_resource type="RectangleShape2D" id="shape7"]
+size = Vector2(70, 24)
+
+[sub_resource type="RectangleShape2D" id="shape8"]
+size = Vector2(70, 24)
+[node name="DescentShaft" type="Node2D"]
+metadata/width = 280
+metadata/title = "高落差竖井"
+metadata/height = 2700
+
+[node name="DarkShaft" type="Polygon2D" parent="."]
+position = Vector2(0, 0)
+z_index = -20
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 2700, 0, 2700)
+color = Color(0.022,0.04,0.065,1)
+
+[node name="RoomTitle" type="Label" parent="."]
+offset_left = 20
+offset_top = 0
+offset_right = 260
+offset_bottom = 80
+theme_override_font_sizes/font_size = 22
+mouse_filter = 2
+text = "高落差竖井"
+
+[node name="RoomHint" type="Label" parent="."]
+offset_left = 0
+offset_top = 50
+offset_right = 280
+offset_bottom = 130
+theme_override_font_sizes/font_size = 22
+mouse_filter = 2
+text = "沿破损井壁下落，底部通往喷泉大厅。"
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-24, 0)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(12, 1310)
+shape = SubResource("shape1")
+
+[node name="Stone" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 2620, 0, 2620)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(280, 0)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(12, 1310)
+shape = SubResource("shape2")
+
+[node name="Stone" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 2620, 0, 2620)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RestLedge0" type="StaticBody2D" parent="."]
+position = Vector2(0, 350)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestLedge0"]
+position = Vector2(35, 12)
+shape = SubResource("shape3")
+
+[node name="Stone" type="Polygon2D" parent="RestLedge0"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RestLedge0"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="DepthLine0" type="Polygon2D" parent="."]
+position = Vector2(0, 200)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 5, 0, 5)
+color = Color(0.16,0.3,0.35,0.5)
+
+[node name="RestLedge1" type="StaticBody2D" parent="."]
+position = Vector2(210, 740)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestLedge1"]
+position = Vector2(35, 12)
+shape = SubResource("shape4")
+
+[node name="Stone" type="Polygon2D" parent="RestLedge1"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RestLedge1"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="DepthLine1" type="Polygon2D" parent="."]
+position = Vector2(0, 600)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 5, 0, 5)
+color = Color(0.16,0.3,0.35,0.5)
+
+[node name="RestLedge2" type="StaticBody2D" parent="."]
+position = Vector2(0, 1130)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestLedge2"]
+position = Vector2(35, 12)
+shape = SubResource("shape5")
+
+[node name="Stone" type="Polygon2D" parent="RestLedge2"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RestLedge2"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="DepthLine2" type="Polygon2D" parent="."]
+position = Vector2(0, 1000)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 5, 0, 5)
+color = Color(0.16,0.3,0.35,0.5)
+
+[node name="RestLedge3" type="StaticBody2D" parent="."]
+position = Vector2(210, 1520)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestLedge3"]
+position = Vector2(35, 12)
+shape = SubResource("shape6")
+
+[node name="Stone" type="Polygon2D" parent="RestLedge3"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RestLedge3"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="DepthLine3" type="Polygon2D" parent="."]
+position = Vector2(0, 1400)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 5, 0, 5)
+color = Color(0.16,0.3,0.35,0.5)
+
+[node name="RestLedge4" type="StaticBody2D" parent="."]
+position = Vector2(0, 1910)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestLedge4"]
+position = Vector2(35, 12)
+shape = SubResource("shape7")
+
+[node name="Stone" type="Polygon2D" parent="RestLedge4"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RestLedge4"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="DepthLine4" type="Polygon2D" parent="."]
+position = Vector2(0, 1800)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 5, 0, 5)
+color = Color(0.16,0.3,0.35,0.5)
+
+[node name="RestLedge5" type="StaticBody2D" parent="."]
+position = Vector2(210, 2300)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RestLedge5"]
+position = Vector2(35, 12)
+shape = SubResource("shape8")
+
+[node name="Stone" type="Polygon2D" parent="RestLedge5"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RestLedge5"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 70, 0, 70, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="DepthLine5" type="Polygon2D" parent="."]
+position = Vector2(0, 2200)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 5, 0, 5)
+color = Color(0.16,0.3,0.35,0.5)
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(35, 320)
