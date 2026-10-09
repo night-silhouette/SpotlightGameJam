@@ -4,7 +4,9 @@ func phy_middleware() -> void:
 	if not gameInputControl:
 		return
 	# 受伤硬直期间不接受键盘物理转向输入覆盖状态
-	if cur_state_name == "hurt" or cur_state_name == "died":
+	if cur_state_name in ["hurt", "died", "landing"]:
+		return
+	if cur_state_name == "climb" and current_state.is_wall_kicking:
 		return
 	# 如果处于流水穿梭状态且仍在水流区域内，保持穿梭状态，不被 run / idle 打断
 	if cur_state_name == "shuttle":
@@ -21,6 +23,8 @@ func phy_middleware() -> void:
 				return
 
 	if gameInputControl.is_fall:
+		change_state("fall")
+	elif not obj.is_on_floor() and obj.velocity.y < 0.0 and cur_state_name in ["idle", "run", "fall"]:
 		change_state("fall")
 	if gameInputControl.is_idle:
 		change_state("idle")

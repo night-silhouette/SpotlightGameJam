@@ -10,6 +10,8 @@ var _respawn_timer: SceneTreeTimer = null
 func enter() -> void:
 	super.enter()
 	change_use_all(false)
+	if animation_player:
+		animation_player.play("death")
 	
 	if obj:
 		obj.velocity = Vector2.ZERO

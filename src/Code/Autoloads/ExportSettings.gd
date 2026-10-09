@@ -26,6 +26,10 @@ extends Node
 @export var player_climb_ability: float = 480.0
 ## 贴墙滑落时的最大下落速度限制
 @export var player_max_fall_speed: float = 120.0
+## 从空中最高点下降超过此距离才触发落地硬直（像素）
+@export_range(0.0, 1000.0, 1.0) var player_landing_height_threshold: float = 120.0
+## 高处落地硬直时间（秒）
+@export_range(0.0, 1.0, 0.01) var player_landing_lock_time: float = 0.2
 
 @export_group("Dash", "player_dash_")
 ## 冲刺持续时间 (秒)

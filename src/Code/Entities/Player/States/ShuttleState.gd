@@ -22,9 +22,7 @@ func physics_process(_delta: float) -> void:
 func _play_shuttle_animation() -> void:
 	if not animation_player:
 		return
-	if animation_player.has_animation("shuttle"):
-		animation_player.play("shuttle")
-	elif animation_player.has_animation("water_shuttle"):
-		animation_player.play("water_shuttle")
+	if animation_player.has_animation("water_dash"):
+		animation_player.play("water_dash")
 	elif animation_player.has_animation("jump"):
 		animation_player.play("jump")
