@@ -1,0 +1,88 @@
+[gd_resource type="TileSet" format=3 uid="uid://5kb7joqm70qv"]
+
+[ext_resource type="Texture2D" uid="uid://bsofp6o76eamv" path="res://Art/Archived/Tilemap/2.png" id="1"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/StoneCenterJoin.tscn" id="2_join"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/EarthTerrainTile.tscn" id="Earth"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold1_0.tscn" id="fold1"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold1_1.tscn" id="fold2"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold2_0.tscn" id="fold3"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold2_1.tscn" id="fold4"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold3_0.tscn" id="fold5"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold3_1.tscn" id="fold6"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold4_0.tscn" id="fold7"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold4_1.tscn" id="fold8"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold5_0.tscn" id="fold9"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold5_1.tscn" id="fold10"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold6_0.tscn" id="fold11"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold6_1.tscn" id="fold12"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/GlazedTerrainTile.tscn" id="Glazed"]
+
+[sub_resource type="TileSetAtlasSource" id="Stone"]
+texture = ExtResource("1")
+margins = Vector2i(162, 328)
+texture_region_size = Vector2i(256, 512)
+0:0/next_alternative_id = 2
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, -40)
+0:0/1 = 1
+0:0/1/flip_h = true
+0:0/1/texture_origin = Vector2i(0, -40)
+1:0/next_alternative_id = 2
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -40)
+1:0/1 = 1
+1:0/1/flip_h = true
+1:0/1/texture_origin = Vector2i(0, -40)
+2:0/next_alternative_id = 2
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, -40)
+2:0/1 = 1
+2:0/1/flip_h = true
+2:0/1/texture_origin = Vector2i(0, -40)
+3:0/next_alternative_id = 2
+3:0/0 = 0
+3:0/0/texture_origin = Vector2i(0, -40)
+3:0/1 = 1
+3:0/1/flip_h = true
+3:0/1/texture_origin = Vector2i(0, -40)
+4:0/next_alternative_id = 2
+4:0/0 = 0
+4:0/0/texture_origin = Vector2i(0, -40)
+4:0/1 = 1
+4:0/1/flip_h = true
+4:0/1/texture_origin = Vector2i(0, -40)
+5:0/next_alternative_id = 2
+5:0/0 = 0
+5:0/0/texture_origin = Vector2i(0, -40)
+5:0/1 = 1
+5:0/1/flip_h = true
+5:0/1/texture_origin = Vector2i(0, -40)
+
+[sub_resource type="TileSetScenesCollectionSource" id="CenterJoin"]
+scenes/0/scene = ExtResource("2_join")
+scenes/1/scene = ExtResource("fold1")
+scenes/2/scene = ExtResource("fold2")
+scenes/3/scene = ExtResource("fold3")
+scenes/4/scene = ExtResource("fold4")
+scenes/5/scene = ExtResource("fold5")
+scenes/6/scene = ExtResource("fold6")
+scenes/7/scene = ExtResource("fold7")
+scenes/8/scene = ExtResource("fold8")
+scenes/9/scene = ExtResource("fold9")
+scenes/10/scene = ExtResource("fold10")
+scenes/11/scene = ExtResource("fold11")
+scenes/12/scene = ExtResource("fold12")
+
+[sub_resource type="TileSetScenesCollectionSource" id="Earth"]
+scenes/0/scene = ExtResource("Earth")
+
+[sub_resource type="TileSetScenesCollectionSource" id="Glazed"]
+scenes/0/scene = ExtResource("Glazed")
+
+[resource]
+resource_name = "Oasis terrain - decoration only"
+tile_size = Vector2i(256, 256)
+sources/0 = SubResource("Stone")
+sources/1 = SubResource("CenterJoin")
+sources/10 = SubResource("Earth")
+sources/11 = SubResource("Glazed")
