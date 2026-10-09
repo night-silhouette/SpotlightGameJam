@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/Tilemap/2.png" id="1"]
+[sub_resource type="AtlasTexture" id="Half"]
+atlas = ExtResource("1")
+region = Rect2(802, 328, 128, 512)
+filter_clip = true
+[node name="StoneFold3_1" type="Node2D"]
+[node name="Left" type="Sprite2D" parent="."]
+position = Vector2(-64, 40)
+texture = SubResource("Half")
+flip_h = true
+[node name="Right" type="Sprite2D" parent="."]
+position = Vector2(64, 40)
+texture = SubResource("Half")
+flip_h = false

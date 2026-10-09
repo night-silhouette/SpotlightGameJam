@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="1"]
+[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+
+[node name="OasisCrumblingPlatform" instance=ExtResource("1")]
+
+[node name="VisualRect" parent="VisualRoot"]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="CrackLine" parent="VisualRoot"]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="OasisArt" type="Node2D" parent="VisualRoot"]
+script = ExtResource("2")
+metadata/kind = "crumble"
+metadata/target_path = "../.."
