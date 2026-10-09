@@ -1,4 +1,4 @@
-[gd_scene format=4 uid="uid://c8ajgwot2rhng"]
+[gd_scene format=3 uid="uid://c8ajgwot2rhng"]
 
 [ext_resource type="PackedScene" uid="uid://ddv5by5318t3e" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_sk8ge"]
@@ -92,10 +92,7 @@ tween_resource = SubResource("Resource_yocbw")
 
 [node name="Camp" parent="." unique_id=192691445 instance=ExtResource("1_camp")]
 position = Vector2(-16, -1560)
-
-[node name="TileMapLayer" parent="Camp" index="0" unique_id=906777763]
-position = Vector2(-51, 198)
-tile_map_data = PackedByteArray("AAAEACcAAAABAAAAAAACACEAAAABAAAAAAADACEAAAABAAAAAAAEACEAAAABAAAAAAAEACIAAAABAAAAAAAEACMAAAABAAAAAAAEACQAAAABAAAAAAAEACUAAAABAAAAAAAEACYAAAABAAAAAAAEACgAAAABAAAAAAACAB0AAAABAAAAAAADAB0AAAABAAAAAAAEAB0AAAABAAAAAAAFAB0AAAABAAAAAAAGAB0AAAABAAAAAAAHAB0AAAABAAAAAAAIAB0AAAABAAAAAAAEACkAAAABAAAAAAAEACoAAAABAAAAAAAEACsAAAABAAAAAAAEACwAAAABAAAAAAAEAC0AAAABAAAAAAAOAC0AAAABAAAAAAAPAC0AAAABAAAAAAARACYAAAABAAAAAAAFACwAAAABAAAAAAAGACwAAAABAAAAAAAHACwAAAABAAAAAAAIACwAAAABAAAAAAAJACwAAAABAAAAAAAKACwAAAABAAAAAAALACwAAAABAAAAAAAMACwAAAABAAAAAAANACwAAAABAAAAAAAOACwAAAABAAAAAAAPACwAAAABAAAAAAAQACwAAAABAAAAAAARACwAAAABAAAAAAASACwAAAABAAAAAAA=")
+metadata/_edit_lock_ = true
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(171, -1179)
