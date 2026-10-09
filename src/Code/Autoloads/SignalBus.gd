@@ -7,6 +7,17 @@ signal Level2StateChanged(level: Node2D)
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
 
+## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
+signal ComponentInteracted(component: Node2D, interactor: Node2D)
+## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。
+signal ComponentDescriptionRequested(component: Node2D, lines: Array[String])
+## 请求展示第二阶段内心独白文本；lines 为按顺序展示的文本数组。
+signal ComponentMonologueRequested(component: Node2D, lines: Array[String])
+## 当障碍物开始清除碰撞并淡出时触发。
+signal BlockerVanishStarted(blocker: Node2D)
+## 当障碍物淡出完成、即将被释放前触发。
+signal BlockerVanished(blocker: Node2D)
+
 ## 恢复普通玩家跟随。
 ## @param player PlayerWithCamera 内的原 Player 节点。
 signal CameraNormalRequested(player: Node2D)
@@ -133,6 +144,11 @@ signal StopPlayerHpDrain
 ## @param max_hp 最大血量
 signal PlayerHealthChanged(current_hp: float, max_hp: float)
 
+## 玩家进入或离开低水量状态时触发
+## @param player_node 状态发生变化的玩家节点
+## @param is_low_water true 表示进入低水量状态，false 表示恢复
+signal PlayerLowWaterStateChanged(player_node: Node2D, is_low_water: bool)
+
 ## 玩家受到伤害/触碰陷阱扣水瞬间触发 (驱动闪白 + Hit-stop 顿帧 + 震屏)
 ## @param damage_amount 扣除的水量/伤害量
 ## @param knockback_dir 受击击退方向向量
@@ -190,6 +206,22 @@ signal MovingPlatformEndpointReached(platform_node: Node2D, endpoint_index: int)
 ## @param platform_node 移动平台节点
 ## @param direction 新移动方向：1 前往终点，-1 返回起点
 signal MovingPlatformDirectionChanged(platform_node: Node2D, direction: int)
+
+## 定向追逐移动组件进入新速度阶段时触发。
+## @param mover_node 发生阶段变化的移动组件。
+## @param stage_index 阶段编号，从 1 开始。
+## @param base_speed 新阶段的基础速度。
+signal ChaseMoverStageChanged(mover_node: Node2D, stage_index: int, base_speed: float)
+
+## 定向追逐移动组件开始或暂停时触发。
+## @param mover_node 状态发生变化的移动组件。
+## @param active true 为开始或继续，false 为暂停。
+signal ChaseMoverActiveChanged(mover_node: Node2D, active: bool)
+
+## 致命追逐体接触玩家并请求立即死亡时触发。
+## @param player_node 被接触的玩家节点。
+## @param source_node 发出致死请求的追逐体节点。
+signal PlayerInstantDeathRequested(player_node: Node2D, source_node: Node2D)
 
 ## 钟乳石检测到玩家走过开始松动下落时触发
 ## @param stalactite_node 钟乳石节点

@@ -1,0 +1,26 @@
+[gd_resource type="TileSet" format=3 uid="uid://c2kfbr6u44m8m"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
+size = Vector2(96, 32)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_base"]
+texture = SubResource("PlaceholderTexture2D_base")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
+1:0/0/custom_data_0 = true
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
+2:0/0/custom_data_1 = true
+
+[resource]
+tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
+custom_data_layer_0/name = "is_slick_wall"
+custom_data_layer_0/type = 1
+custom_data_layer_1/name = "is_rune_wall"
+custom_data_layer_1/type = 1
+sources/0 = SubResource("TileSetAtlasSource_base")

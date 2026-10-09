@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/DirectionalChaseMover/DirectionalChaseMover.gd" id="1_mover"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_barrier"]
+size = Vector2(96, 1152)
+
+[node name="DirectionalChaseMover" type="AnimatableBody2D" groups=["chase_mover"]]
+collision_layer = 1
+collision_mask = 2
+sync_to_physics = true
+script = ExtResource("1_mover")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_barrier")
+
+[node name="KillArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+monitoring = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KillArea"]
+shape = SubResource("RectangleShape2D_barrier")
+
+[node name="WarningWall" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-48, -576, 48, -576, 48, 576, -48, 576)
+color = Color(0.82, 0.22, 0.12, 0.72)
+
+[node name="LeadingEdge" type="Line2D" parent="."]
+points = PackedVector2Array(48, -576, 48, 576)
+width = 8.0
+default_color = Color(1, 0.72, 0.18, 0.95)

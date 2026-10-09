@@ -3,6 +3,7 @@ extends GameInputControl
 var row_dir: float = 0.0
 var dash_control_flag: bool = true
 var dash_span_flag: bool = true
+var _dash_timer: SceneTreeTimer = null
 
 ## 特殊动作状态开始信号 (如 dash / hurt)
 signal special_state_start(state: String)
@@ -14,14 +15,21 @@ func _check_dash() -> bool:
 		dash_control_flag = false
 		dash_span_flag = false
 		special_state_start.emit("dash")
-		get_tree().create_timer(obj.dash_time).timeout.connect(func():
-			special_state_end.emit("dash")
+		_dash_timer = get_tree().create_timer(obj.dash_time)
+		_dash_timer.timeout.connect(func():
+			if not dash_control_flag: # 仅当未被提前打断时正常结束
+				special_state_end.emit("dash")
 		, CONNECT_ONE_SHOT)
 		get_tree().create_timer(obj.dash_span).timeout.connect(func():
 			dash_span_flag = true
 		, CONNECT_ONE_SHOT)
 		return true
 	return false
+
+## 主动中断冲刺状态 (如冲刺进入流水区域时调用)
+func InterruptDash() -> void:
+	dash_control_flag = true
+	special_state_end.emit("dash")
 
 var column_dir: float = 0.0
 var is_jump: bool = false

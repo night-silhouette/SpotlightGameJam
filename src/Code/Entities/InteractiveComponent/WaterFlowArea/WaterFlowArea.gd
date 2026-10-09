@@ -27,6 +27,12 @@ class_name WaterFlowArea
 @export var min_boost_speed: float = 480.0
 ## 靠近使用水符文石交互的有效距离
 @export var interact_radius: float = 120.0
+## 穿过流水区域划水音效
+@export var sfx_water_pass: AudioStream = preload("res://Music/SFX/Interactive-SFX_Interactive/HuaShui.wav")
+## 划水音效音量分贝 (dB)
+@export var sfx_water_pass_volume_db: float = 0.0
+## 划水音效音频总线
+@export var sfx_water_pass_bus: StringName = &"SFX_Interact"
 
 const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
 
@@ -68,6 +74,10 @@ func _sync_from_export_settings() -> void:
 		boost_multiplier = ExportSettings.water_flow_speed_multiplier
 		min_boost_speed = ExportSettings.water_flow_min_speed
 		interact_radius = ExportSettings.water_flow_interact_distance
+		if "water_flow_pass_volume_db" in ExportSettings:
+			sfx_water_pass_volume_db = ExportSettings.water_flow_pass_volume_db
+		if "water_flow_audio_bus" in ExportSettings:
+			sfx_water_pass_bus = ExportSettings.water_flow_audio_bus
 
 func _update_dimensions() -> void:
 	if not is_inside_tree():
@@ -230,8 +240,32 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 
 		# 记录并获取进入时的速度方向与大小
 		var enter_velocity = player_body.velocity
-		var current_speed = enter_velocity.length()
 
+		# 若玩家当前处于冲刺状态中，获取冲刺专属速度并打断冲刺
+		var is_dashing = false
+		if player_body.has_node("move_state_machine"):
+			var sm = player_body.get_node("move_state_machine")
+			if sm.cur_state_name == "dash":
+				is_dashing = true
+		if "is_special_state" in player_body and player_body.is_special_state:
+			is_dashing = true
+
+		if is_dashing and "dash_speed" in player_body:
+			var dash_spd = float(player_body.dash_speed)
+			var face = float(player_body.face_dir) if "face_dir" in player_body else 1.0
+			# 如果进入时已有横向冲刺速度，按该速度方向作为基础
+			if abs(enter_velocity.x) > 0.1:
+				enter_velocity.x = sign(enter_velocity.x) * dash_spd
+			else:
+				enter_velocity = Vector2(face * dash_spd, 0.0)
+
+		# 中断并彻底退出冲刺状态
+		if player_body.has_method("InterruptDash"):
+			player_body.InterruptDash()
+		elif "is_special_state" in player_body:
+			player_body.is_special_state = false
+
+		var current_speed = enter_velocity.length()
 		var boost_dir = enter_velocity.normalized()
 		# 若玩家几乎是静止蹭入的，按照玩家面朝方向给予推力
 		if current_speed < 10.0:
@@ -241,17 +275,21 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 			boost_dir = Vector2(face, 0.0).normalized()
 			current_speed = min_boost_speed
 
-		# 计算加速后的爆发冲量
+		# 计算加速后的爆发冲量（基于包含冲刺速度的进入速度 * boost_multiplier）
 		var boosted_speed = max(current_speed * boost_multiplier, min_boost_speed)
 		player_body.velocity = boost_dir * boosted_speed
 
-		# 如果玩家当前处于冲刺（Dash）等特殊状态，强行切换并重置，避免冲刺结束时截断/清空进入速度
+		# 在流水区域中消除重力影响
+		if player_body not in _bodies_in_water:
+			_bodies_in_water.append(player_body)
+			if player_body.has_method("SetInWaterFlow"):
+				player_body.SetInWaterFlow(true)
+
+		# 切换玩家状态为流水穿梭状态（退出 run 和 dash 状态，保证加速手感并预留动画接口）
 		if player_body.has_node("move_state_machine"):
 			var sm = player_body.get_node("move_state_machine")
-			if sm.cur_state_name == "dash":
-				sm.change_state("fall")
-		if "is_special_state" in player_body:
-			player_body.is_special_state = false
+			if sm.has_method("change_state"):
+				sm.change_state("shuttle")
 
 		# 穿过流体水幕：刷新冲刺（Dash）与钩索（Rope）
 		if player_body.has_method("ResetDashAndRope"):
@@ -259,16 +297,14 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 
 		SignalBus.PlayerEnteredWaterWall.emit()
 
+		# 播放穿过流水区域的划水音效
+		if sfx_water_pass and Util:
+			Util.PlaySFX2D(sfx_water_pass, global_position, sfx_water_pass_bus, sfx_water_pass_volume_db)
+
 		# 水花波纹微动视觉反馈
 		var tween = create_tween()
 		visual_rect.color = Color(0.4, 0.9, 1.0, 0.8)
 		tween.tween_property(visual_rect, "color", Color(0.15, 0.65, 0.95, 0.45), 0.3)
-
-		# 在流水区域中消除重力影响
-		if player_body not in _bodies_in_water:
-			_bodies_in_water.append(player_body)
-			if player_body.has_method("SetInWaterFlow"):
-				player_body.SetInWaterFlow(true)
 
 func _on_fluid_area_body_exited(body: Node2D) -> void:
 	if body is CharacterBody2D and body in _bodies_in_water:

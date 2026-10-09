@@ -80,6 +80,44 @@ extends Node
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
 @export var player_hp_drain_rate: float = 5.0
+## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
+@export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
+## 缺水时主角最终呈现的沙土色
+@export var player_low_water_color: Color = Color("f8f4ed")
+## 缺水时主角边缘的描线颜色
+@export var player_low_water_outline_color: Color = Color.BLACK
+## 缺水时主角描线宽度（纹理像素）
+@export_range(1.0, 8.0, 0.5) var player_low_water_outline_width: float = 3.0
+## 缺水时边缘缺口的密度
+@export_range(0.0, 0.5, 0.01) var player_low_water_edge_damage: float = 0.16
+## 主角颜色与描线向缺水状态渐变的速度
+@export_range(0.1, 10.0, 0.1) var player_low_water_color_fade_speed: float = 2.0
+## 缺水时持续掉落的沙粒数量
+@export_range(1, 128, 1) var player_low_water_sand_amount: int = 12
+## 沙粒存活时间 (秒)
+@export_range(0.1, 5.0, 0.1) var player_low_water_sand_lifetime: float = 1.0
+
+@export_group("Water Droplets", "player_water_droplet_")
+## 离开最后一个流水区域后持续发射水滴的时间 (秒)
+@export_range(0.1, 10.0, 0.1) var player_water_droplet_duration: float = 2.0
+## 同时参与发射的水滴粒子数量
+@export_range(1, 128, 1) var player_water_droplet_amount: int = 18
+## 单颗水滴存活时间 (秒)
+@export_range(0.1, 5.0, 0.1) var player_water_droplet_lifetime: float = 1.2
+## 水滴在人物身上的矩形发射范围半径
+@export var player_water_droplet_emission_extents: Vector2 = Vector2(10.0, 20.0)
+## 水滴下落重力
+@export var player_water_droplet_gravity: Vector2 = Vector2(0.0, 420.0)
+## 水滴初始速度下限
+@export_range(0.0, 500.0, 1.0) var player_water_droplet_velocity_min: float = 25.0
+## 水滴初始速度上限
+@export_range(0.0, 500.0, 1.0) var player_water_droplet_velocity_max: float = 70.0
+## 水滴尺寸下限
+@export_range(0.1, 10.0, 0.1) var player_water_droplet_size_min: float = 1.2
+## 水滴尺寸上限
+@export_range(0.1, 10.0, 0.1) var player_water_droplet_size_max: float = 2.4
+## 水滴颜色（生命周期末尾自动淡出）
+@export var player_water_droplet_color: Color = Color(0.18, 0.72, 1.0, 0.9)
 
 @export_group("Audio & Footsteps", "player_footstep_")
 ## 脚步声使用的音频总线名称 (Audio Bus)
@@ -162,18 +200,22 @@ extends Node
 @export var water_flow_interact_distance: float = 130.0
 ## 水符文激活技能冷却时间 (秒)
 @export var water_rune_cooldown: float = 2.0
+## 穿过流水区域时划水音效音量分贝 (dB)
+@export var water_flow_pass_volume_db: float = 0.0
+## 穿过流水区域音效所使用的音频总线
+@export var water_flow_audio_bus: StringName = &"SFX_Interact"
 
 @export_group("Interactive - Spikes", "spikes_")
 ## 通用地刺基础伤害值
 @export var spikes_damage: float = 40.0
 ## 尖刺命中击退力度标量
-@export var spikes_knockback_force: float = 400.0
+@export var spikes_knockback_force: float = 650.0
 
 @export_group("Interactive - Rising Spikes", "rising_spikes_")
 ## 时序突刺基础伤害值
 @export var rising_spikes_damage: float = 50.0
 ## 时序突刺击退力度标量
-@export var rising_spikes_knockback_force: float = 450.0
+@export var rising_spikes_knockback_force: float = 700.0
 ## 突刺缩回安全等待时长 (秒)
 @export var rising_spikes_retracted_duration: float = 2.0
 ## 突刺伸出危险保持时长 (秒)
@@ -212,6 +254,28 @@ extends Node
 @export var moving_platform_endpoint_wait_time: float = 0.45
 ## 移动平台抵达另一端后是否默认反向循环
 @export var moving_platform_loop: bool = true
+
+@export_group("Interactive - Directional Chase Mover", "chase_mover_")
+## 第一阶段持续时间，作为玩家熟悉追逐节奏的热身段。
+@export var chase_mover_stage_1_duration: float = 28.0
+## 第二阶段持续时间，进入连续跳跃和障碍压力段。
+@export var chase_mover_stage_2_duration: float = 32.0
+## 第一阶段基础速度。
+@export var chase_mover_stage_1_speed: float = 190.0
+## 第二阶段基础速度。
+@export var chase_mover_stage_2_speed: float = 230.0
+## 第三阶段基础速度，持续到钩锁逃脱终点。
+@export var chase_mover_stage_3_speed: float = 275.0
+## 分阶段切速时的加速度，避免速度瞬间跳变。
+@export var chase_mover_acceleration: float = 125.0
+## 追逐体希望与玩家维持的前向距离。
+@export var chase_mover_follow_distance: float = 520.0
+## 玩家领先超过此距离时进入追赶速度。
+@export var chase_mover_max_follow_distance: float = 900.0
+## 靠近玩家时的速度倍率；保持接近 1，避免减速表现过于明显。
+@export_range(0.5, 1.0, 0.01) var chase_mover_near_speed_multiplier: float = 0.9
+## 玩家领先较远时的速度倍率；保持轻微提升，避免突兀追赶。
+@export_range(1.0, 1.5, 0.01) var chase_mover_far_speed_multiplier: float = 1.16
 
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
@@ -287,7 +351,7 @@ extends Node
 ## 钟乳石检测射线向下最大长度 (像素)
 @export var stalactite_ray_length: float = 400.0
 ## 钟乳石松动预警晃动时长 (秒)
-@export var stalactite_shake_duration: float = 0.25
+@export var stalactite_shake_duration: float = 0.35
 ## 钟乳石下落重力加速度 (像素/秒^2)
 @export var stalactite_gravity: float = 1600.0
 ## 钟乳石最大下落速度 (像素/秒)
@@ -295,7 +359,7 @@ extends Node
 ## 钟乳石基础伤害量
 @export var stalactite_damage: float = 50.0
 ## 钟乳石击退力度
-@export var stalactite_knockback_force: float = 350.0
+@export var stalactite_knockback_force: float = 600.0
 
 @export_group("Interactive - Falling Block", "falling_block_")
 ## 下落方块检测射线向下最大长度 (像素)
@@ -343,3 +407,18 @@ extends Node
 @export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
+
+@export_group("Oasis Decoration", "oasis_art_")
+## 第三关水化外观透明度，不影响水化碰撞或加速。
+@export_range(0.1, 1.0) var oasis_art_water_opacity: float = 0.78
+## 第三关水纹滚动速度，只控制装饰动画。
+@export_range(0.0, 5.0) var oasis_art_water_scroll_speed: float = 1.5
+
+@export_group("Interactable Component", "interactable_")
+@export var interactable_action: StringName = &"interact"
+@export var interactable_description_lines: Array[String] = []
+@export var interactable_monologue_lines: Array[String] = []
+
+@export_group("Vanishing Blocker", "vanishing_blocker_")
+@export var vanishing_blocker_zone_group: StringName = &"VanishZone"
+@export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5

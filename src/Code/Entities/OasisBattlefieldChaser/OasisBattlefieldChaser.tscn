@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/DirectionalChaseMover/DirectionalChaseMover.tscn" id="1_mover"]
+[ext_resource type="Script" path="res://Code/Entities/OasisBattlefieldChaser/OasisBattlefieldChaser.gd" id="1_script"]
+
+[node name="OasisBattlefieldChaser" type="Node2D" groups=["oasis_battlefield_chaser"]]
+script = ExtResource("1_script")
+
+[node name="DirectionalChaseMover" parent="." instance=ExtResource("1_mover")]
