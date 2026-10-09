@@ -1040,7 +1040,6 @@ tracks/4/keys = {
 [sub_resource type="Animation" id="Animation_wall_grab"]
 resource_name = "wall_grab"
 length = 0.4
-loop_mode = 1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1538,9 +1537,9 @@ hframes = 5
 [node name="Action" type="Sprite2D" parent="sprite" unique_id=1352150480]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(-8.862, -14)
+position = Vector2(-8.862, -18)
 scale = Vector2(0.43470114, 0.43470114)
-texture = ExtResource("18_jump_start")
+texture = ExtResource("27_wall_kick")
 hframes = 4
 
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]
