@@ -422,3 +422,9 @@ extends Node
 @export_group("Vanishing Blocker", "vanishing_blocker_")
 @export var vanishing_blocker_zone_group: StringName = &"VanishZone"
 @export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5
+
+@export_group("Oasis Boat", "oasis_boat_")
+## 第三关七个停靠点的航线进度，按递增顺序配置，起点为 0、终点为 1。
+@export var oasis_boat_stop_ratios: Array[float] = [0.0, 0.03338, 0.51271, 0.67568, 0.78541, 0.84054, 1.0]
+## 等待障碍消失的停靠点索引；该站不要求玩家登船。
+@export var oasis_boat_blocker_stop_index: int = 4

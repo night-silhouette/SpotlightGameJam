@@ -32,6 +32,8 @@ enum BoatState {
 @export_category("Stop Points")
 ## 沿途配置的停靠点序列（建议按 progress_ratio 从小到大排序）。
 @export var stop_points: Array[OasisBoatStopPoint] = []
+## 是否使用 ExportSettings 中第三关的七站航线配置。
+@export var use_battlefield_stop_points: bool = false
 
 @export_category("Visual & Collision")
 ## 船体甲板尺寸。
@@ -52,6 +54,17 @@ var _stop_wait_timer: float = 0.0
 func _ready() -> void:
 	path_follow.rotates = false
 	path_follow.loop = false
+	if use_battlefield_stop_points:
+		stop_points.clear()
+		for index in range(ExportSettings.oasis_boat_stop_ratios.size()):
+			var point := OasisBoatStopPoint.new()
+			point.progress_ratio = ExportSettings.oasis_boat_stop_ratios[index]
+			point.point_id = "stop_%d" % index
+			point.require_player_on_board = index != ExportSettings.oasis_boat_blocker_stop_index
+			if index == ExportSettings.oasis_boat_blocker_stop_index:
+				point.point_id = "vanishing_blocker"
+				point.require_puzzle_solved = true
+			stop_points.append(point)
 	
 	boarding_detector.body_entered.connect(_on_boarding_detector_body_entered)
 	boarding_detector.body_exited.connect(_on_boarding_detector_body_exited)
@@ -169,6 +182,8 @@ func _check_depart_condition() -> void:
 
 
 func _depart_to_next() -> void:
+	if path_follow.progress_ratio >= 1.0:
+		return
 	var point_id: String = ""
 	if current_stop_index >= 0 and current_stop_index < stop_points.size():
 		point_id = stop_points[current_stop_index].point_id
@@ -201,6 +216,9 @@ func _prepare_stop_point(index: int) -> void:
 	var pt: OasisBoatStopPoint = stop_points[index]
 	_stop_wait_timer = pt.wait_time
 	ArrivedAtStopPoint.emit(pt.point_id, index)
+	if pt.progress_ratio >= 1.0:
+		current_state = BoatState.ARRIVED_FINAL
+		ReachedDestination.emit()
 
 
 func _on_boarding_detector_body_entered(body: Node2D) -> void:
