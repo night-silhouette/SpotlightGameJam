@@ -108,5 +108,5 @@ func phy_middleware() -> void:
 			change_state("jump")
 	if gameInputControl.is_dash:
 		change_state("dash")
-	if obj and obj.is_front_has_rigid:
+	if obj and obj.is_front_has_rigid and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
 		change_state("climb")
