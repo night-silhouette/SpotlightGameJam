@@ -1,32 +1,15 @@
-[gd_scene format=3 uid="uid://dklah3ylrtypq"]
+[gd_scene format=4 uid="uid://dklah3ylrtypq"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
-size = Vector2(96, 32)
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_base"]
-texture = SubResource("PlaceholderTexture2D_base")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
-1:0/0 = 0
-1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
-1:0/0/custom_data_0 = true
-2:0/0 = 0
-2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 15.930344, -16.341452, 16, 16, -16, 16)
-2:0/0/custom_data_1 = true
-3:1/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_qba5b"]
-tile_size = Vector2i(32, 32)
-physics_layer_0/collision_layer = 1
-physics_layer_0/collision_mask = 0
-custom_data_layer_0/name = "is_slick_wall"
-custom_data_layer_0/type = 1
-custom_data_layer_1/name = "is_rune_wall"
-custom_data_layer_1/type = 1
-sources/0 = SubResource("TileSetAtlasSource_base")
+[ext_resource type="TileSet" uid="uid://c2kfbr6u44m8m" path="res://Code/Entities/World/collision_tile_set.tres" id="1_2uwnx"]
+[ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="2_4l5no"]
 
 [node name="SunkenPalace" type="Node2D" unique_id=715814505]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=566340206]
-tile_set = SubResource("TileSet_qba5b")
+[node name="Node2D" type="Node2D" parent="." unique_id=228707374]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Node2D" unique_id=566340206]
+tile_map_data = PackedByteArray("AAAAAAwAAAABAAAAAAABAAwAAAABAAAAAAACAAwAAAABAAAAAAADAAwAAAABAAAAAAAEAAwAAAABAAAAAAAFAAwAAAABAAAAAAAGAAwAAAABAAAAAAAHAAwAAAABAAAAAAAIAAwAAAABAAAAAAAJAAwAAAABAAAAAAAKAAwAAAABAAAAAAALAAwAAAABAAAAAAAMAAwAAAABAAAAAAANAAwAAAABAAAAAAAOAAwAAAABAAAAAAAPAAwAAAABAAAAAAAQAAwAAAABAAAAAAARAAwAAAABAAAAAAASAAwAAAABAAAAAAATAAwAAAABAAAAAAAUAAwAAAABAAAAAAAVAAwAAAABAAAAAAAWAAwAAAABAAAAAAAXAAwAAAABAAAAAAAYAAwAAAABAAAAAAAZAAwAAAABAAAAAAAaAAwAAAABAAAAAAAbAAwAAAABAAAAAAAcAAwAAAABAAAAAAAdAAwAAAABAAAAAAAeAAwAAAABAAAAAAAfAAwAAAABAAAAAAAgAAwAAAABAAAAAAAhAAwAAAABAAAAAAAiAAwAAAABAAAAAAAjAAwAAAABAAAAAAAkAAwAAAABAAAAAAAlAAwAAAABAAAAAAAmAAwAAAABAAAAAAAnAAwAAAABAAAAAAAoAAwAAAABAAAAAAApAAwAAAABAAAAAAAqAAwAAAABAAAAAAArAAwAAAABAAAAAAAsAAwAAAABAAAAAAAtAAwAAAABAAAAAAAuAAwAAAABAAAAAAAvAAwAAAABAAAAAAAwAAwAAAABAAAAAAAxAAwAAAABAAAAAAAyAAwAAAABAAAAAAAzAAwAAAABAAAAAAA0AAwAAAABAAAAAAA1AAwAAAABAAAAAAA2AAwAAAABAAAAAAA3AAwAAAABAAAAAAA4AAwAAAABAAAAAAA5AAwAAAABAAAAAAA6AAwAAAABAAAAAAA7AAwAAAABAAAAAAA8AAwAAAABAAAAAAA=")
+tile_set = ExtResource("1_2uwnx")
+
+[node name="PlayerWithCamera" parent="." unique_id=1904895834 instance=ExtResource("2_4l5no")]
+position = Vector2(1093, 296)

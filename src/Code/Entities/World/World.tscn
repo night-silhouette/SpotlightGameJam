@@ -1,10 +1,10 @@
-[gd_scene format=3 uid="uid://bucqdek8jih77"]
+[gd_scene format=4 uid="uid://c8ajgwot2rhng"]
 
-[ext_resource type="PackedScene" uid="uid://bol6s2hhtvbil" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
+[ext_resource type="PackedScene" uid="uid://ddv5by5318t3e" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_sk8ge"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_mkscu"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
+[ext_resource type="PackedScene" uid="uid://dklah3ylrtypq" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
+[ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 
 [sub_resource type="Shader" id="Shader_low_water_outline"]
@@ -94,11 +94,14 @@ tween_resource = SubResource("Resource_yocbw")
 position = Vector2(-16, -1560)
 metadata/_edit_lock_ = true
 
+[node name="TileMapLayer" parent="Camp/collision_layer" parent_id_path=PackedInt32Array(192691445, 679345708) index="2" unique_id=1261001140]
+tile_map_data = PackedByteArray("AAAEACcAAAABAAAAAAACACEAAAABAAAAAAADACEAAAABAAAAAAAEACEAAAABAAAAAAAEACIAAAABAAAAAAAEACMAAAABAAAAAAAEACQAAAABAAAAAAAEACUAAAABAAAAAAAEACYAAAABAAAAAAAEACgAAAABAAAAAAACAB0AAAABAAAAAAADAB0AAAABAAAAAAAEAB0AAAABAAAAAAAFAB0AAAABAAAAAAAGAB0AAAABAAAAAAAHAB0AAAABAAAAAAAIAB0AAAABAAAAAAAEACkAAAABAAAAAAAEACoAAAABAAAAAAAEACsAAAABAAAAAAAEACwAAAABAAAAAAAEAC0AAAABAAAAAAAFACwAAAABAAAAAAAGACwAAAABAAAAAAAHACwAAAABAAAAAAAIACwAAAABAAAAAAATACwAAAABAAAAAAAUACwAAAABAAAAAAAVACwAAAABAAAAAAAWACwAAAABAAAAAAAXACwAAAABAAAAAAAYACwAAAABAAAAAAAfACwAAAABAAAAAAAgACwAAAABAAAAAAAhACwAAAABAAAAAAAiACwAAAABAAAAAAAjACwAAAABAAAAAAAJACwAAAABAAAAAAAKACwAAAABAAAAAAAkACwAAAACAAAAAAAvACwAAAABAAAAAAAwACwAAAABAAAAAAAxACwAAAABAAAAAAAyACwAAAABAAAAAAAzACwAAAABAAAAAAA0ACwAAAABAAAAAAA1ACwAAAABAAAAAAA2ACwAAAABAAAAAAA3ACwAAAABAAAAAAA4ACwAAAABAAAAAAA5ACwAAAABAAAAAAA6ACwAAAABAAAAAAA7ACwAAAABAAAAAAA8ACwAAAABAAAAAAA9ACwAAAABAAAAAAA+ACwAAAABAAAAAAA/ACwAAAABAAAAAABAACwAAAABAAAAAABBACwAAAABAAAAAABCACwAAAABAAAAAAAkAC0AAAABAAAAAAAkAC4AAAABAAAAAAAlAC4AAAABAAAAAAAmAC4AAAABAAAAAAAnAC4AAAABAAAAAAAoAC4AAAABAAAAAAApAC4AAAABAAAAAAAqAC4AAAABAAAAAAArAC4AAAABAAAAAAAsAC4AAAABAAAAAAAtAC4AAAABAAAAAAAuAC4AAAABAAAAAAAvAC0AAAABAAAAAAAvAC4AAAABAAAAAAAeACwAAAABAAAAAAA6ACsAAAABAAAAAAA6ACoAAAABAAAAAAA6ACkAAAABAAAAAAA7ACkAAAABAAAAAAA8ACkAAAABAAAAAAA9ACkAAAABAAAAAAA+ACkAAAABAAAAAAA+ACoAAAABAAAAAAA+ACsAAAABAAAAAAA7ACsAAAABAAAAAAA8ACsAAAABAAAAAAA9ACsAAAABAAAAAAA9ACoAAAABAAAAAAA8ACoAAAABAAAAAAA7ACoAAAABAAAAAAA=")
+
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
-position = Vector2(171, -1179)
+position = Vector2(2076, -338)
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
-position = Vector2(269, 3387)
+position = Vector2(-334, 3597)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19262, -1215)
