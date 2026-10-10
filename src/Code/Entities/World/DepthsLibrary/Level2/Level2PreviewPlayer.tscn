@@ -142,9 +142,6 @@ script = ExtResource("11_jump")
 [node name="fall" type="Node2D" parent="move_state_machine/air"]
 script = ExtResource("8_state")
 
-[node name="landing" type="Node2D" parent="move_state_machine/air"]
-script = ExtResource("8_state")
-
 [node name="GameInputControl" type="Node" parent="."]
 script = ExtResource("12_input")
 

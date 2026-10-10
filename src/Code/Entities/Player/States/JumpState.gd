@@ -57,7 +57,6 @@ func enter() -> void:
 			animation_player.animation_finished.connect(_on_jump_start_finished)
 
 	change_use_all(false)
-	state_machine.state_map["landing"].is_use = true
 	var hurt_node = state_machine.get_node_or_null("hurt")
 	if hurt_node:
 		hurt_node.is_use = true

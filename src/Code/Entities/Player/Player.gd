@@ -42,8 +42,6 @@ class_name Player
 @export var dash_speed: float = 700.0
 @export var dash_span: float = 0.65
 @export var max_fall_speed: float = 120.0
-@export var landing_height_threshold: float = 120.0
-@export var landing_lock_time: float = 0.2
 @export var unbeatable_time: float = 0.3
 @export var climb_ability: float = 480.0
 
@@ -164,7 +162,6 @@ var rope_momentum_timer: float = 0.0
 var _footstep_timer: float = 0.0
 var _last_footstep_index: int = -1
 var _is_wall_sliding: bool = false
-var _air_apex_y: float = 0.0
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -179,8 +176,6 @@ func _sync_from_export_settings() -> void:
 		double_jump_count = max_double_jumps
 		climb_ability = ExportSettings.player_climb_ability
 		max_fall_speed = ExportSettings.player_max_fall_speed
-		landing_height_threshold = ExportSettings.player_landing_height_threshold
-		landing_lock_time = ExportSettings.player_landing_lock_time
 		dash_time = ExportSettings.player_dash_time
 		dash_speed = ExportSettings.player_dash_speed
 		dash_span = ExportSettings.player_dash_span
@@ -270,7 +265,6 @@ func _ready() -> void:
 	
 	respawn_position = global_position
 	spawn_position = global_position
-	_air_apex_y = global_position.y
 
 	
 	if SignalBus:
@@ -320,9 +314,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta
 		if rope_momentum_timer > 0.0:
 			rope_momentum_timer -= delta
-		if move_state_machine.cur_state_name == "landing":
-			velocity.x = 0.0
-		elif _water_flow_area_count > 0:
+		if _water_flow_area_count > 0:
 			# 水流区域内：若没有方向输入，微弱阻尼滑行；有输入则微调方向，不施加地面强摩擦
 			if gameInputControl.row_dir != 0:
 				velocity.x = move_toward(velocity.x, speed * sign(gameInputControl.row_dir), accerleration * delta)
@@ -362,21 +354,13 @@ func _physics_process(delta: float) -> void:
 			var hurt_damping = 800.0 if is_on_floor() else 200.0
 			velocity.x = move_toward(velocity.x, 0.0, hurt_damping * delta)
 
-	var was_on_floor := is_on_floor()
 	move_and_slide()
 
 	if is_on_floor():
-		if not was_on_floor and global_position.y - _air_apex_y >= landing_height_threshold \
-			and move_state_machine.cur_state_name not in ["hurt", "died", "shuttle"] \
-			and rope_controller.current_state == RopeController.RopeState.IDLE:
-			move_state_machine.change_state("landing")
-		_air_apex_y = global_position.y
 		wall_jump_lock_dir = 0
 		ResetDoubleJump()
-	else:
-		_air_apex_y = minf(_air_apex_y, global_position.y)
 
-	if move_state_machine.cur_state_name != "landing" and gameInputControl.row_dir != 0:
+	if gameInputControl.row_dir != 0:
 		var new_face_dir = int(sign(gameInputControl.row_dir))
 		if face_dir != new_face_dir:
 			front_foot.scale.x *= -1

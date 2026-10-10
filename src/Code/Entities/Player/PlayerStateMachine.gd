@@ -4,7 +4,7 @@ func phy_middleware() -> void:
 	if not gameInputControl:
 		return
 	# 受伤硬直期间不接受键盘物理转向输入覆盖状态
-	if cur_state_name in ["hurt", "died", "landing"]:
+	if cur_state_name in ["hurt", "died"]:
 		return
 	if cur_state_name == "climb" and current_state.is_wall_kicking:
 		return

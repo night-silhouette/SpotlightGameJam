@@ -6,7 +6,6 @@ func enter() -> void:
 	change_use_all(false)
 	state_machine.state_map["hurt"].is_use = true
 	state_machine.state_map["died"].is_use = true
-	state_machine.state_map["landing"].is_use = true
 	if animation_player:
 		animation_player.play("dash")
 	if obj and obj.has_method("PlayDashSFX"):

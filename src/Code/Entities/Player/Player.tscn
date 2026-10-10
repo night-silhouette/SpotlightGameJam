@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://c6228ogky1las"]
 
 [ext_resource type="Script" uid="uid://drdnkhhkl6d1q" path="res://Code/Entities/Player/Player.gd" id="1_player"]
-[ext_resource type="Texture2D" uid="uid://u7e8no7sycdy" path="res://Art/Archived/Character/jump/landing.png" id="2_drwpo"]
 [ext_resource type="Shape2D" path="res://Code/Entities/Player/PlayerCollisionNormal.tres" id="2_shape"]
 [ext_resource type="Script" uid="uid://w87wj37sfmph" path="res://Code/Entities/Player/PlayerStateMachine.gd" id="3_machine"]
 [ext_resource type="Script" uid="uid://cqo4h44fyh6vx" path="res://Code/Entities/Player/States/IdleState.gd" id="4_idle"]
@@ -11,7 +10,6 @@
 [ext_resource type="Texture2D" uid="uid://qvmrtqakg055" path="res://Art/Archived/Character/jump/jumpStart.png" id="7_oexbj"]
 [ext_resource type="Texture2D" uid="uid://v6psdn8khp3r" path="res://Art/Archived/Character/jump/rise.png" id="8_211mo"]
 [ext_resource type="Script" uid="uid://im6s3beegr4o" path="res://Code/Entities/Player/States/FallState.gd" id="8_fall"]
-[ext_resource type="Script" uid="uid://piijssw4qy4r" path="res://Code/Entities/Player/States/LandingState.gd" id="8_landing"]
 [ext_resource type="Script" uid="uid://bcfuqo31yu2w1" path="res://Code/Common/State.gd" id="8_state"]
 [ext_resource type="Texture2D" uid="uid://hsssj4fr25sx" path="res://Art/Archived/Character/wallclimb.png" id="9_drwpo"]
 [ext_resource type="Script" uid="uid://da8gmnkwc00x2" path="res://Code/Entities/Player/States/HurtState.gd" id="9_hurt"]
@@ -31,107 +29,6 @@
 [ext_resource type="Texture2D" uid="uid://cog07ymnm5vmb" path="res://Art/Archived/Character/wall_kick.png" id="27_wall_kick"]
 [ext_resource type="Texture2D" uid="uid://cfk0vcvyxoa17" path="res://Art/Archived/Character/water_dash.png" id="28_water_dash"]
 [ext_resource type="Texture2D" uid="uid://b5j76ldc74gyh" path="res://Art/Archived/Character/run.png" id="30_drwpo"]
-
-[sub_resource type="Animation" id="Animation_onland"]
-resource_name = "Onland"
-length = 0.4
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("sprite/Action:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("sprite/Action:texture")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [ExtResource("2_drwpo")]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("sprite/Action:hframes")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [Vector2(-8.862, -19)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_8p301"]
 length = 0.001
@@ -231,6 +128,18 @@ tracks/7/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("sprite/Action:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-7, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_dash"]
 resource_name = "dash"
@@ -275,31 +184,31 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -12)]
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/path = NodePath("sprite/Standbytime:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/path = NodePath("sprite/Walk:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -311,22 +220,10 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/path = NodePath("sprite/Turn:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -478,31 +375,31 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -20)]
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/path = NodePath("sprite/Standbytime:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/path = NodePath("sprite/Walk:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -514,22 +411,10 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/path = NodePath("sprite/Turn:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -746,31 +631,31 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -14)]
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/path = NodePath("sprite/Standbytime:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/path = NodePath("sprite/Walk:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -782,22 +667,10 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/path = NodePath("sprite/Turn:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -848,31 +721,31 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -15)]
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/path = NodePath("sprite/Standbytime:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/path = NodePath("sprite/Walk:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -884,22 +757,10 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/path = NodePath("sprite/Turn:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -1080,31 +941,31 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -16)]
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/path = NodePath("sprite/Standbytime:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/path = NodePath("sprite/Walk:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1116,7 +977,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/path = NodePath("sprite/Turn:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1128,14 +989,14 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/path = NodePath("sprite/Action:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-8, 0), Vector2(-13, -6), Vector2(-18, -7)]
 }
 
 [sub_resource type="Animation" id="Animation_wall_kick"]
@@ -1342,7 +1203,6 @@ tracks/7/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cab0y"]
 _data = {
-&"Onland": SubResource("Animation_onland"),
 &"RESET": SubResource("Animation_8p301"),
 &"dash": SubResource("Animation_dash"),
 &"death": SubResource("Animation_death"),
@@ -1458,9 +1318,6 @@ script = ExtResource("11_jump")
 [node name="fall" type="Node2D" parent="move_state_machine/air" unique_id=395742960]
 script = ExtResource("8_fall")
 
-[node name="landing" type="Node2D" parent="move_state_machine/air" unique_id=929485405]
-script = ExtResource("8_landing")
-
 [node name="GameInputControl" type="Node" parent="." unique_id=1719020235]
 script = ExtResource("12_input")
 
@@ -1520,8 +1377,8 @@ script = ExtResource("14_water_rune")
 [node name="Standbytime" type="Sprite2D" parent="sprite" unique_id=1632125495]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(32, -13)
-scale = Vector2(0.43470114, 0.43470114)
+position = Vector2(24.999998, -8)
+scale = Vector2(0.33861846, 0.33861846)
 texture = ExtResource("17_kpm6d")
 hframes = 4
 vframes = 2
@@ -1529,17 +1386,17 @@ vframes = 2
 [node name="Walk" type="Sprite2D" parent="sprite" unique_id=1352150479]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(-22, -13)
-scale = Vector2(0.43470114, 0.43470114)
+position = Vector2(-18.092413, -7)
+scale = Vector2(0.34822845, 0.34725052)
 texture = ExtResource("30_drwpo")
 hframes = 5
 
 [node name="Action" type="Sprite2D" parent="sprite" unique_id=1352150480]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(-8.862, -18)
-scale = Vector2(0.43470114, 0.43470114)
-texture = ExtResource("27_wall_kick")
+position = Vector2(-7, 0)
+scale = Vector2(0.36287013, 0.36287013)
+texture = ExtResource("9_drwpo")
 hframes = 4
 
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]
