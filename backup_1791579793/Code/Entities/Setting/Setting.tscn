@@ -1,0 +1,226 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Setting/Setting.gd" id="1_setting"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.08, 0.11, 0.16, 0.94)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.6, 0.85, 0.85)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close_btn"]
+bg_color = Color(0.3, 0.15, 0.18, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.4, 0.4, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quit_btn"]
+bg_color = Color(0.35, 0.12, 0.12, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.9, 0.35, 0.35, 0.85)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Setting" type="CanvasLayer" unique_id=981248102]
+layer = 100
+script = ExtResource("1_setting")
+
+[node name="RootControl" type="Control" parent="." unique_id=981248103]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundDim" type="ColorRect" parent="RootControl" unique_id=981248104]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5)
+
+[node name="PanelContainer" type="PanelContainer" parent="RootControl" unique_id=981248105]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -240.0
+offset_right = 310.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="RootControl/PanelContainer" unique_id=981248106]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="MainVBox" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer" unique_id=981248107]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HeaderHBox" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248108]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/HeaderHBox" unique_id=981248109]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "系统设置"
+vertical_alignment = 1
+
+[node name="CloseButton" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/HeaderHBox" unique_id=981248110]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_close_btn")
+text = "✕"
+
+[node name="TabHBox" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248111]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TabBtnKeybinds" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox" unique_id=981248112]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "按键设置"
+
+[node name="TabBtnSaves" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox" unique_id=981248113]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "存档管理 (5槽位)"
+
+[node name="ContentPanel" type="Panel" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248114]
+custom_minimum_size = Vector2(0, 280)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="KeybindsScroll" type="ScrollContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel" unique_id=981248115]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="KeybindsList" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/KeybindsScroll" unique_id=981248116]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="SavesScroll" type="ScrollContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel" unique_id=981248117]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SavesList" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/SavesScroll" unique_id=981248118]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="BottomHBox" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248119]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="QuitButton" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox" unique_id=981248120]
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_quit_btn")
+text = "退出游戏"
+
+[node name="StatusToast" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox" unique_id=981248121]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.4, 0.9, 0.6, 1)
+theme_override_font_sizes/font_size = 13
+vertical_alignment = 1
+
+[node name="RebindOverlay" type="ColorRect" parent="RootControl" unique_id=981248122]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.75)
+
+[node name="PromptVBox" type="VBoxContainer" parent="RootControl/RebindOverlay" unique_id=981248123]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -40.0
+offset_right = 200.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="PromptLabel" type="Label" parent="RootControl/RebindOverlay/PromptVBox" unique_id=981248124]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "请按下要绑定的新按键..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="QuitConfirmDialog" type="ConfirmationDialog" parent="." unique_id=981248125]
+title = "退出游戏"
+initial_position = 2
+size = Vector2i(320, 110)
+ok_button_text = "确认退出"
+cancel_button_text = "取消"
+dialog_text = "是否确定退出游戏？未保存的进度将会丢失。"

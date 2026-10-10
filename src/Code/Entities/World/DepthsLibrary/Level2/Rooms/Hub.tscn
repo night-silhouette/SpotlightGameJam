@@ -1,0 +1,376 @@
+[gd_scene format=3]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
+[sub_resource type="RectangleShape2D" id="shape1"]
+size = Vector2(30, 380)
+
+[sub_resource type="RectangleShape2D" id="shape2"]
+size = Vector2(30, 380)
+
+[sub_resource type="RectangleShape2D" id="shape3"]
+size = Vector2(1400, 20)
+
+[sub_resource type="RectangleShape2D" id="shape4"]
+size = Vector2(560, 24)
+
+[sub_resource type="RectangleShape2D" id="shape5"]
+size = Vector2(60, 24)
+
+[sub_resource type="RectangleShape2D" id="shape6"]
+size = Vector2(320, 24)
+
+[sub_resource type="RectangleShape2D" id="shape7"]
+size = Vector2(1080, 90)
+
+[sub_resource type="RectangleShape2D" id="shape8"]
+size = Vector2(120, 90)
+[node name="Hub" type="Node2D"]
+metadata/width = 1400
+metadata/height = 520
+metadata/title = "中央喷泉大厅"
+
+[node name="Background" type="Node2D" parent="."]
+
+
+[node name="Base" type="Polygon2D" parent="Background"]
+position = Vector2(0, -80)
+z_index = -20
+polygon = PackedVector2Array(0, 0, 1400, 0, 1400, 800, 0, 800)
+color = Color(0.035, 0.065, 0.105, 1)
+
+[node name="Pillar50" type="Polygon2D" parent="Background"]
+position = Vector2(50, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window50" type="Polygon2D" parent="Background"]
+position = Vector2(95, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight50" type="Polygon2D" parent="Background"]
+position = Vector2(95, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar270" type="Polygon2D" parent="Background"]
+position = Vector2(270, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window270" type="Polygon2D" parent="Background"]
+position = Vector2(315, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight270" type="Polygon2D" parent="Background"]
+position = Vector2(315, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar490" type="Polygon2D" parent="Background"]
+position = Vector2(490, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window490" type="Polygon2D" parent="Background"]
+position = Vector2(535, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight490" type="Polygon2D" parent="Background"]
+position = Vector2(535, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar710" type="Polygon2D" parent="Background"]
+position = Vector2(710, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window710" type="Polygon2D" parent="Background"]
+position = Vector2(755, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight710" type="Polygon2D" parent="Background"]
+position = Vector2(755, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar930" type="Polygon2D" parent="Background"]
+position = Vector2(930, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window930" type="Polygon2D" parent="Background"]
+position = Vector2(975, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight930" type="Polygon2D" parent="Background"]
+position = Vector2(975, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar1150" type="Polygon2D" parent="Background"]
+position = Vector2(1150, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window1150" type="Polygon2D" parent="Background"]
+position = Vector2(1195, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight1150" type="Polygon2D" parent="Background"]
+position = Vector2(1195, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="Pillar1370" type="Polygon2D" parent="Background"]
+position = Vector2(1370, 0)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
+color = Color(0.07, 0.12, 0.17, 1)
+
+[node name="Window1370" type="Polygon2D" parent="Background"]
+position = Vector2(1415, 100)
+z_index = -19
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
+color = Color(0.06, 0.16, 0.21, 1)
+
+[node name="WindowLight1370" type="Polygon2D" parent="Background"]
+position = Vector2(1415, 100)
+z_index = -18
+polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
+color = Color(0.22, 0.39, 0.42, 1)
+
+[node name="RoomTitle" type="Label" parent="."]
+offset_left = 45
+offset_top = 10
+offset_right = 1355
+offset_bottom = 90
+theme_override_font_sizes/font_size = 30
+mouse_filter = 2
+text = "中央喷泉大厅"
+
+[node name="RoomHint" type="Label" parent="."]
+offset_left = 45
+offset_top = 58
+offset_right = 1355
+offset_bottom = 138
+theme_override_font_sizes/font_size = 18
+mouse_filter = 2
+text = "左：书库与休息室；右：水道；向下：档案室。钥匙带回喷泉按 F 提交。"
+
+[node name="LeftWall" type="StaticBody2D" parent="."]
+position = Vector2(-30, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
+position = Vector2(15, 190)
+shape = SubResource("shape1")
+
+[node name="Stone" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 380, 0, 380)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="LeftWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RightWall" type="StaticBody2D" parent="."]
+position = Vector2(1400, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
+position = Vector2(15, 190)
+shape = SubResource("shape2")
+
+[node name="Stone" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 380, 0, 380)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RightWall"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RoofWest" type="StaticBody2D" parent="."]
+position = Vector2(0, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoofWest"]
+position = Vector2(280, 12)
+shape = SubResource("shape4")
+
+[node name="Stone" type="Polygon2D" parent="RoofWest"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 560, 0, 560, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RoofWest"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 560, 0, 560, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RoofMiddle" type="StaticBody2D" parent="."]
+position = Vector2(840, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoofMiddle"]
+position = Vector2(30, 12)
+shape = SubResource("shape5")
+
+[node name="Stone" type="Polygon2D" parent="RoofMiddle"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 60, 0, 60, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RoofMiddle"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 60, 0, 60, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="RoofEast" type="StaticBody2D" parent="."]
+position = Vector2(1080, -80)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoofEast"]
+position = Vector2(160, 12)
+shape = SubResource("shape6")
+
+[node name="Stone" type="Polygon2D" parent="RoofEast"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 320, 0, 320, 24, 0, 24)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="RoofEast"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 320, 0, 320, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="FloorWest" type="StaticBody2D" parent="."]
+position = Vector2(0, 520)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorWest"]
+position = Vector2(540, 45)
+shape = SubResource("shape7")
+
+[node name="Stone" type="Polygon2D" parent="FloorWest"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 1080, 0, 1080, 90, 0, 90)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="FloorWest"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 1080, 0, 1080, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="FloorEast" type="StaticBody2D" parent="."]
+position = Vector2(1280, 520)
+collision_layer = 1
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorEast"]
+position = Vector2(60, 45)
+shape = SubResource("shape8")
+
+[node name="Stone" type="Polygon2D" parent="FloorEast"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 120, 0, 120, 90, 0, 90)
+color = Color(0.14, 0.23, 0.28, 1)
+
+[node name="Edge" type="Polygon2D" parent="FloorEast"]
+position = Vector2(0, 0)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 120, 0, 120, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Fountain" parent="." instance=ExtResource("device")]
+position = Vector2(990, 495)
+metadata/kind = "fountain"
+metadata/label = "中央喷泉 · 提交钥匙"
+
+
+[node name="Caption" parent="Fountain" index="1"]
+text = "中央喷泉 · 提交钥匙"
+
+[node name="FountainStream" type="Polygon2D" parent="."]
+position = Vector2(925, -80)
+z_index = 0
+polygon = PackedVector2Array(0, 0, 130, 0, 130, 600, 0, 600)
+color = Color(0.12,0.7,0.85,0.35)
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(710, 485)
+
+[node name="ReturnSpawn" type="Marker2D" parent="."]
+position = Vector2(1330, 485)
+
+[node name="WestSign" type="Label" parent="."]
+offset_left = 120
+offset_top = 370
+offset_right = 490
+offset_bottom = 450
+theme_override_font_sizes/font_size = 19
+mouse_filter = 2
+text = "← 日纹书库 / 更深处有补给"
+
+[node name="EastSign" type="Label" parent="."]
+offset_left = 1110
+offset_top = 220
+offset_right = 1380
+offset_bottom = 300
+theme_override_font_sizes/font_size = 19
+mouse_filter = 2
+text = "月影水道 →\n档案室 ↓"
+
+[node name="HubChalice" parent="." instance=ExtResource("chalice")]
+position = Vector2(450, 520)
+

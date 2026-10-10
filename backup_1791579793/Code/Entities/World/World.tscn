@@ -1,0 +1,111 @@
+[gd_scene format=4 uid="uid://c8ajgwot2rhng"]
+
+[ext_resource type="PackedScene" uid="uid://ddv5by5318t3e" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
+[ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_sk8ge"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_mkscu"]
+[ext_resource type="PackedScene" uid="uid://dklah3ylrtypq" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
+[ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
+[ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
+
+[sub_resource type="Shader" id="Shader_low_water_outline"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform float outline_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float outline_width : hint_range(1.0, 8.0) = 3.0;
+uniform float edge_damage : hint_range(0.0, 0.5) = 0.16;
+
+float pixel_noise(vec2 pixel_position) {
+	return fract(sin(dot(pixel_position, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+void fragment() {
+	vec4 base_color = COLOR;
+	vec2 offset = TEXTURE_PIXEL_SIZE * outline_width;
+	float neighbor_alpha = min(
+		min(texture(TEXTURE, UV + vec2(offset.x, 0.0)).a, texture(TEXTURE, UV - vec2(offset.x, 0.0)).a),
+		min(texture(TEXTURE, UV + vec2(0.0, offset.y)).a, texture(TEXTURE, UV - vec2(0.0, offset.y)).a)
+	);
+	float edge = base_color.a * (1.0 - neighbor_alpha) * outline_strength;
+	float noise = pixel_noise(floor(UV / TEXTURE_PIXEL_SIZE));
+	float rough_edge = edge * mix(0.55, 1.0, noise);
+	float chip = edge * step(1.0 - edge_damage, noise);
+	base_color.rgb = mix(base_color.rgb, outline_color.rgb, rough_edge * outline_color.a);
+	base_color.a *= 1.0 - chip * 0.85;
+	COLOR = base_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mkscu"]
+resource_local_to_scene = true
+shader = SubResource("Shader_low_water_outline")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_strength = 0.0
+shader_parameter/outline_width = 3.0
+shader_parameter/edge_damage = 0.16
+
+[sub_resource type="Resource" id="Resource_hfiwn"]
+script = ExtResource("2_mkscu")
+
+[sub_resource type="Resource" id="Resource_35sqx"]
+script = ExtResource("2_mkscu")
+
+[sub_resource type="Resource" id="Resource_yocbw"]
+script = ExtResource("2_mkscu")
+
+[node name="World" type="Node2D" unique_id=2146248688]
+
+[node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
+visible = false
+position = Vector2(402.00003, -103)
+scale = Vector2(0.75341123, 0.75341123)
+speed = 250.0
+
+[node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
+scale = Vector2(2.9105504, 2.9105504)
+
+[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
+material = SubResource("ShaderMaterial_mkscu")
+
+[node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
+material = SubResource("ShaderMaterial_mkscu")
+
+[node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
+material = SubResource("ShaderMaterial_mkscu")
+
+[node name="Turn" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="3" unique_id=1352150481]
+material = SubResource("ShaderMaterial_mkscu")
+
+[node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
+position = Vector2(-2037.998, -423)
+scale = Vector2(1.3, 1.3)
+
+[node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
+position = Vector2(402.00003, -103)
+tween_resource = SubResource("Resource_hfiwn")
+
+[node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]
+tween_resource = SubResource("Resource_35sqx")
+
+[node name="ShotB" parent="PlayerWithCamera" index="4" unique_id=1440358054]
+tween_resource = SubResource("Resource_yocbw")
+
+[node name="Camp" parent="." unique_id=192691445 instance=ExtResource("1_camp")]
+position = Vector2(-16, -1560)
+
+[node name="TileMapLayer" parent="Camp" index="0" unique_id=906777763]
+position = Vector2(-51, 198)
+tile_map_data = PackedByteArray("AAAEACcAAAABAAAAAAACACEAAAABAAAAAAADACEAAAABAAAAAAAEACEAAAABAAAAAAAEACIAAAABAAAAAAAEACMAAAABAAAAAAAEACQAAAABAAAAAAAEACUAAAABAAAAAAAEACYAAAABAAAAAAAEACgAAAABAAAAAAACAB0AAAABAAAAAAADAB0AAAABAAAAAAAEAB0AAAABAAAAAAAFAB0AAAABAAAAAAAGAB0AAAABAAAAAAAHAB0AAAABAAAAAAAIAB0AAAABAAAAAAAEACkAAAABAAAAAAAEACoAAAABAAAAAAAEACsAAAABAAAAAAAEACwAAAABAAAAAAAEAC0AAAABAAAAAAAOAC0AAAABAAAAAAAPAC0AAAABAAAAAAARACYAAAABAAAAAAAFACwAAAABAAAAAAAGACwAAAABAAAAAAAHACwAAAABAAAAAAAIACwAAAABAAAAAAAJACwAAAABAAAAAAAKACwAAAABAAAAAAALACwAAAABAAAAAAAMACwAAAABAAAAAAANACwAAAABAAAAAAAOACwAAAABAAAAAAAPACwAAAABAAAAAAAQACwAAAABAAAAAAARACwAAAABAAAAAAASACwAAAABAAAAAAA=")
+
+[node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
+position = Vector2(171, -1179)
+
+[node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
+position = Vector2(269, 3387)
+
+[node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
+position = Vector2(-19262, -1215)
+
+[editable path="PlayerWithCamera"]
+[editable path="PlayerWithCamera/Player"]
+[editable path="Camp"]
