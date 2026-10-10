@@ -21,13 +21,18 @@ func _update_zone(force: bool) -> void:
 	var rooms: Node2D = _map.get_node("Rooms")
 	var fall_room: Node2D = rooms.get_node("DescentShaft")
 	var water_room: Node2D = rooms.get_node("FountainShaft")
-	var fall_bounds := Rect2(fall_room.position, Vector2(280, 2620))
-	var water_bounds := Rect2(water_room.position, Vector2(180, 2740))
+	var fall_bounds := Rect2(fall_room.position, Vector2(280, 2860))
+	var water_bounds := Rect2(water_room.position, Vector2(180, 3000))
+	var city_y: float = water_room.get_node("CityExit").position.y + water_room.position.y
 	var zone: StringName = &"main"
 	var mode: StringName = &"normal"
 	var bounds := Rect2(Vector2(-4330, -480), Vector2(8460, 1340))
 	_shaft_rect = Rect2()
-	if water_bounds.has_point(point):
+	if point.y < city_y + 80.0:
+		# 两个井口上方连续跟随，保留喷出与落地空间；不加封顶遮罩。
+		zone = &"city"
+		bounds = Rect2(Vector2(-600, city_y - 640), Vector2(2400, 1300))
+	elif water_bounds.has_point(point):
 		zone = &"ascent"
 		mode = &"descent"
 		_shaft_rect = water_bounds
@@ -42,8 +47,8 @@ func _update_zone(force: bool) -> void:
 		if point.x >= water_room.position.x:
 			upper_room = rooms.get_node("SurfaceExit")
 			zone = &"surface"
-		bounds = Rect2(upper_room.position + Vector2(-30, -80),
-			Vector2(float(upper_room.get_meta("width")) + 60.0, 1100))
+		bounds = Rect2(upper_room.position + Vector2(-30, -400),
+			Vector2(float(upper_room.get_meta("width")) + 60.0, 1420))
 	elif point.y > 800 or (point.y > 600 and point.x >= 1050 and point.x < 1650):
 		zone = &"lower"
 		bounds = Rect2(Vector2(600, -480), Vector2(3300, 2810))
@@ -91,5 +96,5 @@ func GetUpperRoomOpening() -> Rect2:
 		room = _map.get_node("Rooms/SurfaceExit")
 	else:
 		return Rect2()
-	return Rect2(room.to_global(Vector2(-30, -80)),
-		Vector2(float(room.get_meta("width")) + 60.0, 1100))
+	return Rect2(room.to_global(Vector2(-30, -400)),
+		Vector2(float(room.get_meta("width")) + 60.0, 1420))

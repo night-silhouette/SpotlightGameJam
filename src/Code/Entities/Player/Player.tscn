@@ -156,6 +156,18 @@ tracks/9/keys = {
 "update": 1,
 "values": [Vector2(0.36287013, 0.36287013)]
 }
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("sprite/Action/RopeOrigin:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-5.5555553, -33.333336)]
+}
 
 [sub_resource type="Animation" id="Animation_rope_send"]
 resource_name = "RopeSend"
@@ -255,7 +267,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-7, 0)]
+"values": [Vector2(-5.9999995, -7.000001)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -661,7 +673,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-7, 0)]
+"values": [Vector2(2.0000005, -7)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -674,6 +686,18 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [Vector2(0.36, 0.36)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("sprite/Action/RopeOrigin:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0, 0.275693),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-30.555557, -27.77778), Vector2(-30.555557, -27.77778)]
 }
 
 [sub_resource type="Animation" id="Animation_hit"]

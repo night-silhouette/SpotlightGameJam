@@ -16,7 +16,7 @@ enum RopeState {
 ## 绳索最大有效射程
 @export var max_rope_length: float = 420.0
 ## 绳索飞行发射速度
-@export var rope_speed: float = 2200.0
+@export var rope_speed: float = 1000.0
 ## 命中后的决策窗口期持续时间 (秒)
 @export var window_duration: float = 0.45
 ## 拉向命中点的飞行速度
@@ -69,6 +69,8 @@ var has_touch_aim: bool = false
 ## 绳头飞行变量
 var fly_dir: Vector2 = Vector2.ZERO
 var fly_distance: float = 0.0
+var fly_start_pos: Vector2 = Vector2.ZERO
+var fly_previous_tip_pos: Vector2 = Vector2.ZERO
 var fly_tip_pos: Vector2 = Vector2.ZERO
 
 ## 摆动相关状态
@@ -311,6 +313,8 @@ func _shoot_rope() -> bool:
 		_shoot_audio.play()
 
 	fly_distance = 0.0
+	fly_start_pos = origin
+	fly_previous_tip_pos = origin
 	fly_tip_pos = origin
 	released_during_flight = false
 	current_state = RopeState.FLYING
@@ -323,14 +327,14 @@ func _shoot_rope() -> bool:
 	return true
 
 func _process_flying(delta: float) -> void:
-	var prev_tip_pos = fly_tip_pos
+	fly_previous_tip_pos = fly_tip_pos
 	var step = rope_speed * delta
 	fly_distance += step
-	var next_tip_pos = _rope_origin.global_position + fly_dir * fly_distance
+	var next_tip_pos = fly_start_pos + fly_dir * fly_distance
 
 	# 随着绳头实际向前飞行，步进式检测当前帧飞过的线段是否碰撞到了墙体表面
 	var space_state = player.get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(prev_tip_pos, next_tip_pos, collision_mask)
+	var query = PhysicsRayQueryParameters2D.create(fly_previous_tip_pos, next_tip_pos, collision_mask)
 	query.exclude = [player.get_rid()]
 	var result = space_state.intersect_ray(query)
 
@@ -369,7 +373,7 @@ func _process_flying(delta: float) -> void:
 
 	# 若超过最大射程仍未命中，绳索落空回收
 	if fly_distance >= max_rope_length:
-		_show_miss_effect(_rope_origin.global_position + fly_dir * max_rope_length)
+		_show_miss_effect(fly_start_pos + fly_dir * max_rope_length)
 		_release_rope(true)
 		return
 
@@ -445,6 +449,7 @@ func _process_latched(delta: float) -> void:
 func _start_pull() -> void:
 	_sync_hook_point()
 	current_state = RopeState.PULLING
+	SignalBus.PlayerGrapplePhaseChanged.emit(player, &"pulling", hook_point)
 	pull_timer = 0.0
 	_last_pull_dist = (hook_point - player.global_position).length() if player else 999999.0
 	_pull_stuck_timer = 0.0
