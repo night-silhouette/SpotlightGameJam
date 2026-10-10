@@ -78,7 +78,7 @@ var swing_angular_velocity: float = 0.0
 
 @onready var player: Player = get_parent() as Player
 @onready var line_2d: Line2D = $Line2D
-@onready var _rope_origin: Marker2D = get_parent().get_node("GrappleVisual/Deploy/RopeOrigin")
+@onready var _rope_origin: Marker2D = get_parent().get_node("sprite/Action/RopeOrigin")
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -296,8 +296,9 @@ func _shoot_rope() -> bool:
 	if rope_hp_cost > 0.0:
 		player.now_HP = max(0.0, player.now_HP - rope_hp_cost)
 
-	# 先锁定独立发射动画的朝向，再从同朝向的 Marker 计算瞄准方向。
+	# 同步进入 ani_move 发射姿势，再从镜像后的手调 Marker 计算方向。
 	var facing_direction := _get_shoot_direction(player.global_position)
+	SignalBus.PlayerGrapplePhaseChanged.emit(player, &"RopeSend", player.global_position + facing_direction * max_rope_length)
 	SignalBus.PlayerGrappleLaunched.emit(player.global_position + facing_direction * max_rope_length)
 	var origin: Vector2 = _rope_origin.global_position
 	fly_dir = _get_shoot_direction(origin)
@@ -352,6 +353,7 @@ func _process_flying(delta: float) -> void:
 		else:
 			hook_target_offset = Vector2.ZERO
 
+		SignalBus.PlayerGrapplePhaseChanged.emit(player, &"fly", hook_point)
 		SignalBus.PlayerGrappleHooked.emit(hook_point)
 
 		# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键/触屏，立即拉过去
@@ -600,6 +602,7 @@ func _release_rope(preserve_velocity: bool) -> void:
 		if not preserve_velocity:
 			player.velocity = Vector2.ZERO
 
+	SignalBus.PlayerGrapplePhaseChanged.emit(player, &"", hook_point)
 	SignalBus.PlayerGrappleReleased.emit()
 
 func _update_line() -> void:

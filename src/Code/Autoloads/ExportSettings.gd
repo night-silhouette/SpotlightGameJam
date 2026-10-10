@@ -192,8 +192,10 @@ extends Node
 @export_flags_2d_physics var rope_collision_mask: int = 5
 
 @export_group("Grapple Visuals", "rope_visual_")
-## 发射人物两帧动画的帧率；播完后保持第二帧，直到脱钩。
+## ani_move 发射人物两帧动画的帧率，播完转入持绳飞行动画。
 @export_range(1.0, 30.0, 0.5) var rope_visual_deploy_fps: float = 12.0
+## ani_move 持绳飞行两帧循环动画的帧率。
+@export_range(1.0, 30.0, 0.5) var rope_visual_fly_fps: float = 12.0
 ## 发射人物相对角色原点的偏移。
 @export var rope_visual_player_offset: Vector2 = Vector2(-7.0, 0.0)
 ## 发射人物图的统一缩放。

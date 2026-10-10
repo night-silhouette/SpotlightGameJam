@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c6228ogky1las"]
 
 [ext_resource type="Script" uid="uid://drdnkhhkl6d1q" path="res://Code/Entities/Player/Player.gd" id="1_player"]
-[ext_resource type="Shape2D" path="res://Code/Entities/Player/PlayerCollisionNormal.tres" id="2_shape"]
+[ext_resource type="Shape2D" uid="uid://ct25tk2sunnft" path="res://Code/Entities/Player/PlayerCollisionNormal.tres" id="2_shape"]
 [ext_resource type="Script" uid="uid://w87wj37sfmph" path="res://Code/Entities/Player/PlayerStateMachine.gd" id="3_machine"]
 [ext_resource type="Script" uid="uid://cqo4h44fyh6vx" path="res://Code/Entities/Player/States/IdleState.gd" id="4_idle"]
 [ext_resource type="Script" uid="uid://es5aghtjfnht" path="res://Code/Entities/Player/States/RunState.gd" id="5_run"]
@@ -30,6 +30,9 @@
 [ext_resource type="Texture2D" uid="uid://cog07ymnm5vmb" path="res://Art/Archived/Character/wall_kick.png" id="27_wall_kick"]
 [ext_resource type="Texture2D" uid="uid://b5j76ldc74gyh" path="res://Art/Archived/Character/run.png" id="30_drwpo"]
 [ext_resource type="PackedScene" uid="uid://m43ngy66c65u" path="res://Code/Entities/Player/GrappleVisual.tscn" id="31_grapple_visual"]
+[ext_resource type="Texture2D" uid="uid://do6cbv7bs5byw" path="res://Art/Archived/Character/graphook/ropeSend.png" id="32_rope_send"]
+[ext_resource type="Texture2D" uid="uid://bfqm4p5qdx2a8" path="res://Art/Archived/Character/graphook/fly.png" id="33_fly"]
+[ext_resource type="Script" uid="uid://chh5cjy70y4qd" path="res://Code/Entities/Player/States/RopeState.gd" id="34_rope_state"]
 
 [sub_resource type="Animation" id="Animation_8p301"]
 length = 0.001
@@ -140,6 +143,131 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(-7, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("sprite/Action:scale")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.36287013, 0.36287013)]
+}
+
+[sub_resource type="Animation" id="Animation_rope_send"]
+resource_name = "RopeSend"
+length = 0.16666667
+step = 0.08333333
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite/Action:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("32_rope_send")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite/Action:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("sprite/Action:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.08333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sprite/Action:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sprite/Standbytime:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("sprite/Walk:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("sprite/Turn:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("sprite/Action:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-7, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("sprite/Action:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.36, 0.36)]
 }
 
 [sub_resource type="Animation" id="Animation_dash"]
@@ -421,6 +549,132 @@ tracks/6/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("sprite/Action:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-10, -4), Vector2(-10, -4)]
+}
+
+[sub_resource type="Animation" id="Animation_rope_fly"]
+resource_name = "fly"
+length = 0.3
+loop_mode = 1
+step = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite/Action:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("33_fly")]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite/Action:hframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("sprite/Action:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sprite/Action:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sprite/Standbytime:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("sprite/Walk:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("sprite/Turn:visible")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("sprite/Action:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(-7, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("sprite/Action:scale")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0.36, 0.36)]
+}
 
 [sub_resource type="Animation" id="Animation_hit"]
 resource_name = "hit"
@@ -677,6 +931,18 @@ tracks/6/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("sprite/Action:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-13, -4)]
+}
 
 [sub_resource type="Animation" id="Animation_jump_rise"]
 resource_name = "jump_rise"
@@ -766,6 +1032,18 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("sprite/Action:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-9, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_eki5f"]
@@ -1205,9 +1483,11 @@ tracks/7/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cab0y"]
 _data = {
 &"RESET": SubResource("Animation_8p301"),
+&"RopeSend": SubResource("Animation_rope_send"),
 &"dash": SubResource("Animation_dash"),
 &"death": SubResource("Animation_death"),
 &"fall": SubResource("Animation_fall"),
+&"fly": SubResource("Animation_rope_fly"),
 &"hit": SubResource("Animation_hit"),
 &"idle": SubResource("Animation_n7ipn"),
 &"jump": SubResource("Animation_jump_start"),
@@ -1281,6 +1561,7 @@ color = Color(0.2, 0.65, 0.95, 1)
 libraries/ = SubResource("AnimationLibrary_cab0y")
 
 [node name="main_collision" type="CollisionShape2D" parent="." unique_id=1144696377]
+position = Vector2(0, -1)
 shape = ExtResource("2_shape")
 
 [node name="move_state_machine" type="Node" parent="." unique_id=1241411066]
@@ -1319,6 +1600,12 @@ script = ExtResource("11_jump")
 [node name="fall" type="Node2D" parent="move_state_machine/air" unique_id=395742960]
 script = ExtResource("8_fall")
 
+[node name="rope_send" type="Node2D" parent="move_state_machine" unique_id=452468363]
+script = ExtResource("34_rope_state")
+
+[node name="fly" type="Node2D" parent="move_state_machine" unique_id=777585821]
+script = ExtResource("34_rope_state")
+
 [node name="GameInputControl" type="Node" parent="." unique_id=1719020235]
 script = ExtResource("12_input")
 
@@ -1338,7 +1625,7 @@ position = Vector2(0, 12)
 target_position = Vector2(12.5, 0)
 
 [node name="front_foot" type="RayCast2D" parent="." unique_id=588955990]
-position = Vector2(0, 24)
+position = Vector2(0, 23)
 target_position = Vector2(12.5, 0)
 
 [node name="back_head" type="RayCast2D" parent="." unique_id=1925713793]
@@ -1361,7 +1648,7 @@ scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
 [node name="back_foot" type="RayCast2D" parent="." unique_id=106526146]
-position = Vector2(0, 24)
+position = Vector2(0, 23)
 scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
@@ -1387,6 +1674,7 @@ width = 2.5
 default_color = Color(0.3, 0.85, 1, 0.9)
 
 [node name="GrappleVisual" parent="." unique_id=790941797 instance=ExtResource("31_grapple_visual")]
+visible = false
 
 [node name="WaterRuneController" type="Node2D" parent="." unique_id=1849102834]
 script = ExtResource("14_water_rune")
@@ -1417,8 +1705,11 @@ visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
 position = Vector2(-7, 0)
 scale = Vector2(0.36287013, 0.36287013)
-texture = ExtResource("10_wlv0k")
-hframes = 6
+texture = ExtResource("33_fly")
+hframes = 2
+
+[node name="RopeOrigin" type="Marker2D" parent="sprite/Action" unique_id=1775477394]
+position = Vector2(-5.5555553, -33.333336)
 
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]
 visible = false
