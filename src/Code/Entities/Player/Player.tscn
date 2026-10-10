@@ -1568,6 +1568,18 @@ colors = PackedColorArray(0.972549, 0.956863, 0.929412, 0.95, 0.78, 0.7, 0.55, 0
 [sub_resource type="Gradient" id="Gradient_water_droplet"]
 colors = PackedColorArray(0.18, 0.72, 1, 0.9, 0.18, 0.72, 1, 0)
 
+[sub_resource type="Shader" id="Shader_dash_afterimage"]
+code = "shader_type canvas_item;
+uniform vec4 afterimage_color : source_color = vec4(1.0, 0.94, 0.65, 0.65);
+void fragment() {
+	COLOR = vec4(afterimage_color.rgb, COLOR.a * afterimage_color.a);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dash_afterimage"]
+resource_local_to_scene = true
+shader = SubResource("Shader_dash_afterimage")
+
 [node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
 collision_layer = 2
 collision_mask = 5
@@ -1704,6 +1716,11 @@ visible = false
 script = ExtResource("14_water_rune")
 
 [node name="PlayerUI" parent="." unique_id=2081948271 instance=ExtResource("15_ui")]
+
+[node name="DashAfterimages" type="Node2D" parent="."]
+top_level = true
+z_index = -1
+material = SubResource("ShaderMaterial_dash_afterimage")
 
 [node name="sprite" type="Node2D" parent="." unique_id=1048294822]
 
