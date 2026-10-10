@@ -48,6 +48,7 @@ class_name Player
 @export var max_fall_speed: float = 120.0
 @export var unbeatable_time: float = 0.3
 @export var climb_ability: float = 480.0
+var step_height: float = 11.0
 
 @export_group("state_prop")
 @export var Max_HP: float = 200.0:
@@ -179,6 +180,7 @@ func _sync_from_export_settings() -> void:
 		enable_double_jump = ExportSettings.player_enable_double_jump
 		double_jump_count = max_double_jumps
 		climb_ability = ExportSettings.player_climb_ability
+		step_height = ExportSettings.player_step_height
 		max_fall_speed = ExportSettings.player_max_fall_speed
 		dash_time = ExportSettings.player_dash_time
 		dash_speed = ExportSettings.player_dash_speed
@@ -358,31 +360,20 @@ func _physics_process(delta: float) -> void:
 			var hurt_damping = 800.0 if is_on_floor() else 200.0
 			velocity.x = move_toward(velocity.x, 0.0, hurt_damping * delta)
 
+	var walking_dir := int(sign(gameInputControl.row_dir))
+	var walking_forward: bool = walking_dir != 0 and sign(velocity.x) == walking_dir
+	if walking_dir != 0 and not move_state_machine.IsRopePoseActive():
+		SetFacingDirection(walking_dir)
+	if walking_forward:
+		_try_step_up(walking_dir)
 	move_and_slide()
 
 	if is_on_floor():
 		wall_jump_lock_dir = 0
 		ResetDoubleJump()
 
-	if gameInputControl.row_dir != 0:
-		var new_face_dir = int(sign(gameInputControl.row_dir))
-		if face_dir != new_face_dir:
-			front_foot.scale.x *= -1
-			front_lower_body.scale.x *= -1
-			front_head.scale.x *= -1
-			front_upper_body.scale.x *= -1
-			front_body.scale.x *= -1
-			back_foot.scale.x *= -1
-			back_lower_body.scale.x *= -1
-			back_head.scale.x *= -1
-			back_upper_body.scale.x *= -1
-			back_body.scale.x *= -1
-			if sprite:
-				sprite.scale.x = abs(sprite.scale.x) * new_face_dir
-		face_dir = new_face_dir
-
-	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
-	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
+	is_front_has_rigid = _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
+	is_back_has_rigid = _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
 
 	# 扒墙时刷新二段跳（蹬墙跳方向锁定仅在落地或反向蹬墙时解锁）
 	if is_front_has_rigid:
@@ -390,6 +381,66 @@ func _physics_process(delta: float) -> void:
 
 	_handle_footstep_audio(delta)
 	_handle_continuous_move_audio(delta)
+
+func _try_step_up(direction: int) -> void:
+	if step_height <= 0.0 or not is_on_floor() or is_special_state or now_HP <= 0.0 \
+			or _water_flow_area_count > 0 or rope_momentum_timer > 0.0 \
+			or rope_controller.current_state != RopeController.RopeState.IDLE \
+			or move_state_machine.IsRopePoseActive() \
+			or move_state_machine.cur_state_name not in ["idle", "run"] or velocity.y < 0.0:
+		return
+
+	# front/back 会随人物朝向一起翻转，按射线的实际世界方向选移动侧。
+	var foot := front_foot
+	var upper_rays: Array[RayCast2D] = [front_lower_body, front_body, front_upper_body, front_head]
+	if sign(front_foot.to_global(front_foot.target_position).x - front_foot.global_position.x) != direction:
+		foot = back_foot
+		upper_rays = [back_lower_body, back_body, back_upper_body, back_head]
+	foot.force_raycast_update()
+	if not _check_wall_climbable(foot) or foot.get_collision_normal().x * direction > -0.5:
+		return
+	for ray in upper_rays:
+		ray.force_raycast_update()
+		if ray.is_colliding():
+			return
+
+	var collision := $main_collision as CollisionShape2D
+	var half_width := collision.shape.get_rect().size.x * 0.5
+	var contact := foot.get_collision_point()
+	var target_x := contact.x + direction * (half_width + 0.5)
+	var horizontal := target_x - global_position.x
+	if horizontal * direction <= 0.0 or abs(horizontal) > abs(foot.target_position.x * foot.global_scale.x) + half_width + 0.5:
+		return
+
+	# 在脚部命中的台阶内侧探测真实顶面，不能落在更远处的其他地板上。
+	var space := get_world_2d().direct_space_state
+	var probe_start := Vector2(target_x, foot.global_position.y - step_height - 2.0)
+	var probe_end := Vector2(target_x, foot.global_position.y + 2.0)
+	var query := PhysicsRayQueryParameters2D.create(probe_start, probe_end, collision_mask, [get_rid()])
+	var hit := space.intersect_ray(query)
+	if hit.is_empty() or hit.collider != foot.get_collider() or hit.normal.y > -0.7:
+		return
+	var rise: float = foot.global_position.y - hit.position.y
+	if rise <= 0.0 or rise > step_height:
+		return
+
+	# 先沿当前位置抬升、再水平推进，两个行程均须可供完整碰撞体通过。
+	var lift := Vector2(0.0, -rise - 0.5)
+	if test_move(global_transform, lift):
+		return
+	var raised := global_transform.translated(lift)
+	if test_move(raised, Vector2(horizontal, 0.0)):
+		return
+	global_position += lift + Vector2(horizontal, 0.0)
+
+## 同步人物图像和前后探测射线的朝向；direction 只接受 -1（左）或 1（右）。
+func SetFacingDirection(direction: int) -> void:
+	if face_dir != direction:
+		for ray in [front_foot, front_lower_body, front_head, front_upper_body, front_body,
+				back_foot, back_lower_body, back_head, back_upper_body, back_body]:
+			ray.scale.x *= -1
+	face_dir = direction
+	sprite.scale.x = abs(sprite.scale.x) * direction
 
 ## 初始化加载动作音频资源
 func _init_move_sounds() -> void:

@@ -48,6 +48,8 @@ extends Node
 @export var player_acceleration: float = 2500.0
 ## 角色水平停止摩擦力/减速度
 @export var player_friction: float = 3000.0
+## 角色自动跨越的小坡最大高度（像素；不超过脚部与下身探针间距）
+@export_range(0.0, 11.0, 0.5) var player_step_height: float = 11.0
 ## 跳跃初速度
 @export var player_jump_speed: float = 380.0
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)
@@ -190,6 +192,20 @@ extends Node
 @export var rope_momentum_duration: float = 0.4
 ## 绳索射线检测碰撞层级掩码 (默认层1 world + 层3 entity = 5)
 @export_flags_2d_physics var rope_collision_mask: int = 5
+
+@export_group("Grapple Visuals", "rope_visual_")
+## ani_move 发射人物两帧动画的帧率，播完转入持绳飞行动画。
+@export_range(1.0, 30.0, 0.5) var rope_visual_deploy_fps: float = 12.0
+## ani_move 持绳飞行两帧循环动画的帧率。
+@export_range(1.0, 30.0, 0.5) var rope_visual_fly_fps: float = 12.0
+## 发射人物相对角色原点的偏移。
+@export var rope_visual_player_offset: Vector2 = Vector2(-7.0, 0.0)
+## 发射人物图的统一缩放。
+@export_range(0.1, 2.0, 0.01) var rope_visual_player_scale: float = 0.36
+## 绳身显示宽度，不影响碰撞和绳长。
+@export_range(1.0, 12.0, 0.5) var rope_visual_width: float = 1.5
+## 钩头图的统一缩放。
+@export_range(0.1, 3.0, 0.05) var rope_visual_hook_scale: float = 0.4
 
 @export_group("Interactive - Water Flow", "water_flow_")
 ## 流水区域加速系数 (进入速度 * 该倍数)
@@ -382,7 +398,7 @@ extends Node
 @export var mobile_touch_hold_threshold: float = 0.2
 ## 虚拟摇杆基础尺寸 (像素直径，默认 240)
 @export var mobile_joystick_size: float = 240.0
-## 虚拟摇杆中心手柄尺寸 (像素直径，默认 90)
+## 虚拟摇杆中心手柄尺寸 (像素，默认 90)
 @export var mobile_joystick_tip_size: float = 90.0
 ## 跳跃按钮半径 (像素，默认 52)
 @export var mobile_jump_button_radius: float = 52.0

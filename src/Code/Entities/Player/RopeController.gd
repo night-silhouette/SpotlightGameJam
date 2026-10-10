@@ -16,7 +16,7 @@ enum RopeState {
 ## 绳索最大有效射程
 @export var max_rope_length: float = 420.0
 ## 绳索飞行发射速度
-@export var rope_speed: float = 2200.0
+@export var rope_speed: float = 1000.0
 ## 命中后的决策窗口期持续时间 (秒)
 @export var window_duration: float = 0.45
 ## 拉向命中点的飞行速度
@@ -63,6 +63,7 @@ var touch_screen_pressed: bool = false
 var touch_screen_hold_timer: float = 0.0
 var active_touch_index: int = -1
 var touch_aim_direction: Vector2 = Vector2.ZERO
+var touch_aim_position: Vector2 = Vector2.ZERO
 var has_touch_aim: bool = false
 
 ## 绳头飞行变量
@@ -77,6 +78,7 @@ var swing_angular_velocity: float = 0.0
 
 @onready var player: Player = get_parent() as Player
 @onready var line_2d: Line2D = $Line2D
+@onready var _rope_origin: Marker2D = get_parent().get_node("sprite/Action/RopeOrigin")
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -186,6 +188,7 @@ func _update_touch_aim_from_screen_pos(screen_pos: Vector2) -> void:
 	var world_pos = canvas_xform.affine_inverse() * screen_pos
 	var aim = (world_pos - player.global_position)
 	if aim.length_squared() > 1.0:
+		touch_aim_position = world_pos
 		touch_aim_direction = aim.normalized()
 		has_touch_aim = true
 
@@ -293,10 +296,12 @@ func _shoot_rope() -> bool:
 	if rope_hp_cost > 0.0:
 		player.now_HP = max(0.0, player.now_HP - rope_hp_cost)
 
-	fly_dir = _get_shoot_direction()
-	var ray_target = player.global_position + fly_dir * max_rope_length
-
-	SignalBus.PlayerGrappleLaunched.emit(ray_target)
+	# 同步进入 ani_move 发射姿势，再从镜像后的手调 Marker 计算方向。
+	var facing_direction := _get_shoot_direction(player.global_position)
+	SignalBus.PlayerGrapplePhaseChanged.emit(player, &"RopeSend", player.global_position + facing_direction * max_rope_length)
+	SignalBus.PlayerGrappleLaunched.emit(player.global_position + facing_direction * max_rope_length)
+	var origin: Vector2 = _rope_origin.global_position
+	fly_dir = _get_shoot_direction(origin)
 
 	if _shoot_audio and sfx_shoot_hook:
 		if _shoot_audio.bus != sfx_rope_bus:
@@ -306,14 +311,14 @@ func _shoot_rope() -> bool:
 		_shoot_audio.play()
 
 	fly_distance = 0.0
-	fly_tip_pos = player.global_position
+	fly_tip_pos = origin
 	released_during_flight = false
 	current_state = RopeState.FLYING
 	line_2d.visible = true
 	line_2d.default_color = Color(0.3, 0.85, 1.0, 0.9)
 	line_2d.clear_points()
-	line_2d.add_point(to_local(player.global_position))
-	line_2d.add_point(to_local(player.global_position))
+	line_2d.add_point(to_local(origin))
+	line_2d.add_point(to_local(origin))
 
 	return true
 
@@ -321,7 +326,7 @@ func _process_flying(delta: float) -> void:
 	var prev_tip_pos = fly_tip_pos
 	var step = rope_speed * delta
 	fly_distance += step
-	var next_tip_pos = player.global_position + fly_dir * fly_distance
+	var next_tip_pos = _rope_origin.global_position + fly_dir * fly_distance
 
 	# 随着绳头实际向前飞行，步进式检测当前帧飞过的线段是否碰撞到了墙体表面
 	var space_state = player.get_world_2d().direct_space_state
@@ -348,6 +353,7 @@ func _process_flying(delta: float) -> void:
 		else:
 			hook_target_offset = Vector2.ZERO
 
+		SignalBus.PlayerGrapplePhaseChanged.emit(player, &"fly", hook_point)
 		SignalBus.PlayerGrappleHooked.emit(hook_point)
 
 		# 若玩家在绳子飞行过程中就已经松手了，或者命中瞬间未按住左键/触屏，立即拉过去
@@ -363,23 +369,25 @@ func _process_flying(delta: float) -> void:
 
 	# 若超过最大射程仍未命中，绳索落空回收
 	if fly_distance >= max_rope_length:
-		_show_miss_effect(player.global_position + fly_dir * max_rope_length)
+		_show_miss_effect(_rope_origin.global_position + fly_dir * max_rope_length)
 		_release_rope(true)
 		return
 
 	# 绘制飞行中的绳索
 	line_2d.clear_points()
-	line_2d.add_point(to_local(player.global_position))
+	line_2d.add_point(to_local(_rope_origin.global_position))
 	line_2d.add_point(to_local(fly_tip_pos))
 
-func _get_shoot_direction() -> Vector2:
-	# 优先检查触屏瞄准方向
-	if has_touch_aim and touch_aim_direction.length_squared() > 0.001:
-		return touch_aim_direction.normalized()
+func _get_shoot_direction(origin: Vector2) -> Vector2:
+	# 触屏瞄准保留世界目标，部署姿势镜像后从实际发射点重新计算方向。
+	if has_touch_aim:
+		var touch_direction := touch_aim_position - origin
+		if touch_direction.length_squared() > 0.001:
+			return touch_direction.normalized()
 
 	# 移动端/安卓或无鼠标瞄准时，支持从摇杆/朝向自动发射
 	var mouse_pos = get_global_mouse_position()
-	var dir = mouse_pos - player.global_position
+	var dir = mouse_pos - origin
 	# 如果是触屏/安卓环境且没有有效鼠标坐标，或者按下了索按钮，优先按玩家面朝斜上方向发射
 	if OS.get_name() == "Android" or (ExportSettings and ExportSettings.mobile_debug_force_touch_controls):
 		var row = Input.get_axis("move_l", "move_r")
@@ -393,7 +401,7 @@ func _get_shoot_direction() -> Vector2:
 
 func _show_miss_effect(end_point: Vector2) -> void:
 	line_2d.clear_points()
-	line_2d.add_point(to_local(player.global_position))
+	line_2d.add_point(to_local(_rope_origin.global_position))
 	line_2d.add_point(to_local(end_point))
 	line_2d.default_color = Color(0.6, 0.7, 0.8, 0.4)
 	line_2d.visible = true
@@ -594,11 +602,12 @@ func _release_rope(preserve_velocity: bool) -> void:
 		if not preserve_velocity:
 			player.velocity = Vector2.ZERO
 
+	SignalBus.PlayerGrapplePhaseChanged.emit(player, &"", hook_point)
 	SignalBus.PlayerGrappleReleased.emit()
 
 func _update_line() -> void:
 	if not line_2d or not player:
 		return
 	line_2d.clear_points()
-	line_2d.add_point(to_local(player.global_position))
+	line_2d.add_point(to_local(_rope_origin.global_position))
 	line_2d.add_point(to_local(hook_point))
