@@ -1634,7 +1634,7 @@ script = ExtResource("34_rope_state")
 script = ExtResource("12_input")
 
 [node name="front_head" type="RayCast2D" parent="." unique_id=1487164817]
-position = Vector2(0, -24)
+position = Vector2(0, -6)
 target_position = Vector2(12.5, 0)
 
 [node name="front_upper_body" type="RayCast2D" parent="." unique_id=856302506]
@@ -1653,7 +1653,7 @@ position = Vector2(0, 23)
 target_position = Vector2(12.5, 0)
 
 [node name="back_head" type="RayCast2D" parent="." unique_id=1925713793]
-position = Vector2(0, -24)
+position = Vector2(0, -6)
 scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
