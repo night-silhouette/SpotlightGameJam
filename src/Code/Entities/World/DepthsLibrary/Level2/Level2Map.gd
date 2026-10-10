@@ -66,7 +66,7 @@ func _physics_process(delta: float) -> void:
 		_player.velocity.y = -ExportSettings.level2_fountain_speed
 		_player.ResetDoubleJump()
 		# 水柱出口的水平喷流，仍由物理运动通过井口。
-		if _player.global_position.y < $Rooms/FountainShaft.global_position.y + 150.0:
+		if _player.global_position.y < $Rooms/FountainShaft/CityExit.global_position.y - 40.0:
 			_player.velocity.x = ExportSettings.level2_fountain_exit_speed
 
 	if fountain_active and $Rooms/SurfaceExit/Spout.overlaps_body(_player):
@@ -79,6 +79,16 @@ func GetRoomAt(point: Vector2) -> Node2D:
 		if bounds.has_point(room.to_local(point)):
 			return room
 	return null
+
+## 返回主城左侧下行口、右侧上行口的世界中心及净宽；中心 y 表示地表高度。
+## 队友平移整张地图对齐入口，再核对出口；不要缩放地图来适配主城间距。
+func GetCityConnections() -> Dictionary:
+	var entrance: Marker2D = $Rooms/EntryCollapse/CityEntrance
+	var exit_port: Marker2D = $Rooms/FountainShaft/CityExit
+	return {
+		"entrance": {"position": entrance.global_position, "width": entrance.get_meta("opening_width")},
+		"exit": {"position": exit_port.global_position, "width": exit_port.get_meta("opening_width")}
+	}
 
 func _claim_player() -> void:
 	_owns_player = true
@@ -185,6 +195,7 @@ func _refresh() -> void:
 	$Rooms/Hub/Fountain/Caption.text = "逆流水柱已开启" if fountain_active else "提交钥匙  %d/3" % submitted_keys.size()
 	$Rooms/Hub/FountainStream.visible = fountain_active
 	$Rooms/FountainShaft/Stream.visible = fountain_active
+	$Rooms/SurfaceExit/SprayStream.visible = fountain_active
 	for pair in [[$Rooms/SunStacks, "sun"], [$Rooms/MoonAqueduct, "moon"]]:
 		var open: bool = pair[1] in keys
 		pair[0].get_node("ReturnCatwalk").visible = open

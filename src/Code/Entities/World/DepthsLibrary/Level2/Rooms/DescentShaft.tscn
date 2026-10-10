@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
 [sub_resource type="RectangleShape2D" id="shape1"]
-size = Vector2(24, 2620)
+size = Vector2(24, 2860)
 
 [sub_resource type="RectangleShape2D" id="shape2"]
-size = Vector2(24, 2620)
+size = Vector2(24, 2860)
 
 [sub_resource type="RectangleShape2D" id="shape3"]
 size = Vector2(70, 24)
@@ -30,12 +30,12 @@ size = Vector2(70, 24)
 [node name="DescentShaft" type="Node2D"]
 metadata/width = 280
 metadata/title = "高落差竖井"
-metadata/height = 2700
+metadata/height = 2940
 
 [node name="DarkShaft" type="Polygon2D" parent="."]
 position = Vector2(0, 0)
 z_index = -20
-polygon = PackedVector2Array(0, 0, 280, 0, 280, 2700, 0, 2700)
+polygon = PackedVector2Array(0, 0, 280, 0, 280, 2940, 0, 2940)
 color = Color(0.022,0.04,0.065,1)
 
 [node name="RoomTitle" type="Label" parent="."]
@@ -62,13 +62,13 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
-position = Vector2(12, 1310)
+position = Vector2(12, 1430)
 shape = SubResource("shape1")
 
 [node name="Stone" type="Polygon2D" parent="LeftWall"]
 position = Vector2(0, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 24, 0, 24, 2620, 0, 2620)
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 2860, 0, 2860)
 color = Color(0.14, 0.23, 0.28, 1)
 
 [node name="Edge" type="Polygon2D" parent="LeftWall"]
@@ -83,13 +83,13 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
-position = Vector2(12, 1310)
+position = Vector2(12, 1430)
 shape = SubResource("shape2")
 
 [node name="Stone" type="Polygon2D" parent="RightWall"]
 position = Vector2(0, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 24, 0, 24, 2620, 0, 2620)
+polygon = PackedVector2Array(0, 0, 24, 0, 24, 2860, 0, 2860)
 color = Color(0.14, 0.23, 0.28, 1)
 
 [node name="Edge" type="Polygon2D" parent="RightWall"]

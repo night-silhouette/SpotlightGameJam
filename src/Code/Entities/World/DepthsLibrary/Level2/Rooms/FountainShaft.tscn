@@ -5,28 +5,28 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
 [sub_resource type="RectangleShape2D" id="shape1"]
-size = Vector2(20, 2740)
+size = Vector2(20, 3000)
 
 [sub_resource type="RectangleShape2D" id="shape2"]
-size = Vector2(20, 2740)
+size = Vector2(20, 3000)
 
 [sub_resource type="RectangleShape2D" id="area3"]
-size = Vector2(140, 3320)
+size = Vector2(140, 3760)
 [node name="FountainShaft" type="Node2D"]
 metadata/width = 180
 metadata/title = "逆流水井"
-metadata/height = 3320
+metadata/height = 3580
 
 [node name="Background" type="Polygon2D" parent="."]
 position = Vector2(0, 0)
 z_index = -20
-polygon = PackedVector2Array(0, 0, 180, 0, 180, 2740, 0, 2740)
+polygon = PackedVector2Array(0, 0, 180, 0, 180, 3000, 0, 3000)
 color = Color(0.025,0.08,0.10,1)
 
 [node name="Stream" type="Polygon2D" parent="."]
 position = Vector2(20, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 140, 0, 140, 2740, 0, 2740)
+polygon = PackedVector2Array(0, 0, 140, 0, 140, 3000, 0, 3000)
 color = Color(0.1,0.7,0.85,0.4)
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
@@ -35,13 +35,13 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
-position = Vector2(10, 1370)
+position = Vector2(10, 1500)
 shape = SubResource("shape1")
 
 [node name="Stone" type="Polygon2D" parent="LeftWall"]
 position = Vector2(0, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 20, 0, 20, 2740, 0, 2740)
+polygon = PackedVector2Array(0, 0, 20, 0, 20, 3000, 0, 3000)
 color = Color(0.14, 0.23, 0.28, 1)
 
 [node name="Edge" type="Polygon2D" parent="LeftWall"]
@@ -56,13 +56,13 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
-position = Vector2(10, 1370)
+position = Vector2(10, 1500)
 shape = SubResource("shape2")
 
 [node name="Stone" type="Polygon2D" parent="RightWall"]
 position = Vector2(0, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 20, 0, 20, 2740, 0, 2740)
+polygon = PackedVector2Array(0, 0, 20, 0, 20, 3000, 0, 3000)
 color = Color(0.14, 0.23, 0.28, 1)
 
 [node name="Edge" type="Polygon2D" parent="RightWall"]
@@ -72,7 +72,7 @@ polygon = PackedVector2Array(0, 0, 20, 0, 20, 4, 0, 4)
 color = Color(0.50, 0.72, 0.73, 1)
 
 [node name="Updraft" type="Area2D" parent="."]
-position = Vector2(90, 1660)
+position = Vector2(90, 1700)
 collision_layer = 0
 collision_mask = 2
 
@@ -99,4 +99,9 @@ mouse_filter = 2
 text = "水柱将你托起；到顶向右离开井口。"
 
 [node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(90, 3285)
+position = Vector2(90, 3545)
+
+[node name="CityExit" type="Marker2D" parent="."]
+position = Vector2(90, 0)
+metadata/opening_width = 140.0
+metadata/description = "主城右口中心；地表高度；水柱向上喷出"
