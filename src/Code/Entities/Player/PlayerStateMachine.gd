@@ -37,8 +37,10 @@ func _on_grapple_phase_changed(player: Node2D, phase: StringName, target_pos: Ve
 		# jump/dash 会暂时禁用其他状态，但不能阻止已经成功发射的绳索接管人物动作。
 		state_map["rope_send"].is_use = true
 		change_state("rope_send")
+	elif phase == &"pulling" and _rope_pose_active:
+		change_state("fly")
 	elif phase == &"fly" and _rope_pose_active:
-		# 近距离命中也保留完整两帧发射；挂接、拉拽和摆动共用 fly。
+		# 近距离仅挂接时保留完整两帧发射；挂接、拉拽和摆动共用 fly。
 		if cur_state_name != "rope_send":
 			change_state("fly")
 

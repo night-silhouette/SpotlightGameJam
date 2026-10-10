@@ -43,6 +43,21 @@ func _run() -> void:
 	var expected: Vector2 = settings.rope_visual_player_offset + origin.position * settings.rope_visual_player_scale
 	_check(player.to_local(origin.global_position).is_equal_approx(expected), "右向发射点必须保留原偏移与缩放换算")
 	_check(rope.fly_tip_pos.is_equal_approx(origin.global_position), "控制器必须从应用动画后的 Marker 发射")
+	var launch_pos: Vector2 = origin.global_position
+	_check(rope.fly_start_pos.is_equal_approx(launch_pos) and rope.fly_previous_tip_pos.is_equal_approx(launch_pos), "发射时固定起点并初始化前一端点")
+	var saved_marker_pos: Vector2 = origin.position
+	origin.position += Vector2(12.0, 8.0)
+	rope.collision_mask = 0
+	rope._process_flying(0.02)
+	_check(rope.fly_previous_tip_pos.is_equal_approx(launch_pos), "首个物理步的前一端点应是发射点")
+	_check(rope.fly_tip_pos.is_equal_approx(launch_pos + rope.fly_dir * rope.rope_speed * 0.02), "手部位移不能改变首个飞行端点")
+	var first_tip: Vector2 = rope.fly_tip_pos
+	rope._process_flying(0.02)
+	_check(rope.fly_previous_tip_pos.is_equal_approx(first_tip), "每个物理步须记录旧端点")
+	_check(rope.fly_tip_pos.is_equal_approx(launch_pos + rope.fly_dir * rope.rope_speed * 0.04), "后续端点仍依据固定发射起点计算")
+	_check(rope.fly_start_pos.is_equal_approx(launch_pos), "飞行中发射原点不得随手部移动")
+	origin.position = saved_marker_pos
+	rope.collision_mask = settings.rope_collision_mask
 	animator.advance(1.1 / settings.rope_visual_deploy_fps)
 	_check(action.frame == 1, "发射第二帧应由动画轨道播放")
 	for state in ["idle", "run", "jump", "fall", "climb", "dash", "shuttle"]:
@@ -71,6 +86,14 @@ func _run() -> void:
 	animator.advance(0.0)
 	_check(machine.cur_state_name == "fall" and not machine.IsRopePoseActive(), "空中释放恢复移动状态")
 	_check(action.scale.is_equal_approx(Vector2(0.36287013, 0.36287013)), "退出后恢复普通动作缩放")
+
+	_shoot(player)
+	_check(machine.cur_state_name == "rope_send" and animator.current_animation == "RopeSend", "再次发射先进入 RopeSend")
+	rope.hook_point = player.global_position + Vector2(100.0, -100.0)
+	rope.current_state = rope.RopeState.LATCHED
+	rope.TriggerPull()
+	_check(rope.current_state == rope.RopeState.PULLING and machine.cur_state_name == "fly" and animator.current_animation == "fly", "RopeSend 未播完时开始拉拽须立即进入 fly")
+	rope.ReleaseRope()
 
 	_shoot(player, -1.0)
 	_check(player.face_dir == -1 and player.sprite.scale.x < 0.0, "左向人物朝向必须同步")
