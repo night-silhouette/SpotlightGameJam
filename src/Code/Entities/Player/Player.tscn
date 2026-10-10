@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://hsssj4fr25sx" path="res://Art/Archived/Character/wallclimb.png" id="9_drwpo"]
 [ext_resource type="Script" uid="uid://da8gmnkwc00x2" path="res://Code/Entities/Player/States/HurtState.gd" id="9_hurt"]
 [ext_resource type="Script" uid="uid://bmcgo83kp4isi" path="res://Code/Entities/Player/States/DiedState.gd" id="10_died"]
+[ext_resource type="Texture2D" uid="uid://dpstu1wka50wl" path="res://Art/Archived/Character/waterform.png" id="10_wlv0k"]
 [ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
 [ext_resource type="Script" uid="uid://uoa31q2225il" path="res://Code/Entities/Player/PlayerInputControl.gd" id="12_input"]
 [ext_resource type="Script" uid="uid://4osrcpriqosx" path="res://Code/Entities/Player/States/ShuttleState.gd" id="12_shuttle"]
@@ -27,8 +28,8 @@
 [ext_resource type="Texture2D" uid="uid://gx338h5hjq1t" path="res://Art/Archived/Character/hit.png" id="24_hit"]
 [ext_resource type="Texture2D" uid="uid://b2tw2xeu14ko0" path="res://Art/Archived/Character/death.png" id="25_death"]
 [ext_resource type="Texture2D" uid="uid://cog07ymnm5vmb" path="res://Art/Archived/Character/wall_kick.png" id="27_wall_kick"]
-[ext_resource type="Texture2D" uid="uid://cfk0vcvyxoa17" path="res://Art/Archived/Character/water_dash.png" id="28_water_dash"]
 [ext_resource type="Texture2D" uid="uid://b5j76ldc74gyh" path="res://Art/Archived/Character/run.png" id="30_drwpo"]
+[ext_resource type="PackedScene" uid="uid://m43ngy66c65u" path="res://Code/Entities/Player/GrappleVisual.tscn" id="31_grapple_visual"]
 
 [sub_resource type="Animation" id="Animation_8p301"]
 length = 0.001
@@ -144,7 +145,7 @@ tracks/8/keys = {
 [sub_resource type="Animation" id="Animation_dash"]
 resource_name = "dash"
 length = 0.3
-step = 0.1
+step = 0.15
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -152,7 +153,7 @@ tracks/0/path = NodePath("sprite/Action:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.2),
+"times": PackedFloat32Array(0, 0.14285715),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [1, 2]
@@ -272,7 +273,7 @@ tracks/2/keys = {
 }
 tracks/3/type = "value"
 tracks/3/imported = false
-tracks/3/enabled = true
+tracks/3/enabled = false
 tracks/3/path = NodePath("sprite/Action:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
@@ -280,7 +281,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -14)]
+"values": [Vector2(6, -2.000001)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -471,7 +472,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -14)]
+"values": [Vector2(-2, -5.000001)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -835,8 +836,8 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_turn"]
 resource_name = "turn"
-length = 0.1
-step = 0.1
+length = 0.45
+step = 0.15
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -844,10 +845,10 @@ tracks/0/path = NodePath("sprite/Turn:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [1]
+"values": [0, 1, 2]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1111,10 +1112,10 @@ tracks/0/path = NodePath("sprite/Action:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5]
+"values": [2, 3]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1126,7 +1127,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("28_water_dash")]
+"values": [ExtResource("10_wlv0k")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1143,31 +1144,31 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("sprite/Action:position")
+tracks/3/path = NodePath("sprite/Action:visible")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2(-8.862, -18)]
+"values": [true]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("sprite/Action:visible")
+tracks/4/path = NodePath("sprite/Standbytime:visible")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("sprite/Standbytime:visible")
+tracks/5/path = NodePath("sprite/Walk:visible")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1179,7 +1180,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("sprite/Walk:visible")
+tracks/6/path = NodePath("sprite/Turn:visible")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1191,14 +1192,14 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("sprite/Turn:visible")
+tracks/7/path = NodePath("sprite/Action:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Vector2(-21, -4)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_cab0y"]
@@ -1385,6 +1386,8 @@ script = ExtResource("13_rope")
 width = 2.5
 default_color = Color(0.3, 0.85, 1, 0.9)
 
+[node name="GrappleVisual" parent="." unique_id=790941797 instance=ExtResource("31_grapple_visual")]
+
 [node name="WaterRuneController" type="Node2D" parent="." unique_id=1849102834]
 script = ExtResource("14_water_rune")
 
@@ -1414,8 +1417,8 @@ visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
 position = Vector2(-7, 0)
 scale = Vector2(0.36287013, 0.36287013)
-texture = ExtResource("9_drwpo")
-hframes = 4
+texture = ExtResource("10_wlv0k")
+hframes = 6
 
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]
 visible = false

@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://m43ngy66c65u"]
+
+[ext_resource type="Script" uid="uid://dvj6v3qduyvdf" path="res://Code/Entities/Player/GrappleVisual.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://do6cbv7bs5byw" path="res://Art/Archived/Character/graphook/ropeSend.png" id="2_fcrb8"]
+[ext_resource type="Texture2D" uid="uid://btqbhsip8wri0" path="res://Art/Archived/Character/graphook/grap_hook1.PNG" id="3_rope"]
+[ext_resource type="Texture2D" uid="uid://cj0epfy7pg0v8" path="res://Art/Archived/Character/graphook/grap_hook2.PNG" id="4_hook"]
+
+[sub_resource type="AtlasTexture" id="Atlas_rope"]
+atlas = ExtResource("3_rope")
+region = Rect2(201, 205, 72, 4)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="Atlas_hook"]
+atlas = ExtResource("4_hook")
+region = Rect2(228, 185, 15, 25)
+filter_clip = true
+
+[node name="GrappleVisual" type="Node2D" unique_id=661708649]
+process_priority = 100
+script = ExtResource("1_script")
+
+[node name="Deploy" type="Sprite2D" parent="." unique_id=1306734073]
+position = Vector2(-7, 0)
+scale = Vector2(0.36, 0.36)
+texture = ExtResource("2_fcrb8")
+hframes = 2
+
+[node name="RopeOrigin" type="Marker2D" parent="Deploy" unique_id=2145187650]
+position = Vector2(-5.5555553, -33.333336)
+
+[node name="Rope" type="Sprite2D" parent="." unique_id=1745035877]
+visible = false
+texture = SubResource("Atlas_rope")
+centered = false
+
+[node name="Hook" type="Sprite2D" parent="." unique_id=1912265510]
+visible = false
+texture = SubResource("Atlas_hook")
+flip_h = true
