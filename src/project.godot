@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [audio]
 
-buses/default_bus_layout="res://Music/2026TapTap_BusChannels.tres"
+buses/default_bus_layout="uid://bl88jcv6hs5bw"
 
 [autoload]
 

@@ -7,6 +7,7 @@ class_name SettingUI
 ## 1. 退出游戏 (确认弹窗与平稳退出)
 ## 2. 改变按键绑定 (捕获按键并独立持久化至 user://，不随存档改变)
 ## 3. 改变存档 (最多5个独立槽位：新建/覆盖、载入、删除)
+## 4. 声音设置 (总音量、音乐、音效、对白、环境，独立持久化)
 ## 提供打开/关闭动画、快捷键 ESC 呼出与关闭，支持鼠标交互。
 ## =============================================================================
 
@@ -19,10 +20,22 @@ const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 @onready var close_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/HeaderHBox/CloseButton
 @onready var tab_btn_keybinds: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox/TabBtnKeybinds
 @onready var tab_btn_saves: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox/TabBtnSaves
+@onready var tab_btn_audio: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox/TabBtnAudio
 @onready var keybinds_container: ScrollContainer = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/KeybindsScroll
 @onready var keybinds_list: VBoxContainer = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/KeybindsScroll/KeybindsList
 @onready var saves_container: ScrollContainer = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/SavesScroll
 @onready var saves_list: VBoxContainer = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/SavesScroll/SavesList
+@onready var audio_container: MarginContainer = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin
+@onready var master_slider: HSlider = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MasterRow/Slider
+@onready var music_slider: HSlider = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MusicRow/Slider
+@onready var sfx_slider: HSlider = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow/Slider
+@onready var dialogue_slider: HSlider = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow/Slider
+@onready var ambience_slider: HSlider = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow/Slider
+@onready var master_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MasterRow/Percent
+@onready var music_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MusicRow/Percent
+@onready var sfx_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow/Percent
+@onready var dialogue_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow/Percent
+@onready var ambience_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow/Percent
 @onready var quit_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/QuitButton
 @onready var status_toast: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/StatusToast
 
@@ -42,6 +55,9 @@ func _ready() -> void:
 	KeybindManagerRef.LoadAndApplyKeybinds()
 	
 	_connect_signals()
+	Util.InitializeAudioSettings()
+	for channel in [&"master", &"music", &"sfx", &"dialogue", &"ambience"]:
+		_on_audio_volume_changed(channel, Util.GetAudioVolume(channel))
 	_build_keybind_rows()
 	_refresh_save_slots_ui()
 	_switch_tab(0)
@@ -86,6 +102,13 @@ func _connect_signals() -> void:
 		tab_btn_keybinds.pressed.connect(func(): _switch_tab(0))
 	if tab_btn_saves:
 		tab_btn_saves.pressed.connect(func(): _switch_tab(1))
+	tab_btn_audio.pressed.connect(func(): _switch_tab(2))
+	master_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"master", value / 100.0))
+	music_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"music", value / 100.0))
+	sfx_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"sfx", value / 100.0))
+	dialogue_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"dialogue", value / 100.0))
+	ambience_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"ambience", value / 100.0))
+	SignalBus.AudioVolumeChanged.connect(_on_audio_volume_changed)
 	if quit_button:
 		quit_button.pressed.connect(_on_quit_button_pressed)
 	if quit_confirm_dialog:
@@ -119,17 +142,38 @@ func ToggleSetting() -> void:
 
 ## 切换 Tab 栏
 func _switch_tab(tab_idx: int) -> void:
-	if tab_idx == 0:
-		keybinds_container.visible = true
-		saves_container.visible = false
-		tab_btn_keybinds.disabled = true
-		tab_btn_saves.disabled = false
-	else:
-		keybinds_container.visible = false
-		saves_container.visible = true
-		tab_btn_keybinds.disabled = false
-		tab_btn_saves.disabled = true
+	keybinds_container.visible = tab_idx == 0
+	saves_container.visible = tab_idx == 1
+	audio_container.visible = tab_idx == 2
+	tab_btn_keybinds.disabled = tab_idx == 0
+	tab_btn_saves.disabled = tab_idx == 1
+	tab_btn_audio.disabled = tab_idx == 2
+	if tab_idx == 1:
 		_refresh_save_slots_ui()
+
+func _on_audio_volume_changed(channel: StringName, volume: float) -> void:
+	var slider: HSlider
+	var percent: Label
+	match channel:
+		&"master":
+			slider = master_slider
+			percent = master_percent
+		&"music":
+			slider = music_slider
+			percent = music_percent
+		&"sfx":
+			slider = sfx_slider
+			percent = sfx_percent
+		&"dialogue":
+			slider = dialogue_slider
+			percent = dialogue_percent
+		&"ambience":
+			slider = ambience_slider
+			percent = ambience_percent
+		_:
+			return
+	slider.set_value_no_signal(volume * 100.0)
+	percent.text = "%d%%" % roundi(volume * 100.0)
 
 #region 按键绑定 UI 构建与事件
 

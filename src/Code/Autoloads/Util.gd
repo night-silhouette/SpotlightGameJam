@@ -1,5 +1,84 @@
 extends Node
 
+var _audio_initialized: bool = false
+var _audio_volumes: Dictionary = {}
+var _audio_buses: Dictionary = {}
+var _audio_base_db: Dictionary = {}
+
+func _ready() -> void:
+	call_deferred("_initialize_audio_settings")
+
+## 初始化并恢复独立音量设置；无参数，可重复调用且不会重置总线基准音量。
+func InitializeAudioSettings() -> void:
+	_initialize_audio_settings()
+
+## 读取音量比例。
+## @param channel 类别为 master 总音量、music 音乐、sfx 音效、dialogue 对白或 ambience 环境。
+## @return 0.0-1.0 的线性音量比例；未知类别返回 1.0。
+func GetAudioVolume(channel: StringName) -> float:
+	_initialize_audio_settings()
+	return float(_audio_volumes.get(channel, 1.0))
+
+## 调整音量、应用音频总线并独立持久化，同时发送音量变化通知。
+## @param channel 类别为 master 总音量、music 音乐、sfx 音效、dialogue 对白或 ambience 环境，未知类别忽略。
+## @param volume 有限的线性音量比例，限制到 0.0-1.0，0 表示静音。
+func SetAudioVolume(channel: StringName, volume: float) -> void:
+	_initialize_audio_settings()
+	if not _audio_volumes.has(channel) or not is_finite(volume):
+		return
+	_audio_volumes[channel] = clampf(volume, 0.0, 1.0)
+	_apply_audio_volume(channel)
+	var config := ConfigFile.new()
+	for audio_channel in _audio_volumes:
+		config.set_value("volume", String(audio_channel), _audio_volumes[audio_channel])
+	var error := config.save(ExportSettings.audio_settings_path)
+	if error != OK:
+		push_warning("音量设置保存失败，错误码：%d" % error)
+	SignalBus.AudioVolumeChanged.emit(channel, _audio_volumes[channel])
+
+func _initialize_audio_settings() -> void:
+	if _audio_initialized:
+		return
+	_audio_initialized = true
+	_audio_volumes = {
+		&"master": ExportSettings.audio_master_volume,
+		&"music": ExportSettings.audio_music_volume,
+		&"sfx": ExportSettings.audio_sfx_volume,
+		&"dialogue": ExportSettings.audio_dialogue_volume,
+		&"ambience": ExportSettings.audio_ambience_volume,
+	}
+	_audio_buses = {
+		&"master": ExportSettings.audio_master_bus,
+		&"music": ExportSettings.audio_music_bus,
+		&"sfx": ExportSettings.audio_sfx_bus,
+		&"dialogue": ExportSettings.audio_dialogue_bus,
+		&"ambience": ExportSettings.audio_ambience_bus,
+	}
+	SignalBus.AudioVolumeChangeRequested.connect(SetAudioVolume)
+	var config := ConfigFile.new()
+	var loaded := config.load(ExportSettings.audio_settings_path) == OK
+	for channel in _audio_volumes:
+		var bus_index := AudioServer.get_bus_index(_audio_buses[channel])
+		if bus_index >= 0:
+			_audio_base_db[channel] = AudioServer.get_bus_volume_db(bus_index)
+		else:
+			push_warning("音量设置找不到音频总线：%s" % _audio_buses[channel])
+		if loaded:
+			var saved_volume: Variant = config.get_value("volume", String(channel), _audio_volumes[channel])
+			if (saved_volume is float or saved_volume is int) and is_finite(float(saved_volume)):
+				_audio_volumes[channel] = clampf(float(saved_volume), 0.0, 1.0)
+		_apply_audio_volume(channel)
+		SignalBus.AudioVolumeChanged.emit(channel, _audio_volumes[channel])
+
+func _apply_audio_volume(channel: StringName) -> void:
+	var bus_index := AudioServer.get_bus_index(_audio_buses[channel])
+	if bus_index < 0 or not _audio_base_db.has(channel):
+		return
+	var volume: float = _audio_volumes[channel]
+	AudioServer.set_bus_mute(bus_index, volume == 0.0)
+	if volume > 0.0:
+		AudioServer.set_bus_volume_db(bus_index, float(_audio_base_db[channel]) + linear_to_db(volume))
+
 
 #时间到了,触发回调函数
 func setTime(time,callback)->SceneTreeTimer:

@@ -357,6 +357,30 @@ extends Node
 ## 冲刺按钮半径 (像素，默认 44)
 @export var mobile_dash_button_radius: float = 44.0
 
+@export_group("Audio Settings", "audio_")
+## 总音量默认值 (0.0-1.0)
+@export_range(0.0, 1.0, 0.01) var audio_master_volume: float = 1.0
+## 音乐默认音量 (0.0-1.0)
+@export_range(0.0, 1.0, 0.01) var audio_music_volume: float = 1.0
+## 音效默认音量 (0.0-1.0)
+@export_range(0.0, 1.0, 0.01) var audio_sfx_volume: float = 1.0
+## 对白默认音量 (0.0-1.0)
+@export_range(0.0, 1.0, 0.01) var audio_dialogue_volume: float = 1.0
+## 环境默认音量 (0.0-1.0)
+@export_range(0.0, 1.0, 0.01) var audio_ambience_volume: float = 1.0
+## 音量设置持久化文件路径
+@export var audio_settings_path: String = "user://audio_settings.cfg"
+## 总音量对应的音频总线
+@export var audio_master_bus: StringName = &"Master"
+## 音乐音量对应的音频总线
+@export var audio_music_bus: StringName = &"Music_Master"
+## 音效音量对应的音频总线
+@export var audio_sfx_bus: StringName = &"SFX_Master"
+## 对白音量对应的音频总线
+@export var audio_dialogue_bus: StringName = &"Dialogue_Master"
+## 环境音量对应的音频总线
+@export var audio_ambience_bus: StringName = &"Amb_Master"
+
 @export_group("Setting & Save System", "setting_")
 ## 最大允许的存档槽位数 (固定为 5)
 @export var setting_max_save_slots: int = 5

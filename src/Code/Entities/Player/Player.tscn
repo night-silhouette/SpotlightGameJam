@@ -1,15 +1,19 @@
 [gd_scene format=3 uid="uid://c6228ogky1las"]
 
 [ext_resource type="Script" uid="uid://drdnkhhkl6d1q" path="res://Code/Entities/Player/Player.gd" id="1_player"]
+[ext_resource type="Texture2D" uid="uid://u7e8no7sycdy" path="res://Art/Archived/Character/jump/landing.png" id="2_drwpo"]
 [ext_resource type="Shape2D" path="res://Code/Entities/Player/PlayerCollisionNormal.tres" id="2_shape"]
 [ext_resource type="Script" uid="uid://w87wj37sfmph" path="res://Code/Entities/Player/PlayerStateMachine.gd" id="3_machine"]
 [ext_resource type="Script" uid="uid://cqo4h44fyh6vx" path="res://Code/Entities/Player/States/IdleState.gd" id="4_idle"]
 [ext_resource type="Script" uid="uid://es5aghtjfnht" path="res://Code/Entities/Player/States/RunState.gd" id="5_run"]
 [ext_resource type="Script" uid="uid://bffit30k3igd" path="res://Code/Entities/Player/States/DashState.gd" id="6_dash"]
 [ext_resource type="Script" uid="uid://icq7fhypysff" path="res://Code/Entities/Player/States/ClimbState.gd" id="7_climb"]
+[ext_resource type="Texture2D" uid="uid://qvmrtqakg055" path="res://Art/Archived/Character/jump/jumpStart.png" id="7_oexbj"]
+[ext_resource type="Texture2D" uid="uid://v6psdn8khp3r" path="res://Art/Archived/Character/jump/rise.png" id="8_211mo"]
 [ext_resource type="Script" uid="uid://im6s3beegr4o" path="res://Code/Entities/Player/States/FallState.gd" id="8_fall"]
 [ext_resource type="Script" uid="uid://piijssw4qy4r" path="res://Code/Entities/Player/States/LandingState.gd" id="8_landing"]
 [ext_resource type="Script" uid="uid://bcfuqo31yu2w1" path="res://Code/Common/State.gd" id="8_state"]
+[ext_resource type="Texture2D" uid="uid://hsssj4fr25sx" path="res://Art/Archived/Character/wallclimb.png" id="9_drwpo"]
 [ext_resource type="Script" uid="uid://da8gmnkwc00x2" path="res://Code/Entities/Player/States/HurtState.gd" id="9_hurt"]
 [ext_resource type="Script" uid="uid://bmcgo83kp4isi" path="res://Code/Entities/Player/States/DiedState.gd" id="10_died"]
 [ext_resource type="Script" uid="uid://boxbcktutt1r6" path="res://Code/Entities/Player/States/JumpState.gd" id="11_jump"]
@@ -18,19 +22,15 @@
 [ext_resource type="Script" uid="uid://b7bx3j3iqenuf" path="res://Code/Entities/Player/RopeController.gd" id="13_rope"]
 [ext_resource type="Script" uid="uid://c7yjbrupcw0qc" path="res://Code/Entities/Player/WaterRuneController.gd" id="14_water_rune"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.tscn" id="15_ui"]
-[ext_resource type="Texture2D" uid="uid://duvjyfj7fqocx" path="res://Art/Archived/Character/walk.png" id="16_lrxyo"]
 [ext_resource type="Texture2D" uid="uid://dkomsgecplgu2" path="res://Art/Archived/Character/standbytime.png" id="17_kpm6d"]
-[ext_resource type="Texture2D" uid="uid://c2rlxw5y1bg2j" path="res://Art/Archived/Character/jump/jump_start.png" id="18_jump_start"]
 [ext_resource type="Texture2D" uid="uid://bbj1stubt0wpu" path="res://Art/Archived/Character/turn.png" id="19_turn"]
-[ext_resource type="Texture2D" uid="uid://d2ba2iabcuils" path="res://Art/Archived/Character/jump/jump_rise.png" id="20_jump_rise"]
-[ext_resource type="Texture2D" uid="uid://7rbg0tdjjpq1" path="res://Art/Archived/Character/jump/fall.png" id="21_fall"]
-[ext_resource type="Texture2D" uid="uid://bdas2ipq0ati3" path="res://Art/Archived/Character/jump/Onland.png" id="22_onland"]
+[ext_resource type="Texture2D" uid="uid://c64butcf4blwm" path="res://Art/Archived/Character/jump/fall.png" id="21_fall"]
 [ext_resource type="Texture2D" uid="uid://b7i7il3py871c" path="res://Art/Archived/Character/dash.png" id="23_dash"]
 [ext_resource type="Texture2D" uid="uid://gx338h5hjq1t" path="res://Art/Archived/Character/hit.png" id="24_hit"]
 [ext_resource type="Texture2D" uid="uid://b2tw2xeu14ko0" path="res://Art/Archived/Character/death.png" id="25_death"]
-[ext_resource type="Texture2D" uid="uid://dvqbasmr6kef6" path="res://Art/Archived/Character/wall_grab.png" id="26_wall_grab"]
 [ext_resource type="Texture2D" uid="uid://cog07ymnm5vmb" path="res://Art/Archived/Character/wall_kick.png" id="27_wall_kick"]
 [ext_resource type="Texture2D" uid="uid://cfk0vcvyxoa17" path="res://Art/Archived/Character/water_dash.png" id="28_water_dash"]
+[ext_resource type="Texture2D" uid="uid://b5j76ldc74gyh" path="res://Art/Archived/Character/run.png" id="30_drwpo"]
 
 [sub_resource type="Animation" id="Animation_onland"]
 resource_name = "Onland"
@@ -58,7 +58,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("22_onland")]
+"values": [ExtResource("2_drwpo")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -234,7 +234,7 @@ tracks/7/keys = {
 
 [sub_resource type="Animation" id="Animation_dash"]
 resource_name = "dash"
-length = 0.4
+length = 0.3
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -243,10 +243,10 @@ tracks/0/path = NodePath("sprite/Action:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [0, 1, 2, 3]
+"values": [1, 2]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -705,7 +705,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_jump_start"]
 resource_name = "jump_start"
-length = 0.19999999999999998
+length = 0.2
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -729,7 +729,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("18_jump_start")]
+"values": [ExtResource("7_oexbj")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -831,7 +831,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("20_jump_rise")]
+"values": [ExtResource("8_211mo")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1039,7 +1039,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_wall_grab"]
 resource_name = "wall_grab"
-length = 0.4
+length = 0.3
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1048,10 +1048,10 @@ tracks/0/path = NodePath("sprite/Action:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3]
+"values": [1, 2, 3]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1063,7 +1063,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("26_wall_grab")]
+"values": [ExtResource("9_drwpo")]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -1529,17 +1529,17 @@ vframes = 2
 [node name="Walk" type="Sprite2D" parent="sprite" unique_id=1352150479]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(-18.425, -9.305)
+position = Vector2(-7, -13)
 scale = Vector2(0.43470114, 0.43470114)
-texture = ExtResource("16_lrxyo")
+texture = ExtResource("30_drwpo")
 hframes = 5
 
 [node name="Action" type="Sprite2D" parent="sprite" unique_id=1352150480]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(-8.862, -18)
+position = Vector2(-8.862, -12)
 scale = Vector2(0.43470114, 0.43470114)
-texture = ExtResource("27_wall_kick")
+texture = ExtResource("23_dash")
 hframes = 4
 
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]

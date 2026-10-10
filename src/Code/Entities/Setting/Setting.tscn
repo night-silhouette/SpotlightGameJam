@@ -124,6 +124,13 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "存档管理 (5槽位)"
 
+[node name="TabBtnAudio" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox"]
+custom_minimum_size = Vector2(140, 36)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "声音设置"
+
 [node name="ContentPanel" type="Panel" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248114]
 custom_minimum_size = Vector2(0, 280)
 layout_mode = 2
@@ -163,6 +170,163 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
+
+[node name="AudioMargin" type="MarginContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 18
+
+[node name="AudioList" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MasterRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MasterRow"]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+text = "总音量"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MasterRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MasterRow"]
+custom_minimum_size = Vector2(56, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="MusicRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MusicRow"]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+text = "音乐"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/MusicRow"]
+custom_minimum_size = Vector2(56, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="SFXRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow"]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+text = "音效"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow"]
+custom_minimum_size = Vector2(56, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="DialogueRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow"]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+text = "对白"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow"]
+custom_minimum_size = Vector2(56, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="AmbienceRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow"]
+custom_minimum_size = Vector2(80, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+text = "环境"
+vertical_alignment = 1
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+max_value = 100.0
+step = 1.0
+value = 100.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow"]
+custom_minimum_size = Vector2(56, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "100%"
+horizontal_alignment = 2
+vertical_alignment = 1
 
 [node name="BottomHBox" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248119]
 layout_mode = 2
