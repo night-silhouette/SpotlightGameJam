@@ -12,7 +12,7 @@ func exit() -> void:
 
 func physics_process(_delta: float) -> void:
 	if is_wall_kicking:
-		if not animation_player or animation_player.current_animation != "wall_kick" or not animation_player.is_playing():
+		if not animation_player or animation_player.current_animation != "jump_start" or not animation_player.is_playing():
 			is_wall_kicking = false
 			finished.emit("fall")
 		return
@@ -32,4 +32,4 @@ func physics_process(_delta: float) -> void:
 				obj.PlayWallJumpSFX()
 			is_wall_kicking = true
 			if animation_player:
-				animation_player.play("wall_kick")
+				animation_player.play("jump_start")

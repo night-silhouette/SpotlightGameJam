@@ -835,7 +835,7 @@ tracks/4/keys = {
 
 [sub_resource type="Animation" id="Animation_turn"]
 resource_name = "turn"
-length = 0.3
+length = 0.1
 step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -844,10 +844,10 @@ tracks/0/path = NodePath("sprite/Turn:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0, 1, 2]
+"values": [1]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1325,7 +1325,15 @@ script = ExtResource("12_input")
 position = Vector2(0, -24)
 target_position = Vector2(12.5, 0)
 
+[node name="front_upper_body" type="RayCast2D" parent="."]
+position = Vector2(0, -12)
+target_position = Vector2(12.5, 0)
+
 [node name="front_body" type="RayCast2D" parent="." unique_id=1106070340]
+target_position = Vector2(12.5, 0)
+
+[node name="front_lower_body" type="RayCast2D" parent="."]
+position = Vector2(0, 12)
 target_position = Vector2(12.5, 0)
 
 [node name="front_foot" type="RayCast2D" parent="." unique_id=588955990]
@@ -1337,7 +1345,17 @@ position = Vector2(0, -24)
 scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
+[node name="back_upper_body" type="RayCast2D" parent="."]
+position = Vector2(0, -12)
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
 [node name="back_body" type="RayCast2D" parent="." unique_id=1623780014]
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
+[node name="back_lower_body" type="RayCast2D" parent="."]
+position = Vector2(0, 12)
 scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
@@ -1402,8 +1420,8 @@ hframes = 4
 [node name="Turn" type="Sprite2D" parent="sprite" unique_id=1352150481]
 visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
-position = Vector2(-9.949, -10.174)
-scale = Vector2(0.43470114, 0.43470114)
+position = Vector2(0, -6)
+scale = Vector2(0.3547865, 0.3547865)
 texture = ExtResource("19_turn")
 hframes = 3
 

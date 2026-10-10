@@ -9,10 +9,14 @@ class_name Player
 
 
 @onready var front_foot: RayCast2D = $front_foot
+@onready var front_lower_body: RayCast2D = $front_lower_body
 @onready var front_head: RayCast2D = $front_head
+@onready var front_upper_body: RayCast2D = $front_upper_body
 @onready var front_body: RayCast2D = $front_body
 @onready var back_foot: RayCast2D = $back_foot
+@onready var back_lower_body: RayCast2D = $back_lower_body
 @onready var back_head: RayCast2D = $back_head
+@onready var back_upper_body: RayCast2D = $back_upper_body
 @onready var back_body: RayCast2D = $back_body
 @onready var debug: Label = $debug
 @onready var hp_label: Label = $hp
@@ -364,17 +368,21 @@ func _physics_process(delta: float) -> void:
 		var new_face_dir = int(sign(gameInputControl.row_dir))
 		if face_dir != new_face_dir:
 			front_foot.scale.x *= -1
+			front_lower_body.scale.x *= -1
 			front_head.scale.x *= -1
+			front_upper_body.scale.x *= -1
 			front_body.scale.x *= -1
 			back_foot.scale.x *= -1
+			back_lower_body.scale.x *= -1
 			back_head.scale.x *= -1
+			back_upper_body.scale.x *= -1
 			back_body.scale.x *= -1
 			if sprite:
 				sprite.scale.x = abs(sprite.scale.x) * new_face_dir
 		face_dir = new_face_dir
 
-	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body)
-	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body)
+	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
+	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
 
 	# 扒墙时刷新二段跳（蹬墙跳方向锁定仅在落地或反向蹬墙时解锁）
 	if is_front_has_rigid:

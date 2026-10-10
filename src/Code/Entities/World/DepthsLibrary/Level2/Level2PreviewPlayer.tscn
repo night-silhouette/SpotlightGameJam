@@ -149,7 +149,15 @@ script = ExtResource("12_input")
 position = Vector2(0, -24)
 target_position = Vector2(12.5, 0)
 
+[node name="front_upper_body" type="RayCast2D" parent="."]
+position = Vector2(0, -12)
+target_position = Vector2(12.5, 0)
+
 [node name="front_body" type="RayCast2D" parent="."]
+target_position = Vector2(12.5, 0)
+
+[node name="front_lower_body" type="RayCast2D" parent="."]
+position = Vector2(0, 12)
 target_position = Vector2(12.5, 0)
 
 [node name="front_foot" type="RayCast2D" parent="."]
@@ -161,7 +169,17 @@ position = Vector2(0, -24)
 scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
+[node name="back_upper_body" type="RayCast2D" parent="."]
+position = Vector2(0, -12)
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
 [node name="back_body" type="RayCast2D" parent="."]
+scale = Vector2(-1, -1)
+target_position = Vector2(12.5, 0)
+
+[node name="back_lower_body" type="RayCast2D" parent="."]
+position = Vector2(0, 12)
 scale = Vector2(-1, -1)
 target_position = Vector2(12.5, 0)
 
