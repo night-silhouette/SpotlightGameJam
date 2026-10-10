@@ -1,0 +1,31 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" uid="uid://b20h0k0svg5iq" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.gd" id="1_script"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape_platform"]
+size = Vector2(128, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape_sensor"]
+size = Vector2(128, 72)
+
+[node name="OneWayDropPlatformComponent" type="StaticBody2D"]
+script = ExtResource("1_script")
+
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-64, -8, 64, -8, 64, 8, -64, 8)
+color = Color(0.545, 0.776, 0.643, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape_platform")
+one_way_collision = true
+one_way_collision_margin = 4.0
+
+[node name="DropSensor" type="Area2D" parent="."]
+position = Vector2(0, -44)
+collision_layer = 0
+collision_mask = 4294967295
+monitoring = true
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DropSensor"]
+shape = SubResource("RectangleShape_sensor")

@@ -87,7 +87,8 @@ func phy_middleware() -> void:
 				change_state("fall")
 				return
 
-	if gameInputControl.is_fall:
+	# 扒墙状态自行处理 0.12 秒的松手宽限，不能被通用下落判定提前打断。
+	if gameInputControl.is_fall and cur_state_name != "climb":
 		change_state("fall")
 	elif not obj.is_on_floor() and obj.velocity.y < 0.0 and cur_state_name in ["idle", "run", "fall"]:
 		change_state("fall")
@@ -108,5 +109,6 @@ func phy_middleware() -> void:
 			change_state("jump")
 	if gameInputControl.is_dash:
 		change_state("dash")
-	if obj and obj.is_front_has_rigid and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
+	var holding_toward_wall: bool = obj != null and int(sign(gameInputControl.row_dir)) == obj.face_dir
+	if obj and obj.is_front_has_rigid and holding_toward_wall and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
 		change_state("climb")
