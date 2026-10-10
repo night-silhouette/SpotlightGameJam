@@ -1,6 +1,7 @@
 extends Node2D
 
 @onready var _source_line: Line2D = get_parent().get_node("RopeController/Line2D")
+@onready var _controller: RopeController = get_parent().get_node("RopeController")
 @onready var _rope: Sprite2D = $Rope
 @onready var _hook: Sprite2D = $Hook
 @onready var _rope_origin: Marker2D = get_parent().get_node("sprite/Action/RopeOrigin")
@@ -20,7 +21,10 @@ func _process(_delta: float) -> void:
 	if not _rope.visible:
 		return
 	var start := to_local(GetRopeOrigin())
-	var end := to_local(_source_line.to_global(_source_line.get_point_position(1)))
+	var end_world := _source_line.to_global(_source_line.get_point_position(1))
+	if _controller.current_state == RopeController.RopeState.FLYING:
+		end_world = _controller.fly_previous_tip_pos.lerp(_controller.fly_tip_pos, Engine.get_physics_interpolation_fraction())
+	var end := to_local(end_world)
 	var direction := end - start
 	_rope.visible = direction.length_squared() > 0.0
 	_hook.visible = _rope.visible

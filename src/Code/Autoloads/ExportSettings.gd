@@ -48,6 +48,8 @@ extends Node
 @export var player_acceleration: float = 2500.0
 ## 角色水平停止摩擦力/减速度
 @export var player_friction: float = 3000.0
+## 角色自动跨越的小坡最大高度（像素；不超过脚部与下身探针间距）
+@export_range(0.0, 11.0, 0.5) var player_step_height: float = 11.0
 ## 跳跃初速度
 @export var player_jump_speed: float = 380.0
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)

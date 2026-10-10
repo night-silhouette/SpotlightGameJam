@@ -16,7 +16,7 @@ enum RopeState {
 ## 绳索最大有效射程
 @export var max_rope_length: float = 420.0
 ## 绳索飞行发射速度
-@export var rope_speed: float = 2200.0
+@export var rope_speed: float = 1000.0
 ## 命中后的决策窗口期持续时间 (秒)
 @export var window_duration: float = 0.45
 ## 拉向命中点的飞行速度
