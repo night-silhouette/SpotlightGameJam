@@ -62,6 +62,14 @@ collision_mask = 6
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall4" unique_id=1686746129]
 shape = SubResource("RectangleShape2D_wall")
 
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="LeftWall4" unique_id=247184063]
+position = Vector2(-1.1027721, 363.4023)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="LeftWall4" unique_id=634510134]
+position = Vector2(7.7194242, -190.63734)
+shape = SubResource("RectangleShape2D_wall")
+
 [node name="RightClimbWall" type="StaticBody2D" parent="." unique_id=133342367]
 position = Vector2(450, 360)
 collision_mask = 6

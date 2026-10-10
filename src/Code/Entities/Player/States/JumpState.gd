@@ -31,6 +31,7 @@ func enter() -> void:
 			obj.double_jump_count -= 1
 			var d_speed = obj.double_jump_speed if "double_jump_speed" in obj else obj.jump_speed
 			obj.velocity.y = -d_speed
+			obj.PlayDoubleJumpRing()
 			if obj.has_method("PlayJumpSecondSFX"):
 				obj.PlayJumpSecondSFX()
 		else:
