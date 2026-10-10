@@ -100,6 +100,9 @@ signal PlayerGrappleHooked(hook_pos: Vector2)
 ## 钩锁断开、收回或松开时触发
 signal PlayerGrappleReleased
 
+## 绳索人物动作阶段变化时触发；player 为所属玩家，phase 为 RopeSend、fly 或空字符串（退出），target_pos 为瞄准/挂接世界坐标。
+signal PlayerGrapplePhaseChanged(player: Node2D, phase: StringName, target_pos: Vector2)
+
 #endregion
 
 

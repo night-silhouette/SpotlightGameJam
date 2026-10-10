@@ -364,22 +364,8 @@ func _physics_process(delta: float) -> void:
 		wall_jump_lock_dir = 0
 		ResetDoubleJump()
 
-	if gameInputControl.row_dir != 0:
-		var new_face_dir = int(sign(gameInputControl.row_dir))
-		if face_dir != new_face_dir:
-			front_foot.scale.x *= -1
-			front_lower_body.scale.x *= -1
-			front_head.scale.x *= -1
-			front_upper_body.scale.x *= -1
-			front_body.scale.x *= -1
-			back_foot.scale.x *= -1
-			back_lower_body.scale.x *= -1
-			back_head.scale.x *= -1
-			back_upper_body.scale.x *= -1
-			back_body.scale.x *= -1
-			if sprite:
-				sprite.scale.x = abs(sprite.scale.x) * new_face_dir
-		face_dir = new_face_dir
+	if gameInputControl.row_dir != 0 and not move_state_machine.IsRopePoseActive():
+		SetFacingDirection(int(sign(gameInputControl.row_dir)))
 
 	is_front_has_rigid = _check_wall_climbable(front_foot) or _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
 	is_back_has_rigid = _check_wall_climbable(back_foot) or _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
@@ -390,6 +376,15 @@ func _physics_process(delta: float) -> void:
 
 	_handle_footstep_audio(delta)
 	_handle_continuous_move_audio(delta)
+
+## 同步人物图像和前后探测射线的朝向；direction 只接受 -1（左）或 1（右）。
+func SetFacingDirection(direction: int) -> void:
+	if face_dir != direction:
+		for ray in [front_foot, front_lower_body, front_head, front_upper_body, front_body,
+				back_foot, back_lower_body, back_head, back_upper_body, back_body]:
+			ray.scale.x *= -1
+	face_dir = direction
+	sprite.scale.x = abs(sprite.scale.x) * direction
 
 ## 初始化加载动作音频资源
 func _init_move_sounds() -> void:
