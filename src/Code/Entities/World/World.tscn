@@ -61,7 +61,7 @@ speed = 250.0
 
 [node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
 position = Vector2(1.3272558, 6.636482)
-scale = Vector2(1, 1)
+scale = Vector2(1.13, 1.13)
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
 material = SubResource("ShaderMaterial_mkscu")

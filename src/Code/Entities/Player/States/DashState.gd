@@ -11,6 +11,7 @@ func enter() -> void:
 	state_machine.state_map["died"].is_use = true
 	if animation_player:
 		animation_player.play("dash")
+	obj.StartDashAfterimages()
 	if obj and obj.has_method("PlayDashSFX"):
 		obj.PlayDashSFX()
 	_dash_timer = Util.setTime(obj.dash_time, func():
@@ -20,6 +21,7 @@ func enter() -> void:
 	)
 
 func exit() -> void:
+	obj.StopDashAfterimages()
 	change_use_all(true)
 
 func physics_process(_delta: float) -> void:

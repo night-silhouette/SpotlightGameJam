@@ -84,6 +84,12 @@ extends Node
 @export var player_dash_speed: float = 650.0
 ## 冲刺冷却间隔 (秒)
 @export var player_dash_span: float = 0.65
+## 冲刺残影采样间隔（秒）
+@export_range(0.01, 0.2, 0.01) var player_dash_afterimage_interval: float = 0.04
+## 单个冲刺残影的淡出时长（秒）
+@export_range(0.05, 1.0, 0.01) var player_dash_afterimage_duration: float = 0.22
+## 冲刺残影的黄白色及初始透明度
+@export var player_dash_afterimage_color: Color = Color(1.0, 0.94, 0.65, 0.65)
 
 @export_group("Combat & Health", "player_")
 ## 玩家最大生命值

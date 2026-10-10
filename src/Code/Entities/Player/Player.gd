@@ -5,6 +5,8 @@ class_name Player
 @onready var move_state_machine: Node = $move_state_machine
 @onready var gameInputControl: Node = $GameInputControl
 @onready var sprite: Node2D = $sprite
+@onready var dash_afterimages: Node2D = $DashAfterimages
+@onready var dash_afterimage_material: ShaderMaterial = $DashAfterimages.material as ShaderMaterial
 @onready var visual_placeholder: ColorRect = $VisualPlaceholder
 
 
@@ -90,6 +92,9 @@ var step_horizontal_distance: float = 1.0
 @export_range(0.0, 0.5, 0.01) var low_water_edge_damage: float = 0.16
 ## 缺水颜色和描线渐变速度
 @export_range(0.1, 10.0, 0.1) var low_water_color_fade_speed: float = 2.0
+
+var _dash_afterimage_active: bool = false
+var _dash_afterimage_elapsed: float = 0.0
 
 var _is_low_water: bool = false
 var _low_water_effect_strength: float = 0.0
@@ -289,11 +294,47 @@ func _process(delta: float) -> void:
 	if is_hp_draining and now_HP > 0.0:
 		now_HP -= hp_drain_rate * delta
 	_update_low_water_effect(delta)
+	if _dash_afterimage_active:
+		_dash_afterimage_elapsed += delta
+		if _dash_afterimage_elapsed >= ExportSettings.player_dash_afterimage_interval:
+			_dash_afterimage_elapsed = 0.0
+			_spawn_dash_afterimage()
 	if _double_jump_ring_active:
 		_double_jump_ring_elapsed += delta
 		if _double_jump_ring_elapsed >= ExportSettings.player_double_jump_ring_duration:
 			_double_jump_ring_active = false
 		queue_redraw()
+
+## 开始冲刺残影采样；无需传参。
+func StartDashAfterimages() -> void:
+	dash_afterimage_material.set_shader_parameter("afterimage_color", ExportSettings.player_dash_afterimage_color)
+	_dash_afterimage_active = true
+	_dash_afterimage_elapsed = ExportSettings.player_dash_afterimage_interval
+
+## 停止冲刺残影采样，已有残影继续自然淡出；无需传参。
+func StopDashAfterimages() -> void:
+	_dash_afterimage_active = false
+
+func _spawn_dash_afterimage() -> void:
+	for child in sprite.get_children():
+		var source := child as Sprite2D
+		if source == null or not source.visible or source.texture == null:
+			continue
+		var afterimage := Sprite2D.new()
+		afterimage.texture = source.texture
+		afterimage.hframes = source.hframes
+		afterimage.vframes = source.vframes
+		afterimage.frame = source.frame
+		afterimage.centered = source.centered
+		afterimage.offset = source.offset
+		afterimage.flip_h = source.flip_h
+		afterimage.flip_v = source.flip_v
+		afterimage.use_parent_material = true
+		dash_afterimages.add_child(afterimage)
+		afterimage.global_transform = source.global_transform
+		var tween := afterimage.create_tween()
+		tween.tween_property(afterimage, "modulate:a", 0.0, ExportSettings.player_dash_afterimage_duration)
+		tween.tween_callback(afterimage.queue_free)
 
 ## 在真正触发空中二段跳时播放脚下淡黄色扩散光环；无需传参。
 func PlayDoubleJumpRing() -> void:
