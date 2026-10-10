@@ -57,6 +57,9 @@ func enter() -> void:
 			animation_player.animation_finished.connect(_on_jump_start_finished)
 
 	change_use_all(false)
+	var dash_node = state_machine.get_node_or_null("dash")
+	if dash_node:
+		dash_node.is_use = true
 	var hurt_node = state_machine.get_node_or_null("hurt")
 	if hurt_node:
 		hurt_node.is_use = true

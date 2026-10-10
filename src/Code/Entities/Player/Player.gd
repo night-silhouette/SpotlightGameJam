@@ -49,6 +49,7 @@ class_name Player
 @export var unbeatable_time: float = 0.3
 @export var climb_ability: float = 480.0
 var step_height: float = 11.0
+var step_horizontal_distance: float = 1.0
 
 @export_group("state_prop")
 @export var Max_HP: float = 200.0:
@@ -109,6 +110,9 @@ var spawn_position: Vector2 = Vector2.ZERO
 
 ## 当前剩余二段跳可用次数
 var double_jump_count: int = 1
+var _double_jump_ring_elapsed: float = 0.0
+var _double_jump_ring_active: bool = false
+var _double_jump_ring_origin: Vector2 = Vector2.ZERO
 
 ## 重力缩放系数（默认为 1.0，流水区域等会将其置为 0.0）
 @export var gravity_scale: float = 1.0
@@ -181,6 +185,7 @@ func _sync_from_export_settings() -> void:
 		double_jump_count = max_double_jumps
 		climb_ability = ExportSettings.player_climb_ability
 		step_height = ExportSettings.player_step_height
+		step_horizontal_distance = ExportSettings.player_step_horizontal_distance
 		max_fall_speed = ExportSettings.player_max_fall_speed
 		dash_time = ExportSettings.player_dash_time
 		dash_speed = ExportSettings.player_dash_speed
@@ -284,6 +289,32 @@ func _process(delta: float) -> void:
 	if is_hp_draining and now_HP > 0.0:
 		now_HP -= hp_drain_rate * delta
 	_update_low_water_effect(delta)
+	if _double_jump_ring_active:
+		_double_jump_ring_elapsed += delta
+		if _double_jump_ring_elapsed >= ExportSettings.player_double_jump_ring_duration:
+			_double_jump_ring_active = false
+		queue_redraw()
+
+## 在真正触发空中二段跳时播放脚下淡黄色扩散光环；无需传参。
+func PlayDoubleJumpRing() -> void:
+	_double_jump_ring_elapsed = 0.0
+	_double_jump_ring_origin = global_position + Vector2(0.0, 22.0)
+	_double_jump_ring_active = true
+	queue_redraw()
+
+func _draw() -> void:
+	if not _double_jump_ring_active:
+		return
+	var progress: float = _double_jump_ring_elapsed / ExportSettings.player_double_jump_ring_duration
+	var radius: float = lerpf(9.0, ExportSettings.player_double_jump_ring_radius, progress)
+	var color: Color = ExportSettings.player_double_jump_ring_color
+	color.a *= 1.0 - progress
+	var center: Vector2 = to_local(_double_jump_ring_origin + Vector2(0.0, progress * ExportSettings.player_double_jump_ring_drop_distance))
+	var points := PackedVector2Array()
+	for index in range(33):
+		var angle: float = TAU * index / 32.0
+		points.append(center + Vector2(cos(angle) * radius, sin(angle) * radius * 0.3))
+	draw_polyline(points, color, 2.0, true)
 
 func _update_low_water_effect(delta: float) -> void:
 	var water_ratio: float = now_HP / Max_HP if Max_HP > 0.0 else 0.0
@@ -362,7 +393,7 @@ func _physics_process(delta: float) -> void:
 
 	var walking_dir := int(sign(gameInputControl.row_dir))
 	var walking_forward: bool = walking_dir != 0 and sign(velocity.x) == walking_dir
-	if walking_dir != 0 and not move_state_machine.IsRopePoseActive():
+	if walking_dir != 0 and not move_state_machine.IsRopePoseActive() and move_state_machine.cur_state_name != "dash":
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
@@ -424,14 +455,15 @@ func _try_step_up(direction: int) -> void:
 	if rise <= 0.0 or rise > step_height:
 		return
 
-	# 先沿当前位置抬升、再水平推进，两个行程均须可供完整碰撞体通过。
+	# 先沿当前位置抬升，再限制自动上坡的额外水平推进；正常行走仍由 move_and_slide 处理。
 	var lift := Vector2(0.0, -rise - 0.5)
+	var step_forward := Vector2(direction * min(abs(horizontal), step_horizontal_distance), 0.0)
 	if test_move(global_transform, lift):
 		return
 	var raised := global_transform.translated(lift)
-	if test_move(raised, Vector2(horizontal, 0.0)):
+	if test_move(raised, step_forward):
 		return
-	global_position += lift + Vector2(horizontal, 0.0)
+	global_position += lift + step_forward
 
 ## 同步人物图像和前后探测射线的朝向；direction 只接受 -1（左）或 1（右）。
 func SetFacingDirection(direction: int) -> void:

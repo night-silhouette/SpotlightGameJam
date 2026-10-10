@@ -50,6 +50,8 @@ extends Node
 @export var player_friction: float = 3000.0
 ## 角色自动跨越的小坡最大高度（像素；不超过脚部与下身探针间距）
 @export_range(0.0, 11.0, 0.5) var player_step_height: float = 11.0
+## 自动上坡时每次额外水平推进的最大距离（像素；不含正常行走）
+@export_range(0.0, 11.0, 0.5) var player_step_horizontal_distance: float = 1.0
 ## 跳跃初速度
 @export var player_jump_speed: float = 380.0
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)
@@ -64,6 +66,16 @@ extends Node
 @export var player_climb_ability: float = 480.0
 ## 贴墙滑落时的最大下落速度限制
 @export var player_max_fall_speed: float = 120.0
+
+@export_group("Double Jump Ring", "player_double_jump_ring_")
+## 二段跳脚下光环颜色（透明度决定初始亮度）
+@export var player_double_jump_ring_color: Color = Color(1.0, 0.92, 0.58, 0.42)
+## 光环扩散并淡出的持续时间（秒）
+@export_range(0.05, 2.0, 0.01) var player_double_jump_ring_duration: float = 0.32
+## 光环最终的水平半径（像素）
+@export_range(1.0, 100.0, 1.0) var player_double_jump_ring_radius: float = 25.0
+## 光环从起跳位置向下移动的距离（像素）
+@export_range(0.0, 150.0, 1.0) var player_double_jump_ring_drop_distance: float = 35.0
 
 @export_group("Dash", "player_dash_")
 ## 冲刺持续时间 (秒)
