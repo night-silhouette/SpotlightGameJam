@@ -10,13 +10,19 @@ extends Node2D
 @onready var _boat: OasisBoat = $OutwardPhase/OasisBoat
 @onready var _blocker: Node2D = $OutwardPhase/VanishingBlockerComponent
 @onready var _bone_interactable: Node2D = $OutwardPhase/InteractableComponent
+@onready var _get_boat_area: Area2D = $OutwardPhase/get_boat
+@onready var _the_end_area: Area2D = $ReturnPhase/TheEnd
 
 var _in_return_phase: bool = false
+var _boat_departure_triggered: bool = false
+var _chase_finished: bool = false
 
 
 func _ready() -> void:
 	SignalBus.BlockerVanished.connect(_on_blocker_vanished)
 	SignalBus.ComponentInteracted.connect(_on_component_interacted)
+	_get_boat_area.body_entered.connect(_on_get_boat_body_entered)
+	_the_end_area.body_entered.connect(_on_the_end_body_entered)
 	if start_in_return_phase:
 		SwitchToReturnPhase()
 	else:
@@ -70,3 +76,23 @@ func _on_component_interacted(component: Node2D, _interactor: Node2D) -> void:
 	if not _in_return_phase and component == _bone_interactable:
 		# Interaction can originate from a physics callback; switch outside the query flush.
 		call_deferred(&"OnBoneCollected")
+
+
+func _is_player(body: Node2D) -> bool:
+	return body.is_in_group(&"player") or body.name == "Player"
+
+
+func _on_get_boat_body_entered(body: Node2D) -> void:
+	if _in_return_phase or _boat_departure_triggered or not _is_player(body):
+		return
+	_boat_departure_triggered = true
+	_boat.SolvePuzzle("get_boat")
+	_boat.ResumeJourney()
+
+
+func _on_the_end_body_entered(body: Node2D) -> void:
+	if not _in_return_phase or _chase_finished or not _is_player(body):
+		return
+	_chase_finished = true
+	if is_instance_valid(_chaser) and _chaser.has_method(&"EndChase"):
+		_chaser.call_deferred(&"EndChase")
