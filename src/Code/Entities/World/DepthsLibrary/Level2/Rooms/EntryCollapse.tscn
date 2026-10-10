@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
 [sub_resource type="RectangleShape2D" id="shape1"]
-size = Vector2(30, 380)
+size = Vector2(30, 140)
 
 [sub_resource type="RectangleShape2D" id="shape2"]
-size = Vector2(30, 380)
+size = Vector2(30, 140)
 
 [sub_resource type="RectangleShape2D" id="shape3"]
 size = Vector2(860, 20)
@@ -24,9 +24,15 @@ size = Vector2(40, 300)
 [sub_resource type="RectangleShape2D" id="EntryPitShape"]
 size = Vector2(240, 40)
 
+[sub_resource type="RectangleShape2D" id="CeilingLeftShape"]
+size = Vector2(40, 20)
+[sub_resource type="RectangleShape2D" id="CeilingRightShape"]
+size = Vector2(580, 20)
+
 [node name="EntryCollapse" type="Node2D"]
 metadata/width = 860
-metadata/title = "入口断层"
+metadata/title = "左侧井口 · 二段跳与塌陷"
+metadata/height = 440
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -34,80 +40,8 @@ metadata/title = "入口断层"
 [node name="Base" type="Polygon2D" parent="Background"]
 position = Vector2(0, -80)
 z_index = -20
-polygon = PackedVector2Array(0, 0, 860, 0, 860, 800, 0, 800)
+polygon = PackedVector2Array(0, 0, 860, 0, 860, 520, 0, 520)
 color = Color(0.035, 0.065, 0.105, 1)
-
-[node name="Pillar50" type="Polygon2D" parent="Background"]
-position = Vector2(50, 0)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
-color = Color(0.07, 0.12, 0.17, 1)
-
-[node name="Window50" type="Polygon2D" parent="Background"]
-position = Vector2(95, 100)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
-color = Color(0.06, 0.16, 0.21, 1)
-
-[node name="WindowLight50" type="Polygon2D" parent="Background"]
-position = Vector2(95, 100)
-z_index = -18
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
-color = Color(0.22, 0.39, 0.42, 1)
-
-[node name="Pillar270" type="Polygon2D" parent="Background"]
-position = Vector2(270, 0)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
-color = Color(0.07, 0.12, 0.17, 1)
-
-[node name="Window270" type="Polygon2D" parent="Background"]
-position = Vector2(315, 100)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
-color = Color(0.06, 0.16, 0.21, 1)
-
-[node name="WindowLight270" type="Polygon2D" parent="Background"]
-position = Vector2(315, 100)
-z_index = -18
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
-color = Color(0.22, 0.39, 0.42, 1)
-
-[node name="Pillar490" type="Polygon2D" parent="Background"]
-position = Vector2(490, 0)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
-color = Color(0.07, 0.12, 0.17, 1)
-
-[node name="Window490" type="Polygon2D" parent="Background"]
-position = Vector2(535, 100)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
-color = Color(0.06, 0.16, 0.21, 1)
-
-[node name="WindowLight490" type="Polygon2D" parent="Background"]
-position = Vector2(535, 100)
-z_index = -18
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
-color = Color(0.22, 0.39, 0.42, 1)
-
-[node name="Pillar710" type="Polygon2D" parent="Background"]
-position = Vector2(710, 0)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 18, 0, 18, 700, 0, 700)
-color = Color(0.07, 0.12, 0.17, 1)
-
-[node name="Window710" type="Polygon2D" parent="Background"]
-position = Vector2(755, 100)
-z_index = -19
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 160, 0, 160)
-color = Color(0.06, 0.16, 0.21, 1)
-
-[node name="WindowLight710" type="Polygon2D" parent="Background"]
-position = Vector2(755, 100)
-z_index = -18
-polygon = PackedVector2Array(0, 0, 90, 0, 90, 3, 0, 3)
-color = Color(0.22, 0.39, 0.42, 1)
 
 [node name="RoomTitle" type="Label" parent="."]
 offset_left = 45
@@ -116,7 +50,7 @@ offset_right = 815
 offset_bottom = 90
 theme_override_font_sizes/font_size = 30
 mouse_filter = 2
-text = "入口断层"
+text = "左侧井口 · 二段跳与塌陷"
 
 [node name="RoomHint" type="Label" parent="."]
 offset_left = 45
@@ -125,7 +59,7 @@ offset_right = 815
 offset_bottom = 138
 theme_override_font_sizes/font_size = 18
 mouse_filter = 2
-text = "二段跳跃过断层，踩上裂纹平台进入竖井。"
+text = "从主城左口落入；二段跳跃过断层，踩上裂纹平台进入竖井。"
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
 position = Vector2(-30, -80)
@@ -133,13 +67,13 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
-position = Vector2(15, 190)
+position = Vector2(15, 70)
 shape = SubResource("shape1")
 
 [node name="Stone" type="Polygon2D" parent="LeftWall"]
 position = Vector2(0, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 30, 0, 30, 380, 0, 380)
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 140, 0, 140)
 color = Color(0.14, 0.23, 0.28, 1)
 
 [node name="Edge" type="Polygon2D" parent="LeftWall"]
@@ -154,13 +88,13 @@ collision_layer = 1
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
-position = Vector2(15, 190)
+position = Vector2(15, 70)
 shape = SubResource("shape2")
 
 [node name="Stone" type="Polygon2D" parent="RightWall"]
 position = Vector2(0, 0)
 z_index = 0
-polygon = PackedVector2Array(0, 0, 30, 0, 30, 380, 0, 380)
+polygon = PackedVector2Array(0, 0, 30, 0, 30, 140, 0, 140)
 color = Color(0.14, 0.23, 0.28, 1)
 
 [node name="Edge" type="Polygon2D" parent="RightWall"]
@@ -169,29 +103,36 @@ z_index = 0
 polygon = PackedVector2Array(0, 0, 30, 0, 30, 4, 0, 4)
 color = Color(0.50, 0.72, 0.73, 1)
 
-[node name="Ceiling" type="StaticBody2D" parent="."]
+[node name="CeilingLeft" type="StaticBody2D" parent="."]
 position = Vector2(0, -80)
 collision_layer = 1
 collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
-position = Vector2(430, 10)
-shape = SubResource("shape3")
-
-[node name="Stone" type="Polygon2D" parent="Ceiling"]
-position = Vector2(0, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 860, 0, 860, 20, 0, 20)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CeilingLeft"]
+position = Vector2(20.0, 10.0)
+shape = SubResource("CeilingLeftShape")
+[node name="Stone" type="Polygon2D" parent="CeilingLeft"]
+polygon = PackedVector2Array(0, 0, 40, 0, 40, 20, 0, 20)
 color = Color(0.14, 0.23, 0.28, 1)
+[node name="Edge" type="Polygon2D" parent="CeilingLeft"]
+polygon = PackedVector2Array(0, 0, 40, 0, 40, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
 
-[node name="Edge" type="Polygon2D" parent="Ceiling"]
-position = Vector2(0, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 860, 0, 860, 4, 0, 4)
+[node name="CeilingRight" type="StaticBody2D" parent="."]
+position = Vector2(280, -80)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CeilingRight"]
+position = Vector2(290.0, 10.0)
+shape = SubResource("CeilingRightShape")
+[node name="Stone" type="Polygon2D" parent="CeilingRight"]
+polygon = PackedVector2Array(0, 0, 580, 0, 580, 20, 0, 20)
+color = Color(0.14, 0.23, 0.28, 1)
+[node name="Edge" type="Polygon2D" parent="CeilingRight"]
+polygon = PackedVector2Array(0, 0, 580, 0, 580, 4, 0, 4)
 color = Color(0.50, 0.72, 0.73, 1)
 
 [node name="Floor" type="StaticBody2D" parent="."]
-position = Vector2(0, 520)
+position = Vector2(0, 280)
 collision_layer = 1
 collision_mask = 2
 
@@ -212,7 +153,7 @@ polygon = PackedVector2Array(0, 0, 320, 0, 320, 4, 0, 4)
 color = Color(0.50, 0.72, 0.73, 1)
 
 [node name="UpperStep" type="StaticBody2D" parent="."]
-position = Vector2(460, 350)
+position = Vector2(460, 110)
 collision_layer = 1
 collision_mask = 2
 
@@ -233,11 +174,11 @@ polygon = PackedVector2Array(0, 0, 100, 0, 100, 4, 0, 4)
 color = Color(0.50, 0.72, 0.73, 1)
 
 [node name="Collapse" parent="." instance=ExtResource("crumble")]
-position = Vector2(690, 350)
+position = Vector2(690, 110)
 platform_size = Vector2(240, 20)
 
 [node name="RightBarrier" type="StaticBody2D" parent="."]
-position = Vector2(820, 300)
+position = Vector2(820, 60)
 collision_layer = 1
 collision_mask = 2
 
@@ -258,13 +199,18 @@ polygon = PackedVector2Array(0, 0, 40, 0, 40, 4, 0, 4)
 color = Color(0.50, 0.72, 0.73, 1)
 
 [node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(100, 485)
+position = Vector2(100, 245)
 
 [node name="EntryFallReset" type="Area2D" parent="."]
-position = Vector2(440, 660)
+position = Vector2(440, 420)
 collision_layer = 0
 collision_mask = 2
 metadata/fall_reset = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EntryFallReset"]
 shape = SubResource("EntryPitShape")
+
+[node name="CityEntrance" type="Marker2D" parent="."]
+position = Vector2(160, -80)
+metadata/opening_width = 240.0
+metadata/description = "主城左口中心；地表高度；朝下进入第二关"

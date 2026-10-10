@@ -1,0 +1,44 @@
+[gd_scene format=3]
+[sub_resource type="RectangleShape2D" id="LeftApproachShape"]
+size = Vector2(600, 32)
+[sub_resource type="RectangleShape2D" id="MiddleJoinShape"]
+size = Vector2(40, 32)
+[node name="CityInterfacePreview" type="Node2D"]
+metadata/description = "仅用于第二关试玩的主城接缝示意，正式主城整合不使用此场景"
+[node name="LeftApproach" type="StaticBody2D" parent="."]
+position = Vector2(-600, -3080)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftApproach"]
+position = Vector2(300.0, 16.0)
+shape = SubResource("LeftApproachShape")
+[node name="Stone" type="Polygon2D" parent="LeftApproach"]
+polygon = PackedVector2Array(0, 0, 600, 0, 600, 32, 0, 32)
+color = Color(0.14, 0.23, 0.28, 1)
+[node name="Edge" type="Polygon2D" parent="LeftApproach"]
+polygon = PackedVector2Array(0, 0, 600, 0, 600, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+[node name="MiddleJoin" type="StaticBody2D" parent="."]
+position = Vector2(860, -3080)
+collision_layer = 1
+collision_mask = 2
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiddleJoin"]
+position = Vector2(20.0, 16.0)
+shape = SubResource("MiddleJoinShape")
+[node name="Stone" type="Polygon2D" parent="MiddleJoin"]
+polygon = PackedVector2Array(0, 0, 40, 0, 40, 32, 0, 32)
+color = Color(0.14, 0.23, 0.28, 1)
+[node name="Edge" type="Polygon2D" parent="MiddleJoin"]
+polygon = PackedVector2Array(0, 0, 40, 0, 40, 4, 0, 4)
+color = Color(0.50, 0.72, 0.73, 1)
+
+[node name="Spawn" type="Marker2D" parent="."]
+position = Vector2(-120, -3115)
+[node name="EntranceSign" type="Label" parent="."]
+position = Vector2(-160, -3260)
+text = "左口 ↓ 进入第二关"
+mouse_filter = 2
+[node name="PreviewLabel" type="Label" parent="."]
+position = Vector2(340, -3330)
+text = "主城连接示意（非正式主城）"
+mouse_filter = 2

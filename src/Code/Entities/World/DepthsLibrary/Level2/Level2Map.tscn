@@ -19,7 +19,7 @@ script = ExtResource("script")
 [node name="EntryCollapse" parent="Rooms" instance=ExtResource("EntryCollapse")]
 position = Vector2(0, -3000)
 [node name="DescentShaft" parent="Rooms" instance=ExtResource("DescentShaft")]
-position = Vector2(560, -2700)
+position = Vector2(560, -2940)
 [node name="Hub" parent="Rooms" instance=ExtResource("Hub")]
 position = Vector2(0, 0)
 [node name="WestPassage" parent="Rooms" instance=ExtResource("WestPassage")]
@@ -39,9 +39,9 @@ position = Vector2(1050, 520)
 [node name="WeaveArchive" parent="Rooms" instance=ExtResource("WeaveArchive")]
 position = Vector2(1650, 1400)
 [node name="FountainShaft" parent="Rooms" instance=ExtResource("FountainShaft")]
-position = Vector2(900, -2820)
+position = Vector2(900, -3080)
 [node name="SurfaceExit" parent="Rooms" instance=ExtResource("SurfaceExit")]
-position = Vector2(900, -3300)
+position = Vector2(900, -3080)
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 5
 [node name="Root" type="Control" parent="HUD"]

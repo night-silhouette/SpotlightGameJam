@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2PlayerWithCamera.tscn" id="player"]
 [ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2CameraDirector.gd" id="director"]
 [ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2ShaftOcclusion.gd" id="mask"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/CityInterfacePreview.tscn" id="city_preview"]
 [node name="Level2Playtest" type="Node2D"]
 script = ExtResource("script")
 [node name="Backdrop" type="CanvasLayer" parent="."]
@@ -38,3 +39,5 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("mask")
+
+[node name="CityInterfacePreview" parent="." instance=ExtResource("city_preview")]
