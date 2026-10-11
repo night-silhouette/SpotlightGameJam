@@ -69,4 +69,4 @@ func _physics_process(_delta: float) -> void:
 	is_fall = not obj.is_on_floor() and is_normal and obj.velocity.y >= 0
 
 	is_run = row_dir != 0.0 and obj.is_on_floor() and is_normal
-	is_idle = row_dir == 0.0 and obj.is_on_floor() and is_normal
+	is_idle = obj.is_on_floor() and (row_dir == 0.0 or not is_normal)
