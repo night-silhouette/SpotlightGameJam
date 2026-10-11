@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" format=3 uid="uid://5kb7joqm70qv"]
 
-[ext_resource type="Texture2D" uid="uid://ddcsou4f6jjxi" path="res://Art/Archived/Tilemap/3.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://coo85x2mvb3ew" path="res://Art/Archived/Tilemap/3.png" id="1"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/StoneCenterJoin.tscn" id="2_join"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/EarthTerrainTile.tscn" id="Earth"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/StoneFold1_0.tscn" id="fold1"]

@@ -50,7 +50,8 @@ func _enter_tree() -> void:
 	phantom.priority = ExportSettings.player_camera_priority
 	phantom.zoom = Vector2.ONE * maxf(0.01, ExportSettings.player_camera_zoom)
 	phantom.follow_offset = ExportSettings.player_camera_offset
-	phantom.follow_damping = false
+	phantom.follow_damping = ExportSettings.player_camera_smoothing
+	phantom.follow_damping_value = ExportSettings.player_camera_damping
 	phantom.dead_zone_width = clampf(ExportSettings.player_camera_box_fraction.x, 0.0, 1.0)
 	phantom.dead_zone_height = clampf(ExportSettings.player_camera_box_fraction.y, 0.0, 1.0)
 
@@ -65,7 +66,12 @@ func _ready() -> void:
 		camera.set_tween_ease(Tween.EASE_IN_OUT)
 		camera.tween_completed.connect(_on_arrived.bind(camera))
 		camera.became_inactive.connect(_on_camera_interrupted.bind(camera))
+	# 首次定位时让死区下边界贴住玩家；之后恢复正常跟随偏移。
+	var initial_offset: Vector2 = _base.follow_offset
+	_base.follow_offset.y = -get_viewport_rect().size.y * _base.dead_zone_height / (2.0 * maxf(_base.zoom.y, 0.05))
+	_base.global_position = _player.global_position + _base.follow_offset
 	_base.teleport_position()
+	_base.follow_offset = initial_offset
 	SignalBus.CameraNormalRequested.connect(_on_normal_requested)
 	SignalBus.CameraDesertRequested.connect(_on_desert_requested)
 	SignalBus.CameraDescentRequested.connect(_on_descent_requested)
@@ -212,7 +218,7 @@ func _start_camera(mode: StringName) -> void:
 	_frame = Vector2(0.5, 0.5)
 	match mode:
 		&"normal":
-			next.follow_damping = false
+			next.follow_damping = ExportSettings.player_camera_smoothing
 			next.follow_offset = ExportSettings.player_camera_offset
 		&"desert":
 			zoom_value = ExportSettings.camera_desert_zoom

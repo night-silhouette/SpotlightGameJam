@@ -48,9 +48,7 @@ func _on_animation_finished(animation_name: StringName) -> void:
 		change_state("fly")
 
 func _resume_movement() -> void:
-	if obj.IsInWaterFlow():
-		change_state("shuttle")
-	elif not obj.is_on_floor():
+	if not obj.is_on_floor():
 		change_state("fall")
 	else:
 		change_state("run" if gameInputControl.row_dir != 0.0 else "idle")
@@ -75,20 +73,6 @@ func phy_middleware() -> void:
 		return
 	if cur_state_name == "climb" and current_state.is_wall_kicking:
 		return
-	# 如果处于流水穿梭状态且仍在水流区域内，保持穿梭状态，不被 run / idle 打断
-	if cur_state_name == "shuttle":
-		if obj and obj.has_method("IsInWaterFlow") and obj.IsInWaterFlow():
-			if gameInputControl.is_jump:
-				change_state("jump")
-			elif "is_double_jump" in gameInputControl and gameInputControl.is_double_jump:
-				change_state("jump")
-			return
-		else:
-			# 离开水流区域后平滑切回下落或普通状态
-			if not obj.is_on_floor():
-				change_state("fall")
-				return
-
 	# 扒墙状态自行处理 0.12 秒的松手宽限，不能被通用下落判定提前打断。
 	if gameInputControl.is_fall and cur_state_name != "climb":
 		change_state("fall")

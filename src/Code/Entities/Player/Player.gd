@@ -707,7 +707,7 @@ func _init_footstep_sounds() -> void:
 func _handle_footstep_audio(delta: float) -> void:
 	# 判定条件：必须在地面上、有横向移动输入、有横向速度、非受伤/死亡等硬直状态
 	var is_moving_on_ground: bool = is_on_floor() and abs(velocity.x) > 10.0 and gameInputControl and gameInputControl.row_dir != 0.0
-	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt" or move_state_machine.cur_state_name == "shuttle"):
+	if move_state_machine and (move_state_machine.cur_state_name == "died" or move_state_machine.cur_state_name == "hurt"):
 		is_moving_on_ground = false
 
 	if is_moving_on_ground:

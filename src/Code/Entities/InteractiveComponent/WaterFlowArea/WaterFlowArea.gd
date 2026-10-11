@@ -153,11 +153,12 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 			if player_body.has_method("SetInWaterFlow"):
 				player_body.SetInWaterFlow(true)
 
-		# 切换玩家状态为流水穿梭状态（退出 run 和 dash 状态，保证加速手感并预留动画接口）
+		# 退出冲刺并恢复常规空中动作，保留流水赋予的速度。
 		if player_body.has_node("move_state_machine"):
 			var sm = player_body.get_node("move_state_machine")
-			if sm.has_method("change_state"):
-				sm.change_state("shuttle")
+			if sm.cur_state_name == "dash":
+				sm.state_map["fall"].is_use = true
+			sm.change_state("fall")
 
 		# 穿过流体水幕：刷新冲刺（Dash）与钩索（Rope）
 		if player_body.has_method("ResetDashAndRope"):

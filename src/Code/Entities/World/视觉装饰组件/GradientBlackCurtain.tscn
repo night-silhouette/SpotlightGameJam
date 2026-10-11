@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="Shader" id="Shader_curtain"]
+code = "shader_type canvas_item;\nrender_mode unshaded;\n\nuniform float opacity : hint_range(0.0, 1.0) = 1.0;\nuniform float fade_left : hint_range(0.001, 0.5) = 0.12;\nuniform float fade_right : hint_range(0.001, 0.5) = 0.12;\nuniform float fade_top : hint_range(0.001, 0.5) = 0.12;\nuniform float fade_bottom : hint_range(0.001, 0.5) = 0.12;\n\nvoid fragment() {\n    float alpha = smoothstep(0.0, fade_left, UV.x);\n    alpha *= smoothstep(0.0, fade_right, 1.0 - UV.x);\n    alpha *= smoothstep(0.0, fade_top, UV.y);\n    alpha *= smoothstep(0.0, fade_bottom, 1.0 - UV.y);\n    COLOR = vec4(0.0, 0.0, 0.0, opacity * alpha);\n}\n"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_curtain"]
+shader = SubResource("Shader_curtain")
+
+[node name="GradientBlackCurtain" type="ColorRect"]
+material = SubResource("ShaderMaterial_curtain")
+offset_right = 512.0
+offset_bottom = 256.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

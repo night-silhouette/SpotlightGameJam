@@ -60,7 +60,7 @@ func _run() -> void:
 	rope.collision_mask = settings.rope_collision_mask
 	animator.advance(1.1 / settings.rope_visual_deploy_fps)
 	_check(action.frame == 1, "发射第二帧应由动画轨道播放")
-	for state in ["idle", "run", "jump", "fall", "climb", "dash", "shuttle"]:
+	for state in ["idle", "run", "jump", "fall", "climb", "dash"]:
 		machine.change_state(state)
 		_check(machine.cur_state_name == "rope_send", "发射不能被 %s 抢占" % state)
 	rope.hook_point = player.global_position + Vector2(100.0, -100.0)
