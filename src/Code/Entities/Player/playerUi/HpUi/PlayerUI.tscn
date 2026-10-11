@@ -91,6 +91,38 @@ focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "设置 (ESC)"
 
+[node name="RelicIcons" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -124.0
+offset_top = -80.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Crown" type="TextureRect" parent="Control/RelicIcons"]
+visible = false
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Codex" type="TextureRect" parent="Control/RelicIcons"]
+visible = false
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
 [node name="DebugPanel" type="VBoxContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 1

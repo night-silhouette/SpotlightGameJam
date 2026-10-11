@@ -64,6 +64,30 @@ extends Node
 @export var player_enable_double_jump: bool = false
 ## 是否默认解锁钩索功能
 @export var player_enable_rope: bool = false
+
+@export_group("Relics & Lake")
+## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
+@export var sunken_crown_texture: Texture2D
+## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
+@export var starseekers_codex_texture: Texture2D
+## 湖第一次交互后的水量比例。
+@export_range(0.0, 1.0, 0.01) var lake_first_fill_ratio: float = 0.5
+## 遗物飞入湖泊的动画时长（秒）。
+@export_range(0.1, 3.0, 0.05) var lake_relic_flight_duration: float = 0.65
+
+func _ready() -> void:
+	if sunken_crown_texture == null:
+		sunken_crown_texture = _make_relic_icon("<path d='M7 16 L14 22 L24 11 L34 22 L41 16 L38 35 L10 35 Z' fill='#f4c857' stroke='#583d71' stroke-width='2'/><path d='M10 35 H38 V40 H10 Z' fill='#fff0a8'/><circle cx='24' cy='28' r='4' fill='#45ccdc'/>")
+	if starseekers_codex_texture == null:
+		starseekers_codex_texture = _make_relic_icon("<path d='M8 10 Q18 7 24 13 Q30 7 40 10 V38 Q30 35 24 41 Q18 35 8 38 Z' fill='#574b98' stroke='#eddba7' stroke-width='2'/><path d='M24 13 V40' stroke='#eddba7' stroke-width='2'/><path d='M31 15 L32 20 L37 21 L32 22 L31 27 L30 22 L25 21 L30 20 Z' fill='#ffec93'/>")
+
+func _make_relic_icon(shapes: String) -> Texture2D:
+	var svg := "<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'>%s</svg>" % shapes
+	var image := Image.new()
+	image.load_svg_from_buffer(svg.to_utf8_buffer())
+	return ImageTexture.create_from_image(image)
+
+@export_group("Movement & Physics", "player_")
 ## 蹬墙跳垂直弹跳力与水平反冲基数
 @export var player_climb_ability: float = 480.0
 ## 贴墙滑落时的最大下落速度限制
