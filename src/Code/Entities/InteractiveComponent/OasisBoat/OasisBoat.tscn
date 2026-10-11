@@ -9,7 +9,7 @@ _data = {
 point_count = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_deck"]
-size = Vector2(120, 16)
+size = Vector2(120, 24)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_detector"]
 size = Vector2(110, 24)
@@ -27,7 +27,7 @@ loop = false
 collision_mask = 2
 
 [node name="SolidDeck" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D" unique_id=1361617645]
-position = Vector2(0, 8)
+position = Vector2(0, 12)
 shape = SubResource("RectangleShape2D_deck")
 
 [node name="BoardingDetector" type="Area2D" parent="PathFollow2D/AnimatableBody2D" unique_id=801204866]
@@ -37,14 +37,3 @@ collision_mask = 2
 
 [node name="DetectorShape" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D/BoardingDetector" unique_id=326992002]
 shape = SubResource("RectangleShape2D_detector")
-
-[node name="VisualRoot" type="Node2D" parent="PathFollow2D/AnimatableBody2D" unique_id=135589554]
-
-[node name="HullPolygon" type="Polygon2D" parent="PathFollow2D/AnimatableBody2D/VisualRoot" unique_id=128229200]
-color = Color(0.55, 0.38, 0.22, 1)
-polygon = PackedVector2Array(-60, 0, 60, 0, 50, 16, -50, 16)
-
-[node name="DeckHighlight" type="Line2D" parent="PathFollow2D/AnimatableBody2D/VisualRoot" unique_id=458044422]
-points = PackedVector2Array(-56, 1, 56, 1)
-width = 2.0
-default_color = Color(0.85, 0.72, 0.5, 1)

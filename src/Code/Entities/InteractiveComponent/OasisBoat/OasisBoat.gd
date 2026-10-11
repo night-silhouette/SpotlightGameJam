@@ -25,7 +25,7 @@ enum BoatState {
 ## 是否在关卡就绪时自动开始入场漂流到第 0 个停靠点。
 @export var auto_start_initial_drift: bool = true
 ## 随波逐流垂直颠簸振幅（像素）。
-@export var bob_amplitude: float = 3.5
+@export var bob_amplitude: float = 0.0
 ## 随波逐流垂直颠簸频率（Hz）。
 @export var bob_frequency: float = 2.0
 
@@ -41,7 +41,6 @@ enum BoatState {
 
 @onready var path_follow: PathFollow2D = $PathFollow2D
 @onready var animatable_body: AnimatableBody2D = $PathFollow2D/AnimatableBody2D
-@onready var visual_root: Node2D = $PathFollow2D/AnimatableBody2D/VisualRoot
 @onready var boarding_detector: Area2D = $PathFollow2D/AnimatableBody2D/BoardingDetector
 
 var current_state: BoatState = BoatState.WAITING
@@ -49,11 +48,21 @@ var current_stop_index: int = -1
 var is_player_on_board: bool = false
 var _elapsed_time: float = 0.0
 var _stop_wait_timer: float = 0.0
+var _body_transform_offset: Transform2D
+var _last_body_target_position: Vector2
+var _body_sync_initialized: bool = false
 
 
 func _ready() -> void:
+	# 船先于角色执行物理更新，确保角色本帧就能取得最新的平台速度。
+	process_physics_priority = -100
 	path_follow.rotates = false
 	path_follow.loop = false
+	# PathFollow2D 只负责路线采样；物理船体改为顶层节点并显式同步全局变换。
+	# 这样 AnimatableBody2D 能正确向 CharacterBody2D 提供平台速度。
+	_body_transform_offset = path_follow.global_transform.affine_inverse() * animatable_body.global_transform
+	animatable_body.top_level = true
+	_sync_physics_body(0.0)
 	if use_battlefield_stop_points:
 		stop_points.clear()
 		for index in range(ExportSettings.oasis_boat_stop_ratios.size()):
@@ -61,6 +70,10 @@ func _ready() -> void:
 			point.progress_ratio = ExportSettings.oasis_boat_stop_ratios[index]
 			point.point_id = "stop_%d" % index
 			point.require_player_on_board = index != ExportSettings.oasis_boat_blocker_stop_index
+			# 第一个停靠点只允许由关卡中的 get_boat 区域放行，避免船体自身检测提前启航。
+			if index == 0:
+				point.point_id = "get_boat"
+				point.require_puzzle_solved = true
 			if index == ExportSettings.oasis_boat_blocker_stop_index:
 				point.point_id = "vanishing_blocker"
 				point.require_puzzle_solved = true
@@ -88,9 +101,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	_elapsed_time += delta
-	_update_bobbing_effect()
-
 	match current_state:
 		BoatState.INITIAL_DRIFTING:
 			_process_drifting(delta)
@@ -100,6 +110,20 @@ func _physics_process(delta: float) -> void:
 			_process_sailing(delta)
 		BoatState.ARRIVED_FINAL:
 			pass
+
+	_sync_physics_body(delta)
+
+
+## 将承载角色的物理船体同步到路线采样点，并显式报告本帧平台速度。
+func _sync_physics_body(delta: float) -> void:
+	var target_transform := path_follow.global_transform * _body_transform_offset
+	if _body_sync_initialized and delta > 0.0:
+		animatable_body.constant_linear_velocity = (target_transform.origin - _last_body_target_position) / delta
+	else:
+		animatable_body.constant_linear_velocity = Vector2.ZERO
+		_body_sync_initialized = true
+	_last_body_target_position = target_transform.origin
+	animatable_body.global_transform = target_transform
 
 
 ## 外部通知：解密已完成或某个机关已激活。
@@ -121,6 +145,8 @@ func ResumeJourney() -> void:
 ## 外部通知：重置到航线初始状态。
 func ResetBoat() -> void:
 	path_follow.progress_ratio = 0.0
+	_body_sync_initialized = false
+	_sync_physics_body(0.0)
 	current_stop_index = 0
 	current_state = BoatState.WAITING
 	for pt in stop_points:
@@ -130,12 +156,6 @@ func ResetBoat() -> void:
 ## 检查玩家当前是否在船上。
 func IsPlayerOnBoard() -> bool:
 	return is_player_on_board
-
-
-func _update_bobbing_effect() -> void:
-	if is_instance_valid(visual_root):
-		var offset_y: float = sin(_elapsed_time * bob_frequency * TAU) * bob_amplitude
-		visual_root.position.y = offset_y
 
 
 func _process_drifting(delta: float) -> void:

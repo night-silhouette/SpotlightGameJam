@@ -50,11 +50,14 @@ func _physics_process(_delta: float) -> void:
 	row_dir = Input.get_axis("move_l", "move_r")
 	column_dir = Input.get_axis("up", "down")
 
-	var jump_pressed = Input.is_action_just_pressed("jump")
-	is_jump = obj.is_on_floor() and jump_pressed
+	var jump_pressed := Input.is_action_just_pressed("jump")
+	# “下 + 跳跃”专门用于穿过单向平台，不能同时触发普通跳跃或二段跳。
+	var drop_through_pressed := Input.is_action_pressed("down") and jump_pressed
+	var normal_jump_pressed := jump_pressed and not drop_through_pressed
+	is_jump = obj.is_on_floor() and normal_jump_pressed
 	is_double_jump = (
 		not obj.is_on_floor()
-		and jump_pressed
+		and normal_jump_pressed
 		and not obj.is_front_has_rigid
 		and not obj.is_back_has_rigid
 		and obj.get("enable_double_jump") == true

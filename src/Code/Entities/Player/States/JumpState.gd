@@ -31,6 +31,7 @@ func enter() -> void:
 			obj.double_jump_count -= 1
 			var d_speed = obj.double_jump_speed if "double_jump_speed" in obj else obj.jump_speed
 			obj.velocity.y = -d_speed
+			obj.PlayDoubleJumpRing()
 			if obj.has_method("PlayJumpSecondSFX"):
 				obj.PlayJumpSecondSFX()
 		else:
@@ -57,6 +58,9 @@ func enter() -> void:
 			animation_player.animation_finished.connect(_on_jump_start_finished)
 
 	change_use_all(false)
+	var dash_node = state_machine.get_node_or_null("dash")
+	if dash_node:
+		dash_node.is_use = true
 	var hurt_node = state_machine.get_node_or_null("hurt")
 	if hurt_node:
 		hurt_node.is_use = true

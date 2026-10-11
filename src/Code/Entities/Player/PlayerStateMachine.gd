@@ -6,16 +6,15 @@ func _ready() -> void:
 	SignalBus.PlayerGrapplePhaseChanged.connect(_on_grapple_phase_changed)
 	var animator: AnimationPlayer = get_parent().get_node("ani_move")
 	animator.animation_finished.connect(_on_animation_finished)
-	# 每个玩家使用独立动画资源；参数只修改轨道值，人物帧与显隐仍由 ani_move 播放。
+	# 仅发射姿势使用绳索配置；fly 保留场景中编辑的动画轨道。
 	var library: AnimationLibrary = animator.get_animation_library("").duplicate(true)
 	animator.remove_animation_library("")
 	animator.add_animation_library("", library)
-	for animation_name in [&"RopeSend", &"fly"]:
-		var animation := animator.get_animation(animation_name)
-		var position_track := animation.find_track(NodePath("sprite/Action:position"), Animation.TYPE_VALUE)
-		var scale_track := animation.find_track(NodePath("sprite/Action:scale"), Animation.TYPE_VALUE)
-		animation.track_set_key_value(position_track, 0, ExportSettings.rope_visual_player_offset)
-		animation.track_set_key_value(scale_track, 0, Vector2.ONE * ExportSettings.rope_visual_player_scale)
+	var animation := animator.get_animation(&"RopeSend")
+	var position_track := animation.find_track(NodePath("sprite/Action:position"), Animation.TYPE_VALUE)
+	var scale_track := animation.find_track(NodePath("sprite/Action:scale"), Animation.TYPE_VALUE)
+	animation.track_set_key_value(position_track, 0, ExportSettings.rope_visual_player_offset)
+	animation.track_set_key_value(scale_track, 0, Vector2.ONE * ExportSettings.rope_visual_player_scale)
 
 ## 查询人物是否由绳索动作占用；无参数，返回 true 时锁定发射朝向。
 func IsRopePoseActive() -> bool:
@@ -88,7 +87,8 @@ func phy_middleware() -> void:
 				change_state("fall")
 				return
 
-	if gameInputControl.is_fall:
+	# 扒墙状态自行处理 0.12 秒的松手宽限，不能被通用下落判定提前打断。
+	if gameInputControl.is_fall and cur_state_name != "climb":
 		change_state("fall")
 	elif not obj.is_on_floor() and obj.velocity.y < 0.0 and cur_state_name in ["idle", "run", "fall"]:
 		change_state("fall")
@@ -99,7 +99,7 @@ func phy_middleware() -> void:
 	if gameInputControl.is_jump:
 		change_state("jump")
 	if "is_double_jump" in gameInputControl and gameInputControl.is_double_jump:
-		# 如果已经在 jump 状态中，先 exit 或直接允许重新进入以赋二段跳速度
+		# 如果已经在 jump 状态中，先 exit 或再次进入以赋二段跳速度
 		if cur_state_name == "jump":
 			var jump_state = state_map.get("jump")
 			if jump_state:
@@ -109,5 +109,6 @@ func phy_middleware() -> void:
 			change_state("jump")
 	if gameInputControl.is_dash:
 		change_state("dash")
-	if obj and obj.is_front_has_rigid:
+	var holding_toward_wall: bool = obj != null and int(sign(gameInputControl.row_dir)) == obj.face_dir
+	if obj and obj.is_front_has_rigid and holding_toward_wall and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
 		change_state("climb")

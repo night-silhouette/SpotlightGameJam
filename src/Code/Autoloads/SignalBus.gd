@@ -87,6 +87,24 @@ signal CameraInputLockChanged(player: Node2D, locked: bool)
 ## =============================================================================
 
 
+## UI 请求设置永久能力；ability 为 double_jump 或 rope，enabled 为目标解锁状态。
+signal PlayerAbilityChangeRequested(ability: StringName, enabled: bool)
+## UI 请求当前玩家能力状态，用于初始化或重新打开面板。
+signal PlayerAbilityStateRequested
+## 玩家永久能力变化或应答状态请求时触发；两个布尔值分别为二段跳与钩索解锁状态。
+signal PlayerAbilitiesChanged(double_jump_enabled: bool, rope_enabled: bool)
+
+## 发出时角色获得 The Sunken Crown；无参数。
+signal lock1
+## 发出时角色获得 The Starseeker's Codex；无参数。
+signal lock2
+## 请求玩家广播两件遗物的持有状态；无参数。
+signal PlayerRelicStateRequested
+## 角色持有状态改变或响应查询时触发；crown 与 codex 分别表示两件遗物是否持有。
+signal PlayerRelicsChanged(crown: bool, codex: bool)
+## 湖泊请求消耗一件遗物时触发；relic 仅为 crown 或 codex。
+signal PlayerRelicConsumeRequested(relic: StringName)
+
 #region 1. 玩家钩锁与移动事件
 
 ## 玩家发射多向自瞄钩锁时触发
@@ -251,6 +269,12 @@ signal FallingBlockHit(block_node: Node2D, target: Node2D)
 ## 下落方块落到地面稳定变为可踩平台时触发
 ## @param block_node 落石节点
 signal FallingBlockLanded(block_node: Node2D)
+
+## 物理机关通道状态发生变化时触发。
+## @param channel 机关绑定通道；发送端与接收端使用相同名称即可联动。
+## @param is_active true 表示通道被按下或激活，false 表示释放。
+## @param source 发出状态的物理机关节点；接收端据此正确合并同通道的多个发送端。
+signal MechanismChannelStateChanged(channel: StringName, is_active: bool, source: Node2D)
 
 #endregion
 

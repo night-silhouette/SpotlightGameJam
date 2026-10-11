@@ -10,7 +10,13 @@ class_name PlayerUI
 @onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthBar/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
 @onready var setting_button: Button = $Control/MarginContainer/VBoxContainer/SettingButton
+@onready var debug_toggle: Button = $Control/DebugPanel/ToggleButton
+@onready var debug_abilities: VBoxContainer = $Control/DebugPanel/Abilities
+@onready var double_jump_toggle: CheckButton = $Control/DebugPanel/Abilities/DoubleJump
+@onready var rope_toggle: CheckButton = $Control/DebugPanel/Abilities/Rope
 @onready var virtual_joystick: Control = $Control/VirtualJoystick
+@onready var crown_icon: TextureRect = $Control/RelicIcons/Crown
+@onready var codex_icon: TextureRect = $Control/RelicIcons/Codex
 
 @onready var right_action_buttons: Control = $Control/RightActionButtons
 @onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
@@ -27,6 +33,8 @@ func _ready() -> void:
 		SignalBus.PlayerHealthChanged.connect(_on_player_health_changed)
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
+		SignalBus.PlayerAbilitiesChanged.connect(_on_player_abilities_changed)
+		SignalBus.PlayerRelicsChanged.connect(_on_player_relics_changed)
 	
 	if ExportSettings:
 		_max_hp = ExportSettings.player_max_hp
@@ -34,8 +42,34 @@ func _ready() -> void:
 	
 	if setting_button:
 		setting_button.pressed.connect(_on_setting_button_pressed)
-	
+	debug_toggle.pressed.connect(_on_debug_toggle_pressed)
+	double_jump_toggle.toggled.connect(_on_double_jump_toggled)
+	rope_toggle.toggled.connect(_on_rope_toggled)
+	crown_icon.texture = ExportSettings.sunken_crown_texture
+	codex_icon.texture = ExportSettings.starseekers_codex_texture
+	SignalBus.PlayerAbilityStateRequested.emit()
+	SignalBus.PlayerRelicStateRequested.emit()
 	UpdateHealthDisplay(_target_hp, _max_hp)
+
+func _on_debug_toggle_pressed() -> void:
+	debug_abilities.visible = not debug_abilities.visible
+	debug_toggle.text = "调试能力 ▲" if debug_abilities.visible else "调试能力 ▼"
+	if debug_abilities.visible:
+		SignalBus.PlayerAbilityStateRequested.emit()
+
+func _on_double_jump_toggled(enabled: bool) -> void:
+	SignalBus.PlayerAbilityChangeRequested.emit(&"double_jump", enabled)
+
+func _on_rope_toggled(enabled: bool) -> void:
+	SignalBus.PlayerAbilityChangeRequested.emit(&"rope", enabled)
+
+func _on_player_abilities_changed(double_jump_enabled: bool, rope_enabled: bool) -> void:
+	double_jump_toggle.set_pressed_no_signal(double_jump_enabled)
+	rope_toggle.set_pressed_no_signal(rope_enabled)
+
+func _on_player_relics_changed(crown: bool, codex: bool) -> void:
+	crown_icon.visible = crown
+	codex_icon.visible = codex
 
 func _on_setting_button_pressed() -> void:
 	if SignalBus:

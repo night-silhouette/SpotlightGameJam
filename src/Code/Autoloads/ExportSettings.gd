@@ -80,6 +80,8 @@ extends Node
 @export var player_friction: float = 3000.0
 ## 角色自动跨越的小坡最大高度（像素；不超过脚部与下身探针间距）
 @export_range(0.0, 11.0, 0.5) var player_step_height: float = 11.0
+## 自动上坡时每次额外水平推进的最大距离（像素；不含正常行走）
+@export_range(0.0, 11.0, 0.5) var player_step_horizontal_distance: float = 1.0
 ## 跳跃初速度
 @export var player_jump_speed: float = 380.0
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)
@@ -89,11 +91,47 @@ extends Node
 ## 二段跳最大可用次数 (通常为 1)
 @export var player_max_double_jumps: int = 1
 ## 是否开启二段跳功能
-@export var player_enable_double_jump: bool = true
+@export var player_enable_double_jump: bool = false
+## 是否默认解锁钩索功能
+@export var player_enable_rope: bool = false
+
+@export_group("Relics & Lake")
+## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
+@export var sunken_crown_texture: Texture2D
+## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
+@export var starseekers_codex_texture: Texture2D
+## 湖第一次交互后的水量比例。
+@export_range(0.0, 1.0, 0.01) var lake_first_fill_ratio: float = 0.5
+## 遗物飞入湖泊的动画时长（秒）。
+@export_range(0.1, 3.0, 0.05) var lake_relic_flight_duration: float = 0.65
+
+func _ready() -> void:
+	if sunken_crown_texture == null:
+		sunken_crown_texture = _make_relic_icon("<path d='M7 16 L14 22 L24 11 L34 22 L41 16 L38 35 L10 35 Z' fill='#f4c857' stroke='#583d71' stroke-width='2'/><path d='M10 35 H38 V40 H10 Z' fill='#fff0a8'/><circle cx='24' cy='28' r='4' fill='#45ccdc'/>")
+	if starseekers_codex_texture == null:
+		starseekers_codex_texture = _make_relic_icon("<path d='M8 10 Q18 7 24 13 Q30 7 40 10 V38 Q30 35 24 41 Q18 35 8 38 Z' fill='#574b98' stroke='#eddba7' stroke-width='2'/><path d='M24 13 V40' stroke='#eddba7' stroke-width='2'/><path d='M31 15 L32 20 L37 21 L32 22 L31 27 L30 22 L25 21 L30 20 Z' fill='#ffec93'/>")
+
+func _make_relic_icon(shapes: String) -> Texture2D:
+	var svg := "<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'>%s</svg>" % shapes
+	var image := Image.new()
+	image.load_svg_from_buffer(svg.to_utf8_buffer())
+	return ImageTexture.create_from_image(image)
+
+@export_group("Movement & Physics", "player_")
 ## 蹬墙跳垂直弹跳力与水平反冲基数
 @export var player_climb_ability: float = 480.0
 ## 贴墙滑落时的最大下落速度限制
 @export var player_max_fall_speed: float = 120.0
+
+@export_group("Double Jump Ring", "player_double_jump_ring_")
+## 二段跳脚下光环颜色（透明度决定初始亮度）
+@export var player_double_jump_ring_color: Color = Color(1.0, 0.92, 0.58, 0.42)
+## 光环扩散并淡出的持续时间（秒）
+@export_range(0.05, 2.0, 0.01) var player_double_jump_ring_duration: float = 0.32
+## 光环最终的水平半径（像素）
+@export_range(1.0, 100.0, 1.0) var player_double_jump_ring_radius: float = 25.0
+## 光环从起跳位置向下移动的距离（像素）
+@export_range(0.0, 150.0, 1.0) var player_double_jump_ring_drop_distance: float = 35.0
 
 @export_group("Dash", "player_dash_")
 ## 冲刺持续时间 (秒)
@@ -102,6 +140,12 @@ extends Node
 @export var player_dash_speed: float = 650.0
 ## 冲刺冷却间隔 (秒)
 @export var player_dash_span: float = 0.65
+## 冲刺残影采样间隔（秒）
+@export_range(0.01, 0.2, 0.01) var player_dash_afterimage_interval: float = 0.04
+## 单个冲刺残影的淡出时长（秒）
+@export_range(0.05, 1.0, 0.01) var player_dash_afterimage_duration: float = 0.22
+## 冲刺残影的黄白色及初始透明度
+@export var player_dash_afterimage_color: Color = Color(1.0, 0.94, 0.65, 0.65)
 
 @export_group("Combat & Health", "player_")
 ## 玩家最大生命值
@@ -420,6 +464,22 @@ extends Node
 @export var falling_block_damage: float = 30.0
 ## 下落方块砸中玩家时的击退力度
 @export var falling_block_knockback_force: float = 300.0
+
+@export_group("Interactive - Pressure Button", "pressure_button_")
+## 压力按钮默认宽高（像素）。
+@export var pressure_button_size: Vector2 = Vector2(64.0, 14.0)
+## 压力按钮完全按下时向下移动的距离（像素）。
+@export_range(0.0, 32.0, 0.5) var pressure_button_press_depth: float = 8.0
+## 压力按钮按下与回弹速度（像素/秒）。
+@export_range(1.0, 1000.0, 1.0) var pressure_button_move_speed: float = 120.0
+
+@export_group("Interactive - Signal Door", "signal_door_")
+## 信号门默认碰撞宽高（像素）。
+@export var signal_door_size: Vector2 = Vector2(32.0, 128.0)
+## 信号门默认开启位移；场景实例可用导出属性覆盖方向和距离。
+@export var signal_door_open_offset: Vector2 = Vector2(0.0, -128.0)
+## 信号门开关移动速度（像素/秒）。
+@export_range(1.0, 2000.0, 1.0) var signal_door_move_speed: float = 180.0
 
 @export_group("Mobile & Android", "mobile_")
 ## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)

@@ -25,8 +25,8 @@ Util="*uid://b1hvelunefia2"
 SignalBus="*uid://cys1wmnhxscfl"
 GlobalValue="*res://Code/Autoloads/GlobalValue.gd"
 PhantomCameraManager="*uid://duq6jhf6unyis"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 ExportSettings="*uid://c311fu2k7fel3"
+_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 

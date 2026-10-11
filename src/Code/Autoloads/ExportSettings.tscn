@@ -4,6 +4,7 @@
 
 [node name="ExportSettings" type="Node2D" unique_id=636711994]
 script = ExtResource("1_hob1f")
+player_step_horizontal_distance = 0.0
 player_low_water_threshold = 0.3
 player_footstep_interval = 0.36
 player_footstep_initial_delay = 0.15
