@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/SignalVanishBlocker/SignalVanishBlocker.gd" id="1_blocker"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blocker"]
+size = Vector2(64, 64)
+
+[node name="SignalVanishBlocker" type="StaticBody2D" groups=["signal_vanish_blocker"]]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_blocker")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_blocker")
+
+[node name="Visual" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+color = Color(0.24, 0.4, 0.48, 1)

@@ -4,7 +4,9 @@ class_name SignalDoor
 ## 监听 SignalBus 物理机关通道，并在通道激活时移动到开启位置。
 
 @export_category("Signal Door Binding")
-## 输入通道；与压力按钮等发送端的输出通道填写相同名称即可绑定。
+## 直接绑定的按钮列表；如果不为空，则当且仅当列表内所有按钮均被按下时门才开启（多对一模式）。
+@export var bound_buttons: Array[PressureButton] = []
+## 输入通道；若 bound_buttons 为空，则回退到该通道进行监听绑定。
 @export var input_channel: StringName = &"door_1"
 ## 相对关闭位置的开启位移；允许每扇门独立设置方向与距离。
 @export var open_offset: Vector2 = Vector2(0.0, -128.0)
@@ -24,7 +26,15 @@ func _ready() -> void:
 	_sync_from_export_settings()
 	_closed_position = position
 	_update_dimensions()
-	SignalBus.MechanismChannelStateChanged.connect(_on_channel_state_changed)
+	if bound_buttons.is_empty():
+		SignalBus.MechanismChannelStateChanged.connect(_on_channel_state_changed)
+	else:
+		for btn in bound_buttons:
+			if is_instance_valid(btn) and not btn.pressed_state_changed.is_connected(_on_bound_button_changed):
+				btn.pressed_state_changed.connect(_on_bound_button_changed)
+	_refresh_open_state()
+
+func _on_bound_button_changed(_is_pressed: bool) -> void:
 	_refresh_open_state()
 
 func _physics_process(delta: float) -> void:
@@ -57,6 +67,8 @@ func _update_dimensions() -> void:
 func _on_channel_state_changed(channel: StringName, is_active: bool, source: Node2D) -> void:
 	if channel != input_channel:
 		return
+	if not is_instance_valid(source):
+		return
 	var source_id := source.get_instance_id()
 	if is_active:
 		_active_sources[source_id] = source
@@ -65,8 +77,16 @@ func _on_channel_state_changed(channel: StringName, is_active: bool, source: Nod
 	_refresh_open_state()
 
 func _refresh_open_state() -> void:
-	var channel_is_active := not _active_sources.is_empty()
-	_should_open = channel_is_active if open_when_active else not channel_is_active
+	var active: bool = false
+	if not bound_buttons.is_empty():
+		active = true
+		for btn in bound_buttons:
+			if not is_instance_valid(btn) or not btn.IsPressed():
+				active = false
+				break
+	else:
+		active = not _active_sources.is_empty()
+	_should_open = active if open_when_active else not active
 
 ## 立即清除已记录的发送端状态，并将门恢复为未激活逻辑。
 ## 可用于关卡重置；门仍会按配置速度移动到目标位置。
