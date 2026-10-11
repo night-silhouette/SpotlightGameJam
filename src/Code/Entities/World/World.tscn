@@ -92,7 +92,7 @@ material = SubResource("ShaderMaterial_hfiwn")
 material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(-3611, 72)
+position = Vector2(1230, 57)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
 position = Vector2(1231.3273, 63.636482)
@@ -105,13 +105,13 @@ tween_resource = SubResource("Resource_35sqx")
 tween_resource = SubResource("Resource_yocbw")
 
 [node name="Camp" parent="." unique_id=1903763566 instance=ExtResource("1_camp")]
-position = Vector2(-15, -1560)
+position = Vector2(-96, -1560)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
-position = Vector2(6327, 3170)
+position = Vector2(2632, -336)
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
-position = Vector2(-334, 3597)
+position = Vector2(-114, 3157)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19262, -1215)

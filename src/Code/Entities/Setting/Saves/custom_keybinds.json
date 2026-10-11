@@ -1,17 +1,12 @@
 {
 	"dash": {
-		"keycode": 4194325,
-		"physical_keycode": 4194325,
+		"keycode": 4194328,
+		"physical_keycode": 4194328,
 		"type": "key"
 	},
 	"down": {
 		"keycode": 0,
 		"physical_keycode": 83,
-		"type": "key"
-	},
-	"interact": {
-		"keycode": 70,
-		"physical_keycode": 70,
 		"type": "key"
 	},
 	"jump": {
@@ -37,9 +32,5 @@
 		"keycode": 0,
 		"physical_keycode": 87,
 		"type": "key"
-	},
-	"water_rune": {
-		"button_index": 2,
-		"type": "mouse_button"
 	}
 }

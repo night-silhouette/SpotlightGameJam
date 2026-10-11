@@ -95,7 +95,7 @@ extends Node
 ## 是否默认解锁钩索功能
 @export var player_enable_rope: bool = false
 ## 调试飞行四向移动速度（像素/秒）；仅开关开启时使用
-@export_range(1.0, 2000.0, 1.0) var player_debug_flight_speed: float = 350.0
+@export_range(1.0, 2000.0, 1.0) var player_debug_flight_speed: float = 700.0
 
 @export_group("Relics & Lake")
 ## The Sunken Crown 贴图；留空时使用程序生成的临时图标。

@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisRisingSpikes.tscn" id="11_rising_spikes"]
 [ext_resource type="Script" uid="uid://dk54k02xio8mt" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.gd" id="12_oasis_battlefield"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisMovingBlock.tscn" id="15_block_skin"]
-[ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="16_n1wbc"]
 
 [sub_resource type="Curve2D" id="Curve2D_1ev11"]
 _data = {
@@ -353,8 +352,5 @@ collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnPhase/TheEnd" unique_id=2029010309]
 shape = SubResource("CapsuleShape2D_ak84r")
-
-[node name="PlayerWithCamera" parent="." unique_id=1904895834 instance=ExtResource("16_n1wbc")]
-position = Vector2(15651, 1287)
 
 [editable path="ReturnPhase/MovingPlatform2"]
