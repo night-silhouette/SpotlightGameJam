@@ -22,13 +22,19 @@ func _process(_delta: float) -> void:
 				_player = body
 				break
 	_prompt.visible = is_instance_valid(_player)
-	$PromptContainer/HBox/KeyBadge.text = "右键"
+	var bound_event := KeybindManager.GetPrimaryEventForAction(ExportSettings.interactable_action)
+	$PromptContainer/PromptButton.button_mask = MOUSE_BUTTON_MASK_RIGHT
+	if bound_event is InputEventMouseButton:
+		$PromptContainer/PromptButton.button_mask |= 1 << (bound_event.button_index - 1)
+	$PromptContainer/HBox/KeyBadge.text = KeybindManager.GetActionKeyBadgeText(ExportSettings.interactable_action, "右键")
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and _prompt.visible:
-		if Geometry2D.is_point_in_polygon(_visual.to_local(get_global_mouse_position()), _visual.polygon):
-			_request()
-			get_viewport().set_input_as_handled()
+	if not event.is_action_pressed(ExportSettings.interactable_action) or not _prompt.visible:
+		return
+	if event is InputEventMouseButton and not Geometry2D.is_point_in_polygon(_visual.to_local(get_global_mouse_position()), _visual.polygon):
+		return
+	_request()
+	get_viewport().set_input_as_handled()
 
 func _request() -> void:
 	if available and is_instance_valid(_player) and global_position.distance_to(_player.global_position) <= ExportSettings.level2_interact_radius:

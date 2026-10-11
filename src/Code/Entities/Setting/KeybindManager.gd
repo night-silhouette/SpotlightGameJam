@@ -17,7 +17,8 @@ const CONFIGURABLE_ACTIONS: Array[StringName] = [
 	&"down",
 	&"jump",
 	&"dash",
-	&"rope_shoot"
+	&"rope_shoot",
+	&"interact"
 ]
 
 ## 获取动作友好中文名称
@@ -30,6 +31,7 @@ static func GetActionDisplayName(action: StringName) -> String:
 		&"jump": return "跳跃"
 		&"dash": return "冲刺"
 		&"rope_shoot": return "绳索发射/拉取"
+		&"interact": return "交互"
 		_: return String(action)
 
 

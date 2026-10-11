@@ -31,7 +31,6 @@ func _ready() -> void:
 			monologue_lines.assign(ExportSettings.interactable_monologue_lines)
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 	_button.pressed.connect(_on_prompt_pressed)
 	_refresh_prompt()
 
@@ -40,12 +39,15 @@ func _physics_process(_delta: float) -> void:
 	_refresh_prompt()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and not _players.is_empty():
+	if not event.is_action_pressed(interaction_action) or _players.is_empty():
+		return
+	if event is InputEventMouseButton:
 		var shape := _collision_shape.shape as RectangleShape2D
 		var point := _collision_shape.to_local(get_global_mouse_position())
-		if shape and Rect2(-shape.size * 0.5, shape.size).has_point(point):
-			if Interact(_players[0]):
-				get_viewport().set_input_as_handled()
+		if not shape or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
+			return
+	if Interact(_players[0]):
+		get_viewport().set_input_as_handled()
 
 ## 执行交互逻辑：首次交互请求描述文本，后续交互请求内心独白文本。
 ## @param interactor 必须为当前重叠区域内有效的玩家节点。
@@ -94,4 +96,8 @@ func _on_prompt_pressed() -> void:
 
 func _refresh_prompt() -> void:
 	_prompt.visible = not _players.is_empty()
-	_key_badge.text = "右键"
+	var bound_event := KeybindManager.GetPrimaryEventForAction(interaction_action)
+	_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
+	if bound_event is InputEventMouseButton:
+		_button.button_mask |= 1 << (bound_event.button_index - 1)
+	_key_badge.text = KeybindManager.GetActionKeyBadgeText(interaction_action, "右键")

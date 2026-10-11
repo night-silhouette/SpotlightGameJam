@@ -39,6 +39,15 @@ func _ready() -> void:
 		SignalBus.TentActivated.connect(_on_tent_activated_externally)
 	_update_visual_state()
 
+func _process(_delta: float) -> void:
+	if not _player_in_range:
+		return
+	var bound_event := KeybindManager.GetPrimaryEventForAction(ExportSettings.interactable_action)
+	prompt_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
+	if bound_event is InputEventMouseButton:
+		prompt_button.button_mask |= 1 << (bound_event.button_index - 1)
+	key_badge.text = KeybindManager.GetActionKeyBadgeText(ExportSettings.interactable_action, "右键")
+
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
 		if "tent_respawn_offset" in ExportSettings:
@@ -47,13 +56,16 @@ func _sync_from_export_settings() -> void:
 			(collision_shape.shape as RectangleShape2D).size = ExportSettings.tent_interaction_size
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-		if _player_in_range and is_instance_valid(_cached_player):
+	if not event.is_action_pressed(ExportSettings.interactable_action):
+		return
+	if _player_in_range and is_instance_valid(_cached_player):
+		if event is InputEventMouseButton:
 			var shape := collision_shape.shape as RectangleShape2D
 			var point := collision_shape.to_local(get_global_mouse_position())
-			if shape and Rect2(-shape.size * 0.5, shape.size).has_point(point):
-				ActivateTent()
-				get_viewport().set_input_as_handled()
+			if not shape or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
+				return
+		ActivateTent()
+		get_viewport().set_input_as_handled()
 
 func _on_prompt_pressed() -> void:
 	if _player_in_range and is_instance_valid(_cached_player):
@@ -118,7 +130,7 @@ func _update_visual_state() -> void:
 		if action_label:
 			action_label.text = "重设重生点" if is_active else "设为重生点"
 		if key_badge:
-			key_badge.text = "右键"
+			key_badge.text = KeybindManager.GetActionKeyBadgeText(ExportSettings.interactable_action, "右键")
 	else:
 		if prompt_container:
 			prompt_container.visible = false
