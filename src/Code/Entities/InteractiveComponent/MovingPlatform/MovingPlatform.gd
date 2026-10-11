@@ -31,6 +31,16 @@ class_name MovingPlatform
 		show_path_preview = value
 		_update_path_preview()
 
+@export_group("Trigger Settings")
+## 是否需要被触发/激活后才启动移动。
+@export var requires_activation: bool = false
+## 直接绑定的压力按钮；若设置，则该按钮按下时启动平台。
+@export var trigger_button: PressureButton = null
+## 监听的 SignalBus 机关通道名称；若未指定 trigger_button 但配置了通道，则监听该通道。
+@export var trigger_channel: StringName = &""
+## 一旦被激活，是否持续移动（为 false 时按钮松开或通道失活就会暂停移动）。
+@export var keep_moving_once_triggered: bool = true
+
 @onready var _solid_collision: CollisionShape2D = $SolidCollision
 @onready var _visual_rect: Polygon2D = $VisualRect
 @onready var _top_highlight: Line2D = $TopHighlight
@@ -43,6 +53,8 @@ var _path_progress: float = 0.0
 var _direction: int = 1
 var _wait_remaining: float = 0.0
 var _movement_finished: bool = false
+var _is_activated: bool = false
+var _active_channel_sources: Dictionary = {}
 
 func _ready() -> void:
 	_origin_position = position
@@ -51,8 +63,45 @@ func _ready() -> void:
 	position = _origin_position + movement_offset * _path_progress
 	_update_dimensions()
 	_update_path_preview()
+	_setup_triggers()
+
+func _setup_triggers() -> void:
+	if not requires_activation:
+		_is_activated = true
+		return
+
+	if is_instance_valid(trigger_button):
+		if not trigger_button.pressed_state_changed.is_connected(_on_trigger_button_state_changed):
+			trigger_button.pressed_state_changed.connect(_on_trigger_button_state_changed)
+		if trigger_button.IsPressed():
+			_is_activated = true
+	elif not trigger_channel.is_empty():
+		if not SignalBus.MechanismChannelStateChanged.is_connected(_on_mechanism_channel_changed):
+			SignalBus.MechanismChannelStateChanged.connect(_on_mechanism_channel_changed)
+
+func _on_trigger_button_state_changed(is_pressed: bool) -> void:
+	if is_pressed:
+		_is_activated = true
+	elif not keep_moving_once_triggered:
+		_is_activated = false
+
+func _on_mechanism_channel_changed(channel: StringName, is_active: bool, source: Node2D) -> void:
+	if channel != trigger_channel:
+		return
+	if not is_instance_valid(source):
+		return
+	var source_id := source.get_instance_id()
+	if is_active:
+		_active_channel_sources[source_id] = source
+		_is_activated = true
+	else:
+		_active_channel_sources.erase(source_id)
+		if not keep_moving_once_triggered and _active_channel_sources.is_empty():
+			_is_activated = false
 
 func _physics_process(delta: float) -> void:
+	if requires_activation and not _is_activated:
+		return
 	if _movement_finished or movement_speed <= 0.0 or movement_offset.is_zero_approx():
 		return
 
@@ -128,6 +177,7 @@ func ExportSaveData() -> Dictionary:
 		"direction": _direction,
 		"wait_remaining": _wait_remaining,
 		"movement_finished": _movement_finished,
+		"is_activated": _is_activated,
 	}
 
 ## 从存档恢复移动平台运行状态。
@@ -137,6 +187,7 @@ func LoadSaveData(data: Dictionary) -> void:
 	_direction = 1 if int(data.get("direction", _direction)) >= 0 else -1
 	_wait_remaining = maxf(float(data.get("wait_remaining", 0.0)), 0.0)
 	_movement_finished = bool(data.get("movement_finished", false))
+	_is_activated = bool(data.get("is_activated", _is_activated))
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(float(data["position_x"]), float(data["position_y"]))
 		_origin_position = position - movement_offset * _path_progress

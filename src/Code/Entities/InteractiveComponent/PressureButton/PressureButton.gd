@@ -1,6 +1,9 @@
 extends AnimatableBody2D
 class_name PressureButton
 
+## 按钮状态发生改变时发出（按下为 true，抬起为 false）。
+signal pressed_state_changed(is_pressed: bool)
+
 ## 由任意进入检测区的物理体压下，并通过 SignalBus 广播通道状态。
 
 @export_category("Pressure Button Binding")
@@ -87,6 +90,7 @@ func _set_pressed(value: bool) -> void:
 	if _is_pressed == value:
 		return
 	_is_pressed = value
+	pressed_state_changed.emit(_is_pressed)
 	_emit_state(_is_pressed)
 
 func _emit_state(value: bool) -> void:
