@@ -1,0 +1,161 @@
+[gd_scene format=3 uid="uid://da6rxnslb1cle"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/01.png" id="tex01"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/03.png" id="tex03"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/04.png" id="tex04"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/05.png" id="tex05"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/06.png" id="tex06"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/07.png" id="tex07"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/08.png" id="tex08"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/09.png" id="tex09"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/10.png" id="tex10"]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/11.png" id="tex11"]
+
+[node name="ParallaxScenery" type="Node2D" unique_id=381839512]
+editor_description = "按美术 4083×1024 预览图还原：01、03–11，共 10 张原图。窗户、岩顶、光影右半使用水平翻转，对应预览图右半；完整单元 4096×1024，由 Parallax2D Repeat Size 循环。Sprite 原尺寸、原透明度，不添加其他组素材、不修改 PNG。独立构图场景，尚未接入正式地图。"
+
+[node name="Sky" type="Parallax2D" parent="."]
+z_index = -30
+scroll_scale = Vector2(0.35, 1)
+repeat_size = Vector2(4096, 0)
+repeat_times = 3
+editor_description = "10 底色；与整幅窗户同速，完整单元重复宽度 4096。"
+
+[node name="BlueBase" type="Sprite2D" parent="Sky"]
+position = Vector2(0, 0)
+texture = ExtResource("tex10")
+centered = false
+
+[node name="BlueBaseRight" type="Sprite2D" parent="Sky"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex10")
+centered = false
+flip_h = true
+
+[node name="FarBackground" type="Parallax2D" parent="."]
+z_index = -20
+scroll_scale = Vector2(0.35, 1)
+repeat_size = Vector2(4096, 0)
+repeat_times = 3
+editor_description = "06 窗格、07 彩色窗片、09 拱窗：左半原图，右半对应美术预览的翻转图。"
+
+[node name="GlassColors" type="Sprite2D" parent="FarBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex07")
+centered = false
+
+[node name="GlassColorsRight" type="Sprite2D" parent="FarBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex07")
+centered = false
+flip_h = true
+
+[node name="WindowGrid" type="Sprite2D" parent="FarBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex06")
+centered = false
+
+[node name="WindowGridRight" type="Sprite2D" parent="FarBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex06")
+centered = false
+flip_h = true
+
+[node name="Arches" type="Sprite2D" parent="FarBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex09")
+centered = false
+
+[node name="ArchesRight" type="Sprite2D" parent="FarBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex09")
+centered = false
+flip_h = true
+
+[node name="NearBackground" type="Parallax2D" parent="."]
+z_index = -10
+scroll_scale = Vector2(0.35, 1)
+repeat_size = Vector2(4096, 0)
+repeat_times = 3
+editor_description = "04 光照、05 阴影、03 岩顶、11 亮点、08 下方桥梁；同速保持整幅图对齐。"
+
+[node name="WindowGlow" type="Sprite2D" parent="NearBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex04")
+centered = false
+
+[node name="WindowGlowRight" type="Sprite2D" parent="NearBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex04")
+centered = false
+flip_h = true
+
+[node name="UpperShade" type="Sprite2D" parent="NearBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex05")
+centered = false
+
+[node name="UpperShadeRight" type="Sprite2D" parent="NearBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex05")
+centered = false
+flip_h = true
+
+[node name="CeilingRock" type="Sprite2D" parent="NearBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex03")
+centered = false
+
+[node name="CeilingRockRight" type="Sprite2D" parent="NearBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex03")
+centered = false
+flip_h = true
+
+[node name="Sparkles" type="Sprite2D" parent="NearBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex11")
+centered = false
+
+[node name="SparklesRight" type="Sprite2D" parent="NearBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex11")
+centered = false
+flip_h = true
+
+[node name="DistantBridge" type="Sprite2D" parent="NearBackground"]
+position = Vector2(0, 0)
+texture = ExtResource("tex08")
+centered = false
+
+[node name="DistantBridgeRight" type="Sprite2D" parent="NearBackground"]
+position = Vector2(2048, 0)
+texture = ExtResource("tex08")
+centered = false
+flip_h = true
+
+[node name="ForegroundLoop" type="Parallax2D" parent="."]
+z_index = 10
+scroll_scale = Vector2(1.2, 1)
+repeat_size = Vector2(4096, 0)
+repeat_times = 3
+editor_description = "仅 01 黑色模糊柱子。按预览图位置使用两个原图节点，不裁剪、不降低透明度。整个 4096 宽单元重复。"
+
+[node name="LeftPillar" type="Sprite2D" parent="ForegroundLoop"]
+position = Vector2(-2126, 0)
+texture = ExtResource("tex01")
+centered = false
+
+[node name="RightPillar" type="Sprite2D" parent="ForegroundLoop"]
+position = Vector2(0, 0)
+texture = ExtResource("tex01")
+centered = false

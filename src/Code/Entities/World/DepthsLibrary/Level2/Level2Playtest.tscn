@@ -1,36 +1,29 @@
-[gd_scene format=3]
-[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Playtest.gd" id="script"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.tscn" id="map"]
+[gd_scene format=3 uid="uid://d20qltxs528g5"]
+
+[ext_resource type="PackedScene" uid="uid://ca8qoecnswf60" path="res://Code/Entities/World/DepthsLibrary/Level2/CityInterfacePreview.tscn" id="city_preview"]
+[ext_resource type="Script" uid="uid://c6ouncvvpubl7" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2CameraDirector.gd" id="director"]
+[ext_resource type="PackedScene" uid="uid://bopjvl4pbi3mj" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.tscn" id="map"]
+[ext_resource type="Script" uid="uid://bx4cdc0wtapak" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2ShaftOcclusion.gd" id="mask"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2PlayerWithCamera.tscn" id="player"]
-[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2CameraDirector.gd" id="director"]
-[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2ShaftOcclusion.gd" id="mask"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/CityInterfacePreview.tscn" id="city_preview"]
-[node name="Level2Playtest" type="Node2D"]
+[ext_resource type="Script" uid="uid://dhko4a7ati3v" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Playtest.gd" id="script"]
+
+[node name="Level2Playtest" type="Node2D" unique_id=1847017014]
 script = ExtResource("script")
-[node name="Backdrop" type="CanvasLayer" parent="."]
-layer = -100
 
-[node name="Fill" type="ColorRect" parent="Backdrop"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(0.025, 0.04, 0.055, 1)
+[node name="Level2Map" parent="." unique_id=1538731523 instance=ExtResource("map")]
+position = Vector2(-413, -1088)
 
-[node name="Level2Map" parent="." instance=ExtResource("map")]
-[node name="Level2PlayerWithCamera" parent="." instance=ExtResource("player")]
-[node name="CameraDirector" type="Node2D" parent="."]
+[node name="Level2PlayerWithCamera" parent="." unique_id=1471034687 instance=ExtResource("player")]
+
+[node name="CameraDirector" type="Node2D" parent="." unique_id=1971117187]
 process_physics_priority = -10
 script = ExtResource("director")
 
-[node name="ShaftFollowTarget" type="Marker2D" parent="CameraDirector"]
+[node name="ShaftFollowTarget" type="Marker2D" parent="CameraDirector" unique_id=1246602002]
 
-[node name="ShaftOcclusion" type="CanvasLayer" parent="CameraDirector"]
-layer = 1
+[node name="ShaftOcclusion" type="CanvasLayer" parent="CameraDirector" unique_id=526385528]
 
-[node name="Mask" type="Control" parent="CameraDirector/ShaftOcclusion"]
+[node name="Mask" type="Control" parent="CameraDirector/ShaftOcclusion" unique_id=1558650928]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -39,5 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("mask")
+metadata/_edit_use_anchors_ = true
 
-[node name="CityInterfacePreview" parent="." instance=ExtResource("city_preview")]
+[node name="CityInterfacePreview" parent="." unique_id=200529521 instance=ExtResource("city_preview")]
+position = Vector2(-413, -1088)

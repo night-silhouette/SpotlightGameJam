@@ -1,6 +1,5 @@
 [gd_scene format=3]
-[sub_resource type="RectangleShape2D" id="ExitFloorShape"]
-size = Vector2(720, 32)
+[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 [sub_resource type="RectangleShape2D" id="finish"]
 size = Vector2(500, 180)
 [sub_resource type="RectangleShape2D" id="spout"]
@@ -9,20 +8,6 @@ size = Vector2(260, 180)
 metadata/width = 900
 metadata/height = 120
 metadata/title = "主城右口 · 喷泉返程"
-[node name="ExitFloor" type="StaticBody2D" parent="."]
-position = Vector2(180, 0)
-collision_layer = 1
-collision_mask = 2
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitFloor"]
-position = Vector2(360.0, 16.0)
-shape = SubResource("ExitFloorShape")
-[node name="Stone" type="Polygon2D" parent="ExitFloor"]
-polygon = PackedVector2Array(0, 0, 720, 0, 720, 32, 0, 32)
-color = Color(0.14, 0.23, 0.28, 1)
-[node name="Edge" type="Polygon2D" parent="ExitFloor"]
-polygon = PackedVector2Array(0, 0, 720, 0, 720, 4, 0, 4)
-color = Color(0.50, 0.72, 0.73, 1)
-
 [node name="Spawn" type="Marker2D" parent="."]
 position = Vector2(350, -35)
 [node name="RoomTitle" type="Label" parent="."]
@@ -51,3 +36,10 @@ color = Color(0.1, 0.7, 0.85, 0.4)
 position = Vector2(260, -220)
 text = "右口 ↑ 喷泉返回主城"
 mouse_filter = 2
+
+
+[node name="Terrain" type="TileMapLayer" parent="."]
+position = Vector2(28, 0)
+tile_map_data = PackedByteArray("AAAFAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAALAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAARAAAAAAAAAAAAAAASAAAAAAAAAAAAAAATAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAVAAAAAAAAAAAAAAAWAAAAAAAAAAAAAAAXAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAZAAAAAAAAAAAAAAAaAAAAAAAAAAAAAAA=")
+tile_set = ExtResource("L2Terrain")
+navigation_enabled = false
