@@ -11,7 +11,7 @@ var _elapsed: float = 0.0
 var _player: CharacterBody2D
 var _checkpoint: Vector2
 var _saved_rope_mode: int = Node.PROCESS_MODE_INHERIT
-var _saved_double_jump: bool = true
+var _saved_double_jump: bool = false
 var _owns_player: bool = false
 var _active_room: Node2D
 var _toast_left: float = 0.0
@@ -25,6 +25,7 @@ func _ready() -> void:
 	_checkpoint = $Rooms/EntryCollapse/Spawn.global_position
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
+	SignalBus.PlayerAbilitiesChanged.connect(_on_player_abilities_changed)
 	$Rooms/SurfaceExit/FinishArea.body_entered.connect(_on_exit_reached)
 	for area in find_children("*", "Area2D", true, false):
 		if area.has_meta("fall_reset"):
@@ -98,6 +99,11 @@ func _claim_player() -> void:
 	if _player.rope_controller:
 		_saved_rope_mode = _player.rope_controller.process_mode
 		_player.rope_controller.process_mode = Node.PROCESS_MODE_DISABLED
+
+func _on_player_abilities_changed(double_jump_enabled: bool, _rope_enabled: bool) -> void:
+	if _owns_player and is_instance_valid(_player):
+		_saved_double_jump = double_jump_enabled
+		_player.enable_double_jump = true
 
 func _release_player() -> void:
 	if is_instance_valid(_player):

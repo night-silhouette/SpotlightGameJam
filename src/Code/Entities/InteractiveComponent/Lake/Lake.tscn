@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://begpdtx5e6uy8"]
+
+[ext_resource type="Script" uid="uid://c0mbjdm1fjpuf" path="res://Code/Entities/InteractiveComponent/Lake/Lake.gd" id="1_lake"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lake"]
+size = Vector2(193.09201, 84)
+
+[node name="Lake" type="Area2D" unique_id=1583188393]
+z_index = -1
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_lake")
+
+[node name="Bank" type="Polygon2D" parent="." unique_id=1903510240]
+color = Color(0.14, 0.28, 0.32, 0.8)
+polygon = PackedVector2Array(-100, -9, -80, -17, 80, -17, 100, -9, 91, 15, -91, 15)
+
+[node name="Water" type="ColorRect" parent="." unique_id=666097979]
+offset_left = -88.0
+offset_top = 9.88
+offset_right = 88.0
+offset_bottom = 35.88
+scale = Vector2(1, 0.12)
+mouse_filter = 2
+color = Color(0.19, 0.72, 0.87, 0.78)
+
+[node name="Surface" type="Polygon2D" parent="." unique_id=1132815667]
+color = Color(0.58, 0.91, 0.98, 0.92)
+polygon = PackedVector2Array(-82, -13, -40, -15, 12, -13, 65, -15, 82, -13, 65, -11, -40, -11)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1216154260]
+position = Vector2(1, -48)
+scale = Vector2(1.450086, 1.450086)
+shape = SubResource("RectangleShape2D_lake")

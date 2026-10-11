@@ -7,6 +7,19 @@
 [ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 
+[sub_resource type="Shader" id="Shader_dash_afterimage"]
+code = "shader_type canvas_item;
+uniform vec4 afterimage_color : source_color = vec4(1.0, 0.94, 0.65, 0.65);
+void fragment() {
+	COLOR = vec4(afterimage_color.rgb, COLOR.a * afterimage_color.a);
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mkscu"]
+resource_local_to_scene = true
+shader = SubResource("Shader_dash_afterimage")
+shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
+
 [sub_resource type="Shader" id="Shader_low_water_outline"]
 code = "shader_type canvas_item;
 
@@ -36,7 +49,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mkscu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hfiwn"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -63,20 +76,25 @@ speed = 250.0
 position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.13, 1.13)
 
-[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
+[node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21"]
 material = SubResource("ShaderMaterial_mkscu")
+
+[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
+material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_mkscu")
+material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_mkscu")
+material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Turn" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="3" unique_id=1352150481]
-material = SubResource("ShaderMaterial_mkscu")
+material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(2991, 6)
+physics_interpolation_mode = 1
+top_level = false
+position = Vector2(1230, 68)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
 position = Vector2(1231.3273, 74.63648)

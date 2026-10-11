@@ -87,6 +87,24 @@ signal CameraInputLockChanged(player: Node2D, locked: bool)
 ## =============================================================================
 
 
+## UI 请求设置永久能力；ability 为 double_jump 或 rope，enabled 为目标解锁状态。
+signal PlayerAbilityChangeRequested(ability: StringName, enabled: bool)
+## UI 请求当前玩家能力状态，用于初始化或重新打开面板。
+signal PlayerAbilityStateRequested
+## 玩家永久能力变化或应答状态请求时触发；两个布尔值分别为二段跳与钩索解锁状态。
+signal PlayerAbilitiesChanged(double_jump_enabled: bool, rope_enabled: bool)
+
+## 发出时角色获得 The Sunken Crown；无参数。
+signal lock1
+## 发出时角色获得 The Starseeker's Codex；无参数。
+signal lock2
+## 请求玩家广播两件遗物的持有状态；无参数。
+signal PlayerRelicStateRequested
+## 角色持有状态改变或响应查询时触发；crown 与 codex 分别表示两件遗物是否持有。
+signal PlayerRelicsChanged(crown: bool, codex: bool)
+## 湖泊请求消耗一件遗物时触发；relic 仅为 crown 或 codex。
+signal PlayerRelicConsumeRequested(relic: StringName)
+
 #region 1. 玩家钩锁与移动事件
 
 ## 玩家发射多向自瞄钩锁时触发

@@ -130,7 +130,7 @@ func _ready() -> void:
 	line_2d.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not player or player.now_HP <= 0.0:
+	if not player or player.now_HP <= 0.0 or not player.enable_rope:
 		return
 
 	# 移动端触屏事件拦截与处理
@@ -287,7 +287,7 @@ func _on_jump_pressed() -> void:
 		_finish_swing(true)
 
 func _shoot_rope() -> bool:
-	if not player or player.now_HP <= 0.0:
+	if not player or player.now_HP <= 0.0 or not player.enable_rope:
 		return false
 
 	# 检查下一次钩索消耗血量是否足够，扣除后若导致死亡（<= 0）则禁止使用绳索

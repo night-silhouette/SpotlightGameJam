@@ -3,7 +3,6 @@
 [ext_resource type="TileSet" uid="uid://c2kfbr6u44m8m" path="res://Code/Entities/World/collision_tile_set.tres" id="1_2uwnx"]
 [ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="2_4l5no"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="3_2lsnt"]
-[ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/PlayerWithCameraTest.tscn" id="3_km5r4"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="3_ovobq"]
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="5_sccv2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="6_es0s6"]
@@ -157,9 +156,3 @@ texture = ExtResource("7_sccv2")
 position = Vector2(329, -1579)
 scale = Vector2(1.7870677, 2.352593)
 
-[node name="PlayerWithCameraTest" parent="." unique_id=342374854 instance=ExtResource("3_km5r4")]
-position = Vector2(358, -1499)
-
-[node name="WaterFlowArea" parent="." unique_id=531403536 instance=ExtResource("2_4l5no")]
-position = Vector2(127, -1531)
-scale = Vector2(1.154987, 3.9541204)

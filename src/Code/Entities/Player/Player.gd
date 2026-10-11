@@ -38,7 +38,14 @@ class_name Player
 @export var jump_speed: float = 380.0
 @export var double_jump_speed: float = 380.0
 @export var max_double_jumps: int = 1
-@export var enable_double_jump: bool = true
+@export var enable_double_jump: bool = false
+## 持久解锁状态；关卡可临时覆写 enable_double_jump，不影响此值。
+var unlocked_double_jump: bool = false
+## 钩索永久解锁状态，与落地恢复的钩索冷却无关。
+var enable_rope: bool = false
+## 当前携带的沉没王冠和寻星者法典，默认均未获得。
+var has_sunken_crown: bool = false
+var has_starseekers_codex: bool = false
 @export var hurt_time: float = 0.15
 @export var accerleration: float = 2500.0
 @export var speed: float = 230.0
@@ -186,7 +193,9 @@ func _sync_from_export_settings() -> void:
 		jump_ability = ExportSettings.player_jump_ability
 		double_jump_speed = ExportSettings.player_double_jump_speed
 		max_double_jumps = ExportSettings.player_max_double_jumps
-		enable_double_jump = ExportSettings.player_enable_double_jump
+		unlocked_double_jump = ExportSettings.player_enable_double_jump
+		enable_double_jump = unlocked_double_jump
+		enable_rope = ExportSettings.player_enable_rope
 		double_jump_count = max_double_jumps
 		climb_ability = ExportSettings.player_climb_ability
 		step_height = ExportSettings.player_step_height
@@ -288,7 +297,56 @@ func _ready() -> void:
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
 		SignalBus.TentActivated.connect(_on_tent_activated)
 		SignalBus.PlayerInstantDeathRequested.connect(_on_player_instant_death_requested)
+		SignalBus.PlayerAbilityChangeRequested.connect(_on_player_ability_change_requested)
+		SignalBus.PlayerAbilityStateRequested.connect(_emit_ability_state)
+		SignalBus.lock1.connect(_on_crown_unlocked)
+		SignalBus.lock2.connect(_on_codex_unlocked)
+		SignalBus.PlayerRelicStateRequested.connect(_emit_relic_state)
+		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consume_requested)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
+		_emit_ability_state()
+		_emit_relic_state()
+
+func _on_crown_unlocked() -> void:
+	has_sunken_crown = true
+	_emit_relic_state()
+
+func _on_codex_unlocked() -> void:
+	has_starseekers_codex = true
+	_emit_relic_state()
+
+func _on_relic_consume_requested(relic: StringName) -> void:
+	match relic:
+		&"crown":
+			has_sunken_crown = false
+		&"codex":
+			has_starseekers_codex = false
+		_:
+			return
+	_emit_relic_state()
+
+func _emit_relic_state() -> void:
+	SignalBus.PlayerRelicsChanged.emit(has_sunken_crown, has_starseekers_codex)
+
+## 设置玩家永久能力；ability 仅接受 double_jump 或 rope，enabled 表示是否解锁。
+func SetAbilityEnabled(ability: StringName, enabled: bool) -> void:
+	match ability:
+		&"double_jump":
+			unlocked_double_jump = enabled
+			enable_double_jump = enabled
+		&"rope":
+			enable_rope = enabled
+			if not enabled and rope_controller and rope_controller.current_state != RopeController.RopeState.IDLE:
+				rope_controller.ReleaseRope(true)
+		_:
+			return
+	_emit_ability_state()
+
+func _on_player_ability_change_requested(ability: StringName, enabled: bool) -> void:
+	SetAbilityEnabled(ability, enabled)
+
+func _emit_ability_state() -> void:
+	SignalBus.PlayerAbilitiesChanged.emit(unlocked_double_jump, enable_rope)
 
 func _process(delta: float) -> void:
 	if is_hp_draining and now_HP > 0.0:
@@ -804,7 +862,11 @@ func ExportSaveData() -> Dictionary:
 		"spawn_x": spawn_position.x,
 		"spawn_y": spawn_position.y,
 		"respawn_x": respawn_position.x,
-		"respawn_y": respawn_position.y
+		"respawn_y": respawn_position.y,
+		"enable_double_jump": unlocked_double_jump,
+		"enable_rope": enable_rope,
+		"has_sunken_crown": has_sunken_crown,
+		"has_starseekers_codex": has_starseekers_codex
 	}
 
 ## 实体数据加载
@@ -820,3 +882,8 @@ func LoadSaveData(data: Dictionary) -> void:
 		spawn_position = Vector2(data["spawn_x"], data["spawn_y"])
 	if data.has("respawn_x") and data.has("respawn_y"):
 		respawn_position = Vector2(data["respawn_x"], data["respawn_y"])
+	SetAbilityEnabled(&"double_jump", bool(data.get("enable_double_jump", false)))
+	SetAbilityEnabled(&"rope", bool(data.get("enable_rope", false)))
+	has_sunken_crown = bool(data.get("has_sunken_crown", false))
+	has_starseekers_codex = bool(data.get("has_starseekers_codex", false))
+	_emit_relic_state()
