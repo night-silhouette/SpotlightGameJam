@@ -81,6 +81,13 @@ signal CameraShotReady(player: Node2D, mode: StringName)
 ## @param locked true 暂停玩家子树；false 恢复进入 CG 前的处理模式。
 signal CameraInputLockChanged(player: Node2D, locked: bool)
 
+## 镜头门约束变化；player 为唯一目标玩家，gate 为门实例，active 为是否仍限制，side 为禁止露出的边，boundary 为世界坐标边界。
+signal CameraGateChanged(player: Node2D, gate: Area2D, active: bool, side: int, boundary: float)
+## 非一次性镜头门切换目标侧；reset 表示出生/读档初始化，其他情况先平滑过界再落锁。
+signal CameraGateSideChanged(player: Node2D, gate: Area2D, side: int, boundary: float, reset: bool)
+## 非一次性镜头门退出场景；移除该门的当前及待切换约束。
+signal CameraGateSideRemoved(player: Node2D, gate: Area2D)
+
 ## =============================================================================
 ## SignalBus.gd - 全局信号总线
 ## 依据 GameBible 设定与实体规范定义，集中管理全局事件通信与状态解耦

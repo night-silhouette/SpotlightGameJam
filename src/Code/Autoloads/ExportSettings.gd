@@ -387,6 +387,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 防抖方框大小（占视口的比例，1.0=整个视口宽/高）。角色在框内移动不推动镜头，顶到框边才推动镜头。
 @export var player_camera_box_fraction: Vector2 = Vector2(0.05, 0.25)
 
+@export_group("Camera Gate", "camera_gate_")
+## 镜头门边界沿禁止露出方向向内收缩的距离（世界像素）。
+@export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
+
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
 @export var camera_transition_duration: float = 1.2

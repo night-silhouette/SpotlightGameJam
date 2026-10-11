@@ -39,6 +39,9 @@ var _saved_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
 var _frame: Vector2 = Vector2(0.5, 0.5)
 var _last_target_position: Vector2
 var _target_velocity_y: float = 0.0
+var _camera_bounds: Dictionary = {}
+var _gate_limits: Dictionary = {}
+var _pending_gate_limits: Dictionary = {}
 @onready var _player: CharacterBody2D = $Player
 @onready var _base: PhantomCamera2D = $PhantomCamera2D
 @onready var _presentation: CanvasLayer = $CameraPresentation
@@ -65,7 +68,9 @@ func _ready() -> void:
 		camera.set_tween_transition(Tween.TRANS_SINE)
 		camera.set_tween_ease(Tween.EASE_IN_OUT)
 		camera.tween_completed.connect(_on_arrived.bind(camera))
+		camera.is_tweening.connect(_on_camera_tweening.bind(camera))
 		camera.became_inactive.connect(_on_camera_interrupted.bind(camera))
+		_camera_bounds[camera] = Vector4i(camera.limit_left, camera.limit_top, camera.limit_right, camera.limit_bottom)
 	# 首次定位时让死区下边界贴住玩家；之后恢复正常跟随偏移。
 	var initial_offset: Vector2 = _base.follow_offset
 	_base.follow_offset.y = -get_viewport_rect().size.y * _base.dead_zone_height / (2.0 * maxf(_base.zoom.y, 0.05))
@@ -80,6 +85,9 @@ func _ready() -> void:
 	SignalBus.CameraFixedRequested.connect(_on_fixed_requested)
 	SignalBus.CameraShotRequested.connect(_on_shot_requested)
 	SignalBus.CameraShotEndRequested.connect(_on_end_requested)
+	SignalBus.CameraGateChanged.connect(_on_camera_gate_changed)
+	SignalBus.CameraGateSideChanged.connect(_on_camera_gate_side_changed)
+	SignalBus.CameraGateSideRemoved.connect(_on_camera_gate_side_removed)
 
 
 func _sync_player_properties() -> void:
@@ -115,6 +123,37 @@ func _physics_process(delta: float) -> void:
 		if current_mode == &"descent":
 			# 以插件实际的阻尼延迟做速度前馈，保持高速下落时的底部构图。
 			_active.follow_offset.y += _target_velocity_y * _active.follow_damping_value.y * ExportSettings.camera_descent_velocity_compensation
+
+
+func _process(_delta: float) -> void:
+	if _pending_gate_limits.is_empty():
+		return
+	var host_camera: Camera2D = $Camera2D
+	var center: Vector2 = host_camera.get_screen_center_position()
+	var half_screen: Vector2 = get_viewport_rect().size / (2.0 * host_camera.zoom.abs())
+	var settled: Array[Area2D] = []
+	for gate: Area2D in _pending_gate_limits:
+		var limit: Vector2 = _pending_gate_limits[gate]
+		var boundary: float = limit.y
+		var margin: float = ExportSettings.camera_gate_margin
+		match int(limit.x):
+			SIDE_LEFT:
+				if center.x - half_screen.x >= boundary + margin:
+					settled.append(gate)
+			SIDE_TOP:
+				if center.y - half_screen.y >= boundary + margin:
+					settled.append(gate)
+			SIDE_RIGHT:
+				if center.x + half_screen.x <= boundary - margin:
+					settled.append(gate)
+			SIDE_BOTTOM:
+				if center.y + half_screen.y <= boundary - margin:
+					settled.append(gate)
+	if not settled.is_empty():
+		for gate: Area2D in settled:
+			_gate_limits[gate] = _pending_gate_limits[gate]
+			_pending_gate_limits.erase(gate)
+		_apply_gate_limits()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -249,10 +288,9 @@ func _start_camera(mode: StringName) -> void:
 		next.follow_offset = _frame_offset(next.zoom.x)
 	if next != _base:
 		var bounds: Rect2 = _options.get("bounds", Rect2())
-		next.limit_left = int(bounds.position.x) if bounds.has_area() else _base.limit_left
-		next.limit_top = int(bounds.position.y) if bounds.has_area() else _base.limit_top
-		next.limit_right = int(bounds.end.x) if bounds.has_area() else _base.limit_right
-		next.limit_bottom = int(bounds.end.y) if bounds.has_area() else _base.limit_bottom
+		var base_bounds: Vector4i = _camera_bounds[_base]
+		_camera_bounds[next] = Vector4i(floori(bounds.position.x), floori(bounds.position.y), ceili(bounds.end.x), ceili(bounds.end.y)) if bounds.has_area() else base_bounds
+	_apply_gate_limits()
 	next.set_tween_duration(maxf(0.01, ExportSettings.camera_ritual_pan_duration if _phase == &"wide" else ExportSettings.camera_transition_duration))
 	if next == _active:
 		_pending = true
@@ -261,6 +299,7 @@ func _start_camera(mode: StringName) -> void:
 	next.teleport_position()
 	next.follow_axis_lock = axis_lock
 	_active = next
+	_sync_host_limits(next)
 	_pending = true
 	# 先提升新镜头，再降低旧镜头，避免过渡途经第三个镜头。
 	var priority: int = ExportSettings.player_camera_priority + 20
@@ -305,6 +344,78 @@ func _resolve_camera_interruption(camera: PhantomCamera2D, generation: int) -> v
 	$ShotA.priority = 0
 	$ShotB.priority = 0
 	_base.priority = ExportSettings.player_camera_priority
+
+
+func _on_camera_gate_changed(player: Node2D, gate: Area2D, active: bool, side: int, boundary: float) -> void:
+	if player != _player:
+		return
+	if active:
+		_gate_limits[gate] = Vector2(side, boundary)
+	else:
+		_gate_limits.erase(gate)
+	_apply_gate_limits()
+
+
+func _on_camera_gate_side_changed(player: Node2D, gate: Area2D, side: int, boundary: float, reset: bool) -> void:
+	if player != _player:
+		return
+	var limit := Vector2(side, boundary)
+	if reset:
+		_pending_gate_limits.erase(gate)
+		_gate_limits[gate] = limit
+	else:
+		# 不直接将相反限位施加到 Camera2D：先让 Phantom 阻尼带动画面越门。
+		_gate_limits.erase(gate)
+		_pending_gate_limits[gate] = limit
+	_apply_gate_limits()
+
+
+func _on_camera_gate_side_removed(player: Node2D, gate: Area2D) -> void:
+	if player != _player:
+		return
+	_pending_gate_limits.erase(gate)
+	_gate_limits.erase(gate)
+	_apply_gate_limits()
+
+
+func _apply_gate_limits() -> void:
+	for camera: PhantomCamera2D in [_base, $ShotA, $ShotB]:
+		var bounds: Vector4i = _camera_bounds[camera]
+		var left: int = bounds.x
+		var top: int = bounds.y
+		var right: int = bounds.z
+		var bottom: int = bounds.w
+		for gate: Area2D in _gate_limits:
+			var limit: Vector2 = _gate_limits[gate]
+			match int(limit.x):
+				SIDE_LEFT:
+					left = maxi(left, ceili(limit.y + ExportSettings.camera_gate_margin))
+				SIDE_TOP:
+					top = maxi(top, ceili(limit.y + ExportSettings.camera_gate_margin))
+				SIDE_RIGHT:
+					right = mini(right, floori(limit.y - ExportSettings.camera_gate_margin))
+				SIDE_BOTTOM:
+					bottom = mini(bottom, floori(limit.y - ExportSettings.camera_gate_margin))
+		camera.limit_left = left
+		camera.limit_top = top
+		camera.limit_right = right
+		camera.limit_bottom = bottom
+	if _active != null:
+		_sync_host_limits(_active)
+
+
+func _on_camera_tweening(camera: PhantomCamera2D) -> void:
+	if camera == _active:
+		# 插件在切镜首帧临时重置 Camera2D 限位，逐帧恢复已合并的边界。
+		_sync_host_limits(camera)
+
+
+func _sync_host_limits(camera: PhantomCamera2D) -> void:
+	var host_camera: Camera2D = $Camera2D
+	host_camera.limit_left = camera.limit_left
+	host_camera.limit_top = camera.limit_top
+	host_camera.limit_right = camera.limit_right
+	host_camera.limit_bottom = camera.limit_bottom
 
 
 func _frame_offset(zoom_value: float) -> Vector2:
