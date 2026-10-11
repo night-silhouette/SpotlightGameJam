@@ -282,7 +282,7 @@ offset_right = -24.0
 offset_bottom = 90.0
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 18
-text = "A/D 移动  ·  空格跳跃，再按二段跳  ·  靠近按 F / 点击物品上方提示  ·  无钩锁"
+text = "A/D 移动  ·  空格跳跃  ·  靠近按 F / 点击物品上方提示"
 autowrap_mode = 3
 
 [node name="Toast" type="Label" parent="HUD/Root" unique_id=254825640]

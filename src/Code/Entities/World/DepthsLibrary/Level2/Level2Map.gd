@@ -1,5 +1,5 @@
 extends Node2D
-## 连续地下地图：房间通过实体通道相连。只有失败重生会改变玩家位置。
+## 连续地下地图：房间通过实体通道相连，玩家能力与死亡复活由角色系统管理。
 var keys: Array[String] = []
 var rune_progress: int = 0
 var puzzle_solved: bool = false
@@ -7,11 +7,11 @@ var completed: bool = false
 var _rune_order: PackedStringArray = ["sun", "moon", "weave"]
 var submitted_keys: Array[String] = []
 var fountain_active: bool = false
+# 奖励领取记录独立于玩家当前持有状态；残卷交给主城水池后也不能再次领取。
+var codex_claimed: bool = false
 var _elapsed: float = 0.0
 var _player: CharacterBody2D
 var _checkpoint: Vector2
-var _saved_rope_mode: int = Node.PROCESS_MODE_INHERIT
-var _saved_double_jump: bool = false
 var _owns_player: bool = false
 var _active_room: Node2D
 var _toast_left: float = 0.0
@@ -25,11 +25,7 @@ func _ready() -> void:
 	_checkpoint = $Rooms/EntryCollapse/Spawn.global_position
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
-	SignalBus.PlayerAbilitiesChanged.connect(_on_player_abilities_changed)
 	$Rooms/SurfaceExit/FinishArea.body_entered.connect(_on_exit_reached)
-	for area in find_children("*", "Area2D", true, false):
-		if area.has_meta("fall_reset"):
-			area.body_entered.connect(_on_fall)
 	for platform in find_children("*", "AnimatableBody2D", true, false):
 		platform.set("movement_speed", ExportSettings.level2_platform_speed)
 	for room in $Rooms.get_children():
@@ -47,9 +43,9 @@ func _physics_process(delta: float) -> void:
 		return
 	var room: Node2D = GetRoomAt(_player.global_position)
 	if room != null and not _owns_player:
-		_claim_player()
+		_owns_player = true
 	elif room == null and _owns_player and not Rect2(Vector2(-4400, -3450), Vector2(8600, 5800)).has_point(to_local(_player.global_position)):
-		_release_player()
+		_owns_player = false
 	$HUD.visible = _owns_player
 	if room != null:
 		if room != _active_room:
@@ -61,8 +57,6 @@ func _physics_process(delta: float) -> void:
 				_checkpoint = other.global_position
 			SignalBus.TentActivated.emit(self, _checkpoint)
 		$HUD/Root/Status.text = str(room.get_meta("title", room.name)) + "  |  携带 %d · 已提交 %d / 3  |  %02d:%02d" % [keys.size() - submitted_keys.size(), submitted_keys.size(), int(_elapsed) / 60, int(_elapsed) % 60]
-	if _owns_player and _player.global_position.y > global_position.y + 2300.0:
-		_reset_player()
 	if fountain_active and $Rooms/FountainShaft/Updraft.overlaps_body(_player):
 		_player.velocity.y = -ExportSettings.level2_fountain_speed
 		_player.ResetDoubleJump()
@@ -90,30 +84,6 @@ func GetCityConnections() -> Dictionary:
 		"entrance": {"position": entrance.global_position, "width": entrance.get_meta("opening_width")},
 		"exit": {"position": exit_port.global_position, "width": exit_port.get_meta("opening_width")}
 	}
-
-func _claim_player() -> void:
-	_owns_player = true
-	_saved_double_jump = _player.enable_double_jump
-	_player.enable_double_jump = true
-	_player.ResetDoubleJump()
-	if _player.rope_controller:
-		_saved_rope_mode = _player.rope_controller.process_mode
-		_player.rope_controller.process_mode = Node.PROCESS_MODE_DISABLED
-
-func _on_player_abilities_changed(double_jump_enabled: bool, _rope_enabled: bool) -> void:
-	if _owns_player and is_instance_valid(_player):
-		_saved_double_jump = double_jump_enabled
-		_player.enable_double_jump = true
-
-func _release_player() -> void:
-	if is_instance_valid(_player):
-		_player.enable_double_jump = _saved_double_jump
-		if _player.rope_controller:
-			_player.rope_controller.process_mode = _saved_rope_mode
-	_owns_player = false
-
-func _exit_tree() -> void:
-	_release_player()
 
 func _on_requested(source: Node2D, player: Node2D) -> void:
 	if not is_ancestor_of(source) or source.global_position.distance_to(player.global_position) > ExportSettings.level2_interact_radius:
@@ -153,18 +123,14 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
 				fountain_active = true
-				_toast("水泵启动！走入喷泉水柱，沿逆流升回地表。", 7.0)
+				if not codex_claimed:
+					codex_claimed = true
+					SignalBus.lock2.emit()
+					_toast("获得观星者残卷！水泵启动，沿喷泉升回地表，将残卷带回主城水池。", 7.0)
+				else:
+					_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
 			_refresh()
 	SignalBus.Level2StateChanged.emit(self)
-
-func _on_fall(body: Node2D) -> void:
-	if body == _player:
-		_reset_player.call_deferred()
-
-func _reset_player() -> void:
-	if not is_instance_valid(_player):
-		return
-	_player.Respawn()
 
 func _on_respawned(_position: Vector2) -> void:
 	if not _owns_player:
@@ -208,9 +174,9 @@ func _refresh() -> void:
 		pair[0].get_node("Flow").visible = open
 		pair[0].get_node("ReturnCatwalk/CollisionShape2D").set_deferred("disabled", not open)
 
-## 导出钥匙、谜题和通关状态；由现有存档系统保存，地图本身不写文件。
+## 导出钥匙、谜题、通关和残卷领取状态；由现有存档系统保存，地图本身不写文件。
 func ExportSaveData() -> Dictionary:
-	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active}
+	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed}
 
 ## 还原关卡状态；data 为 ExportSaveData 返回的字典，未知钥匙会被忽略。
 func LoadSaveData(data: Dictionary) -> void:
@@ -223,6 +189,8 @@ func LoadSaveData(data: Dictionary) -> void:
 		if str(key) in keys and not str(key) in submitted_keys:
 			submitted_keys.append(str(key))
 	fountain_active = bool(data.get("fountain_active", false)) and submitted_keys.size() == 3
+	# 旧存档尚未发放残卷：允许再次与喷泉交互补领；读档本身不发奖励信号。
+	codex_claimed = bool(data.get("codex_claimed", false))
 	puzzle_solved = bool(data.get("puzzle_solved", false))
 	completed = bool(data.get("completed", false)) and fountain_active
 	rune_progress = _rune_order.size() if puzzle_solved else clampi(int(data.get("rune_progress", 0)), 0, maxi(0, _rune_order.size() - 1))
