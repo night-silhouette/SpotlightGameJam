@@ -92,6 +92,16 @@ func GetUpperRoomOpening() -> Rect2:
 	var room: Node2D
 	if current_zone == &"entry":
 		room = _map.get_node("Rooms/EntryCollapse")
+	elif current_zone == &"descent" and _shaft_rect.has_area():
+		# Keep the entrance's solid exterior while the shaft mask fades in or
+		# the camera still sees above the shaft. Otherwise the adjacent fountain
+		# flashes through the transition, including the strip above the mask.
+		var point := _map.to_local(_player.global_position)
+		var view_top := _map.to_local(get_viewport().get_canvas_transform().affine_inverse() * Vector2.ZERO).y
+		var fade := maxf(1.0, ExportSettings.level2_camera_occlusion_fade)
+		if point.y >= _shaft_rect.position.y + fade and view_top >= _shaft_rect.position.y:
+			return Rect2()
+		room = _map.get_node("Rooms/EntryCollapse")
 	elif current_zone == &"surface":
 		room = _map.get_node("Rooms/SurfaceExit")
 	else:

@@ -155,3 +155,4 @@ texture = ExtResource("7_sccv2")
 [node name="Door" type="Node2D" parent="collisionlayer" unique_id=365988066]
 position = Vector2(329, -1579)
 scale = Vector2(1.7870677, 2.352593)
+

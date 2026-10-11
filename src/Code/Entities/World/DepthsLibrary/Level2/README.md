@@ -168,3 +168,195 @@ walk.png 既有资源错误未在本轮处理；先用蓝色占位玩家测试�
 正式 World 集成不是把 Level2Playtest 整个嵌进去：需要将 CameraDirector 的地图、镜头包装、玩家引用接到正式节点，并处理进入/离开第二关时的镜头交接；第二关适配参数不能无条件作用于其他关卡。当前尚未实现这一正式世界生命周期。
 通关衔接可监听现有 SignalBus.Level2Completed(level, player)；存档仍由地图的 ExportSaveData/LoadSaveData 对接正式存档管理器。
 后续交接汇报需包含：队友使用哪个场景、依赖哪些节点/脚本、如何接线或调用，以及哪些正式整合步骤仍未完成。
+
+## 第二关前后景接入（2026-10-10，按美术预览图组合）
+
+正式引用链：DepthsLibrary.tscn → Level2Map.tscn → Scenery/Level2Scenery.tscn → HorizontalScenery.tscn → parallax_scenery2.tscn。
+HorizontalScenery 是 parallax_scenery2 的继承场景，不再复制另一套图片节点。三条横向背景带共同引用它，修改原始拼图会同步到地图。
+
+- HorizontalMain：主横向层，覆盖 x=-4300～4100、y=-80～720，多个相邻房间共用连续背景。
+- HorizontalEntry：入口挑战区，位置 (0,-3080)，局部 coverage 为 Rect2(0,0,860,520)。
+- HorizontalLower：下层档案室，位置 (0,1320)，局部 coverage 为 Rect2(1650,0,2200,800)。
+- DescentShaft、FountainShaft、LowerStairwell：已恢复上一版 VerticalScenery.tscn 的分层竖向重复方案。
+
+原始拼图在 Scenery/parallax_scenery2.tscn：仅使用美术 Horizontal/01、03～11，共 10 张图片，按预览图组合。Sky 是底色，FarBackground 是彩色窗片、窗格、拱窗，NearBackground 是光影、岩顶、亮点和下方桥梁，ForegroundLoop 是两根黑色柱子。窗户等左右两半对应预览图构图；原始完整循环单元是 4096×1024，图片保持 1:1，无额外素材、裁剪或透明度修改。
+
+地图适配由 HorizontalScenery.gd 完成：显示高度取 ExportSettings 的 Artwork Height 与该区域高度中的较小值，整套图片、节点位置和 Repeat Size 一起等比缩放。默认主层/下层高度 800，缩放 0.78125，Repeat Size.x=3200；入口高度 520，缩放 0.5078125，Repeat Size.x=2080。原始拼图文件不被改写，地图物理尺寸不变。
+Sky、FarBackground、NearBackground 在地图中统一使用 Middle Speed，避免构图错位；ForegroundLoop 使用 Foreground Speed。循环由原生 Parallax2D 执行。已有 HorizontalCoverage.gdshader 只裁剪整条背景带外缘并淡化角色附近的前景，防止背景穿到其他楼层；不会生成纹理或重绘图案。
+
+队友调用和调节：
+1. 直接使用 DepthsLibrary.tscn 或 Level2Map.tscn，背景已包含在里面，不要再添加第二份 Scenery，也不需要新增信号接线。
+2. 独立试玩打开 Level2Playtest.tscn 按 F6；它已有测试玩家和镜头，不要把整个试玩场景嵌入 World。
+3. 修改图片构图：打开 Scenery/parallax_scenery2.tscn，编辑对应 Sprite2D。这个场景可以单独运行预览原图组合。
+4. 修改地图背景尺寸/速度/前景淡化：ExportSettings.tscn → Level 2 - Scenery。Enabled 控制开关，Artwork Height 默认 800；Middle Speed 默认 0.65，Foreground Speed 默认 1.08；Foreground Opacity 默认 0.35，Player Clear Radius 默认 100。Far Speed 用于当前竖井远景，横向底色与窗户保持同速。
+5. 改横向覆盖范围：在 Level2Scenery.tscn 中调整三条 Horizontal 实例的位置及 coverage 元数据。同层新增房间扩展该背景带，不必逐房间重复放背景。
+6. 当前竖井背景在 Scenery/VerticalScenery.tscn，对应 TextureRect 引用美术素材；详见下面回退说明。
+
+前述横向接入仅替换背景组装和地图适配，没有修改第三关、碰撞、出入口、机关和原始美术。背景拱桥只是装饰，没有可踩踏碰撞。
+验证：运行 Level2Playtest，定位检查大厅、左侧阅读室、右侧水道、入口挑战区和下层档案室；三条背景带实例和重复距离正确，原始图与右半图位置按同一比例缩放；本次游戏日志与编辑器增量日志无新增错误。这是局部背景验收，不是完整通关测试。
+
+
+### 竖井背景回退（2026-10-10）
+
+按用户反馈，正式地图已恢复为上一版 VerticalScenery.tscn：Control + TextureRect + LibraryLayer.gdshader，按井宽等比缩小图片并沿竖向重复、分层滚动。三个区域仍是 DescentShaft 280×2940、FountainShaft 180×3000、LowerStairwell 600×1450；未改变地图物理层、井口、镜头和横向背景。
+
+调用链：DepthsLibrary → Level2Map → Scenery → 三个竖向区域（VerticalScenery.tscn）。队友使用地图即可，不需要额外添加节点。试玩用 Level2Playtest.tscn 按 F6。
+
+原图组合 VerticalComposition.tscn 和纵向拉伸适配脚本 VerticalScenery.gd 暂留供对照，但正式地图已不再引用这套拉伸组合；Vertical Foreground Opacity / Vertical Clear Radius 两个参数也不作用于当前旧版竖井。当前竖井继续使用 Far/Middle/Foreground Speed、Foreground Opacity 和 Player Clear Radius。
+
+1536×4168 是源图片画布像素，并非地图井口要求。旧版缩放到宽 280 后，一段画面高约 760；若保持图像比例又一张铺满 2940 高，宽度需要约 1083。调整玩法井宽必须连同跳台、墙体、水流、镜头、主城接口一起考虑，不能只按图片宽度扩大。
+
+本轮仅恢复背景方案；改井宽仍在讨论，未实施。未提交、未推送。
+
+
+## 横向背景编辑器预览修正（2026-10-11）
+
+HorizontalScenery.gd 现在同时在编辑器与运行时执行等比适配和范围裁剪。三条背景带仍位于 Level2Map/Scenery：HorizontalEntry（860×520）、HorizontalMain（8400×800）、HorizontalLower（2200×800）；编辑器里不会再把入口和下层的循环背景铺到整张地图外面。循环继续由原生 Parallax2D 执行，不增加新的背景图片或按房间拆分。
+
+调节方法：在 Level2Scenery.tscn 中选择对应 Horizontal 实例，修改位置和 Metadata → coverage 即可预览覆盖范围。图片高度、视差速度和前景透明度仍使用 ExportSettings；编辑器读取已保存的 ExportSettings.tscn 覆盖值和脚本默认值，游戏读取实际单例。缩放始终依据 parallax_scenery2.tscn 的原始位置、尺寸和 Repeat Size，避免重复初始化后累积缩放。
+
+验证：编辑器中确认下层裁剪边界；试玩检查入口、主层和交织档案，三条背景的范围、缩放和循环间距正确，重复初始化尺寸不变；游戏日志和编辑器增量日志无新增错误。按用户确认恢复 Level2Playtest/Level2Map 的 Visible=true。没有改变美术源文件、房间位置、碰撞、竖井或主城接口，未进行完整通关测试。
+
+队友继续直接使用 DepthsLibrary.tscn / Level2Map.tscn；不需要额外实例化背景。独立试玩仍打开 Level2Playtest.tscn 按 F6。
+
+## 横向背景与竖井交界裁剪（2026-10-11）
+
+HorizontalScenery.gd 读取同级 DescentShaft、LowerStairwell、FountainShaft 三个竖向背景区域的实际全局矩形，传给 HorizontalCoverage.gdshader。横向底色、窗户、桥梁和前景在这些矩形内不绘制，保留竖井背景，避免透明图层相互叠加。Parallax2D 的循环和视差照常运行，缺口固定在地图对应位置。
+
+节点仍位于 Level2Map/Scenery。调整竖向背景区域的位置或尺寸时，横向缺口自动跟随；这只是背景覆盖范围，不会调整墙体或碰撞。独立打开 parallax_scenery2.tscn 时不裁竖井缺口，可以继续查看完整美术构图。不要通过改 Repeat Size 来挖井口。
+
+验证：编辑器入口预览、试玩入口竖井与下层阶梯井交界均已检查，横向桥梁不再穿过井内；脚本与着色器验证通过，本轮游戏日志及编辑器增量日志无新增错误。当前是边界裁剪，尚未增加井口专用装饰过渡；没有完整通关测试。
+
+队友仍直接使用 DepthsLibrary.tscn / Level2Map.tscn，背景随地图自动加载，不需要额外调用。试玩打开 Level2Playtest.tscn 按 F6。本轮只修改横向背景适配脚本、裁剪着色器和本文档；未改变井宽、碰撞、落脚点、主城接口及美术源图，未提交、未推送。
+
+### 喷泉水流占位图的初始显示（2026-10-11）
+
+Hub/FountainStream 和 FountainShaft/Stream 默认 Visible=false，与 SurfaceExit/SprayStream 及喷泉未激活状态一致。它们是半透明水流占位图，不是竖井背景；默认显示时会覆盖大厅窗户，容易误认为背景叠加。Level2Map 的原有激活逻辑仍控制三段水流：未激活全部隐藏，激活全部显示。验证了这两个状态的可见性切换，本轮无新增日志错误。井底背景仍有直接衔接的直线边界，尚未添加装饰过渡。
+
+队友使用地图的方式不变，不要手动常驻显示水流占位图；正式水柱美术以后接到对应水流节点。没有修改水流区域、推动人物的逻辑、碰撞或井宽。
+
+### 移除旧占位背景（2026-10-11）
+
+按用户要求，从 12 个地下房间删除了 180 个旧占位背景节点：Background 及其 Base/Pillar/Window/WindowLight 子节点、DarkShaft、DepthLine。SurfaceExit 原本没有这类背景，因此没有改动。地面、墙体、天花板、平台的 Stone/Edge、碰撞、机关、交互提示和出生点保留；美术前后景仍统一位于 Level2Map/Scenery。
+
+三个竖向房间把原底板尺寸保存在不绘制的 metadata/scenery_bounds 中，Level2Scenery.gd 直接读取这些数据，不再依赖已删除的背景节点。三个区域仍为 280×2940、600×1450、180×3000。关闭美术背景后不再回退到旧占位背景；单独打开房间场景只显示地形和玩法节点，整体美术请在 Level2Map 或 Level2Playtest 查看。
+
+核对：所有保留的非根节点和资源段与修改前逐字一致；试玩中旧背景节点数量为零；定位静谧阅览室检查美术背景、地面和平台，竖井范围未变，游戏及编辑器增量日志无新增错误。同步清理了已打开的地图与试玩场景里的旧节点缓存。没有进行完整通关测试。
+
+队友继续实例化 DepthsLibrary.tscn / Level2Map.tscn，无需添加背景或调用新接口。只运行独立房间时没有整体前后景是正常的。未提交、未推送。
+
+### 全地图占位背景复查（2026-10-11）
+
+再次检查全部 13 个房间、Level2Map、DepthsLibrary、CityInterfacePreview 和 Level2Playtest。补删试玩场景的纯色 Backdrop/Fill 底幕；井外遮挡是镜头边界功能，保留。已打开的 DepthsLibrary 和 World 的第二关实例仍缓存旧背景，各同步移除 14 个旧背景根节点；只处理第二关子树，没有修改主城或其他关卡。
+
+运行时逐房间核对：13 个房间的 Background/DarkShaft/DepthLine 残留均为零，试玩 Backdrop 不存在，美术 Scenery 保留，场景加载无新增报错。水流与 DeepWater 是玩法显示，玩家 VisualPlaceholder 是试玩人物外观，TerrainArt 是尚未启用的地形美术层，均保留。外层空 TileMapLayer 没有图块，不会绘制背景，未作无关清理。队友仍使用原地图场景，无需新增调用。
+
+### 编辑器旧背景反复出现的修正（2026-10-11）
+
+后续截图证实，前次只检查磁盘、运行时和当时显示的实例仍不充分：部分房间 PackedScene 在编辑器资源缓存中保留旧内容，切换场景后旧节点再次出现。本次从已清理的磁盘文件刷新 12 个房间的缓存资源，逐项确认缓存中的旧背景数量为零，再清理地图和试玩场景中各 14 个残留背景根节点。DepthsLibrary 和 World 的第二关实例复查均无旧背景。地图与试玩场景来回切换两轮，节点检查仍为零；编辑器截图核对月影水道、交织档案的旧窗框和装饰柱已消失。此次没有修改地形、美术和碰撞，临时刷新工具已删除。
+
+## 第二关 32×32 可编辑地形（2026-10-11）
+
+本节取代此前“只准备外观、保留固定 StaticBody2D 碰撞”的方案。用户已确认把固定地形转换为第三关同类的紫色 32×32 占位砖块，后续在 TileMap 中手动修改。
+
+### 当前结构与范围
+
+13 个房间各有一个 Terrain（TileMapLayer），包含 86 处原固定地形、共 1965 格；试玩专用 CityInterfacePreview 另有一个 Terrain，包含 2 处接缝地面、20 格。固定地面、墙、天花板、台阶原有 StaticBody2D / CollisionShape2D / Stone / Edge 和隐藏的 TerrainArt 已移除；砖块本身同时负责显示和碰撞，不存在旧固定碰撞留在下面的问题。
+
+使用第二关独立资源 Terrain/Level2CollisionTileSet.tres：Tile Size 为 32×32，Source 0 / Atlas (0,0) 是普通实心格，物理层 1、完整正方形碰撞。紫色来自 Godot 自带 PlaceholderTexture2D，与第三关的占位方式相同；没有制作新美术，也没有修改第三关 TileSet 或美术源文件。
+
+塌陷平台 Collapse / Crumble2 / Crumble4、移动平台 FerryA / FerryB、符文门 Gate、取得钥匙才出现的 ReturnCatwalk 仍是功能组件，保留原行为。返程栈道旧的隐藏 TerrainArt 也已移除。前后景仍由 Scenery 管理，和 Terrain 分开。
+
+### 手动修改方法
+
+1. 在 Level2Map 的 Rooms 下找到要改的房间，通过房间的场景图标打开源场景，例如 Rooms/Hub.tscn；也可以从文件系统直接打开。
+2. 选中该房间的 Terrain。在底部 TileMap 面板中选择紫色砖块，使用绘制或矩形工具铺地面、墙壁、台阶，用橡皮擦删除格子。删除格子会同时删除对应碰撞。
+3. 保持 Terrain 的 Position 和 Scale 不变；每个 Terrain 的少量偏移用于让所有房间拼起来时共用同一张 32 格网。改地形时刷格子，不要缩放整个 Terrain。
+4. 保存房间，打开 Level2Playtest.tscn 按 F6 检查。不要单独运行房间来判断整张地图的背景、玩家或机关流程。
+
+移动平台、塌陷平台、机关门和返程栈道仍在自己的组件节点里修改。正式地形美术交付后接入第二关独立 TileSet；目前紫色仅是便于搭建的占位外观。
+
+### 网格对齐与对接尺寸
+
+全图固定地形按地图坐标 x=0、y=-3080 为网格基准对齐。房间实例位置不变；主城地表 y=-3080、主层地面 y=520 保持不变。原非整格边缘发生小幅调整；薄台阶至少一格厚，最大单侧边缘调整为 28 像素，不能将此次转换当成碰撞尺寸完全不变。
+
+| 部位 | 原净宽 | 当前净宽 |
+| --- | ---: | ---: |
+| 主城左侧入口 | 240 | 256 |
+| DescentShaft 下落井 | 280 | 256 |
+| LowerStairwell 折返阶梯通道 | 600 | 608 |
+| FountainShaft 喷泉井及地表出口 | 140 | 128 |
+
+以上均为游戏像素的物理净宽，不是背景原图分辨率。主城接口在地图局部坐标：左入口中心 (160,-3080)，净宽 256；右出口中心 (992,-3080)，净宽 128。右出口中心因砖块对齐向右移动 2 像素。CityEntrance / CityExit 的 opening_width 已同步；GetCityConnections() 会返回平移后的世界坐标。背景原图及其覆盖配置没有随此转换重新拉伸。
+
+### 核对与交付
+
+Godot 已载入全部 14 个 Terrain 并核对 1985 格；88 处转换区域均检测到物理碰撞。测试了城市测试地面、入口、大厅、阅览室、月影水道和交织档案的落脚；下落井和喷泉井中心射线通路无遮挡；验证符文门开关及两侧返程栈道启停；实际启用喷泉后，人物从大厅经竖井上升并穿过地表出口。未完成整关逐跳通关，手动调整地形后仍需复测跳跃距离。
+
+已同步刷新打开的房间、地图、试玩、DepthsLibrary 和 World 中的第二关实例；切换地图与试玩再次核对，每个房间只有一个 Terrain，旧固定地形没有重新出现。运行测试和修正后的编辑器增量日志无新增错误。临时转换、刷新工具已移除。
+
+队友继续使用 DepthsLibrary.tscn / Level2Map.tscn，不需要添加或调用新组件；对接主城时使用上述更新后的接口净宽。提交时需要包含房间场景、CityInterfacePreview.tscn、Terrain/Level2CollisionTileSet.tres 和本说明，避免只提交场景漏掉 TileSet。本轮未提交、未推送。
+
+### 下落井与大厅背景接缝（2026-10-11）
+
+DescentShaft 背景原下边界 Y=0，和 HorizontalMain 从 Y=-80 开始的范围重叠 80 像素。现将 Level2Scenery/DescentShaft 的 offset_bottom 调为 -80，并将 Rooms/DescentShaft 的 metadata/scenery_bounds 高度从 2940 改为 2860，避免运行时恢复旧尺寸。横向背景裁剪自动读取更新后的范围，井下端由大厅背景接续。只缩短背景覆盖区域，房间高度、地形砖块、碰撞、美术原图及横向背景位置不变。
+
+已同步打开的编辑器实例。试玩实测竖井下边界与大厅上边界均为 -80，横向着色器读取的下落井裁剪下边界也是 -80；编辑器与游戏截图确认露进大厅的一截已消失，本轮试玩无新增运行错误。队友使用方式不变，不需要新增节点或调用。未提交、未推送。
+
+### 喷泉竖井隐藏装饰柱（2026-10-11）
+
+Level2Scenery.tscn 仅对 FountainShaft 实例隐藏 Backdrop/LeftColumns、Backdrop/RightColumns、Foreground/NearColumn。保留 ShaftDepth 底色、DarkEdges 边缘和原水流玩法；另外两条竖井仍显示原柱子。没有修改公用 VerticalScenery 或美术原图。以后需要恢复时，在 Scenery/FountainShaft 对应节点打开 Visible 即可。
+
+已核对编辑器实例和试玩：喷泉三个柱子节点均隐藏，另外两条竖井保持显示，试玩无新增运行错误。队友使用地图方式不变，未提交、未推送。
+
+### 折返阶梯改用完整竖井构图（2026-10-11）
+
+仅 Scenery/LowerStairwell 改为 FittedVerticalComposition.tscn，内部 Composition 直接实例化美术分层组合 VerticalComposition.tscn，沿用 VerticalScenery.gd 适配。保留用户调整的背景左上角 (1055,730)，显示尺寸为 600×1246，下边界 Y=1976 对齐当前井底砖块顶面。整套原画按宽、高分别缩放铺满该范围，不是原比例缩放；原图与原始组合节点未修改，不新增绘制素材。
+
+该实例通过 metadata/use_authored_bounds 保留编辑器里设置的范围，运行时不再被旧房间 scenery_bounds 覆盖。其他两条竖井沿用旧背景，喷泉装饰柱继续隐藏。砖块、碰撞和平台均未修改。要调整整体覆盖范围，打开 Level2Scenery.tscn，选 LowerStairwell 修改 Position/Size 并保存；修改分层内容则打开 VerticalComposition.tscn。Level2Map 和 Level2Playtest 自动引用保存后的背景场景。
+
+已核对编辑器、试玩实例与运行时的位置 (1055,730)、尺寸 (600,1246) 一致；折返阶梯仍为 150 块砖，喷泉三个装饰柱仍隐藏。试玩截图及本轮增量日志检查通过，无新增错误。未提交、未推送。
+
+### 折返阶梯恢复纵向视差并对齐井口（2026-10-11）
+
+本条更新上一条的背景覆盖范围：LowerStairwell 现在为 Position=(1056,536)、Size=(608,1440)，左右对齐砖块内沿、顶部对齐现有紫色砖块上沿，底部仍为 Y=1976。HorizontalMain 自动读取这块范围并裁掉内部所有横向装饰，蓝色拱桥不再横穿井口。地图砖块和碰撞保持原样。
+
+VerticalScenery.gd 保留完整美术组合，运行时由原生 Parallax2D 驱动纵向滚动：DistantColumn 使用 Far Speed（默认0.25）、LeftArchitecture 使用 Middle Speed（0.65）、Foreground 使用 Foreground Speed（1.08）；X轴均为1，避免柱子左右漂出窄井。BlueDepth 与 FrameEdges 固定覆盖井区。移动层通过 repeat_size.y 循环、repeat_times=2，并用 Vertical Loop Blend（默认0.06）重叠淡化首尾；可在 ExportSettings 的 Level 2 - Scenery 中调节。编辑器中保留静态原画排列，视差需运行 Level2Playtest 并移动镜头查看。
+
+已用两个镜头高度核对各层位移差异，横向裁剪范围实测为 (1056,536,1664,1976)，试玩和编辑器覆盖范围一致，折返阶梯仍为150块砖。修改期间修复了脚本热重载引发的临时字典初始化错误，修正后的编辑器增量日志与最后一轮运行均无新增错误。未提交、未推送。
+
+### 去除黑边并固定底部建筑装饰（2026-10-11）
+
+VerticalComposition/FrameEdges 已隐藏，移除 Vertical/01.png 的黑色边框显示；Foreground 的 Z Index 从10改为-5，仍在其他背景柱前方，但处于地形和角色后方，不再盖住紫色砖块。美术原文件未改。
+
+VerticalScenery 中 LeftArchitecture 保持 scroll_scale=(1,1)、repeat_size=(0,0)，使 SilverColumn 和 LowerLedge 按原构图固定在下部，避免整幅图循环把雕花和托台带回井口。DistantColumn 与 Foreground 继续保留0.25和1.08的纵向视差及淡化循环。井口范围 (1056,536,608,1440) 不变。
+
+已分别在井口和井底查看试玩截图，黑边移除、砖块正常覆盖右柱、底部雕花和托台位置固定；两个高度实测 LeftArchitecture 世界Y均为536，而远近柱的位置随镜头变化。试玩编辑实例已同步；折返阶梯仍为150块砖，本轮编辑器增量与运行日志无新增错误。未提交、未推送。
+
+### 下落井入口镜头过渡遮挡（2026-10-11）
+
+Level2CameraDirector.GetUpperRoomOpening 在刚进入 descent、井壁遮挡仍淡入或镜头顶部仍能看到井口上方时，继续使用 EntryCollapse 的墙外遮挡。待镜头完整进入井区且竖井遮挡达到不透明后再撤下入口遮挡，避免切换瞬间露出右侧喷泉。原有跟随、阻尼、井底出口淡出和地图数据不变。
+
+已在 Y=-2920 复现并对照修正后截图：原竖井遮挡强度仅0.125时，右侧喷泉由入口遮挡覆盖；继续下落到Y=-2200时入口遮挡正常释放，Y=0进入大厅时所有竖井遮挡退出。本轮编辑器增量与运行日志无新增错误。未提交、未推送。
+
+
+### 2026-10-11：竖井柱子分层视差调整
+
+- 下层 `Scenery/LowerStairwell/Composition/LeftArchitecture` 改为有限视差：雕花柱、柱身和托台一起小幅移动，不进行首尾循环，保留原图下部构图。`ExportSettings` 的 `Level 2 - Scenery / Vertical Architecture Travel` 控制最大偏移，默认 64 像素，0 为固定；实际值还限制为井高的 10%。
+- 上层 `Scenery/DescentShaft` 三根柱子从左到右分别使用中景 0.65、远景 0.25、前景 1.08 的移动比例。旧节点 `NearColumn` 实为浅色远柱，仅修正移动映射，保留原透明度和绘制层级。
+- 试玩验证：下层两个高度的左柱偏移约 -63.9 / +61.6 像素，repeat_size 为零；上层镜头移动约 600 像素时三层滚动量分别变化约 -210 / -450 / +48 像素。检查井口与下部画面，雕花和托台未循环到井口；本轮无新增脚本或运行错误。
+
+
+### 2026-10-11：增强竖井视差（替代上节速度参数）
+
+- 竖井独立使用 Vertical Far Speed = 0.12、Vertical Middle Speed = 0.35、Vertical Foreground Speed = 1.6；横向背景保留原参数。上层三根柱子从左到右分别使用 0.35 / 0.12 / 1.6，下层浅色后柱和右侧阴影柱使用 0.12 / 1.6。
+- 旧右柱 1.08 仅比地形快 8%，现为快 60%。上层镜头下移约 600 像素时，左/浅色/右柱相对地形的偏移约 +390 / +528 / -360 像素，已在运行中测量。
+- 下层 LeftArchitecture 的最大位移改为 128 像素，在整个井高范围内线性分配；取消原先迅速饱和的 tanh 曲线，避免两端看似停住。依然不重复，雕花与托台保持在下部。试玩人物 Y=700/1000/1400/1700 时实际偏移约 -113/-60/+11/+65 像素，持续变化。
+- 已查看井口和下部画面，检查雕花位置、平台遮挡及本次运行日志，无新增错误。
+
+
+### 2026-10-11：底部圆桌装饰固定
+
+- 将 `VerticalComposition/LeftArchitecture/LowerLedge` 移至固定层 `BlueDepth/LowerLedge`，独立于雕花柱视差；保持原绘制层级，并在原图坐标下下移 256 像素，贴近井底。
+- 下层地图对应节点为 `Scenery/LowerStairwell/Composition/BlueDepth/LowerLedge`。圆桌无重复、无视差偏移，仍为纯装饰，不新增碰撞；各柱子的速度保持不变。
+- 已试玩核对两个镜头高度，圆桌世界位置不变、左柱位置继续变化，井底截图确认，无新增错误。
