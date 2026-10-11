@@ -384,6 +384,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_camera_smoothing: bool = true
 ## 横向/纵向跟随阻尼，数值越大跟随越慢；重新运行后生效。
 @export var player_camera_damping: Vector2 = Vector2(0.12, 0.18)
+## 防抖方框大小（占视口的比例，1.0=整个视口宽/高）。角色在框内移动不推动镜头，顶到框边才推动镜头。
+@export var player_camera_box_fraction: Vector2 = Vector2(0.05, 0.25)
 
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。

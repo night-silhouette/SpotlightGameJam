@@ -50,8 +50,9 @@ func _enter_tree() -> void:
 	phantom.priority = ExportSettings.player_camera_priority
 	phantom.zoom = Vector2.ONE * maxf(0.01, ExportSettings.player_camera_zoom)
 	phantom.follow_offset = ExportSettings.player_camera_offset
-	phantom.follow_damping = ExportSettings.player_camera_smoothing
-	phantom.follow_damping_value = ExportSettings.player_camera_damping
+	phantom.follow_damping = false
+	phantom.dead_zone_width = clampf(ExportSettings.player_camera_box_fraction.x, 0.0, 1.0)
+	phantom.dead_zone_height = clampf(ExportSettings.player_camera_box_fraction.y, 0.0, 1.0)
 
 
 func _ready() -> void:
@@ -201,8 +202,8 @@ func _start_camera(mode: StringName) -> void:
 	if mode == &"normal":
 		next = _base
 	next.follow_axis_lock = PhantomCamera2D.FollowLockAxis.NONE
-	next.follow_mode = PhantomCamera2D.FollowMode.SIMPLE
-	next.follow_target = _player if mode == &"ritual" else _target
+	next.follow_mode = PhantomCamera2D.FollowMode.FRAMED if mode == &"normal" else PhantomCamera2D.FollowMode.SIMPLE
+	next.follow_target = _player if mode in [&"normal", &"ritual"] else _target
 	next.follow_damping = true
 	next.follow_damping_value = ExportSettings.player_camera_damping
 	next.follow_offset = ExportSettings.player_camera_offset
@@ -211,7 +212,8 @@ func _start_camera(mode: StringName) -> void:
 	_frame = Vector2(0.5, 0.5)
 	match mode:
 		&"normal":
-			next.follow_damping = ExportSettings.player_camera_smoothing
+			next.follow_damping = false
+			next.follow_offset = ExportSettings.player_camera_offset
 		&"desert":
 			zoom_value = ExportSettings.camera_desert_zoom
 			_frame = ExportSettings.camera_desert_frame

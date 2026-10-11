@@ -92,10 +92,13 @@ material = SubResource("ShaderMaterial_hfiwn")
 material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
+physics_interpolation_mode = 1
+top_level = false
 position = Vector2(1230, 57)
 
-[node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
+[node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053 node_paths=PackedStringArray("follow_target")]
 position = Vector2(1231.3273, 63.636482)
+follow_target = NodePath("../Player")
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]

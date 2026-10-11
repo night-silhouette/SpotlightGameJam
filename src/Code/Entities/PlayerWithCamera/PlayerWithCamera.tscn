@@ -33,8 +33,9 @@ script = ExtResource("3_host")
 [node name="PhantomCamera2D" type="Node2D" parent="." unique_id=319013053 node_paths=PackedStringArray("follow_target")]
 top_level = true
 script = ExtResource("4_phantom")
-follow_mode = 2
+follow_mode = 5
 follow_target = NodePath("../Player")
+snap_to_pixel = true
 tween_resource = SubResource("Resource_gwwv2")
 tween_on_load = false
 
