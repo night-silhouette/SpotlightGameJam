@@ -69,12 +69,12 @@ script = ExtResource("2_mkscu")
 [node name="World" type="Node2D" unique_id=2146248688]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
-position = Vector2(1230, 68)
+position = Vector2(1230, 57)
 speed = 250.0
 
 [node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
 position = Vector2(1.3272558, 6.636482)
-scale = Vector2(1.13, 1.13)
+scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21"]
 material = SubResource("ShaderMaterial_mkscu")
@@ -92,12 +92,10 @@ material = SubResource("ShaderMaterial_hfiwn")
 material = SubResource("ShaderMaterial_hfiwn")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-physics_interpolation_mode = 1
-top_level = false
-position = Vector2(1230, 68)
+position = Vector2(-3611, 72)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
-position = Vector2(1231.3273, 74.63648)
+position = Vector2(1231.3273, 63.636482)
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]

@@ -19,5 +19,14 @@ extends Resource
 ## 人船分流模式标志：到达此站后是否属于“舟先到此等待玩家”的集结点。
 @export var is_player_rendezvous_point: bool = false
 
+## 当前航段是否开启伴随玩家（防脱节保护）。为 false 时舟自主巡航，不等待玩家。
+@export var follow_player: bool = true
+
+## 允许舟领先主角的最大距离（像素）。
+@export var max_lead_distance: float = 350.0
+
+## 是否为过路状态切换点。过路点不进行停留或等待。
+@export var is_transit_point: bool = false
+
 ## 运行时状态：外部机关是否已解密放行。
 var is_puzzle_solved: bool = false

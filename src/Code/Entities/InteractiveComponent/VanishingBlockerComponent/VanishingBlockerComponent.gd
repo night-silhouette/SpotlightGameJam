@@ -11,29 +11,39 @@ signal Vanished
 @export_range(0.0, 10.0, 0.05) var fade_duration: float = 0.5
 @export var use_export_settings: bool = true
 
-@onready var _collision: CollisionShape2D = $CollisionShape2D
 var _vanishing: bool = false
 
 func _ready() -> void:
 	if use_export_settings:
 		vanish_zone_group = ExportSettings.vanishing_blocker_zone_group
 		fade_duration = ExportSettings.vanishing_blocker_fade_duration
+	if not is_instance_valid(target_area) and not vanish_zone_group.is_empty():
+		target_area = get_tree().get_first_node_in_group(vanish_zone_group) as Area2D
+	if is_instance_valid(target_area):
+		# Player.tscn uses physics layer 2. Keep the area's existing mask while
+		# ensuring this trigger can detect the player body.
+		target_area.set_collision_mask_value(2, true)
+		if not target_area.body_entered.is_connected(_on_target_area_body_entered):
+			target_area.body_entered.connect(_on_target_area_body_entered)
+		call_deferred(&"_check_target_area_overlaps")
 
-func _physics_process(_delta: float) -> void:
-	if _vanishing or _collision.disabled or _collision.shape == null:
+
+func _check_target_area_overlaps() -> void:
+	if _vanishing or not is_instance_valid(target_area):
 		return
-	# Query areas directly: StaticBody2D has no area_entered signal.
-	var query := PhysicsShapeQueryParameters2D.new()
-	query.shape = _collision.shape
-	query.transform = _collision.global_transform
-	query.collide_with_areas = true
-	query.collide_with_bodies = false
-	query.collision_mask = 0xFFFFFFFF
-	for result in get_world_2d().direct_space_state.intersect_shape(query, 256):
-		var area := result["collider"] as Area2D
-		if area != null and (area == target_area or area.is_in_group(vanish_zone_group)):
+	for body in target_area.get_overlapping_bodies():
+		if _is_player(body):
 			Vanish()
 			return
+
+
+func _on_target_area_body_entered(body: Node2D) -> void:
+	if _is_player(body):
+		Vanish()
+
+
+func _is_player(body: Node) -> bool:
+	return body != null and (body.is_in_group(&"player") or body.name == &"Player")
 
 ## 触发障碍物消失流程（仅初次调用生效）。
 ## @return 首次触发返回 true，已处于消失流程中返回 false。
@@ -65,7 +75,7 @@ func ExportSaveData() -> Dictionary:
 func LoadSaveData(data: Dictionary) -> void:
 	_vanishing = bool(data.get("vanishing", false))
 	if _vanishing:
-		queue_free()
+		call_deferred(&"_finish_vanish")
 
 func _finish_vanish() -> void:
 	Vanished.emit()

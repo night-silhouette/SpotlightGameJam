@@ -19,8 +19,10 @@ var _chase_finished: bool = false
 
 
 func _ready() -> void:
-	SignalBus.BlockerVanished.connect(_on_blocker_vanished)
-	SignalBus.ComponentInteracted.connect(_on_component_interacted)
+	if not SignalBus.BlockerVanished.is_connected(_on_blocker_vanished):
+		SignalBus.BlockerVanished.connect(_on_blocker_vanished)
+	if not SignalBus.ComponentInteracted.is_connected(_on_component_interacted):
+		SignalBus.ComponentInteracted.connect(_on_component_interacted)
 	_get_boat_area.body_entered.connect(_on_get_boat_body_entered)
 	_the_end_area.body_entered.connect(_on_the_end_body_entered)
 	if start_in_return_phase:
@@ -68,7 +70,7 @@ func _set_phase_collisions(node: Node, enabled: bool) -> void:
 
 
 func _on_blocker_vanished(blocker: Node2D) -> void:
-	if not _in_return_phase and blocker == _blocker:
+	if not _in_return_phase and is_instance_valid(_boat) and blocker == _blocker:
 		_boat.SolvePuzzle("vanishing_blocker")
 
 
