@@ -252,6 +252,12 @@ signal FallingBlockHit(block_node: Node2D, target: Node2D)
 ## @param block_node 落石节点
 signal FallingBlockLanded(block_node: Node2D)
 
+## 物理机关通道状态发生变化时触发。
+## @param channel 机关绑定通道；发送端与接收端使用相同名称即可联动。
+## @param is_active true 表示通道被按下或激活，false 表示释放。
+## @param source 发出状态的物理机关节点；接收端据此正确合并同通道的多个发送端。
+signal MechanismChannelStateChanged(channel: StringName, is_active: bool, source: Node2D)
+
 #endregion
 
 

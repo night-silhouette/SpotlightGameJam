@@ -409,6 +409,22 @@ extends Node
 ## 下落方块砸中玩家时的击退力度
 @export var falling_block_knockback_force: float = 300.0
 
+@export_group("Interactive - Pressure Button", "pressure_button_")
+## 压力按钮默认宽高（像素）。
+@export var pressure_button_size: Vector2 = Vector2(64.0, 14.0)
+## 压力按钮完全按下时向下移动的距离（像素）。
+@export_range(0.0, 32.0, 0.5) var pressure_button_press_depth: float = 8.0
+## 压力按钮按下与回弹速度（像素/秒）。
+@export_range(1.0, 1000.0, 1.0) var pressure_button_move_speed: float = 120.0
+
+@export_group("Interactive - Signal Door", "signal_door_")
+## 信号门默认碰撞宽高（像素）。
+@export var signal_door_size: Vector2 = Vector2(32.0, 128.0)
+## 信号门默认开启位移；场景实例可用导出属性覆盖方向和距离。
+@export var signal_door_open_offset: Vector2 = Vector2(0.0, -128.0)
+## 信号门开关移动速度（像素/秒）。
+@export_range(1.0, 2000.0, 1.0) var signal_door_move_speed: float = 180.0
+
 @export_group("Mobile & Android", "mobile_")
 ## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)
 @export var mobile_debug_force_touch_controls: bool = false

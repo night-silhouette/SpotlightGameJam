@@ -158,4 +158,8 @@ position = Vector2(329, -1579)
 scale = Vector2(1.7870677, 2.352593)
 
 [node name="PlayerWithCameraTest" parent="." unique_id=342374854 instance=ExtResource("3_km5r4")]
-position = Vector2(274, 344)
+position = Vector2(358, -1499)
+
+[node name="WaterFlowArea" parent="." unique_id=531403536 instance=ExtResource("2_4l5no")]
+position = Vector2(127, -1531)
+scale = Vector2(1.154987, 3.9541204)
