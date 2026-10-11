@@ -61,7 +61,9 @@ extends Node
 ## 二段跳最大可用次数 (通常为 1)
 @export var player_max_double_jumps: int = 1
 ## 是否开启二段跳功能
-@export var player_enable_double_jump: bool = true
+@export var player_enable_double_jump: bool = false
+## 是否默认解锁钩索功能
+@export var player_enable_rope: bool = false
 ## 蹬墙跳垂直弹跳力与水平反冲基数
 @export var player_climb_ability: float = 480.0
 ## 贴墙滑落时的最大下落速度限制

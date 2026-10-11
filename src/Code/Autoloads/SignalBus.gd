@@ -87,6 +87,13 @@ signal CameraInputLockChanged(player: Node2D, locked: bool)
 ## =============================================================================
 
 
+## UI 请求设置永久能力；ability 为 double_jump 或 rope，enabled 为目标解锁状态。
+signal PlayerAbilityChangeRequested(ability: StringName, enabled: bool)
+## UI 请求当前玩家能力状态，用于初始化或重新打开面板。
+signal PlayerAbilityStateRequested
+## 玩家永久能力变化或应答状态请求时触发；两个布尔值分别为二段跳与钩索解锁状态。
+signal PlayerAbilitiesChanged(double_jump_enabled: bool, rope_enabled: bool)
+
 #region 1. 玩家钩锁与移动事件
 
 ## 玩家发射多向自瞄钩锁时触发
