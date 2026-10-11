@@ -14,6 +14,36 @@ extends Node
 ## 井口喷流水平速度；保持物理移动离开井口。
 @export var level2_fountain_exit_speed: float = 320.0
 
+@export_group("Level 2 - Scenery", "level2_scenery_")
+## 第二关独立前后景开关；关闭后继续显示原灰盒背景。
+@export var level2_scenery_enabled: bool = true
+## 横向分层原画在世界中的显示高度；保持每张图片原始宽高比。
+@export var level2_scenery_artwork_height: float = 800.0
+## 远景相对镜头的移动比例。
+@export_range(0.0, 1.0) var level2_scenery_far_speed: float = 0.25
+## 窗格、拱廊等中景移动比例，同组保持原图对齐。
+@export_range(0.0, 1.0) var level2_scenery_middle_speed: float = 0.65
+## 前景柱移动比例。
+@export_range(1.0, 1.5) var level2_scenery_foreground_speed: float = 1.08
+## 前景透明度，避免遮住跳台和玩家。
+@export_range(0.0, 1.0) var level2_scenery_foreground_opacity: float = 0.35
+## 玩家附近前景进一步淡出的半径，世界像素。
+@export var level2_scenery_player_clear_radius: float = 100.0
+## 竖井右侧前景柱透明度，默认保留美术原图的深色。
+@export_range(0.0, 1.0) var level2_scenery_vertical_foreground_opacity: float = 1.0
+## 竖井玩家附近前景淡出半径，避免窄井中的柱子遮住玩家。
+@export var level2_scenery_vertical_clear_radius: float = 32.0
+## 竖井柱子纵向循环的重叠淡化比例，避免原图首尾硬切。
+@export_range(0.01, 0.15) var level2_scenery_vertical_loop_blend: float = 0.06
+## 下层竖井雕花柱相对原位置的最大视差位移（像素）；不循环，雕花保持在下部。
+@export_range(0.0, 128.0) var level2_scenery_vertical_architecture_travel: float = 128.0
+## 竖井浅色远柱的纵向移动比例；独立于横向背景。
+@export_range(0.0, 1.0) var level2_scenery_vertical_far_speed: float = 0.12
+## 上层竖井左侧暗柱的纵向移动比例。
+@export_range(0.0, 1.0) var level2_scenery_vertical_middle_speed: float = 0.35
+## 竖井右侧阴影柱的纵向移动比例；大于 1 时比地形滚动更快。
+@export_range(1.0, 2.0) var level2_scenery_vertical_foreground_speed: float = 1.6
+
 @export_group("Level 2 - Camera", "level2_camera_")
 ## 窄屏时限制可见高度，避免露出上下相邻房间；不改项目全局分辨率。
 @export var level2_camera_max_view_height: float = 800.0

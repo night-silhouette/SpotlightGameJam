@@ -1,0 +1,14 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/VerticalScenery.gd" id="fit"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/VerticalComposition.tscn" id="art"]
+
+[node name="FittedVerticalComposition" type="Control"]
+offset_right = 600.0
+offset_bottom = 1450.0
+mouse_filter = 2
+script = ExtResource("fit")
+metadata/vertical_layout = true
+metadata/use_authored_bounds = true
+
+[node name="Composition" parent="." instance=ExtResource("art")]

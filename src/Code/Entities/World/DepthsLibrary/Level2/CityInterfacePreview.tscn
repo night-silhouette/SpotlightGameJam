@@ -1,44 +1,28 @@
-[gd_scene format=3]
-[sub_resource type="RectangleShape2D" id="LeftApproachShape"]
-size = Vector2(600, 32)
-[sub_resource type="RectangleShape2D" id="MiddleJoinShape"]
-size = Vector2(40, 32)
-[node name="CityInterfacePreview" type="Node2D"]
-metadata/description = "仅用于第二关试玩的主城接缝示意，正式主城整合不使用此场景"
-[node name="LeftApproach" type="StaticBody2D" parent="."]
-position = Vector2(-600, -3080)
-collision_layer = 1
-collision_mask = 2
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftApproach"]
-position = Vector2(300.0, 16.0)
-shape = SubResource("LeftApproachShape")
-[node name="Stone" type="Polygon2D" parent="LeftApproach"]
-polygon = PackedVector2Array(0, 0, 600, 0, 600, 32, 0, 32)
-color = Color(0.14, 0.23, 0.28, 1)
-[node name="Edge" type="Polygon2D" parent="LeftApproach"]
-polygon = PackedVector2Array(0, 0, 600, 0, 600, 4, 0, 4)
-color = Color(0.50, 0.72, 0.73, 1)
-[node name="MiddleJoin" type="StaticBody2D" parent="."]
-position = Vector2(860, -3080)
-collision_layer = 1
-collision_mask = 2
-[node name="CollisionShape2D" type="CollisionShape2D" parent="MiddleJoin"]
-position = Vector2(20.0, 16.0)
-shape = SubResource("MiddleJoinShape")
-[node name="Stone" type="Polygon2D" parent="MiddleJoin"]
-polygon = PackedVector2Array(0, 0, 40, 0, 40, 32, 0, 32)
-color = Color(0.14, 0.23, 0.28, 1)
-[node name="Edge" type="Polygon2D" parent="MiddleJoin"]
-polygon = PackedVector2Array(0, 0, 40, 0, 40, 4, 0, 4)
-color = Color(0.50, 0.72, 0.73, 1)
+[gd_scene format=3 uid="uid://ca8qoecnswf60"]
+[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 
-[node name="Spawn" type="Marker2D" parent="."]
+[node name="CityInterfacePreview" type="Node2D" unique_id=258316886]
+metadata/description = "仅用于第二关试玩的主城接缝示意，正式主城整合不使用此场景"
+
+[node name="Spawn" type="Marker2D" parent="." unique_id=56482972]
 position = Vector2(-120, -3115)
-[node name="EntranceSign" type="Label" parent="."]
-position = Vector2(-160, -3260)
+
+[node name="EntranceSign" type="Label" parent="." unique_id=507048928]
+offset_left = -160.0
+offset_top = -3260.0
+offset_right = -160.0
+offset_bottom = -3260.0
 text = "左口 ↓ 进入第二关"
-mouse_filter = 2
-[node name="PreviewLabel" type="Label" parent="."]
-position = Vector2(340, -3330)
+
+[node name="PreviewLabel" type="Label" parent="." unique_id=200398927]
+offset_left = 340.0
+offset_top = -3330.0
+offset_right = 340.0
+offset_bottom = -3330.0
 text = "主城连接示意（非正式主城）"
-mouse_filter = 2
+
+[node name="Terrain" type="TileMapLayer" parent="."]
+position = Vector2(0, 24)
+tile_map_data = PackedByteArray("AADt/5//AAAAAAAAAADu/5//AAAAAAAAAADv/5//AAAAAAAAAADw/5//AAAAAAAAAADx/5//AAAAAAAAAADy/5//AAAAAAAAAADz/5//AAAAAAAAAAD0/5//AAAAAAAAAAD1/5//AAAAAAAAAAD2/5//AAAAAAAAAAD3/5//AAAAAAAAAAD4/5//AAAAAAAAAAD5/5//AAAAAAAAAAD6/5//AAAAAAAAAAD7/5//AAAAAAAAAAD8/5//AAAAAAAAAAD9/5//AAAAAAAAAAD+/5//AAAAAAAAAAD//5//AAAAAAAAAAAbAJ//AAAAAAAAAAA=")
+tile_set = ExtResource("L2Terrain")
+navigation_enabled = false

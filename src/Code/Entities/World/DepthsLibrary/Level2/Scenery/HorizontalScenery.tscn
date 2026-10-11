@@ -1,0 +1,9 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/parallax_scenery2.tscn" id="composition"]
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/HorizontalScenery.gd" id="script"]
+
+[node name="HorizontalScenery" instance=ExtResource("composition")]
+script = ExtResource("script")
+metadata/coverage = Rect2(-4300, 0, 8400, 800)
+editor_description = "地图用横向背景：继承 parallax_scenery2 原图组合。编辑器和运行时均按 coverage 与 ExportSettings Artwork Height 等比适配并裁剪横向带。调整 Level2Scenery 中三个实例的 coverage 元数据可预览范围；原始拼图保持不变。"

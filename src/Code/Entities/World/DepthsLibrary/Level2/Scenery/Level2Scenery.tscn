@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://cjeny2skwyccl"]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/FittedVerticalComposition.tscn" id="4_3fftm"]
+[ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="4_3iuh0"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/HorizontalScenery.tscn" id="horizontal"]
+[ext_resource type="Script" uid="uid://mux543myva1c" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/Level2Scenery.gd" id="script"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/VerticalScenery.tscn" id="vertical"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3fftm"]
+resource_local_to_scene = true
+shader = ExtResource("4_3iuh0")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xjetr"]
+resource_local_to_scene = true
+shader = ExtResource("4_3iuh0")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t5av5"]
+resource_local_to_scene = true
+shader = ExtResource("4_3iuh0")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8s8yw"]
+resource_local_to_scene = true
+shader = ExtResource("4_3iuh0")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fh5p2"]
+resource_local_to_scene = true
+shader = ExtResource("4_3iuh0")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[node name="Scenery" type="Node2D" unique_id=190480178]
+script = ExtResource("script")
+
+[node name="HorizontalMain" parent="." unique_id=1531287300 instance=ExtResource("horizontal")]
+position = Vector2(0, -80)
+
+[node name="HorizontalEntry" parent="." unique_id=2073498070 instance=ExtResource("horizontal")]
+position = Vector2(0, -3080)
+metadata/coverage = Rect2(0, 0, 860, 520)
+
+[node name="HorizontalLower" parent="." unique_id=1123222901 instance=ExtResource("horizontal")]
+position = Vector2(0, 1320)
+metadata/coverage = Rect2(1650, 0, 2200, 800)
+
+[node name="DescentShaft" parent="." unique_id=880993490 instance=ExtResource("vertical")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 560.0
+offset_top = -2940.0
+offset_right = 840.0
+offset_bottom = -80.0
+
+[node name="LowerStairwell" parent="." unique_id=1716610495 instance=ExtResource("4_3fftm")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 1056.0
+offset_top = 536.0
+offset_right = 1664.0
+offset_bottom = 1976.0
+
+[node name="FountainShaft" parent="." unique_id=54398264 instance=ExtResource("vertical")]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 900.0
+offset_top = -3080.0
+offset_right = 1080.0
+offset_bottom = -80.0
+
+[node name="ShaftDepth" parent="FountainShaft/Backdrop" index="0"]
+material = SubResource("ShaderMaterial_3fftm")
+
+[node name="LeftColumns" parent="FountainShaft/Backdrop" index="1"]
+visible = false
+material = SubResource("ShaderMaterial_xjetr")
+
+[node name="RightColumns" parent="FountainShaft/Backdrop" index="2"]
+visible = false
+material = SubResource("ShaderMaterial_t5av5")
+
+[node name="NearColumn" parent="FountainShaft/Foreground" index="0"]
+visible = false
+material = SubResource("ShaderMaterial_8s8yw")
+
+[node name="DarkEdges" parent="FountainShaft/Foreground" index="1"]
+material = SubResource("ShaderMaterial_fh5p2")
+
+[editable path="FountainShaft"]

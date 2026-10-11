@@ -4,6 +4,8 @@ extends Node2D
 @onready var _map: Node2D = $Level2Map
 
 func _ready() -> void:
+	# The city preview shares map-local coordinates, even after moving the map.
+	$CityInterfacePreview.global_transform = _map.global_transform
 	# 正式玩家初始化会隐藏占位图；测试入口在其初始化后恢复灰盒外观。
 	_player.get_node("sprite").hide()
 	_player.get_node("VisualPlaceholder").show()

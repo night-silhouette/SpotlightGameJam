@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://chmbddixfsmqr"]
+
+[ext_resource type="Texture2D" uid="uid://6labuijaaxmd" path="res://Art/Archived/UndergroudLibrary/Vertical/01.png" id="tex1"]
+[ext_resource type="Texture2D" uid="uid://bjuoe1hecexff" path="res://Art/Archived/UndergroudLibrary/Vertical/02.png" id="tex2"]
+[ext_resource type="Texture2D" uid="uid://0wlsayo4mdgd" path="res://Art/Archived/UndergroudLibrary/Vertical/03.png" id="tex3"]
+[ext_resource type="Texture2D" uid="uid://cexx5u4vby1gf" path="res://Art/Archived/UndergroudLibrary/Vertical/06.png" id="tex6"]
+[ext_resource type="Texture2D" uid="uid://dwqfngtx4kvuo" path="res://Art/Archived/UndergroudLibrary/Vertical/07.png" id="tex7"]
+[ext_resource type="Texture2D" uid="uid://bxy34ojdshqb5" path="res://Art/Archived/UndergroudLibrary/Vertical/08.png" id="tex8"]
+[ext_resource type="Texture2D" uid="uid://krjy5b6o81ps" path="res://Art/Archived/UndergroudLibrary/Vertical/09.png" id="tex9"]
+
+[node name="VerticalComposition" type="Node2D" unique_id=368871070]
+
+[node name="BlueDepth" type="Parallax2D" parent="." unique_id=972477969]
+z_index = -30
+
+[node name="BlueBase" type="Sprite2D" parent="BlueDepth" unique_id=420863773]
+texture = ExtResource("tex3")
+centered = false
+
+[node name="LowerLedge" type="Sprite2D" parent="BlueDepth" unique_id=1789618049]
+z_index = 20
+position = Vector2(0, 256)
+texture = ExtResource("tex2")
+centered = false
+
+[node name="DistantColumn" type="Parallax2D" parent="." unique_id=263203667]
+z_index = -20
+
+[node name="PaleColumn" type="Sprite2D" parent="DistantColumn" unique_id=1343923454]
+modulate = Color(1, 1, 1, 0.2)
+texture = ExtResource("tex9")
+centered = false
+
+[node name="LeftArchitecture" type="Parallax2D" parent="." unique_id=347281207]
+z_index = -10
+
+[node name="ColumnSilhouette" type="Sprite2D" parent="LeftArchitecture" unique_id=1392755776]
+texture = ExtResource("tex6")
+centered = false
+
+[node name="SilverColumn" type="Sprite2D" parent="LeftArchitecture" unique_id=556274230]
+texture = ExtResource("tex8")
+centered = false
+
+[node name="Foreground" type="Parallax2D" parent="." unique_id=1681206337]
+z_index = -5
+
+[node name="BlurredRightColumn" type="Sprite2D" parent="Foreground" unique_id=73571228]
+texture = ExtResource("tex7")
+centered = false
+
+[node name="FrameEdges" type="Parallax2D" parent="." unique_id=104798717]
+visible = false
+z_index = 11
+
+[node name="BlackMargins" type="Sprite2D" parent="FrameEdges" unique_id=929709114]
+texture = ExtResource("tex1")
+centered = false
