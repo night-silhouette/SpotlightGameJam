@@ -14,6 +14,7 @@ class_name PlayerUI
 @onready var debug_abilities: VBoxContainer = $Control/DebugPanel/Abilities
 @onready var double_jump_toggle: CheckButton = $Control/DebugPanel/Abilities/DoubleJump
 @onready var rope_toggle: CheckButton = $Control/DebugPanel/Abilities/Rope
+@onready var debug_flight_toggle: CheckButton = $Control/DebugPanel/Abilities/DebugFlight
 @onready var virtual_joystick: Control = $Control/VirtualJoystick
 @onready var crown_icon: TextureRect = $Control/RelicIcons/Crown
 @onready var codex_icon: TextureRect = $Control/RelicIcons/Codex
@@ -34,6 +35,7 @@ func _ready() -> void:
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
 		SignalBus.PlayerAbilitiesChanged.connect(_on_player_abilities_changed)
+		SignalBus.PlayerDebugFlightChanged.connect(_on_debug_flight_changed)
 		SignalBus.PlayerRelicsChanged.connect(_on_player_relics_changed)
 	
 	if ExportSettings:
@@ -45,9 +47,11 @@ func _ready() -> void:
 	debug_toggle.pressed.connect(_on_debug_toggle_pressed)
 	double_jump_toggle.toggled.connect(_on_double_jump_toggled)
 	rope_toggle.toggled.connect(_on_rope_toggled)
+	debug_flight_toggle.toggled.connect(_on_debug_flight_toggled)
 	crown_icon.texture = ExportSettings.sunken_crown_texture
 	codex_icon.texture = ExportSettings.starseekers_codex_texture
 	SignalBus.PlayerAbilityStateRequested.emit()
+	SignalBus.PlayerDebugFlightStateRequested.emit()
 	SignalBus.PlayerRelicStateRequested.emit()
 	UpdateHealthDisplay(_target_hp, _max_hp)
 
@@ -56,12 +60,19 @@ func _on_debug_toggle_pressed() -> void:
 	debug_toggle.text = "调试能力 ▲" if debug_abilities.visible else "调试能力 ▼"
 	if debug_abilities.visible:
 		SignalBus.PlayerAbilityStateRequested.emit()
+		SignalBus.PlayerDebugFlightStateRequested.emit()
 
 func _on_double_jump_toggled(enabled: bool) -> void:
 	SignalBus.PlayerAbilityChangeRequested.emit(&"double_jump", enabled)
 
 func _on_rope_toggled(enabled: bool) -> void:
 	SignalBus.PlayerAbilityChangeRequested.emit(&"rope", enabled)
+
+func _on_debug_flight_toggled(enabled: bool) -> void:
+	SignalBus.PlayerDebugFlightChangeRequested.emit(enabled)
+
+func _on_debug_flight_changed(enabled: bool) -> void:
+	debug_flight_toggle.set_pressed_no_signal(enabled)
 
 func _on_player_abilities_changed(double_jump_enabled: bool, rope_enabled: bool) -> void:
 	double_jump_toggle.set_pressed_no_signal(double_jump_enabled)

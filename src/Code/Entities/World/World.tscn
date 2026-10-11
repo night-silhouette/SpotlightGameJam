@@ -110,7 +110,7 @@ tween_resource = SubResource("Resource_yocbw")
 position = Vector2(-15, -1560)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
-position = Vector2(2717, -338)
+position = Vector2(6327, 3170)
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-334, 3597)

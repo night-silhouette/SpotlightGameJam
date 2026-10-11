@@ -13,11 +13,10 @@ signal MonologueRequested(lines: Array[String])
 @export var interaction_action: StringName = &"interact"
 @export var use_export_settings: bool = true
 
-const KEYBIND_MANAGER = preload("res://Code/Entities/Setting/KeybindManager.gd")
-
 @onready var _prompt: Control = $PromptContainer
 @onready var _button: Button = $PromptContainer/PromptButton
 @onready var _key_badge: Label = $PromptContainer/HBox/KeyBadge
+@onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
 var _players: Array[Node2D] = []
 var _description_requested: bool = false
@@ -32,8 +31,8 @@ func _ready() -> void:
 			monologue_lines.assign(ExportSettings.interactable_monologue_lines)
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 	_button.pressed.connect(_on_prompt_pressed)
-	SignalBus.KeybindChanged.connect(_on_keybind_changed)
 	_refresh_prompt()
 
 func _physics_process(_delta: float) -> void:
@@ -41,11 +40,12 @@ func _physics_process(_delta: float) -> void:
 	_refresh_prompt()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not InputMap.has_action(interaction_action):
-		return
-	if event.is_action_pressed(interaction_action) and not _players.is_empty():
-		Interact(_players[0])
-		get_viewport().set_input_as_handled()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and not _players.is_empty():
+		var shape := _collision_shape.shape as RectangleShape2D
+		var point := _collision_shape.to_local(get_global_mouse_position())
+		if shape and Rect2(-shape.size * 0.5, shape.size).has_point(point):
+			if Interact(_players[0]):
+				get_viewport().set_input_as_handled()
 
 ## 执行交互逻辑：首次交互请求描述文本，后续交互请求内心独白文本。
 ## @param interactor 必须为当前重叠区域内有效的玩家节点。
@@ -92,9 +92,6 @@ func _on_prompt_pressed() -> void:
 	if not _players.is_empty():
 		Interact(_players[0])
 
-func _on_keybind_changed(_action: StringName, _description: String) -> void:
-	_refresh_prompt()
-
 func _refresh_prompt() -> void:
 	_prompt.visible = not _players.is_empty()
-	_key_badge.text = KEYBIND_MANAGER.GetActionKeyBadgeText(interaction_action, "F")
+	_key_badge.text = "右键"

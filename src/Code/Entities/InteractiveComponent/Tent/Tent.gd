@@ -1,12 +1,8 @@
 extends Area2D
 class_name Tent
 
-## =============================================================================
-## Tent.gd - 帐篷重生点交互组件
-## 无实体碰撞体积（Area2D），支持键盘 [F] 键或点击上方 UI 交互。
-## 交互后激活帐篷并将其设为玩家死亡重生点，广播全局 TentActivated 信号；
-## 其他已激活帐篷收到信号后自动切换为未激活状态，确保全局仅一个活跃帐篷。
-## =============================================================================
+## 帐篷重生点：玩家靠近时可右键点击帐篷或上方提示按钮激活。
+## 激活后广播全局 TentActivated 信号，其他帐篷自动取消激活。
 
 @export_category("Tent Settings")
 ## 是否在初始时即为当前激活的重生点
@@ -19,10 +15,7 @@ class_name Tent
 ## 重生点相对帐篷的局部位置偏移
 @export var respawn_offset: Vector2 = Vector2.ZERO
 
-const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
-
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-
 @onready var tent_sprite: CanvasItem = $TentVisual
 @onready var light_glow: PointLight2D = $LightGlow
 @onready var prompt_container: Control = $PromptContainer
@@ -39,16 +32,12 @@ func _ready() -> void:
 	_sync_from_export_settings()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	
 	if prompt_button:
+		prompt_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 		prompt_button.pressed.connect(_on_prompt_pressed)
-	
 	if SignalBus:
 		SignalBus.TentActivated.connect(_on_tent_activated_externally)
-		SignalBus.KeybindChanged.connect(_on_keybind_changed)
-
 	_update_visual_state()
-
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -58,12 +47,14 @@ func _sync_from_export_settings() -> void:
 			(collision_shape.shape as RectangleShape2D).size = ExportSettings.tent_interaction_size
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact"):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if _player_in_range and is_instance_valid(_cached_player):
-			get_viewport().set_input_as_handled()
-			ActivateTent()
+			var shape := collision_shape.shape as RectangleShape2D
+			var point := collision_shape.to_local(get_global_mouse_position())
+			if shape and Rect2(-shape.size * 0.5, shape.size).has_point(point):
+				ActivateTent()
+				get_viewport().set_input_as_handled()
 
-## 鼠标点击提示 UI 触发交互
 func _on_prompt_pressed() -> void:
 	if _player_in_range and is_instance_valid(_cached_player):
 		ActivateTent()
@@ -80,42 +71,34 @@ func _on_body_exited(body: Node2D) -> void:
 		_cached_player = null
 		_update_visual_state()
 
-## 激活当前帐篷为重生点
+## 激活当前帐篷为重生点。
 func ActivateTent() -> void:
 	is_active = true
 	_update_visual_state()
-	
 	var spawn_pos = GetRespawnPosition()
 	if SignalBus:
 		SignalBus.TentActivated.emit(self, spawn_pos)
 
-## 获取此帐篷对应的全局重生位置
+## 获取此帐篷对应的全局重生位置。
+## @return 重生点的世界坐标。
 func GetRespawnPosition() -> Vector2:
 	return global_position + respawn_offset
 
-## 监听外部帐篷激活事件，若是其他帐篷被激活则自身变为非活跃
 func _on_tent_activated_externally(tent_node: Node2D, _spawn_pos: Vector2) -> void:
 	if tent_node != self:
 		if is_active:
 			is_active = false
 			_update_visual_state()
 
-func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
-	if action_name == &"interact":
-		_update_visual_state()
-
 func _update_visual_state() -> void:
-
 	if not is_inside_tree():
 		return
-
 	if _glow_tween and _glow_tween.is_valid():
 		_glow_tween.kill()
 
 	# 更新光照与呼吸动画
 	if light_glow:
 		light_glow.enabled = is_active
-	
 	if is_active:
 		if light_glow:
 			_glow_tween = create_tween().set_loops()
@@ -128,20 +111,20 @@ func _update_visual_state() -> void:
 		if status_label:
 			status_label.visible = false
 
-	# 交互 UI 提示（样式与 MiniChaliceStation 保持一致）
+	# 交互提示与小圣杯保持一致
 	if _player_in_range:
 		if prompt_container:
 			prompt_container.visible = true
 		if action_label:
 			action_label.text = "重设重生点" if is_active else "设为重生点"
 		if key_badge:
-			key_badge.text = KeybindManagerRef.GetActionKeyBadgeText(&"interact", "F")
+			key_badge.text = "右键"
 	else:
-
 		if prompt_container:
 			prompt_container.visible = false
 
-## 实体数据导出
+## 导出帐篷持久化数据。
+## @return 位置、重生偏移和激活状态组成的字典。
 func ExportSaveData() -> Dictionary:
 	return {
 		"position_x": global_position.x,
@@ -153,8 +136,8 @@ func ExportSaveData() -> Dictionary:
 		"is_active": is_active
 	}
 
-## 实体数据加载
-## @param data 存档字典
+## 加载帐篷持久化数据。
+## @param data 存档字典。
 func LoadSaveData(data: Dictionary) -> void:
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(data["position_x"], data["position_y"])
@@ -165,4 +148,3 @@ func LoadSaveData(data: Dictionary) -> void:
 		_update_visual_state()
 		if is_active and SignalBus:
 			SignalBus.TentActivated.emit(self, GetRespawnPosition())
-

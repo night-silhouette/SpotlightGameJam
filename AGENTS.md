@@ -61,7 +61,8 @@ Code/
 ## 杂项
 - 关于可交互物,InteractiveComponent 在这个文件夹里做一些可交互物,每一个都单独在这里开一个文件夹,与 WaterFlowArea 这个文件夹并行
 - 关于可交互物,如果他是那种需要f键交互的,那同时增加一个可用鼠标点击的ui,来触发交互,ui样式与Mini圣水杯的ui样式一致
-
+- C:\Users\jixiegm\Desktop\Godot_v4.7.2-stable_win64.exe"
+这是godot路径
 
 
 ## 现有项目分析

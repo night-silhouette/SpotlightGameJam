@@ -68,6 +68,8 @@ func change_state(next_state_name: String) -> void:
 func phy_middleware() -> void:
 	if not gameInputControl:
 		return
+	if obj.debug_flight_enabled:
+		return
 	# 受伤、死亡和持绳动作不被普通移动、跳跃或攀爬动画抢占。
 	if cur_state_name in ["hurt", "died"] or _rope_pose_active:
 		return

@@ -43,6 +43,8 @@ class_name Player
 var unlocked_double_jump: bool = false
 ## 钩索永久解锁状态，与落地恢复的钩索冷却无关。
 var enable_rope: bool = false
+## 仅供调试使用，重新进入场景后默认关闭。
+var debug_flight_enabled: bool = false
 ## 当前携带的沉没王冠和寻星者法典，默认均未获得。
 var has_sunken_crown: bool = false
 var has_starseekers_codex: bool = false
@@ -299,6 +301,8 @@ func _ready() -> void:
 		SignalBus.PlayerInstantDeathRequested.connect(_on_player_instant_death_requested)
 		SignalBus.PlayerAbilityChangeRequested.connect(_on_player_ability_change_requested)
 		SignalBus.PlayerAbilityStateRequested.connect(_emit_ability_state)
+		SignalBus.PlayerDebugFlightChangeRequested.connect(_on_debug_flight_change_requested)
+		SignalBus.PlayerDebugFlightStateRequested.connect(_emit_debug_flight_state)
 		SignalBus.lock1.connect(_on_crown_unlocked)
 		SignalBus.lock2.connect(_on_codex_unlocked)
 		SignalBus.PlayerRelicStateRequested.connect(_emit_relic_state)
@@ -347,6 +351,19 @@ func _on_player_ability_change_requested(ability: StringName, enabled: bool) -> 
 
 func _emit_ability_state() -> void:
 	SignalBus.PlayerAbilitiesChanged.emit(unlocked_double_jump, enable_rope)
+
+func _on_debug_flight_change_requested(enabled: bool) -> void:
+	if enabled and rope_controller.current_state != RopeController.RopeState.IDLE:
+		rope_controller.ReleaseRope(false)
+	debug_flight_enabled = enabled
+	velocity = Vector2.ZERO
+	if enabled and now_HP > 0.0:
+		move_state_machine.state_map["fall"].is_use = true
+		move_state_machine.change_state("fall")
+	_emit_debug_flight_state()
+
+func _emit_debug_flight_state() -> void:
+	SignalBus.PlayerDebugFlightChanged.emit(debug_flight_enabled)
 
 func _process(delta: float) -> void:
 	if is_hp_draining and now_HP > 0.0:
@@ -445,6 +462,13 @@ func _physics_process(delta: float) -> void:
 			rope_info = " [绳索:%s]" % RopeController.RopeState.keys()[rope_controller.current_state]
 		var dj_info = " [二段跳:%d]" % double_jump_count
 		debug.text = "速度<%d,%d> %s%s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info, dj_info]
+
+	if debug_flight_enabled and now_HP > 0.0:
+		velocity = Vector2(gameInputControl.row_dir, gameInputControl.column_dir).normalized() * ExportSettings.player_debug_flight_speed
+		if gameInputControl.row_dir != 0.0:
+			SetFacingDirection(int(sign(gameInputControl.row_dir)))
+		move_and_slide()
+		return
 
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta

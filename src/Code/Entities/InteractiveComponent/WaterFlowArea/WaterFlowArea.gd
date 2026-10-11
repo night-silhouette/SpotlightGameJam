@@ -1,20 +1,16 @@
 extends StaticBody2D
 class_name WaterFlowArea
 
-## =============================================================================
-## WaterFlowArea.gd - 流水区域交互组件
-## 默认状态为坚固刚体地形；靠近后按 E 键使用流水符文转化为流体状态。
-## 处于流体状态时，玩家进入该区域会顺着进入方向获得强力喷射加速。
-## =============================================================================
+## 流水区域：右键点击区域切换固态与流体；流体状态下为进入的玩家提供加速。
 
 @export_category("WaterFlowArea Settings")
-## 区域尺寸 (宽, 高)
+## 区域尺寸（宽、高）
 @export var area_size: Vector2 = Vector2(160.0, 100.0):
 	set(value):
 		area_size = value
 		_update_dimensions()
 
-## 初始状态是否为流体 (默认 false 为普通实体刚体)
+## 初始状态是否为流体
 @export var is_fluid: bool = false:
 	set(value):
 		is_fluid = value
@@ -25,8 +21,6 @@ class_name WaterFlowArea
 @export var boost_multiplier: float = 1.6
 ## 玩家进入流体时保证的最低爆发速度
 @export var min_boost_speed: float = 480.0
-## 靠近使用水符文石交互的有效距离
-@export var interact_radius: float = 120.0
 ## 穿过流水区域划水音效
 @export var sfx_water_pass: AudioStream = preload("res://Music/SFX/Interactive-SFX_Interactive/HuaShui.wav")
 ## 划水音效音量分贝 (dB)
@@ -34,20 +28,11 @@ class_name WaterFlowArea
 ## 划水音效音频总线
 @export var sfx_water_pass_bus: StringName = &"SFX_Interact"
 
-const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
-
 @onready var solid_collision: CollisionShape2D = $SolidCollision
-
 @onready var fluid_area: Area2D = $FluidArea
 @onready var fluid_collision: CollisionShape2D = $FluidArea/FluidCollision
 @onready var visual_rect: ColorRect = $VisualRect
-@onready var prompt_container: Control = $PromptContainer
-@onready var prompt_button: Button = $PromptContainer/PromptButton
-@onready var key_badge: Label = $PromptContainer/HBox/KeyBadge
-@onready var action_label: Label = $PromptContainer/HBox/ActionLabel
 
-var _player_in_range: bool = false
-var _cached_player: CharacterBody2D = null
 var _bodies_in_water: Array[CharacterBody2D] = []
 
 func _ready() -> void:
@@ -55,25 +40,13 @@ func _ready() -> void:
 	_update_dimensions()
 	_apply_state(is_fluid)
 
-	if fluid_area:
-		fluid_area.body_entered.connect(_on_fluid_area_body_entered)
-		fluid_area.body_exited.connect(_on_fluid_area_body_exited)
-
-	if prompt_button:
-		prompt_button.pressed.connect(_on_prompt_pressed)
-	if SignalBus:
-		SignalBus.KeybindChanged.connect(_on_keybind_changed)
-
-func _on_keybind_changed(_action_name: StringName, _event_desc: String) -> void:
-	if _player_in_range:
-		_update_prompt(true)
-
+	fluid_area.body_entered.connect(_on_fluid_area_body_entered)
+	fluid_area.body_exited.connect(_on_fluid_area_body_exited)
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
 		boost_multiplier = ExportSettings.water_flow_speed_multiplier
 		min_boost_speed = ExportSettings.water_flow_min_speed
-		interact_radius = ExportSettings.water_flow_interact_distance
 		if "water_flow_pass_volume_db" in ExportSettings:
 			sfx_water_pass_volume_db = ExportSettings.water_flow_pass_volume_db
 		if "water_flow_audio_bus" in ExportSettings:
@@ -95,19 +68,12 @@ func _update_dimensions() -> void:
 		visual_rect.size = area_size
 		visual_rect.position = -area_size * 0.5
 
-	if prompt_container:
-		# 保持提示按钮在世界中始终朝上且不受父节点非均匀缩放引起的文字拉伸变形
-		var parent_scale = scale
-		var sx = 1.0 / parent_scale.x if abs(parent_scale.x) > 0.0001 else 1.0
-		var sy = 1.0 / parent_scale.y if abs(parent_scale.y) > 0.0001 else 1.0
-		prompt_container.scale = Vector2(sx, sy)
-		prompt_container.rotation = -rotation
-		# 计算在父节点局部坐标系下的顶部偏移位置
-		var top_local_offset = Vector2(0.0, -area_size.y * 0.5 - 32.0 * sy)
-		prompt_container.position = top_local_offset - (prompt_container.size * 0.5) * Vector2(sx, sy)
+## 判断世界坐标是否落在流水区域可见矩形内；world_point 为鼠标的世界坐标，返回是否命中。
+func ContainsWorldPoint(world_point: Vector2) -> bool:
+	var local_point = to_local(world_point)
+	return abs(local_point.x) <= area_size.x * 0.5 and abs(local_point.y) <= area_size.y * 0.5
 
-## 将流水区域切换为流体或固态刚体状态
-## @param to_fluid 是否切换为流体
+## 将流水区域切换为流体或固态；to_fluid 表示目标是否为流体。
 func SetFluidState(to_fluid: bool) -> void:
 	is_fluid = to_fluid
 	_apply_state(is_fluid)
@@ -120,116 +86,18 @@ func _apply_state(fluid: bool) -> void:
 		# 转换为流体：关闭实体阻挡碰撞，启用感应触发 Area
 		solid_collision.set_deferred("disabled", true)
 		fluid_collision.set_deferred("disabled", false)
-		visual_rect.color = Color(0.15, 0.65, 0.95, 0.45) # 澄澈流体半透水蓝
+		visual_rect.color = Color(0.15, 0.65, 0.95, 0.45)
 		SignalBus.RuneWallConverted.emit(self, Vector2.UP)
 	else:
 		# 恢复为普通刚体：开启实体碰撞，关闭流体感应
 		solid_collision.set_deferred("disabled", false)
 		fluid_collision.set_deferred("disabled", true)
-		visual_rect.color = Color(0.28, 0.42, 0.55, 1.0) # 固态符文石砖青灰色
-		# 若凝固时有玩家还在流体中，清除其在流体中的状态
+		visual_rect.color = Color(0.28, 0.42, 0.55, 1.0)
 		_clear_all_bodies_in_water()
 
-## 切换符文流水/凝固状态的公共方法
+## 切换符文流水与凝固状态。
 func ToggleRuneFluid() -> void:
 	SetFluidState(not is_fluid)
-	_update_prompt(true)
-
-func _toggle_rune_fluid() -> void:
-	ToggleRuneFluid()
-
-## 点击提示 UI 触发水符文交互
-func _on_prompt_pressed() -> void:
-	if not _player_in_range or not is_instance_valid(_cached_player):
-		return
-	# 如果玩家身上有水符文控制器组件，优先走控制器的冷却和状态同步流程
-	var rune_ctrl = _cached_player.get_node_or_null("WaterRuneController")
-	if rune_ctrl and rune_ctrl.has_method("TryActivateTargetArea"):
-		rune_ctrl.TryActivateTargetArea(self)
-	elif rune_ctrl and "current_cd" in rune_ctrl:
-		if rune_ctrl.current_cd <= 0.0:
-			ToggleRuneFluid()
-			rune_ctrl.current_cd = rune_ctrl.cooldown
-			if SignalBus:
-				SignalBus.WaterRuneCooldownChanged.emit(rune_ctrl.current_cd, rune_ctrl.cooldown)
-				SignalBus.WaterRuneActivated.emit(self, is_fluid)
-	else:
-		ToggleRuneFluid()
-		if SignalBus:
-			SignalBus.WaterRuneActivated.emit(self, is_fluid)
-
-func _physics_process(_delta: float) -> void:
-	_check_player_distance()
-
-func _check_player_distance() -> void:
-	if not is_instance_valid(_cached_player):
-		var players = get_tree().get_nodes_in_group("player")
-		if players.size() > 0:
-			_cached_player = players[0] as CharacterBody2D
-
-	if not is_instance_valid(_cached_player):
-		_player_in_range = false
-		_update_prompt(false)
-		return
-
-	var dist = GetDistanceToPlayer(_cached_player.global_position)
-	var in_range = dist <= interact_radius
-
-	_player_in_range = in_range
-	_update_prompt(_player_in_range)
-
-## 计算给定世界坐标到本流水区域外边缘的最短距离（考虑区域尺寸与全局缩放）
-func GetDistanceToPlayer(p_pos: Vector2) -> float:
-	# 转换到流水区域的局部坐标系
-	var local_pos = to_local(p_pos)
-	var half_size = area_size * 0.5
-	# 计算到轴对齐矩形边界的距离
-	var dx = max(0.0, abs(local_pos.x) - half_size.x)
-	var dy = max(0.0, abs(local_pos.y) - half_size.y)
-	# 还原为全局世界坐标尺度距离
-	var effective_scale = global_transform.get_scale()
-	return Vector2(dx * effective_scale.x, dy * effective_scale.y).length()
-
-func _update_prompt(show_it: bool) -> void:
-	if not prompt_container:
-		return
-
-	if not show_it or not is_instance_valid(_cached_player):
-		prompt_container.visible = false
-		return
-
-	prompt_container.visible = true
-
-	# 检查当前玩家交互范围内是否同时存在多个流水区域
-	var nearby_count = 0
-	var all_areas = get_tree().get_nodes_in_group("water_flow")
-	var p_pos = _cached_player.global_position
-
-	for area in all_areas:
-		if area is WaterFlowArea and is_instance_valid(area):
-			if area.GetDistanceToPlayer(p_pos) <= area.interact_radius:
-				nearby_count += 1
-
-	var action_name = "凝固" if is_fluid else "水化"
-	var rune_key_str = KeybindManagerRef.GetActionKeyBadgeText(&"water_rune", "E")
-
-	if nearby_count > 1:
-		# 存在多个流水区域冲突，计算该区域相对玩家的大致方向提示
-		var to_self = global_position - p_pos
-		var dir_key_str = ""
-		if abs(to_self.x) >= abs(to_self.y):
-			dir_key_str = KeybindManagerRef.GetActionKeyBadgeText(&"move_r", "D") if to_self.x > 0 else KeybindManagerRef.GetActionKeyBadgeText(&"move_l", "A")
-		else:
-			dir_key_str = KeybindManagerRef.GetActionKeyBadgeText(&"down", "S") if to_self.y > 0 else KeybindManagerRef.GetActionKeyBadgeText(&"up", "W")
-		if key_badge:
-			key_badge.text = "%s+%s" % [dir_key_str, rune_key_str]
-	else:
-		if key_badge:
-			key_badge.text = rune_key_str
-
-	if action_label:
-
-		action_label.text = action_name
 
 func _on_fluid_area_body_entered(body: Node2D) -> void:
 	if not is_fluid:

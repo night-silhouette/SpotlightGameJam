@@ -17,9 +17,7 @@ const CONFIGURABLE_ACTIONS: Array[StringName] = [
 	&"down",
 	&"jump",
 	&"dash",
-	&"rope_shoot",
-	&"water_rune",
-	&"interact"
+	&"rope_shoot"
 ]
 
 ## 获取动作友好中文名称
@@ -32,8 +30,6 @@ static func GetActionDisplayName(action: StringName) -> String:
 		&"jump": return "跳跃"
 		&"dash": return "冲刺"
 		&"rope_shoot": return "绳索发射/拉取"
-		&"water_rune": return "水符文技能"
-		&"interact": return "场景交互"
 		_: return String(action)
 
 
@@ -170,7 +166,7 @@ static func LoadAndApplyKeybinds() -> bool:
 		
 	for act_name in data.keys():
 		var act = StringName(act_name)
-		if not InputMap.has_action(act):
+		if act not in CONFIGURABLE_ACTIONS or not InputMap.has_action(act):
 			continue
 		var ev_dict = data[act_name]
 		if ev_dict is Dictionary:
@@ -201,4 +197,3 @@ static func RebindAction(action: StringName, new_event: InputEvent, auto_save: b
 			bus = root.get_node("SignalBus")
 	if bus and bus.has_signal("KeybindChanged"):
 		bus.KeybindChanged.emit(action, GetEventText(new_event))
-

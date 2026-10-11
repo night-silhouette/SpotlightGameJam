@@ -93,6 +93,12 @@ signal PlayerAbilityChangeRequested(ability: StringName, enabled: bool)
 signal PlayerAbilityStateRequested
 ## 玩家永久能力变化或应答状态请求时触发；两个布尔值分别为二段跳与钩索解锁状态。
 signal PlayerAbilitiesChanged(double_jump_enabled: bool, rope_enabled: bool)
+## UI 请求切换调试飞行；enabled 为目标开关状态，不写入存档。
+signal PlayerDebugFlightChangeRequested(enabled: bool)
+## UI 请求当前调试飞行状态；无参数。
+signal PlayerDebugFlightStateRequested
+## 玩家调试飞行变化或应答查询时触发；enabled 为当前实际状态。
+signal PlayerDebugFlightChanged(enabled: bool)
 
 ## 发出时角色获得 The Sunken Crown；无参数。
 signal lock1

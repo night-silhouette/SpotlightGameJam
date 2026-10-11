@@ -156,6 +156,15 @@ layout_mode = 2
 focus_mode = 0
 text = "钩索"
 
+[node name="DebugFlight" type="CheckButton" parent="Control/DebugPanel/Abilities"]
+layout_mode = 2
+focus_mode = 0
+text = "调试飞行"
+
+[node name="FlightHelp" type="Label" parent="Control/DebugPanel/Abilities"]
+layout_mode = 2
+text = "移动键/方向键：四向飞行\n松开悬停；关闭恢复重力"
+
 [node name="Setting" parent="." unique_id=987162536 instance=ExtResource("5_setting")]
 
 [node name="VirtualJoystick" type="VirtualJoystick" parent="Control"]

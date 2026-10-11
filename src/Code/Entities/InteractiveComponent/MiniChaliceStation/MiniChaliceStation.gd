@@ -1,11 +1,8 @@
 extends Area2D
 class_name MiniChaliceStation
 
-## =============================================================================
-## MiniChaliceStation.gd - 微光小圣杯补水站
-## 关卡中途补水设施：靠近后按下交互键 [F] 瞬间将水量/生命值回满至 100%
+## 微光小圣杯补水站：玩家靠近后可右键点击圣杯或提示按钮补满水量。
 ## 使用后圣杯光芒隐去。支持单次使用或配置定时刷新重置。
-## =============================================================================
 
 @export_category("Chalice Settings")
 ## 重置刷新冷却时间 (秒)；若 <= 0 则为单次使用，不重置
@@ -20,10 +17,7 @@ class_name MiniChaliceStation
 ## 补水比例 (1.0 代表回满至 100%)
 @export var heal_ratio: float = 1.0
 
-const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
-
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-
 @onready var chalice_base: ColorRect = $ChaliceBase
 @onready var glow_cup: ColorRect = $GlowCup
 @onready var light_glow: PointLight2D = $LightGlow
@@ -43,11 +37,9 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 	if prompt_button:
+		prompt_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 		prompt_button.pressed.connect(_on_prompt_pressed)
-	if SignalBus:
-		SignalBus.KeybindChanged.connect(_on_keybind_changed)
 	_setup_reset_timer()
-
 	_update_visual_state(is_available)
 
 func _sync_from_export_settings() -> void:
@@ -62,12 +54,14 @@ func _setup_reset_timer() -> void:
 	add_child(_reset_timer)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("interact"):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		if _player_in_range and is_available and is_instance_valid(_cached_player):
-			get_viewport().set_input_as_handled()
-			_drink_chalice(_cached_player)
+			var shape := collision_shape.shape as RectangleShape2D
+			var point := collision_shape.to_local(get_global_mouse_position())
+			if shape and Rect2(-shape.size * 0.5, shape.size).has_point(point):
+				_drink_chalice(_cached_player)
+				get_viewport().set_input_as_handled()
 
-## 鼠标点击提示 UI 触发饮用交互
 func _on_prompt_pressed() -> void:
 	if _player_in_range and is_available and is_instance_valid(_cached_player):
 		_drink_chalice(_cached_player)
@@ -75,7 +69,6 @@ func _on_prompt_pressed() -> void:
 func _update_visual_state(available: bool) -> void:
 	if not is_inside_tree():
 		return
-	
 	if _glow_tween and _glow_tween.is_valid():
 		_glow_tween.kill()
 
@@ -91,13 +84,11 @@ func _update_visual_state(available: bool) -> void:
 			if action_label:
 				action_label.text = "饮用"
 			if key_badge:
-				key_badge.text = KeybindManagerRef.GetActionKeyBadgeText(&"interact", "F")
+				key_badge.text = "右键"
 		else:
-
 			if prompt_container:
 				prompt_container.visible = false
-		
-		# 循环呼吸闪烁微光
+
 		_glow_tween = create_tween().set_loops()
 		_glow_tween.tween_property(glow_cup, "modulate:a", 0.5, 0.8).set_trans(Tween.TRANS_SINE)
 		_glow_tween.tween_property(glow_cup, "modulate:a", 1.0, 0.8).set_trans(Tween.TRANS_SINE)
@@ -128,26 +119,21 @@ func _on_body_exited(body: Node2D) -> void:
 		_cached_player = null
 		_update_visual_state(is_available)
 
-func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
-	if action_name == &"interact":
-		_update_visual_state(is_available)
-
 func _drink_chalice(player: Node2D) -> void:
-
 	is_available = false
 	_update_visual_state(false)
-	
+
 	# 回复水量/生命值至 100%
 	if player.has_method("Heal"):
 		var max_hp = player.Max_HP if "Max_HP" in player else 200.0
 		player.Heal(max_hp * heal_ratio)
 	elif "now_HP" in player and "Max_HP" in player:
 		player.now_HP = player.Max_HP * heal_ratio
-	
+
 	# 通过 SignalBus 广播小圣杯被使用
 	if SignalBus:
 		SignalBus.ChaliceStationUsed.emit(self)
-	
+
 	# 启动定时充能重置
 	if reset_time > 0.0:
 		_reset_timer.start(reset_time)
@@ -156,7 +142,8 @@ func _on_reset_timer_timeout() -> void:
 	is_available = true
 	_update_visual_state(true)
 
-## 实体数据导出
+## 实体数据导出。
+## @return 包含位置、可用状态及剩余充能时间的字典。
 func ExportSaveData() -> Dictionary:
 	return {
 		"position_x": global_position.x,
@@ -165,8 +152,8 @@ func ExportSaveData() -> Dictionary:
 		"remaining_reset_time": _reset_timer.time_left if _reset_timer else 0.0
 	}
 
-## 实体数据加载
-## @param data 存档字典
+## 实体数据加载。
+## @param data 存档字典。
 func LoadSaveData(data: Dictionary) -> void:
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(data["position_x"], data["position_y"])
