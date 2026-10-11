@@ -13,6 +13,3 @@ func _ready() -> void:
 	_player.SetRespawnPosition(_player.global_position)
 	_player.get_node("debug").hide()
 	_player.get_node("hp").hide()
-	_player.rope_controller.process_mode = Node.PROCESS_MODE_DISABLED
-	_player.enable_double_jump = true
-	_player.ResetDoubleJump()
