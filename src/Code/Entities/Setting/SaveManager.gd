@@ -11,6 +11,22 @@ extends RefCounted
 const MAX_SLOTS: int = 5
 const DEFAULT_PATH_PREFIX: String = "res://Code/Entities/Setting/Saves/save_slot_"
 
+## 当前激活的存档槽位 (默认槽位 1)
+static var active_slot: int = 1
+
+## 获取当前活跃存档槽位
+static func GetActiveSlot() -> int:
+	return active_slot if active_slot > 0 else 1
+
+## 设置当前活跃存档槽位
+static func SetActiveSlot(slot_index: int) -> void:
+	if slot_index > 0:
+		active_slot = slot_index
+
+## 便捷自动保存接口，直接保存当前活跃槽位
+static func AutoSave(tree: SceneTree) -> bool:
+	return SaveToSlot(tree, GetActiveSlot())
+
 ## 获取指定槽位的保存路径
 ## @param slot_index 槽位编号 (1 到 5)
 static func GetSlotPath(slot_index: int) -> String:
@@ -88,6 +104,8 @@ static func GetAllSlotsInfo() -> Array[Dictionary]:
 static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_path: String = "") -> bool:
 	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
 		return false
+
+	SetActiveSlot(slot_index)
 	
 	var world_path = target_scene_path
 	if world_path == "":
@@ -136,6 +154,8 @@ static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_pa
 static func SaveToSlot(tree: SceneTree, slot_index: int) -> bool:
 	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
 		return false
+
+	SetActiveSlot(slot_index)
 		
 	var root = tree.current_scene
 	if not root:
@@ -185,6 +205,8 @@ static func SaveToSlot(tree: SceneTree, slot_index: int) -> bool:
 static func LoadFromSlot(tree: SceneTree, slot_index: int) -> bool:
 	if not HasSlot(slot_index) or not tree:
 		return false
+
+	SetActiveSlot(slot_index)
 		
 	var path = GetSlotPath(slot_index)
 	var file = FileAccess.open(path, FileAccess.READ)

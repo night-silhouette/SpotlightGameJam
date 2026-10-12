@@ -19,6 +19,8 @@
 [node name="Level2Map" type="Node2D" unique_id=2089776168 groups=["level2_map"]]
 script = ExtResource("script")
 
+[node name="FountainFallCameraAnchor" type="Marker2D" parent="."]
+
 [node name="Rooms" type="Node2D" parent="." unique_id=188349227]
 
 [node name="EntryCollapse" parent="Rooms" unique_id=1859557510 instance=ExtResource("EntryCollapse")]

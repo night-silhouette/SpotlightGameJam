@@ -45,6 +45,7 @@ position = Vector2(7133, 1599)
 scale = Vector2(182.4564, -14.813491)
 
 [node name="OutwardPhase" type="Node2D" parent="." unique_id=135291713]
+visible = false
 
 [node name="OasisBoat" parent="OutwardPhase" unique_id=1388656376 instance=ExtResource("2_1ev11")]
 position = Vector2(15490, 1263)
@@ -155,7 +156,6 @@ scale = Vector2(59.535408, 63.50667)
 shape = SubResource("CircleShape2D_lvx6x")
 
 [node name="ReturnPhase" type="Node2D" parent="." unique_id=1083308710]
-visible = false
 
 [node name="ReturnTileMap" type="TileMapLayer" parent="ReturnPhase" unique_id=1027236603]
 position = Vector2(4796, -51)
