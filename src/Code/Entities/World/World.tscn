@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -16,7 +17,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hfiwn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_35sqx"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -50,7 +51,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_35sqx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yocbw"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -78,19 +79,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21"]
-material = SubResource("ShaderMaterial_hfiwn")
+material = SubResource("ShaderMaterial_35sqx")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_yocbw")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_yocbw")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_yocbw")
 
 [node name="Turn" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="3" unique_id=1352150481]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_yocbw")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(3936, -1611)
@@ -113,17 +114,63 @@ position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
-position = Vector2(-114, 3157)
+position = Vector2(-126, 3234)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
 
-[node name="CameraGate" parent="." unique_id=1513205410 instance=ExtResource("7_hfiwn")]
+[node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
+
+[node name="CameraGate2" parent="CameraNode" unique_id=1274666655 instance=ExtResource("7_hfiwn")]
+position = Vector2(2120, -38)
+scale = Vector2(0.4082091, 2.459945)
+blocked_side = 0
+player_path = NodePath("../../PlayerWithCamera/Player")
+one_shot = false
+
+[node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
 position = Vector2(-74.99999, -308.99997)
 scale = Vector2(0.4082091, 2.459945)
 blocked_side = 0
-player_path = NodePath("../PlayerWithCamera/Player")
+player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
+
+[node name="MusicNode" type="Node2D" parent="." unique_id=1909380459]
+
+[node name="FootstepSurfaceArea" parent="MusicNode" unique_id=607193711 instance=ExtResource("8_35sqx")]
+position = Vector2(2121, -427)
+scale = Vector2(0.48881865, 7.9301405)
+player_path = NodePath("../../PlayerWithCamera/Player")
+left_surface = "Sand"
+left_footstep_bus = &"SFX_Footstep_Wet"
+left_move_bus = &"SFX_Move_Wet"
+right_surface = "Brick"
+right_footstep_bus = &"SFX_Footstep_Dry "
+right_move_bus = &"SFX_Move_ Dry"
+
+[node name="FootstepSurfaceArea2" parent="MusicNode" unique_id=2142110010 instance=ExtResource("8_35sqx")]
+position = Vector2(37, 200)
+rotation = -4.7145104
+scale = Vector2(0.5244628, 1.910881)
+player_path = NodePath("../../PlayerWithCamera/Player")
+left_surface = "Sand"
+left_footstep_bus = &"SFX_Footstep_Wet"
+left_move_bus = &"SFX_Move_Wet"
+right_surface = "Brick"
+right_footstep_bus = &"SFX_Footstep_Dry"
+right_move_bus = &"SFX_Move_ Dry"
+
+[node name="FootstepSurfaceArea3" parent="MusicNode" unique_id=1436223171 instance=ExtResource("8_35sqx")]
+position = Vector2(-71, -370)
+rotation = -3.1539626
+scale = Vector2(0.5244628, 1.910881)
+player_path = NodePath("../../PlayerWithCamera/Player")
+left_surface = "Sand"
+left_footstep_bus = &"SFX_Footstep_Wet"
+left_move_bus = &"SFX_Move_Wet"
+right_surface = "Brick"
+right_footstep_bus = &"SFX_Footstep_Dry"
+right_move_bus = &"SFX_Move_ Dry"
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]

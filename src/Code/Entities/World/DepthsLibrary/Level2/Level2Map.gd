@@ -60,12 +60,6 @@ func _physics_process(delta: float) -> void:
 	if fountain_active and $Rooms/FountainShaft/Updraft.overlaps_body(_player):
 		_player.velocity.y = -ExportSettings.level2_fountain_speed
 		_player.ResetDoubleJump()
-		# 水柱出口的水平喷流，仍由物理运动通过井口。
-		if _player.global_position.y < $Rooms/FountainShaft/CityExit.global_position.y - 40.0:
-			_player.velocity.x = ExportSettings.level2_fountain_exit_speed
-
-	if fountain_active and $Rooms/SurfaceExit/Spout.overlaps_body(_player):
-		_player.velocity.x = ExportSettings.level2_fountain_exit_speed
 
 ## 返回指定世界坐标所属房间；找不到时返回 null。
 func GetRoomAt(point: Vector2) -> Node2D:

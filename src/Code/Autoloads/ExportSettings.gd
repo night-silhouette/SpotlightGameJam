@@ -198,16 +198,60 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_water_droplet_color: Color = Color(0.18, 0.72, 1.0, 0.9)
 
 @export_group("Audio & Footsteps", "player_footstep_")
+## 脚步材质：砖块或沙地
+@export_enum("Brick", "Sand") var player_footstep_surface: String = "Sand"
 ## 脚步声使用的音频总线名称 (Audio Bus)
 @export var player_footstep_bus: StringName = &"SFX_Footstep_Wet"
 ## 行走/奔跑时脚步声播放间隔时长 (秒)
 @export var player_footstep_interval: float = 0.22
 ## 起步迈出第一步时的前置延迟 (秒)
 @export var player_footstep_initial_delay: float = 0.05
-## 脚步声音量分贝 (dB)
+## 脚步声公共基准音量 (dB)；实际音量 = 此值 + 对应材质/样本的补偿值。
 @export var player_footstep_volume_db: float = -2.0
 ## 脚步声音调微机随机变化范围 (pitch_scale: 1.0 ± 变化值，0 为固定音调)
 @export var player_footstep_pitch_randomness: float = 0.08
+
+@export_group("Sand Footstep Volume Offsets (dB)", "player_footstep_sand_")
+## Sand_01 相对 player_footstep_volume_db 的音量偏移 (dB)，0 不改变原音量。
+@export var player_footstep_sand_01_volume_offset_db: float = 0.0
+## Sand_02 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_sand_02_volume_offset_db: float = 0.0
+## Sand_03 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_sand_03_volume_offset_db: float = 0.0
+## Sand_04 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_sand_04_volume_offset_db: float = 0.0
+## Sand_05 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_sand_05_volume_offset_db: float = 0.0
+## SandLand 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_sand_land_volume_offset_db: float = 0.0
+## SandTurn 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_sand_turn_volume_offset_db: float = 0.0
+
+@export_group("Brick Footstep Volume Offsets (dB)", "player_footstep_brick_")
+## Brick_01 相对 player_footstep_volume_db 的音量偏移 (dB)，0 不改变原音量。
+@export var player_footstep_brick_01_volume_offset_db: float = 0.0
+## Brick_02 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_brick_02_volume_offset_db: float = 0.0
+## Brick_03 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_brick_03_volume_offset_db: float = 0.0
+## Brick_04 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_brick_04_volume_offset_db: float = 0.0
+## Brick_05 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_brick_05_volume_offset_db: float = 0.0
+## BrickLand 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_brick_land_volume_offset_db: float = 0.0
+## BrickTurn 相对脚步声公共基准音量的偏移 (dB)。
+@export var player_footstep_brick_turn_volume_offset_db: float = 0.0
+
+@export_group("Footstep Surface Area", "footstep_surface_area_")
+## 区域左侧音源类别与两条音频总线；实例可逐项覆盖。
+@export_enum("Brick", "Sand") var footstep_surface_area_left_surface: String = "Brick"
+@export var footstep_surface_area_left_footstep_bus: StringName = &"SFX_Footstep_Dry"
+@export var footstep_surface_area_left_move_bus: StringName = &"SFX_Move_Dry"
+## 区域右侧音源类别与两条音频总线；实例可逐项覆盖。
+@export_enum("Brick", "Sand") var footstep_surface_area_right_surface: String = "Sand"
+@export var footstep_surface_area_right_footstep_bus: StringName = &"SFX_Footstep_Wet"
+@export var footstep_surface_area_right_move_bus: StringName = &"SFX_Move_Wet"
 
 @export_group("Audio & Move SFX", "sfx_move_")
 ## 动作音效使用的音频总线名称 (Audio Bus，如 SFX_Move_Wet 或 SFX_Move_Dry)
@@ -288,6 +332,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var water_flow_speed_multiplier: float = 1.9
 ## 保证进入流体时的最低喷射加速值
 @export var water_flow_min_speed: float = 600.0
+## 流水区域内方向输入的加速度（像素/秒²）
+@export_range(0.0, 5000.0, 10.0) var water_flow_swim_acceleration: float = 1600.0
+## 流水区域内无输入时的二维减速（像素/秒²）
+@export_range(0.0, 3000.0, 10.0) var water_flow_swim_drag: float = 180.0
+## 流水区域内主动游泳的目标速度；入水爆发速度会逐渐回落而非直接截断
+@export_range(0.0, 2000.0, 10.0) var water_flow_swim_max_speed: float = 360.0
 ## 水符文石交互激活有效距离
 @export var water_flow_interact_distance: float = 130.0
 ## 水符文激活技能冷却时间 (秒)
@@ -390,6 +440,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Camera Gate", "camera_gate_")
 ## 镜头门边界沿禁止露出方向向内收缩的距离（世界像素）。
 @export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
+## 非一次性镜头门允许画面移动一个视口宽/高所需的秒数。
+@export_range(0.05, 5.0, 0.05) var camera_gate_transition_duration: float = 0.25
 
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
