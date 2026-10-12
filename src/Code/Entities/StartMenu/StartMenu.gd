@@ -64,7 +64,7 @@ func _setup_signals() -> void:
 		btn_close_credits.pressed.connect(func(): credits_modal.visible = false)
 
 	if quit_confirm_dialog:
-		quit_confirm_dialog.confirmed.connect(func(): get_tree().quit())
+		quit_confirm_dialog.confirmed.connect(func(): SignalBus.GameQuitRequested.emit())
 
 func _on_start_pressed() -> void:
 	_refresh_saves_ui()
