@@ -45,7 +45,6 @@ position = Vector2(7133, 1599)
 scale = Vector2(182.4564, -14.813491)
 
 [node name="OutwardPhase" type="Node2D" parent="." unique_id=135291713]
-visible = false
 
 [node name="OasisBoat" parent="OutwardPhase" unique_id=1388656376 instance=ExtResource("2_1ev11")]
 position = Vector2(15490, 1263)
@@ -131,20 +130,8 @@ shape = SubResource("CapsuleShape2D_ggdgi")
 [node name="SlowArea" type="Node2D" parent="OutwardPhase" unique_id=1093475755]
 
 [node name="SlowWaterArea3" parent="OutwardPhase/SlowArea" unique_id=1637315285 instance=ExtResource("10_rko1d")]
-position = Vector2(7317.001, 1312)
-scale = Vector2(26.93943, -0.45556912)
-
-[node name="SlowWaterArea4" parent="OutwardPhase/SlowArea" unique_id=1526543670 instance=ExtResource("10_rko1d")]
-position = Vector2(5710.0005, 1312)
-scale = Vector2(26.93943, -0.45556912)
-
-[node name="SlowWaterArea" parent="OutwardPhase/SlowArea" unique_id=1685733445 instance=ExtResource("10_rko1d")]
-position = Vector2(14212.001, 1312)
-scale = Vector2(26.93943, -0.45556912)
-
-[node name="SlowWaterArea2" parent="OutwardPhase/SlowArea" unique_id=909052763 instance=ExtResource("10_rko1d")]
-position = Vector2(10765.001, 1312)
-scale = Vector2(26.93943, -0.45556912)
+position = Vector2(10198, 1303)
+scale = Vector2(89.56038, 0.6579188)
 
 [node name="position" type="Area2D" parent="OutwardPhase" unique_id=395425883]
 position = Vector2(437, 766.99994)
@@ -156,6 +143,7 @@ scale = Vector2(59.535408, 63.50667)
 shape = SubResource("CircleShape2D_lvx6x")
 
 [node name="ReturnPhase" type="Node2D" parent="." unique_id=1083308710]
+visible = false
 
 [node name="ReturnTileMap" type="TileMapLayer" parent="ReturnPhase" unique_id=1027236603]
 position = Vector2(4796, -51)
