@@ -19,6 +19,7 @@ func _check_turn() -> void:
 			and sign(gameInputControl.row_dir) != obj.face_dir \
 			and animation_player.current_animation != "turn":
 		animation_player.play("turn")
+		obj.PlayFootstepTurnSFX()
 
 func _on_animation_finished(animation_name: StringName) -> void:
 	if animation_name == &"turn" and state_machine.current_state == self:

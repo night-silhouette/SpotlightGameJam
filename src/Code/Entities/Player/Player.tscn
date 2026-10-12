@@ -1693,6 +1693,12 @@ one_shot = true
 [node name="FootstepAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742819]
 bus = &"SFX_Footstep_Wet"
 
+[node name="FootstepLandAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX_Footstep_Wet"
+
+[node name="FootstepTurnAudio" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX_Footstep_Wet"
+
 [node name="MoveAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742820]
 bus = &"SFX_Move_Wet"
 

@@ -25,6 +25,8 @@ class_name Player
 @onready var rope_controller: RopeController = $RopeController
 @onready var water_rune_controller: Node2D = $WaterRuneController
 @onready var footstep_audio: AudioStreamPlayer2D = $FootstepAudio
+@onready var footstep_land_audio: AudioStreamPlayer2D = $FootstepLandAudio
+@onready var footstep_turn_audio: AudioStreamPlayer2D = $FootstepTurnAudio
 @onready var move_audio: AudioStreamPlayer2D = $MoveAudio
 @onready var slide_audio: AudioStreamPlayer2D = $SlideAudio
 @onready var fall_audio: AudioStreamPlayer2D = $FallAudio
@@ -138,6 +140,9 @@ var rope_momentum_timer: float = 0.0
 @export_group("audio_prop")
 ## 脚步声音频总线名称
 @export var footstep_bus: StringName = &"SFX_Footstep_Wet"
+var footstep_surface: String = "Brick"
+var footstep_land_sound: AudioStream
+var footstep_turn_sound: AudioStream
 ## 脚步声音效资源数组 (5个脚步声)
 @export var footstep_sounds: Array[AudioStream] = []
 ## 脚步声播放间隔
@@ -240,6 +245,8 @@ func _sync_from_export_settings() -> void:
 			])
 		if water_droplet_timer:
 			water_droplet_timer.wait_time = ExportSettings.player_water_droplet_duration
+		if "player_footstep_surface" in ExportSettings:
+			footstep_surface = ExportSettings.player_footstep_surface
 		if "player_footstep_bus" in ExportSettings:
 			footstep_bus = ExportSettings.player_footstep_bus
 		if "player_footstep_interval" in ExportSettings:
@@ -276,9 +283,9 @@ func _sync_from_export_settings() -> void:
 			sfx_move_falling_speed_threshold = ExportSettings.sfx_move_falling_speed_threshold
 
 func _ready() -> void:
+	_sync_from_export_settings()
 	_init_footstep_sounds()
 	_init_move_sounds()
-	_sync_from_export_settings()
 	if water_droplet_timer and not water_droplet_timer.timeout.is_connected(_on_water_droplet_timer_timeout):
 		water_droplet_timer.timeout.connect(_on_water_droplet_timer_timeout)
 	if sprite:
@@ -520,7 +527,10 @@ func _physics_process(delta: float) -> void:
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
+	var was_on_floor := is_on_floor()
 	move_and_slide()
+	if not was_on_floor and is_on_floor():
+		_play_footstep_land()
 
 	if is_on_floor():
 		wall_jump_lock_dir = 0
@@ -689,19 +699,34 @@ func _handle_continuous_move_audio(_delta: float) -> void:
 
 ## 初始化加载脚步声音频资源
 func _init_footstep_sounds() -> void:
-	if footstep_sounds.is_empty():
-		var paths = [
-			"res://Music/footStep/Footstep_01.wav",
-			"res://Music/footStep/Footstep_02.wav",
-			"res://Music/footStep/Footstep_03.wav",
-			"res://Music/footStep/Footstep_04.wav",
-			"res://Music/footStep/Footstep_05.wav"
-		]
-		for p in paths:
-			if ResourceLoader.exists(p):
-				var stream = load(p) as AudioStream
-				if stream:
-					footstep_sounds.append(stream)
+	var base_path := "res://Music/SFX/FootSteps-SFX_FootStep_DryOrWet/Footstep%s" % footstep_surface
+	footstep_sounds.clear()
+	for index in range(1, 6):
+		var path := "%s_%02d.wav" % [base_path, index]
+		if ResourceLoader.exists(path):
+			var stream := load(path) as AudioStream
+			if stream:
+				footstep_sounds.append(stream)
+	var land_path := base_path + "Land.wav"
+	var turn_path := base_path + "Turn.wav"
+	footstep_land_sound = load(land_path) as AudioStream if ResourceLoader.exists(land_path) else null
+	footstep_turn_sound = load(turn_path) as AudioStream if ResourceLoader.exists(turn_path) else null
+
+func _play_footstep_land() -> void:
+	_play_footstep_accent(footstep_land_audio, footstep_land_sound)
+
+## 转身动画实际播放时触发所选材质的转身音效；无参数，无返回值。
+func PlayFootstepTurnSFX() -> void:
+	_play_footstep_accent(footstep_turn_audio, footstep_turn_sound)
+
+func _play_footstep_accent(audio: AudioStreamPlayer2D, stream: AudioStream) -> void:
+	if not stream:
+		return
+	audio.bus = footstep_bus
+	audio.stream = stream
+	audio.volume_db = footstep_volume_db
+	audio.pitch_scale = 1.0
+	audio.play()
 
 ## 处理行走时的脚步声随机播放逻辑
 func _handle_footstep_audio(delta: float) -> void:

@@ -198,6 +198,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_water_droplet_color: Color = Color(0.18, 0.72, 1.0, 0.9)
 
 @export_group("Audio & Footsteps", "player_footstep_")
+## 脚步材质：砖块或沙地
+@export_enum("Brick", "Sand") var player_footstep_surface: String = "Brick"
 ## 脚步声使用的音频总线名称 (Audio Bus)
 @export var player_footstep_bus: StringName = &"SFX_Footstep_Wet"
 ## 行走/奔跑时脚步声播放间隔时长 (秒)
