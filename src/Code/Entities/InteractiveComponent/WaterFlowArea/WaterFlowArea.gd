@@ -156,8 +156,7 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 		# 退出冲刺并恢复常规空中动作，保留流水赋予的速度。
 		if player_body.has_node("move_state_machine"):
 			var sm = player_body.get_node("move_state_machine")
-			if sm.cur_state_name == "dash":
-				sm.state_map["fall"].is_use = true
+			sm.state_map["fall"].is_use = true
 			sm.change_state("fall")
 
 		# 穿过流体水幕：刷新冲刺（Dash）与钩索（Rope）
