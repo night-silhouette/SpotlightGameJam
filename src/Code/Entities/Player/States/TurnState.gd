@@ -13,6 +13,7 @@ func enter() -> void:
 		animation_player.advance(0.0)
 	turn_sprite.visible = true
 	obj.PlayFootstepTurnSFX()
+	obj.footstep_turn_audio.volume_db -= 3.0
 
 func exit() -> void:
 	if animation_player and animation_player.animation_finished.is_connected(_on_animation_finished):
