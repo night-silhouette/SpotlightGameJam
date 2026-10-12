@@ -74,6 +74,7 @@ script = ExtResource("2_mkscu")
 position = Vector2(1224, 55)
 scale = Vector2(1.2, 1.2)
 speed = 250.0
+is_hp_draining = true
 
 [node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
 position = Vector2(1.3272558, 6.636482)
@@ -144,8 +145,8 @@ left_surface = "Sand"
 left_footstep_bus = &"SFX_Footstep_Wet"
 left_move_bus = &"SFX_Move_Wet"
 right_surface = "Brick"
-right_footstep_bus = &"SFX_Footstep_Dry "
-right_move_bus = &"SFX_Move_ Dry"
+right_footstep_bus = &"SFX_Footstep_Dry"
+right_move_bus = &"SFX_Move_Dry"
 
 [node name="FootstepSurfaceArea2" parent="MusicNode" unique_id=2142110010 instance=ExtResource("8_35sqx")]
 position = Vector2(37, 200)
@@ -156,7 +157,7 @@ left_surface = "Sand"
 left_footstep_bus = &"SFX_Footstep_Wet"
 left_move_bus = &"SFX_Move_Wet"
 right_surface = "Brick"
-right_move_bus = &"SFX_Move_ Wet"
+right_move_bus = &"SFX_Move_Dry"
 
 [node name="FootstepSurfaceArea3" parent="MusicNode" unique_id=1436223171 instance=ExtResource("8_35sqx")]
 position = Vector2(-73, -372)
@@ -168,7 +169,7 @@ left_footstep_bus = &"SFX_Footstep_Wet"
 left_move_bus = &"SFX_Move_Wet"
 right_surface = "Brick"
 right_footstep_bus = &"SFX_Footstep_Dry"
-right_move_bus = &"SFX_Move_ Dry"
+right_move_bus = &"SFX_Move_Dry"
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
