@@ -115,7 +115,7 @@ position = Vector2(2632, -336)
 position = Vector2(-114, 3157)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
-position = Vector2(-19262, -1215)
+position = Vector2(-19118, -1215)
 
 [node name="CameraGate" parent="." unique_id=1513205410 instance=ExtResource("7_hfiwn")]
 position = Vector2(-74.99999, -308.99997)
