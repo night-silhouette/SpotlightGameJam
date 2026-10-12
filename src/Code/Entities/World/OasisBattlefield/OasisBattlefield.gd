@@ -62,9 +62,58 @@ func OnBoneCollected() -> void:
 	_chase_activation_pending = false
 	if _in_return_phase:
 		return
+
+	# 1. 骨头拾取后立即将玩家重生点锁定至复活节点
+	var player := get_tree().get_first_node_in_group(&"player")
+	if is_instance_valid(player) and player.has_method(&"SetRespawnPosition"):
+		player.call(&"SetRespawnPosition", _get_chase_respawn_position())
+
+	# 2. 触发即时持久化存档（复活点兼存档点）
+	SaveManager.AutoSave(get_tree())
+
+	# 3. 发射信号（严格遵守不改动 SignalBus 约定的动态发送）
 	if SignalBus.has_signal(&"lock3"):
 		SignalBus.emit_signal(&"lock3")
 	SwitchToReturnPhase()
+
+
+## 导出第三关关卡与复活点存档数据
+func ExportSaveData() -> Dictionary:
+	var respawn_pos := _get_chase_respawn_position()
+	return {
+		"checkpoint_reached": _in_return_phase or is_instance_valid(chase_respawn_point),
+		"respawn_x": respawn_pos.x,
+		"respawn_y": respawn_pos.y,
+	}
+
+
+## 从存档还原第三关状态：
+## 进入游戏读取存档进关卡时，将玩家放置在复活节点，场景保持追逐战前待交互状态。
+func LoadSaveData(data: Dictionary) -> void:
+	if not bool(data.get("checkpoint_reached", false)):
+		return
+
+	# 1. 确保追逐实体完全归位原点并停止
+	if is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):
+		_chaser.call(&"ResetChase")
+
+	# 2. 场景保持追逐战前待交互状态
+	_in_return_phase = false
+	_chase_activation_pending = false
+	_chase_finished = false
+	_set_phase_enabled(outward_phase, true)
+	_set_phase_enabled(return_phase, false)
+
+	# 3. 将玩家精准定位到该复活/存档点并同步重生坐标
+	var respawn_pos := Vector2(
+		float(data.get("respawn_x", _get_chase_respawn_position().x)),
+		float(data.get("respawn_y", _get_chase_respawn_position().y))
+	)
+	var player := get_tree().get_first_node_in_group(&"player")
+	if is_instance_valid(player):
+		player.global_position = respawn_pos
+		if player.has_method(&"SetRespawnPosition"):
+			player.call(&"SetRespawnPosition", respawn_pos)
 
 
 func _set_phase_enabled(phase: Node2D, enabled: bool) -> void:
