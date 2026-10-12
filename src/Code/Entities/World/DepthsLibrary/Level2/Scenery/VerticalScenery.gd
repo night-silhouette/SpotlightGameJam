@@ -70,9 +70,10 @@ func _process(_delta: float) -> void:
 func _update_motion() -> void:
 	# Unique lower decoration may drift, but cannot wrap back into the entrance.
 	var architecture_offset := 0.0
+	var camera_y := 0.0
 	if not Engine.is_editor_hint():
 		var camera_world := get_viewport().get_canvas_transform().affine_inverse() * (get_viewport_rect().size * 0.5)
-		var camera_y := (get_global_transform().affine_inverse() * camera_world).y
+		camera_y = (get_global_transform().affine_inverse() * camera_world).y
 		var travel := minf(ExportSettings.level2_scenery_vertical_architecture_travel, size.y * 0.1)
 		if travel > 0.0:
 			# Spread bounded travel over the entire shaft; avoid tanh saturation
@@ -82,6 +83,10 @@ func _update_motion() -> void:
 	for layer in $Composition.get_children():
 		if not layer is Parallax2D:
 			continue
+		# Camera notifications use world offsets; these layers live inside a moved shaft.
+		# Feed shaft-local camera travel so repeating columns stay inside its coverage.
+		layer.ignore_camera_scroll = true
+		layer.screen_offset = Vector2(0.0, camera_y)
 		var speed := 1.0
 		# Editor preview keeps the authored arrangement. Only the game's camera
 		# drives motion. The silver column uses bounded offset; BlueDepth/LowerLedge stays fixed.

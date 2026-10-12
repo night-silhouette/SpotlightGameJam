@@ -10,8 +10,10 @@ class_name OasisBattlefieldChaser
 @onready var _movement_component: DirectionalChaseMover = $DirectionalChaseMover
 
 var _chase_finished: bool = false
+var _initial_global_position: Vector2
 
 func _ready() -> void:
+	_initial_global_position = global_position
 	if not target_path.is_empty():
 		_movement_component.SetTarget(get_node_or_null(target_path) as Node2D)
 
@@ -20,6 +22,12 @@ func StartChase() -> void:
 	if _chase_finished:
 		return
 	_movement_component.StartChase()
+
+## 重置第三关追逐实体到初始出生点，清空追逐进度并保持停止，等待再次触发。
+func ResetChase() -> void:
+	_chase_finished = false
+	global_position = _initial_global_position
+	_movement_component.ResetMover()
 
 ## 暂停第三关追逐实体并保留当前阶段。
 func StopChase() -> void:

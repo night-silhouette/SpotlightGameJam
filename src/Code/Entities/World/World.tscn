@@ -74,7 +74,7 @@ script = ExtResource("2_mkscu")
 [node name="World" type="Node2D" unique_id=2146248688]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
-position = Vector2(1230, 57)
+position = Vector2(1224, 55)
 speed = 250.0
 
 [node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
@@ -98,10 +98,10 @@ material = SubResource("ShaderMaterial_yocbw")
 texture = SubResource("CompressedTexture2D_35sqx")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(1230, 57)
+position = Vector2(1224, 55)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
-position = Vector2(1231.3273, 63.636482)
+position = Vector2(1225.3273, 61.636482)
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]
@@ -114,13 +114,14 @@ tween_resource = SubResource("Resource_yocbw")
 position = Vector2(-96, -1560)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
-position = Vector2(2632, -336)
+position = Vector2(2635, -338)
+metadata/_edit_lock_ = true
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-126, 3234)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
-position = Vector2(-19262, -1215)
+position = Vector2(-19118, -1215)
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
