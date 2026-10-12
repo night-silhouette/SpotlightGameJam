@@ -371,7 +371,7 @@ func _on_quit_button_pressed() -> void:
 		quit_confirm_dialog.popup_centered()
 
 func _on_quit_confirmed() -> void:
-	get_tree().quit()
+	SignalBus.GameQuitRequested.emit()
 
 func _show_status(text: String, is_error: bool = false) -> void:
 	if not status_toast:

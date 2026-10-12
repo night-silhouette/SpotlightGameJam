@@ -43,7 +43,7 @@ func enter() -> void:
 		if obj.has_method("PlayJumpFirstSFX"):
 			obj.PlayJumpFirstSFX()
 
-	if obj.is_back_has_rigid:
+	if obj.is_back_has_rigid and not gameInputControl.is_double_jump:
 		var back_wall_dir = -obj.face_dir
 		if obj.wall_jump_lock_dir != back_wall_dir:
 			obj.wall_jump_lock_dir = back_wall_dir

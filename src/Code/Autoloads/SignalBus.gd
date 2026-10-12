@@ -337,7 +337,27 @@ signal SaveSlotLoaded(slot_index: int)
 ## @param slot_index 槽位索引 (1-5)
 signal SaveSlotDeleted(slot_index: int)
 
+## 菜单确认退出游戏时触发；无参数，窗口关闭同样走退出存档流程。
+signal GameQuitRequested
+
 #endregion
 
+const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 
- 
+func _ready() -> void:
+	get_tree().auto_accept_quit = false
+	GameQuitRequested.connect(_quit_with_auto_save)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_quit_with_auto_save()
+
+func _quit_with_auto_save() -> void:
+	var tree = get_tree()
+	var scene = tree.current_scene
+	if scene and scene.scene_file_path == ExportSettings.start_menu_world_scene_path:
+		var slot = SaveManagerRef.GetActiveSlot()
+		if SaveManagerRef.HasSlot(slot) and not SaveManagerRef.AutoSave(tree):
+			push_error("退出游戏时自动保存至存档槽位 %d 失败，已取消退出" % slot)
+			return
+	tree.quit()

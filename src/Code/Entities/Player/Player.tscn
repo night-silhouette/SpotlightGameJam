@@ -1017,8 +1017,8 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_turn"]
 resource_name = "turn"
-length = 0.7
-step = 0.1
+length = 0.64
+step = 0.01
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -1062,10 +1062,10 @@ tracks/3/path = NodePath("sprite/Trun:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.14285715, 0.2857143, 0.42857143, 0.5, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.07692308, 0.14, 0.2, 0.34, 0.46, 0.58),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [0, 1, 2, 3, 4, 5]
+"values": [0, 1, 2, 3, 4, 5, 6]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1499,19 +1499,19 @@ visible = false
 material = SubResource("ShaderMaterial_low_water_outline")
 position = Vector2(-7, 0)
 scale = Vector2(0.36287013, 0.36287013)
-texture = ExtResource("33_fly")
-hframes = 2
+texture = ExtResource("23_dash")
+hframes = 4
 
 [node name="RopeOrigin" type="Marker2D" parent="sprite/Action" unique_id=1775477394]
 position = Vector2(-5.5555553, -33.333336)
 
 [node name="Trun" type="Sprite2D" parent="sprite" unique_id=1375248159]
 visible = false
-position = Vector2(4, -5.0000005)
-scale = Vector2(0.35625157, 0.34479243)
+position = Vector2(-1, -6.0000005)
+scale = Vector2(0.35044938, 0.3391769)
 texture = ExtResource("32_oexbj")
 flip_h = true
-hframes = 6
+hframes = 7
 
 [node name="SandFallParticles" type="CPUParticles2D" parent="." unique_id=1675605974]
 position = Vector2(0, 4)
