@@ -14,6 +14,7 @@ func enter() -> void:
 		animation_player.play("death")
 	
 	if obj:
+		SignalBus.PlayerDied.emit(obj)
 		obj.velocity = Vector2.ZERO
 		if obj.has_method("PlayDeathSFX"):
 			obj.PlayDeathSFX()

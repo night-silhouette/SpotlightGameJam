@@ -17,6 +17,10 @@ func _physics_process(_delta: float) -> void:
 	$ShaftOcclusion/Mask.queue_redraw()
 
 func _update_zone(force: bool) -> void:
+	if _map.IsFountainReturnFallActive():
+		current_zone = &""
+		_shaft_rect = Rect2()
+		return
 	var point: Vector2 = _map.to_local(_player.global_position)
 	var rooms: Node2D = _map.get_node("Rooms")
 	var fall_room: Node2D = rooms.get_node("DescentShaft")
