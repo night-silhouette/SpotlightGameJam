@@ -61,17 +61,20 @@ func _on_body_exited(body: Node2D) -> void:
 	_awaiting_relic_state = false
 
 
-func _on_player_relics_changed(crown: bool, codex: bool) -> void:
+func _on_player_relics_changed(crown: bool, codex: bool, bones: bool) -> void:
 	if not _awaiting_relic_state or not is_instance_valid(_player_inside):
 		return
 	_awaiting_relic_state = false
-	if not crown and not codex:
+	if not crown and not codex and not bones:
 		return
 	if crown:
 		_absorb_relic(&"crown", &"sunken_crown_texture", &"double_jump", Vector2(-18, -18))
 	if codex:
 		_absorb_relic(&"codex", &"starseekers_codex_texture", &"rope", Vector2(18, -18))
-	_fill_stage = mini(2, _fill_stage + int(crown) + int(codex))
+	if bones:
+		_absorb_relic(&"bones", &"scarred_bones_texture", &"", Vector2(0, -26))
+		create_tween().tween_interval(_relic_flight_duration).finished.connect(_show_ending)
+	_fill_stage = mini(2, _fill_stage + int(crown) + int(codex) + int(bones))
 	_update_water(true)
 
 
@@ -91,8 +94,11 @@ func _absorb_relic(relic: StringName, texture_field: StringName, ability: String
 			tween.chain().tween_callback(icon.queue_free)
 	if SignalBus.has_signal(&"PlayerRelicConsumeRequested"):
 		SignalBus.emit_signal(&"PlayerRelicConsumeRequested", relic)
-	if SignalBus.has_signal(&"PlayerAbilityChangeRequested"):
-		SignalBus.emit_signal(&"PlayerAbilityChangeRequested", ability, true)
+	if ability != &"":
+		SignalBus.PlayerAbilityChangeRequested.emit(ability, true)
+
+func _show_ending() -> void:
+	SignalBus.LakeEndingTriggered.emit()
 
 
 func _update_water(animate: bool) -> void:

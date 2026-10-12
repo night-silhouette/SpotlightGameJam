@@ -61,6 +61,10 @@ func change_state(next_state_name: String) -> void:
 		_rope_pose_active = false
 	elif _rope_pose_active and next_state_name not in ["rope_send", "fly"]:
 		return
+	if next_state_name == "turn" and cur_state_name == "turn":
+		current_state.exit()
+		current_state.enter()
+		return
 	super.change_state(next_state_name)
 
 func phy_middleware() -> void:

@@ -18,6 +18,8 @@ class_name PlayerUI
 @onready var virtual_joystick: Control = $Control/VirtualJoystick
 @onready var crown_icon: TextureRect = $Control/RelicIcons/Crown
 @onready var codex_icon: TextureRect = $Control/RelicIcons/Codex
+@onready var bones_icon: TextureRect = $Control/RelicIcons/Bones
+@onready var ending_overlay: ColorRect = $Control/EndingOverlay
 
 @onready var right_action_buttons: Control = $Control/RightActionButtons
 @onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
@@ -37,6 +39,7 @@ func _ready() -> void:
 		SignalBus.PlayerAbilitiesChanged.connect(_on_player_abilities_changed)
 		SignalBus.PlayerDebugFlightChanged.connect(_on_debug_flight_changed)
 		SignalBus.PlayerRelicsChanged.connect(_on_player_relics_changed)
+		SignalBus.LakeEndingTriggered.connect(_on_lake_ending_triggered)
 	
 	if ExportSettings:
 		_max_hp = ExportSettings.player_max_hp
@@ -50,6 +53,7 @@ func _ready() -> void:
 	debug_flight_toggle.toggled.connect(_on_debug_flight_toggled)
 	crown_icon.texture = ExportSettings.sunken_crown_texture
 	codex_icon.texture = ExportSettings.starseekers_codex_texture
+	bones_icon.texture = ExportSettings.scarred_bones_texture
 	SignalBus.PlayerAbilityStateRequested.emit()
 	SignalBus.PlayerDebugFlightStateRequested.emit()
 	SignalBus.PlayerRelicStateRequested.emit()
@@ -78,9 +82,13 @@ func _on_player_abilities_changed(double_jump_enabled: bool, rope_enabled: bool)
 	double_jump_toggle.set_pressed_no_signal(double_jump_enabled)
 	rope_toggle.set_pressed_no_signal(rope_enabled)
 
-func _on_player_relics_changed(crown: bool, codex: bool) -> void:
+func _on_player_relics_changed(crown: bool, codex: bool, bones: bool) -> void:
 	crown_icon.visible = crown
 	codex_icon.visible = codex
+	bones_icon.visible = bones
+
+func _on_lake_ending_triggered() -> void:
+	ending_overlay.visible = true
 
 func _on_setting_button_pressed() -> void:
 	if SignalBus:

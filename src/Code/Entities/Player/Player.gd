@@ -47,9 +47,10 @@ var unlocked_double_jump: bool = false
 var enable_rope: bool = false
 ## 仅供调试使用，重新进入场景后默认关闭。
 var debug_flight_enabled: bool = false
-## 当前携带的沉没王冠和寻星者法典，默认均未获得。
+## 当前携带的遗物，默认均未获得。
 var has_sunken_crown: bool = false
 var has_starseekers_codex: bool = false
+var has_scarred_bones: bool = false
 @export var hurt_time: float = 0.15
 @export var accerleration: float = 2500.0
 @export var speed: float = 230.0
@@ -335,6 +336,8 @@ func _ready() -> void:
 		SignalBus.PlayerDebugFlightStateRequested.connect(_emit_debug_flight_state)
 		SignalBus.lock1.connect(_on_crown_unlocked)
 		SignalBus.lock2.connect(_on_codex_unlocked)
+		SignalBus.lock3.connect(_on_bones_unlocked)
+		SignalBus.PlayerDied.connect(_on_player_died)
 		SignalBus.PlayerRelicStateRequested.connect(_emit_relic_state)
 		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consume_requested)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
@@ -349,18 +352,32 @@ func _on_codex_unlocked() -> void:
 	has_starseekers_codex = true
 	_emit_relic_state()
 
+func _on_bones_unlocked() -> void:
+	has_scarred_bones = true
+	_emit_relic_state()
+
+func _on_player_died(player: Node2D) -> void:
+	if player != self:
+		return
+	has_sunken_crown = false
+	has_starseekers_codex = false
+	has_scarred_bones = false
+	_emit_relic_state()
+
 func _on_relic_consume_requested(relic: StringName) -> void:
 	match relic:
 		&"crown":
 			has_sunken_crown = false
 		&"codex":
 			has_starseekers_codex = false
+		&"bones":
+			has_scarred_bones = false
 		_:
 			return
 	_emit_relic_state()
 
 func _emit_relic_state() -> void:
-	SignalBus.PlayerRelicsChanged.emit(has_sunken_crown, has_starseekers_codex)
+	SignalBus.PlayerRelicsChanged.emit(has_sunken_crown, has_starseekers_codex, has_scarred_bones)
 
 ## 设置玩家永久能力；ability 仅接受 double_jump 或 rope，enabled 表示是否解锁。
 func SetAbilityEnabled(ability: StringName, enabled: bool) -> void:
@@ -548,8 +565,9 @@ func _physics_process(delta: float) -> void:
 	var walking_dir := int(sign(gameInputControl.row_dir))
 	var walking_forward: bool = walking_dir != 0 and sign(velocity.x) == walking_dir
 	if walking_dir != 0 and not move_state_machine.IsRopePoseActive() and move_state_machine.cur_state_name != "dash":
-		if was_moving_forward and not is_special_state and move_state_machine.cur_state_name in ["run", "idle"] and walking_dir != face_dir:
-			move_state_machine.change_state("turn")
+		if not is_special_state and walking_dir != face_dir:
+			if (move_state_machine.cur_state_name == "turn" and is_on_floor()) or (was_moving_forward and move_state_machine.cur_state_name in ["run", "idle"]):
+				move_state_machine.change_state("turn")
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
@@ -976,6 +994,7 @@ func ExportSaveData() -> Dictionary:
 		"enable_rope": enable_rope,
 		"has_sunken_crown": has_sunken_crown,
 		"has_starseekers_codex": has_starseekers_codex,
+		"has_scarred_bones": has_scarred_bones,
 		"footstep_surface": footstep_surface,
 		"footstep_bus": String(footstep_bus),
 		"move_bus": String(sfx_move_bus)
@@ -998,6 +1017,7 @@ func LoadSaveData(data: Dictionary) -> void:
 	SetAbilityEnabled(&"rope", bool(data.get("enable_rope", false)))
 	has_sunken_crown = bool(data.get("has_sunken_crown", false))
 	has_starseekers_codex = bool(data.get("has_starseekers_codex", false))
+	has_scarred_bones = bool(data.get("has_scarred_bones", false))
 	if data.has("footstep_surface"):
 		_on_footstep_surface_change_requested(self, str(data["footstep_surface"]), StringName(data.get("footstep_bus", footstep_bus)), StringName(data.get("move_bus", sfx_move_bus)))
 	_emit_relic_state()
