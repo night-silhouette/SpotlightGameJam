@@ -212,20 +212,20 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_footstep_pitch_randomness: float = 0.08
 
 @export_group("Sand Footstep Volume Offsets (dB)", "player_footstep_sand_")
-## Sand_01 相对 player_footstep_volume_db 的音量偏移 (dB)，0 不改变原音量。
-@export var player_footstep_sand_01_volume_offset_db: float = 10.0
+## Sand_01 相对 player_footstep_volume_db 的音量偏移 (dB)，按原音源 RMS 与 Brick_01 对齐。
+@export var player_footstep_sand_01_volume_offset_db: float = 10
 ## Sand_02 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_02_volume_offset_db: float = 10.0
+@export var player_footstep_sand_02_volume_offset_db: float = 10
 ## Sand_03 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_03_volume_offset_db: float = 10.0
+@export var player_footstep_sand_03_volume_offset_db: float = 10
 ## Sand_04 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_04_volume_offset_db: float = 10.0
+@export var player_footstep_sand_04_volume_offset_db: float = 10
 ## Sand_05 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_05_volume_offset_db: float = 10.0
+@export var player_footstep_sand_05_volume_offset_db: float = 10
 ## SandLand 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_land_volume_offset_db: float = 10.0
+@export var player_footstep_sand_land_volume_offset_db: float = 10
 ## SandTurn 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_turn_volume_offset_db: float = 10.0
+@export var player_footstep_sand_turn_volume_offset_db: float = 10
 
 @export_group("Brick Footstep Volume Offsets (dB)", "player_footstep_brick_")
 ## Brick_01 相对 player_footstep_volume_db 的音量偏移 (dB)，0 不改变原音量。

@@ -500,6 +500,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	var was_moving_forward: bool = is_on_floor() and sign(velocity.x) == face_dir
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta
 		if rope_momentum_timer > 0.0:
@@ -547,6 +548,8 @@ func _physics_process(delta: float) -> void:
 	var walking_dir := int(sign(gameInputControl.row_dir))
 	var walking_forward: bool = walking_dir != 0 and sign(velocity.x) == walking_dir
 	if walking_dir != 0 and not move_state_machine.IsRopePoseActive() and move_state_machine.cur_state_name != "dash":
+		if was_moving_forward and not is_special_state and move_state_machine.cur_state_name in ["run", "idle"] and walking_dir != face_dir:
+			move_state_machine.change_state("turn")
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
@@ -659,7 +662,7 @@ func PlayMoveSFX(stream: AudioStream, volume_offset: float = 0.0, custom_pitch: 
 	if move_audio.bus != sfx_move_bus:
 		move_audio.bus = sfx_move_bus
 	move_audio.stream = stream
-	move_audio.volume_db = sfx_move_volume_db + volume_offset
+	move_audio.volume_db = sfx_move_volume_db + volume_offset + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
 	if sfx_move_pitch_randomness > 0.0:
 		move_audio.pitch_scale = custom_pitch * randf_range(1.0 - sfx_move_pitch_randomness, 1.0 + sfx_move_pitch_randomness)
 	else:
@@ -701,7 +704,7 @@ func _handle_continuous_move_audio(_delta: float) -> void:
 			if slide_audio.bus != sfx_move_bus:
 				slide_audio.bus = sfx_move_bus
 			slide_audio.stream = sfx_wall_sliding
-			slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db
+			slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
 			slide_audio.play()
 	else:
 		if slide_audio and slide_audio.playing:
@@ -714,7 +717,7 @@ func _handle_continuous_move_audio(_delta: float) -> void:
 			if fall_audio.bus != sfx_move_bus:
 				fall_audio.bus = sfx_move_bus
 			fall_audio.stream = sfx_rising_falling
-			fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db
+			fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
 			fall_audio.play()
 	else:
 		if fall_audio and fall_audio.playing:
@@ -734,6 +737,17 @@ func _on_footstep_surface_change_requested(player: Node2D, surface: String, new_
 	move_audio.bus = sfx_move_bus
 	slide_audio.bus = sfx_move_bus
 	fall_audio.bus = sfx_move_bus
+	if slide_audio.playing:
+		slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
+	if fall_audio.playing:
+		fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
+
+func _bus_volume_compensation(bus_name: StringName, reference_bus: StringName) -> float:
+	var bus_index := AudioServer.get_bus_index(bus_name)
+	var reference_index := AudioServer.get_bus_index(reference_bus)
+	if bus_index < 0 or reference_index < 0:
+		return 0.0
+	return AudioServer.get_bus_volume_db(reference_index) - AudioServer.get_bus_volume_db(bus_index)
 
 ## 初始化加载脚步声音频资源
 func _init_footstep_sounds() -> void:
@@ -765,7 +779,7 @@ func _play_footstep_accent(audio: AudioStreamPlayer2D, stream: AudioStream, offs
 		return
 	audio.bus = footstep_bus
 	audio.stream = stream
-	audio.volume_db = footstep_volume_db + _footstep_volume_offset(offset_index)
+	audio.volume_db = footstep_volume_db + _footstep_volume_offset(offset_index) + _bus_volume_compensation(footstep_bus, &"SFX_Footstep_Dry")
 	audio.pitch_scale = 1.0
 	audio.play()
 
@@ -807,7 +821,7 @@ func PlayRandomFootstep() -> void:
 	if footstep_audio.bus != footstep_bus:
 		footstep_audio.bus = footstep_bus
 	footstep_audio.stream = footstep_sounds[pick_idx]
-	footstep_audio.volume_db = footstep_volume_db + _footstep_volume_offset(_footstep_sample_numbers[pick_idx] - 1)
+	footstep_audio.volume_db = footstep_volume_db + _footstep_volume_offset(_footstep_sample_numbers[pick_idx] - 1) + _bus_volume_compensation(footstep_bus, &"SFX_Footstep_Dry")
 	if footstep_pitch_randomness > 0.0:
 		footstep_audio.pitch_scale = randf_range(1.0 - footstep_pitch_randomness, 1.0 + footstep_pitch_randomness)
 	else:
