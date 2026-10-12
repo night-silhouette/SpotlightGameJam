@@ -7,6 +7,7 @@ signal pressed_state_changed(is_pressed: bool)
 ## 由任意进入检测区的物理体压下，并通过 SignalBus 广播通道状态。
 
 @export_category("Pressure Button Binding")
+@export var stay_pressed: bool = true
 ## 输出通道；与门或其他接收组件的输入通道填写相同名称即可绑定。
 @export var output_channel: StringName = &"door_1"
 ## 可触发按钮的物理层遮罩；修改后会同步到检测区域。
@@ -40,7 +41,7 @@ func _physics_process(delta: float) -> void:
 	position = position.move_toward(target_position, _move_speed * delta)
 
 func _exit_tree() -> void:
-	if _is_pressed:
+	if _is_pressed and not stay_pressed:
 		_emit_state(false)
 
 func _sync_from_export_settings() -> void:
@@ -87,6 +88,8 @@ func _can_press(body: Node2D) -> bool:
 	return required_body_group.is_empty() or body.is_in_group(required_body_group)
 
 func _set_pressed(value: bool) -> void:
+	if stay_pressed and _is_pressed and not value:
+		return
 	if _is_pressed == value:
 		return
 	_is_pressed = value
