@@ -161,7 +161,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
-@export var player_hp_drain_rate: float = 5.0
+@export var player_hp_drain_rate: float = 200.0 / 300.0
 ## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
 @export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
 ## 缺水时主角最终呈现的沙土色
@@ -275,9 +275,9 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 下落/滞空起落呼啸音效音量分贝 (dB)
 @export var sfx_move_rising_falling_volume_db: float = -4.0
 ## 钩索发射音效音量分贝 (dB)
-@export var sfx_move_shoot_hook_volume_db: float = 0.0
+@export var sfx_move_shoot_hook_volume_db: float = 10.0
 ## 钩索拉拽飞行音效音量分贝 (dB)
-@export var sfx_move_pulling_hook_volume_db: float = 0.0
+@export var sfx_move_pulling_hook_volume_db: float = 10.0
 ## 受伤音效音量分贝 (dB)
 @export var sfx_move_hurt_volume_db: float = 0.0
 ## 死亡音效音量分贝 (dB)

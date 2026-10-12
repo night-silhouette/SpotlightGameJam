@@ -182,6 +182,9 @@ signal StartPlayerHpDrain(drain_rate: float)
 ## 停止玩家随时间自然流失血量
 signal StopPlayerHpDrain
 
+## 湖边请求将目标玩家立即补满血；player 为进入湖边范围的 Player 节点，每次进入只请求一次。
+signal PlayerFullHealRequested(player: Node2D)
+
 ## 玩家生命值/当前血量变化时触发 (供 UI 等响应)
 ## @param current_hp 当前血量
 ## @param max_hp 最大血量

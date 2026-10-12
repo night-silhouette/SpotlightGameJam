@@ -1,79 +1,64 @@
-[gd_scene format=3]
-[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+[gd_scene format=4 uid="uid://b3qlxyesas670"]
+
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
-[node name="Hub" type="Node2D"]
+[ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+
+[node name="Hub" type="Node2D" unique_id=424866786]
 metadata/width = 1400
 metadata/height = 520
 metadata/title = "中央喷泉大厅"
 
-[node name="RoomTitle" type="Label" parent="."]
-offset_left = 45
-offset_top = 10
-offset_right = 1355
-offset_bottom = 90
+[node name="RoomTitle" type="Label" parent="." unique_id=296717074]
+offset_left = 45.0
+offset_top = 10.0
+offset_right = 1355.0
+offset_bottom = 90.0
 theme_override_font_sizes/font_size = 30
-mouse_filter = 2
 text = "中央喷泉大厅"
 
-[node name="RoomHint" type="Label" parent="."]
-offset_left = 45
-offset_top = 58
-offset_right = 1355
-offset_bottom = 138
+[node name="RoomHint" type="Label" parent="." unique_id=1377237233]
+offset_left = 45.0
+offset_top = 58.0
+offset_right = 1355.0
+offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-mouse_filter = 2
 text = "左：书库与休息室；右：水道；向下：档案室。钥匙带回喷泉按 F 提交。"
 
-[node name="Fountain" parent="." instance=ExtResource("device")]
+[node name="Fountain" parent="." unique_id=77465330 instance=ExtResource("device")]
 position = Vector2(990, 495)
 metadata/kind = "fountain"
 metadata/label = "中央喷泉 · 提交钥匙"
 
-
-[node name="Caption" parent="Fountain" index="1"]
-text = "中央喷泉 · 提交钥匙"
-
-[node name="FountainStream" type="Polygon2D" parent="."]
+[node name="FountainStream" type="Polygon2D" parent="." unique_id=1624418422]
 visible = false
 position = Vector2(925, -80)
-z_index = 0
+color = Color(0.12, 0.7, 0.85, 0.35)
 polygon = PackedVector2Array(0, 0, 130, 0, 130, 600, 0, 600)
-color = Color(0.12,0.7,0.85,0.35)
 
-[node name="Spawn" type="Marker2D" parent="."]
+[node name="Spawn" type="Marker2D" parent="." unique_id=754390349]
 position = Vector2(710, 485)
 
-[node name="ReturnSpawn" type="Marker2D" parent="."]
+[node name="ReturnSpawn" type="Marker2D" parent="." unique_id=1786285727]
 position = Vector2(1330, 485)
 
-[node name="WestSign" type="Label" parent="."]
-offset_left = 120
-offset_top = 370
-offset_right = 490
-offset_bottom = 450
+[node name="WestSign" type="Label" parent="." unique_id=790934189]
+offset_left = 120.0
+offset_top = 370.0
+offset_right = 490.0
+offset_bottom = 450.0
 theme_override_font_sizes/font_size = 19
-mouse_filter = 2
 text = "← 日纹书库 / 更深处有补给"
 
-[node name="EastSign" type="Label" parent="."]
-offset_left = 1110
-offset_top = 220
-offset_right = 1380
-offset_bottom = 300
+[node name="EastSign" type="Label" parent="." unique_id=1841482344]
+offset_left = 1110.0
+offset_top = 220.0
+offset_right = 1380.0
+offset_bottom = 300.0
 theme_override_font_sizes/font_size = 19
-mouse_filter = 2
-text = "月影水道 →\n档案室 ↓"
+text = "月影水道 →
+档案室 ↓"
 
-[node name="HubChalice" parent="." instance=ExtResource("chalice")]
-position = Vector2(450, 520)
-
-
-
-[node name="Terrain" type="TileMapLayer" parent="."]
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=64789595]
 position = Vector2(0, 24)
 tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAHAP3/AAAAAAAAAAAIAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAAQAP3/AAAAAAAAAAARAP3/AAAAAAAAAAAaAP3/AAAAAAAAAAAbAP3/AAAAAAAAAAAiAP3/AAAAAAAAAAAjAP3/AAAAAAAAAAAkAP3/AAAAAAAAAAAlAP3/AAAAAAAAAAAmAP3/AAAAAAAAAAAnAP3/AAAAAAAAAAAoAP3/AAAAAAAAAAApAP3/AAAAAAAAAAAqAP3/AAAAAAAAAAArAP3/AAAAAAAAAAAsAP3/AAAAAAAAAAD///7/AAAAAAAAAAAsAP7/AAAAAAAAAAD/////AAAAAAAAAAAsAP//AAAAAAAAAAD//wAAAAAAAAAAAAAsAAAAAAAAAAAAAAD//wEAAAAAAAAAAAAsAAEAAAAAAAAAAAD//wIAAAAAAAAAAAAsAAIAAAAAAAAAAAD//wMAAAAAAAAAAAAsAAMAAAAAAAAAAAD//wQAAAAAAAAAAAAsAAQAAAAAAAAAAAD//wUAAAAAAAAAAAAsAAUAAAAAAAAAAAD//wYAAAAAAAAAAAAsAAYAAAAAAAAAAAD//wcAAAAAAAAAAAAsAAcAAAAAAAAAAAD//wgAAAAAAAAAAAAsAAgAAAAAAAAAAAAAABAAAAAAAAAAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAAAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAAAAAAJABAAAAAAAAAAAAAKABAAAAAAAAAAAAALABAAAAAAAAAAAAAMABAAAAAAAAAAAAANABAAAAAAAAAAAAAOABAAAAAAAAAAAAAPABAAAAAAAAAAAAAQABAAAAAAAAAAAAARABAAAAAAAAAAAAASABAAAAAAAAAAAAATABAAAAAAAAAAAAAUABAAAAAAAAAAAAAVABAAAAAAAAAAAAAWABAAAAAAAAAAAAAXABAAAAAAAAAAAAAYABAAAAAAAAAAAAAZABAAAAAAAAAAAAAaABAAAAAAAAAAAAAbABAAAAAAAAAAAAAcABAAAAAAAAAAAAAdABAAAAAAAAAAAAAeABAAAAAAAAAAAAAfABAAAAAAAAAAAAAgABAAAAAAAAAAAAAhABAAAAAAAAAAAAAoABAAAAAAAAAAAAApABAAAAAAAAAAAAAqABAAAAAAAAAAAAArABAAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAALABEAAAAAAAAAAAAMABEAAAAAAAAAAAANABEAAAAAAAAAAAAOABEAAAAAAAAAAAAPABEAAAAAAAAAAAAQABEAAAAAAAAAAAARABEAAAAAAAAAAAASABEAAAAAAAAAAAATABEAAAAAAAAAAAAUABEAAAAAAAAAAAAVABEAAAAAAAAAAAAWABEAAAAAAAAAAAAXABEAAAAAAAAAAAAYABEAAAAAAAAAAAAZABEAAAAAAAAAAAAaABEAAAAAAAAAAAAbABEAAAAAAAAAAAAcABEAAAAAAAAAAAAdABEAAAAAAAAAAAAeABEAAAAAAAAAAAAfABEAAAAAAAAAAAAgABEAAAAAAAAAAAAhABEAAAAAAAAAAAAoABEAAAAAAAAAAAApABEAAAAAAAAAAAAqABEAAAAAAAAAAAArABEAAAAAAAAAAAA=")
 tile_set = ExtResource("L2Terrain")

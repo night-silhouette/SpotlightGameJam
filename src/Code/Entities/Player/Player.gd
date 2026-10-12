@@ -327,6 +327,7 @@ func _ready() -> void:
 	if SignalBus:
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
 		SignalBus.StopPlayerHpDrain.connect(_on_stop_player_hp_drain)
+		SignalBus.PlayerFullHealRequested.connect(_on_player_full_heal_requested)
 		SignalBus.TentActivated.connect(_on_tent_activated)
 		SignalBus.PlayerInstantDeathRequested.connect(_on_player_instant_death_requested)
 		SignalBus.PlayerAbilityChangeRequested.connect(_on_player_ability_change_requested)
@@ -517,7 +518,6 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
-	var was_moving_forward: bool = is_on_floor() and sign(velocity.x) == face_dir
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta
 		if rope_momentum_timer > 0.0:
@@ -565,9 +565,8 @@ func _physics_process(delta: float) -> void:
 	var walking_dir := int(sign(gameInputControl.row_dir))
 	var walking_forward: bool = walking_dir != 0 and sign(velocity.x) == walking_dir
 	if walking_dir != 0 and not move_state_machine.IsRopePoseActive() and move_state_machine.cur_state_name != "dash":
-		if not is_special_state and walking_dir != face_dir:
-			if (move_state_machine.cur_state_name == "turn" and is_on_floor()) or (was_moving_forward and move_state_machine.cur_state_name in ["run", "idle"]):
-				move_state_machine.change_state("turn")
+		if not is_special_state and is_on_floor() and walking_dir != face_dir and move_state_machine.cur_state_name in ["idle", "run", "turn"]:
+			move_state_machine.change_state("turn")
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
@@ -873,6 +872,12 @@ func _on_start_player_hp_drain(drain_rate: float) -> void:
 
 func _on_stop_player_hp_drain() -> void:
 	StopHpDrain()
+
+func _on_player_full_heal_requested(player: Node2D) -> void:
+	if player != self or now_HP <= 0.0 or (move_state_machine and move_state_machine.cur_state_name == "died"):
+		return
+	if now_HP < Max_HP:
+		now_HP = Max_HP
 
 func _on_player_instant_death_requested(player_node: Node2D, _source_node: Node2D) -> void:
 	if player_node == self:

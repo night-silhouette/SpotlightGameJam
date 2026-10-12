@@ -60,6 +60,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	hp_drain_rate = ExportSettings.player_hp_drain_rate
 	_sync_player_properties()
 	_active = _base
 	_target = _player
@@ -88,6 +89,8 @@ func _ready() -> void:
 	SignalBus.CameraGateChanged.connect(_on_camera_gate_changed)
 	SignalBus.CameraGateSideChanged.connect(_on_camera_gate_side_changed)
 	SignalBus.CameraGateSideRemoved.connect(_on_camera_gate_side_removed)
+	if is_hp_draining:
+		SignalBus.StartPlayerHpDrain.emit(_player.hp_drain_rate)
 
 
 func _sync_player_properties() -> void:
