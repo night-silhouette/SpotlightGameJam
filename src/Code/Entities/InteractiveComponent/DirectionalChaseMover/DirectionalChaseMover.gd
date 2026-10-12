@@ -18,8 +18,12 @@ var _active: bool = false
 var _elapsed_time: float = 0.0
 var _current_stage: int = -1
 var _current_speed: float = 0.0
+var _initial_global_position: Vector2
+var _initial_position: Vector2
 
 func _ready() -> void:
+	_initial_global_position = global_position
+	_initial_position = position
 	movement_direction = movement_direction.normalized() if not movement_direction.is_zero_approx() else Vector2.RIGHT
 	_target = get_node_or_null(target_path) as Node2D
 	if _target == null:
@@ -59,7 +63,7 @@ func _get_stage_speed(stage: int) -> float:
 
 func _apply_distance_control(base_speed: float) -> float:
 	var forward_gap := (_target.global_position - global_position).dot(movement_direction)
-	var near_distance := ExportSettings.chase_mover_follow_distance
+	var near_distance: float = float(ExportSettings.chase_mover_follow_distance)
 	var far_distance := maxf(ExportSettings.chase_mover_max_follow_distance, near_distance + 1.0)
 	var speed_multiplier := 1.0
 	if forward_gap <= near_distance:
@@ -82,6 +86,17 @@ func _set_stage(stage: int) -> void:
 func StartChase() -> void:
 	_active = true
 	SignalBus.ChaseMoverActiveChanged.emit(self, true)
+
+## 重置移动组件到进入场景时的出生点，清空计时、速度和阶段，并保持停止状态。
+func ResetMover() -> void:
+	_active = false
+	global_position = _initial_global_position
+	# 同时恢复场景中配置的本地偏移，避免父节点运行时移动后残留相对位移。
+	position = _initial_position
+	_elapsed_time = 0.0
+	_current_speed = 0.0
+	_set_stage(0)
+	SignalBus.ChaseMoverActiveChanged.emit(self, false)
 
 ## 暂停追逐并保留当前阶段和速度。
 func StopChase() -> void:
