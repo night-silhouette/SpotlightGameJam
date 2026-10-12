@@ -71,6 +71,13 @@ func phy_middleware() -> void:
 	# 受伤、死亡和持绳动作不被普通移动、跳跃或攀爬动画抢占。
 	if cur_state_name in ["hurt", "died"] or _rope_pose_active:
 		return
+	if obj.IsInWaterFlow():
+		if cur_state_name in ["jump", "climb"]:
+			state_map["fall"].is_use = true
+			change_state("fall")
+		if gameInputControl.is_dash:
+			change_state("dash")
+		return
 	if cur_state_name == "climb" and current_state.is_wall_kicking:
 		return
 	# 扒墙状态自行处理 0.12 秒的松手宽限，不能被通用下落判定提前打断。

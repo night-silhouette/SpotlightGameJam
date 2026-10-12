@@ -94,6 +94,9 @@ signal CameraGateSideRemoved(player: Node2D, gate: Area2D)
 ## =============================================================================
 
 
+## 区域请求切换指定玩家的脚步材质及音频总线；player 为目标玩家，surface 仅 Brick/Sand，footstep_bus 与 move_bus 分别为脚步及动作音频总线。
+signal PlayerFootstepSurfaceChangeRequested(player: Node2D, surface: String, footstep_bus: StringName, move_bus: StringName)
+
 ## UI 请求设置永久能力；ability 为 double_jump 或 rope，enabled 为目标解锁状态。
 signal PlayerAbilityChangeRequested(ability: StringName, enabled: bool)
 ## UI 请求当前玩家能力状态，用于初始化或重新打开面板。
