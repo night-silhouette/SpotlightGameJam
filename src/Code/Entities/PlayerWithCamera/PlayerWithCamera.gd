@@ -125,35 +125,46 @@ func _physics_process(delta: float) -> void:
 			_active.follow_offset.y += _target_velocity_y * _active.follow_damping_value.y * ExportSettings.camera_descent_velocity_compensation
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if _pending_gate_limits.is_empty():
 		return
 	var host_camera: Camera2D = $Camera2D
 	var center: Vector2 = host_camera.get_screen_center_position()
 	var half_screen: Vector2 = get_viewport_rect().size / (2.0 * host_camera.zoom.abs())
+	var travel: Vector2 = half_screen * 2.0 * delta / maxf(0.01, ExportSettings.camera_gate_transition_duration)
 	var settled: Array[Area2D] = []
+	# 画面完全越门且 Phantom 的未裁剪目标赶上画面后，才可撤掉移动挡板。
 	for gate: Area2D in _pending_gate_limits:
-		var limit: Vector2 = _pending_gate_limits[gate]
+		var limit: Vector3 = _pending_gate_limits[gate]
 		var boundary: float = limit.y
 		var margin: float = ExportSettings.camera_gate_margin
 		match int(limit.x):
 			SIDE_LEFT:
-				if center.x - half_screen.x >= boundary + margin:
+				if center.x - half_screen.x >= boundary + margin and host_camera.global_position.x <= center.x + travel.x:
 					settled.append(gate)
+				else:
+					limit.z = maxf(limit.z, center.x + half_screen.x + travel.x)
 			SIDE_TOP:
-				if center.y - half_screen.y >= boundary + margin:
+				if center.y - half_screen.y >= boundary + margin and host_camera.global_position.y <= center.y + travel.y:
 					settled.append(gate)
+				else:
+					limit.z = maxf(limit.z, center.y + half_screen.y + travel.y)
 			SIDE_RIGHT:
-				if center.x + half_screen.x <= boundary - margin:
+				if center.x + half_screen.x <= boundary - margin and host_camera.global_position.x >= center.x - travel.x:
 					settled.append(gate)
+				else:
+					limit.z = minf(limit.z, center.x - half_screen.x - travel.x)
 			SIDE_BOTTOM:
-				if center.y + half_screen.y <= boundary - margin:
+				if center.y + half_screen.y <= boundary - margin and host_camera.global_position.y >= center.y - travel.y:
 					settled.append(gate)
-	if not settled.is_empty():
-		for gate: Area2D in settled:
-			_gate_limits[gate] = _pending_gate_limits[gate]
-			_pending_gate_limits.erase(gate)
-		_apply_gate_limits()
+				else:
+					limit.z = minf(limit.z, center.y - half_screen.y - travel.y)
+		_pending_gate_limits[gate] = limit
+	for gate: Area2D in settled:
+		var limit: Vector3 = _pending_gate_limits[gate]
+		_gate_limits[gate] = Vector2(limit.x, limit.y)
+		_pending_gate_limits.erase(gate)
+	_apply_gate_limits()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -364,9 +375,22 @@ func _on_camera_gate_side_changed(player: Node2D, gate: Area2D, side: int, bound
 		_pending_gate_limits.erase(gate)
 		_gate_limits[gate] = limit
 	else:
-		# 不直接将相反限位施加到 Camera2D：先让 Phantom 阻尼带动画面越门。
+		# 沿实际画面边缘建立移动挡板；反复换侧时从当前画面重新出发，不释放到 Phantom 的隐藏目标。
+		var host_camera: Camera2D = $Camera2D
+		var center: Vector2 = host_camera.get_screen_center_position()
+		var half_screen: Vector2 = get_viewport_rect().size / (2.0 * host_camera.zoom.abs())
+		var edge: float
+		match side:
+			SIDE_LEFT:
+				edge = center.x + half_screen.x
+			SIDE_TOP:
+				edge = center.y + half_screen.y
+			SIDE_RIGHT:
+				edge = center.x - half_screen.x
+			SIDE_BOTTOM:
+				edge = center.y - half_screen.y
 		_gate_limits.erase(gate)
-		_pending_gate_limits[gate] = limit
+		_pending_gate_limits[gate] = Vector3(side, boundary, edge)
 	_apply_gate_limits()
 
 
@@ -396,6 +420,17 @@ func _apply_gate_limits() -> void:
 					right = mini(right, floori(limit.y - ExportSettings.camera_gate_margin))
 				SIDE_BOTTOM:
 					bottom = mini(bottom, floori(limit.y - ExportSettings.camera_gate_margin))
+		for gate: Area2D in _pending_gate_limits:
+			var moving: Vector3 = _pending_gate_limits[gate]
+			match int(moving.x):
+				SIDE_LEFT:
+					right = mini(right, ceili(moving.z))
+				SIDE_TOP:
+					bottom = mini(bottom, ceili(moving.z))
+				SIDE_RIGHT:
+					left = maxi(left, floori(moving.z))
+				SIDE_BOTTOM:
+					top = maxi(top, floori(moving.z))
 		camera.limit_left = left
 		camera.limit_top = top
 		camera.limit_right = right

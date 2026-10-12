@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraFocusArea/CameraFocusArea.tscn" id="8_35sqx"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -16,7 +17,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hfiwn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yocbw"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -50,7 +51,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_35sqx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mvgin"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -78,19 +79,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21"]
-material = SubResource("ShaderMaterial_hfiwn")
+material = SubResource("ShaderMaterial_yocbw")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_mvgin")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_mvgin")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_mvgin")
 
 [node name="Turn" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="3" unique_id=1352150481]
-material = SubResource("ShaderMaterial_35sqx")
+material = SubResource("ShaderMaterial_mvgin")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1230, 57)
@@ -124,5 +125,16 @@ blocked_side = 0
 player_path = NodePath("../PlayerWithCamera/Player")
 one_shot = false
 
+[node name="CameraFocusArea" parent="." unique_id=776915014 instance=ExtResource("8_35sqx")]
+position = Vector2(361, 422)
+player_path = NodePath("../PlayerWithCamera/Player")
+
+[node name="CollisionShape2D" parent="CameraFocusArea" index="0"]
+position = Vector2(4, 7)
+
+[node name="FocusPoint" parent="CameraFocusArea" index="1"]
+position = Vector2(228, 230)
+
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
+[editable path="CameraFocusArea"]
