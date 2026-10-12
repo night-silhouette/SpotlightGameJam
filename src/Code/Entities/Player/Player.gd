@@ -661,8 +661,7 @@ func _init_move_sounds() -> void:
 		sfx_jump_second = load("res://Music/SFX/Move-SFX_Move_DryOrWet/JumpSecond.wav")
 	if not sfx_wall_jump and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallJump.wav"):
 		sfx_wall_jump = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallJump.wav")
-	if not sfx_wall_sliding and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav"):
-		sfx_wall_sliding = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav")
+	if not sfx_wall_sliding and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav"):		sfx_wall_sliding = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav")
 	if not sfx_rising_falling and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/RisingFalling.wav"):
 		sfx_rising_falling = load("res://Music/SFX/Move-SFX_Move_DryOrWet/RisingFalling.wav")
 	if not sfx_hurt and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/Hurt.wav"):
