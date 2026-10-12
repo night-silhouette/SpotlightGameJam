@@ -13,6 +13,12 @@ extends Node
 @export var level2_fountain_speed: float = 720.0
 ## 井口喷流水平速度；保持物理移动离开井口。
 @export var level2_fountain_exit_speed: float = 320.0
+## 从地表落入喷泉井时启用离屏死亡；不影响由地下乘水柱上升。
+@export var level2_fountain_return_fall_enabled: bool = true
+## 从井口向下落多少像素后镜头停止跟随；随后人物继续落出画面才死亡。
+@export_range(32.0, 2000.0, 32.0) var level2_fountain_return_fall_distance: float = 800.0
+## 人物中心越过画面底边的额外屏幕像素，确保身体完全离屏。
+@export_range(0.0, 300.0, 8.0) var level2_fountain_return_fall_screen_margin: float = 96.0
 
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。

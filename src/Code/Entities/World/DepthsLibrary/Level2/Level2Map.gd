@@ -15,6 +15,11 @@ var _checkpoint: Vector2
 var _owns_player: bool = false
 var _active_room: Node2D
 var _toast_left: float = 0.0
+var _fountain_return_falling: bool = false
+var _fountain_fall_camera_held: bool = false
+var _fountain_fall_death_requested: bool = false
+var _previous_fountain_point := Vector2.ZERO
+var _has_previous_fountain_point: bool = false
 
 func _ready() -> void:
 	var configured: PackedStringArray = ExportSettings.level2_rune_order
@@ -38,8 +43,12 @@ func _physics_process(delta: float) -> void:
 	_toast_left = maxf(0.0, _toast_left - delta)
 	$HUD/Root/Toast.visible = _toast_left > 0.0
 	if not is_instance_valid(_player):
+		_has_previous_fountain_point = false
 		_player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 	if not is_instance_valid(_player):
+		return
+	# 先判定从地表落井，避免水柱反推或切换房间时把重生点写到井底。
+	if _update_fountain_return_fall():
 		return
 	var room: Node2D = GetRoomAt(_player.global_position)
 	if room != null and not _owns_player:
@@ -60,6 +69,59 @@ func _physics_process(delta: float) -> void:
 	if fountain_active and $Rooms/FountainShaft/Updraft.overlaps_body(_player):
 		_player.velocity.y = -ExportSettings.level2_fountain_speed
 		_player.ResetDoubleJump()
+
+## 返回是否正在从地表落入喷泉井；镜头导演在此期间让出两阶段下落镜头。
+func IsFountainReturnFallActive() -> bool:
+	return _fountain_return_falling
+
+func _update_fountain_return_fall() -> bool:
+	var exit_port: Marker2D = $Rooms/FountainShaft/CityExit
+	var point := exit_port.to_local(_player.global_position)
+	var previous := _previous_fountain_point
+	var had_previous := _has_previous_fountain_point
+	_previous_fountain_point = point
+	_has_previous_fountain_point = true
+	if not ExportSettings.level2_fountain_return_fall_enabled:
+		_end_fountain_return_fall()
+		return false
+	var half_width := float(exit_port.get_meta("opening_width", 128.0)) * 0.5
+	var in_opening := absf(point.x) < half_width
+	# 只识别向下穿越地表的轨迹；正常上升及地下出生不会触发。
+	if not _fountain_return_falling and had_previous and previous.y <= 0.0 and point.y > 0.0 and _player.velocity.y > 0.0:
+		var crossing_x := lerpf(previous.x, point.x, -previous.y / (point.y - previous.y))
+		if absf(crossing_x) < half_width:
+			_fountain_return_falling = true
+			_owns_player = true
+			# 第一阶段跟随玩家向井内下落，不能在刚进井口时就固定画面。
+			SignalBus.CameraDescentRequested.emit(_player, "", "", Rect2())
+	if _fountain_return_falling:
+		# 仍允许玩家在离屏前跳回井口；死亡已请求时只等待正常复活。
+		if not _fountain_fall_death_requested and point.y < 0.0:
+			_end_fountain_return_fall()
+			return false
+		if not _fountain_fall_camera_held and point.y >= ExportSettings.level2_fountain_return_fall_distance:
+			# 第二阶段锁住此刻画面，让人物继续下落并离开镜头。
+			_fountain_fall_camera_held = true
+			var anchor: Marker2D = $FountainFallCameraAnchor
+			anchor.global_position = get_viewport().get_canvas_transform().affine_inverse() * (get_viewport_rect().size * 0.5)
+			SignalBus.CameraFixedRequested.emit(_player, anchor, "", "", Rect2())
+			return true
+		var screen_point := _player.get_global_transform_with_canvas().origin
+		var below_screen := screen_point.y > get_viewport_rect().size.y + ExportSettings.level2_fountain_return_fall_screen_margin
+		if _fountain_fall_camera_held and not _fountain_fall_death_requested and point.y >= ExportSettings.level2_fountain_return_fall_distance and below_screen:
+			_fountain_fall_death_requested = true
+			SignalBus.PlayerInstantDeathRequested.emit(_player, self)
+		return true
+	# Updraft 延伸到井口上方；向下靠近井口时先让玩家穿入，不能提前顶回去。
+	return in_opening and point.y <= 0.0 and _player.velocity.y > 0.0
+
+func _end_fountain_return_fall() -> void:
+	var was_falling := _fountain_return_falling
+	_fountain_return_falling = false
+	_fountain_fall_camera_held = false
+	_fountain_fall_death_requested = false
+	if was_falling and is_instance_valid(_player):
+		SignalBus.CameraNormalRequested.emit(_player)
 
 ## 返回指定世界坐标所属房间；找不到时返回 null。
 func GetRoomAt(point: Vector2) -> Node2D:
@@ -127,12 +189,16 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 	SignalBus.Level2StateChanged.emit(self)
 
 func _on_respawned(_position: Vector2) -> void:
+	var from_fountain_fall := _fountain_fall_death_requested
+	_end_fountain_return_fall()
+	_has_previous_fountain_point = false
 	if not _owns_player:
 		return
 	var lost: int = keys.size() - submitted_keys.size()
 	keys.assign(submitted_keys)
 	_refresh()
-	_toast("回到检查点。未提交钥匙已回到原位，已提交的保留。" if lost > 0 else "回到检查点，已提交钥匙保留。")
+	if not from_fountain_fall:
+		_toast("回到检查点。未提交钥匙已回到原位，已提交的保留。" if lost > 0 else "回到检查点，已提交钥匙保留。")
 	SignalBus.Level2StateChanged.emit(self)
 
 func _on_exit_reached(body: Node2D) -> void:
@@ -174,6 +240,8 @@ func ExportSaveData() -> Dictionary:
 
 ## 还原关卡状态；data 为 ExportSaveData 返回的字典，未知钥匙会被忽略。
 func LoadSaveData(data: Dictionary) -> void:
+	_end_fountain_return_fall()
+	_has_previous_fountain_point = false
 	keys.clear()
 	for key in data.get("keys", []):
 		if str(key) in ["sun", "moon", "weave"] and not str(key) in keys:
