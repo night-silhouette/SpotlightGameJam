@@ -148,14 +148,18 @@ func _on_component_interacted(component: Node2D, _interactor: Node2D) -> void:
 
 
 func _on_player_respawned(_respawn_position: Vector2) -> void:
-	if _in_return_phase:
-		if is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):
-			_chaser.call(&"ResetChase")
-		_in_return_phase = false
-		_chase_activation_pending = false
-		_set_phase_enabled(outward_phase, true)
-		_set_phase_enabled(return_phase, false)
-		return
+	# 无论是复活前已经进入追逐，还是出生在追逐战复活点，都重置为待交互追逐状态
+	_chase_activation_pending = false
+	_chase_finished = false
+	_in_return_phase = false
+
+	if is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):
+		_chaser.call(&"ResetChase")
+
+	# 切回去程 OutwardPhase 激活骨头交互，关闭 ReturnPhase
+	_set_phase_enabled(outward_phase, true)
+	_set_phase_enabled(return_phase, false)
+
 	if is_instance_valid(_boat) and _boat.has_method(&"ResetBoat"):
 		_boat.ResetBoat()
 	_boat_departure_triggered = false

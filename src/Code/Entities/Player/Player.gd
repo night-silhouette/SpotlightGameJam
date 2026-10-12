@@ -894,6 +894,11 @@ func Respawn() -> void:
 		fall_audio.stop()
 	global_position = respawn_position
 	velocity = Vector2.ZERO
+	# 死亡复活时重置角色基础移速，彻底清除来自减速水体等外部区域残留的减速 debuff
+	if ExportSettings and "player_speed" in ExportSettings:
+		speed = ExportSettings.player_speed
+	else:
+		speed = 230.0
 	ResetDashAndRope()
 	hurt_lock = true
 	now_HP = Max_HP

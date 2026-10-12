@@ -81,9 +81,9 @@ position = Vector2(6904, 1091)
 scale = Vector2(8.974579, 0.88689655)
 
 [node name="MovingPlatform" parent="OutwardPhase" unique_id=1549646343 instance=ExtResource("5_d5i7r")]
-position = Vector2(1420, 595)
-movement_offset = Vector2(1200, 0)
-movement_speed = 170.0
+position = Vector2(1651, 627)
+movement_offset = Vector2(1000, 0)
+movement_speed = 200.0
 
 [node name="VanishingArea" type="Area2D" parent="OutwardPhase" unique_id=2141787042]
 
@@ -266,7 +266,7 @@ scale = Vector2(31.079706, 1.5268009)
 metadata/oasis_art_flip_v = true
 
 [node name="MovingPlatform2" parent="ReturnPhase" unique_id=1524005509 instance=ExtResource("5_d5i7r")]
-position = Vector2(7772, 738)
+position = Vector2(7661, 823)
 movement_offset = Vector2(500, 0)
 movement_speed = 200.0
 
@@ -294,9 +294,9 @@ movement_offset = Vector2(0, 700)
 movement_speed = 1600.0
 
 [node name="block2" parent="ReturnPhase" unique_id=246941212 instance=ExtResource("15_block_skin")]
-position = Vector2(5892, 352)
+position = Vector2(5896, 239)
 rotation = 1.5707964
-movement_offset = Vector2(0, 700)
+movement_offset = Vector2(0, 1000)
 movement_speed = 1600.0
 
 [node name="CrumblingPlatform12" parent="ReturnPhase" unique_id=339106642 instance=ExtResource("7_7p3u0")]
