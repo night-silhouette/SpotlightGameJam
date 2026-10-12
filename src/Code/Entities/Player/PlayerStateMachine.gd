@@ -61,6 +61,10 @@ func change_state(next_state_name: String) -> void:
 		_rope_pose_active = false
 	elif _rope_pose_active and next_state_name not in ["rope_send", "fly"]:
 		return
+	if next_state_name == "turn" and cur_state_name == "turn":
+		current_state.exit()
+		current_state.enter()
+		return
 	super.change_state(next_state_name)
 
 func phy_middleware() -> void:
@@ -83,12 +87,13 @@ func phy_middleware() -> void:
 	# 扒墙状态自行处理 0.12 秒的松手宽限，不能被通用下落判定提前打断。
 	if gameInputControl.is_fall and cur_state_name != "climb":
 		change_state("fall")
-	elif not obj.is_on_floor() and obj.velocity.y < 0.0 and cur_state_name in ["idle", "run", "fall"]:
+	elif not obj.is_on_floor() and obj.velocity.y < 0.0 and cur_state_name in ["idle", "run", "turn", "fall"]:
 		change_state("fall")
-	if gameInputControl.is_idle:
-		change_state("idle")
-	if gameInputControl.is_run:
-		change_state("run")
+	if cur_state_name != "turn":
+		if gameInputControl.is_idle:
+			change_state("idle")
+		if gameInputControl.is_run:
+			change_state("run")
 	if gameInputControl.is_jump:
 		change_state("jump")
 	if "is_double_jump" in gameInputControl and gameInputControl.is_double_jump:

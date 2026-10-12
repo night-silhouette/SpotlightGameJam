@@ -114,12 +114,18 @@ signal PlayerDebugFlightChanged(enabled: bool)
 signal lock1
 ## 发出时角色获得 The Starseeker's Codex；无参数。
 signal lock2
-## 请求玩家广播两件遗物的持有状态；无参数。
+## 发出时角色获得 The Scarred Bones；无参数。
+signal lock3
+## 请求玩家广播三件遗物的持有状态；无参数。
 signal PlayerRelicStateRequested
-## 角色持有状态改变或响应查询时触发；crown 与 codex 分别表示两件遗物是否持有。
-signal PlayerRelicsChanged(crown: bool, codex: bool)
-## 湖泊请求消耗一件遗物时触发；relic 仅为 crown 或 codex。
+## 角色持有状态变化或响应查询时触发；crown、codex、bones 分别表示三件遗物是否持有。
+signal PlayerRelicsChanged(crown: bool, codex: bool, bones: bool)
+## 湖泊请求消耗一件遗物时触发；relic 为 crown、codex 或 bones。
 signal PlayerRelicConsumeRequested(relic: StringName)
+## 玩家真正死亡时触发；player 为死亡的角色，而非即死请求。
+signal PlayerDied(player: Node2D)
+## 刻痕枯骨投入湖泊、进入大结局时触发；无参数。
+signal LakeEndingTriggered
 
 #region 1. 玩家钩锁与移动事件
 

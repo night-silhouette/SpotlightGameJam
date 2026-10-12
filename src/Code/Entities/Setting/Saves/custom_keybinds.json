@@ -9,6 +9,10 @@
 		"physical_keycode": 83,
 		"type": "key"
 	},
+	"interact": {
+		"button_index": 2,
+		"type": "mouse_button"
+	},
 	"jump": {
 		"keycode": 0,
 		"physical_keycode": 32,

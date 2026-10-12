@@ -99,22 +99,14 @@ func ResetSignalState() -> void:
 func IsOpenRequested() -> bool:
 	return _should_open
 
-## 导出门当前运行状态。
-## 返回值包含门位置、关闭基准位置和当前目标状态。
+## 导出门的持久化数据。
+## 门的位置和开关目标均由按钮/通道实时派生，因此不持久化瞬时运行状态。
 func ExportSaveData() -> Dictionary:
-	return {
-		"position_x": global_position.x,
-		"position_y": global_position.y,
-		"closed_position_x": _closed_position.x,
-		"closed_position_y": _closed_position.y,
-		"should_open": _should_open,
-	}
+	return {}
 
-## 从存档恢复门的位置与目标状态。
-## @param data 由 ExportSaveData() 生成的字典；缺失字段时沿用当前状态。
-func LoadSaveData(data: Dictionary) -> void:
-	if data.has("closed_position_x") and data.has("closed_position_y"):
-		_closed_position = Vector2(float(data["closed_position_x"]), float(data["closed_position_y"]))
-	if data.has("position_x") and data.has("position_y"):
-		global_position = Vector2(float(data["position_x"]), float(data["position_y"]))
-	_should_open = bool(data.get("should_open", _should_open))
+## 忽略旧存档中的门位置/开关状态，并按当前按钮或通道状态重新同步。
+## @param _data 由 ExportSaveData() 生成的字典；兼容并丢弃旧版瞬时状态字段。
+func LoadSaveData(_data: Dictionary) -> void:
+	_active_sources.clear()
+	_refresh_open_state()
+	position = _closed_position + (open_offset if _should_open else Vector2.ZERO)

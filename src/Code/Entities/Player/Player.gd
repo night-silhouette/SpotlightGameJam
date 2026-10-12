@@ -47,9 +47,10 @@ var unlocked_double_jump: bool = false
 var enable_rope: bool = false
 ## 仅供调试使用，重新进入场景后默认关闭。
 var debug_flight_enabled: bool = false
-## 当前携带的沉没王冠和寻星者法典，默认均未获得。
+## 当前携带的遗物，默认均未获得。
 var has_sunken_crown: bool = false
 var has_starseekers_codex: bool = false
+var has_scarred_bones: bool = false
 @export var hurt_time: float = 0.15
 @export var accerleration: float = 2500.0
 @export var speed: float = 230.0
@@ -335,6 +336,8 @@ func _ready() -> void:
 		SignalBus.PlayerDebugFlightStateRequested.connect(_emit_debug_flight_state)
 		SignalBus.lock1.connect(_on_crown_unlocked)
 		SignalBus.lock2.connect(_on_codex_unlocked)
+		SignalBus.lock3.connect(_on_bones_unlocked)
+		SignalBus.PlayerDied.connect(_on_player_died)
 		SignalBus.PlayerRelicStateRequested.connect(_emit_relic_state)
 		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consume_requested)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
@@ -349,18 +352,32 @@ func _on_codex_unlocked() -> void:
 	has_starseekers_codex = true
 	_emit_relic_state()
 
+func _on_bones_unlocked() -> void:
+	has_scarred_bones = true
+	_emit_relic_state()
+
+func _on_player_died(player: Node2D) -> void:
+	if player != self:
+		return
+	has_sunken_crown = false
+	has_starseekers_codex = false
+	has_scarred_bones = false
+	_emit_relic_state()
+
 func _on_relic_consume_requested(relic: StringName) -> void:
 	match relic:
 		&"crown":
 			has_sunken_crown = false
 		&"codex":
 			has_starseekers_codex = false
+		&"bones":
+			has_scarred_bones = false
 		_:
 			return
 	_emit_relic_state()
 
 func _emit_relic_state() -> void:
-	SignalBus.PlayerRelicsChanged.emit(has_sunken_crown, has_starseekers_codex)
+	SignalBus.PlayerRelicsChanged.emit(has_sunken_crown, has_starseekers_codex, has_scarred_bones)
 
 ## 设置玩家永久能力；ability 仅接受 double_jump 或 rope，enabled 表示是否解锁。
 func SetAbilityEnabled(ability: StringName, enabled: bool) -> void:
@@ -500,6 +517,7 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		return
 
+	var was_moving_forward: bool = is_on_floor() and sign(velocity.x) == face_dir
 	if not is_special_state:
 		velocity.y += GlobalValue.gravity * gravity_scale * delta
 		if rope_momentum_timer > 0.0:
@@ -547,6 +565,9 @@ func _physics_process(delta: float) -> void:
 	var walking_dir := int(sign(gameInputControl.row_dir))
 	var walking_forward: bool = walking_dir != 0 and sign(velocity.x) == walking_dir
 	if walking_dir != 0 and not move_state_machine.IsRopePoseActive() and move_state_machine.cur_state_name != "dash":
+		if not is_special_state and walking_dir != face_dir:
+			if (move_state_machine.cur_state_name == "turn" and is_on_floor()) or (was_moving_forward and move_state_machine.cur_state_name in ["run", "idle"]):
+				move_state_machine.change_state("turn")
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
@@ -640,8 +661,7 @@ func _init_move_sounds() -> void:
 		sfx_jump_second = load("res://Music/SFX/Move-SFX_Move_DryOrWet/JumpSecond.wav")
 	if not sfx_wall_jump and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallJump.wav"):
 		sfx_wall_jump = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallJump.wav")
-	if not sfx_wall_sliding and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav"):
-		sfx_wall_sliding = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav")
+	if not sfx_wall_sliding and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav"):		sfx_wall_sliding = load("res://Music/SFX/Move-SFX_Move_DryOrWet/WallSliding.wav")
 	if not sfx_rising_falling and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/RisingFalling.wav"):
 		sfx_rising_falling = load("res://Music/SFX/Move-SFX_Move_DryOrWet/RisingFalling.wav")
 	if not sfx_hurt and ResourceLoader.exists("res://Music/SFX/Move-SFX_Move_DryOrWet/Hurt.wav"):
@@ -659,7 +679,7 @@ func PlayMoveSFX(stream: AudioStream, volume_offset: float = 0.0, custom_pitch: 
 	if move_audio.bus != sfx_move_bus:
 		move_audio.bus = sfx_move_bus
 	move_audio.stream = stream
-	move_audio.volume_db = sfx_move_volume_db + volume_offset
+	move_audio.volume_db = sfx_move_volume_db + volume_offset + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
 	if sfx_move_pitch_randomness > 0.0:
 		move_audio.pitch_scale = custom_pitch * randf_range(1.0 - sfx_move_pitch_randomness, 1.0 + sfx_move_pitch_randomness)
 	else:
@@ -701,7 +721,7 @@ func _handle_continuous_move_audio(_delta: float) -> void:
 			if slide_audio.bus != sfx_move_bus:
 				slide_audio.bus = sfx_move_bus
 			slide_audio.stream = sfx_wall_sliding
-			slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db
+			slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
 			slide_audio.play()
 	else:
 		if slide_audio and slide_audio.playing:
@@ -714,7 +734,7 @@ func _handle_continuous_move_audio(_delta: float) -> void:
 			if fall_audio.bus != sfx_move_bus:
 				fall_audio.bus = sfx_move_bus
 			fall_audio.stream = sfx_rising_falling
-			fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db
+			fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
 			fall_audio.play()
 	else:
 		if fall_audio and fall_audio.playing:
@@ -734,6 +754,17 @@ func _on_footstep_surface_change_requested(player: Node2D, surface: String, new_
 	move_audio.bus = sfx_move_bus
 	slide_audio.bus = sfx_move_bus
 	fall_audio.bus = sfx_move_bus
+	if slide_audio.playing:
+		slide_audio.volume_db = sfx_move_volume_db + sfx_wall_sliding_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
+	if fall_audio.playing:
+		fall_audio.volume_db = sfx_move_volume_db + sfx_rising_falling_volume_db + _bus_volume_compensation(sfx_move_bus, &"SFX_Move_Dry")
+
+func _bus_volume_compensation(bus_name: StringName, reference_bus: StringName) -> float:
+	var bus_index := AudioServer.get_bus_index(bus_name)
+	var reference_index := AudioServer.get_bus_index(reference_bus)
+	if bus_index < 0 or reference_index < 0:
+		return 0.0
+	return AudioServer.get_bus_volume_db(reference_index) - AudioServer.get_bus_volume_db(bus_index)
 
 ## 初始化加载脚步声音频资源
 func _init_footstep_sounds() -> void:
@@ -765,7 +796,7 @@ func _play_footstep_accent(audio: AudioStreamPlayer2D, stream: AudioStream, offs
 		return
 	audio.bus = footstep_bus
 	audio.stream = stream
-	audio.volume_db = footstep_volume_db + _footstep_volume_offset(offset_index)
+	audio.volume_db = footstep_volume_db + _footstep_volume_offset(offset_index) + _bus_volume_compensation(footstep_bus, &"SFX_Footstep_Dry")
 	audio.pitch_scale = 1.0
 	audio.play()
 
@@ -807,7 +838,7 @@ func PlayRandomFootstep() -> void:
 	if footstep_audio.bus != footstep_bus:
 		footstep_audio.bus = footstep_bus
 	footstep_audio.stream = footstep_sounds[pick_idx]
-	footstep_audio.volume_db = footstep_volume_db + _footstep_volume_offset(_footstep_sample_numbers[pick_idx] - 1)
+	footstep_audio.volume_db = footstep_volume_db + _footstep_volume_offset(_footstep_sample_numbers[pick_idx] - 1) + _bus_volume_compensation(footstep_bus, &"SFX_Footstep_Dry")
 	if footstep_pitch_randomness > 0.0:
 		footstep_audio.pitch_scale = randf_range(1.0 - footstep_pitch_randomness, 1.0 + footstep_pitch_randomness)
 	else:
@@ -962,6 +993,7 @@ func ExportSaveData() -> Dictionary:
 		"enable_rope": enable_rope,
 		"has_sunken_crown": has_sunken_crown,
 		"has_starseekers_codex": has_starseekers_codex,
+		"has_scarred_bones": has_scarred_bones,
 		"footstep_surface": footstep_surface,
 		"footstep_bus": String(footstep_bus),
 		"move_bus": String(sfx_move_bus)
@@ -984,6 +1016,7 @@ func LoadSaveData(data: Dictionary) -> void:
 	SetAbilityEnabled(&"rope", bool(data.get("enable_rope", false)))
 	has_sunken_crown = bool(data.get("has_sunken_crown", false))
 	has_starseekers_codex = bool(data.get("has_starseekers_codex", false))
+	has_scarred_bones = bool(data.get("has_scarred_bones", false))
 	if data.has("footstep_surface"):
 		_on_footstep_surface_change_requested(self, str(data["footstep_surface"]), StringName(data.get("footstep_bus", footstep_bus)), StringName(data.get("move_bus", sfx_move_bus)))
 	_emit_relic_state()

@@ -108,6 +108,8 @@ extends Node
 @export var sunken_crown_texture: Texture2D
 ## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
 @export var starseekers_codex_texture: Texture2D
+## The Scarred Bones 贴图；留空时使用程序生成的临时图标。
+@export var scarred_bones_texture: Texture2D
 ## 湖第一次交互后的水量比例。
 @export_range(0.0, 1.0, 0.01) var lake_first_fill_ratio: float = 0.5
 ## 遗物飞入湖泊的动画时长（秒）。
@@ -118,6 +120,8 @@ func _ready() -> void:
 		sunken_crown_texture = _make_relic_icon("<path d='M7 16 L14 22 L24 11 L34 22 L41 16 L38 35 L10 35 Z' fill='#f4c857' stroke='#583d71' stroke-width='2'/><path d='M10 35 H38 V40 H10 Z' fill='#fff0a8'/><circle cx='24' cy='28' r='4' fill='#45ccdc'/>")
 	if starseekers_codex_texture == null:
 		starseekers_codex_texture = _make_relic_icon("<path d='M8 10 Q18 7 24 13 Q30 7 40 10 V38 Q30 35 24 41 Q18 35 8 38 Z' fill='#574b98' stroke='#eddba7' stroke-width='2'/><path d='M24 13 V40' stroke='#eddba7' stroke-width='2'/><path d='M31 15 L32 20 L37 21 L32 22 L31 27 L30 22 L25 21 L30 20 Z' fill='#ffec93'/>")
+	if scarred_bones_texture == null:
+		scarred_bones_texture = _make_relic_icon("<path d='M14 12 L35 33 M35 12 L14 33' stroke='#e8dac2' stroke-width='7' stroke-linecap='round'/><path d='M16 19 L22 22 L19 27 M29 20 L26 26 L32 29' fill='none' stroke='#9c4c56' stroke-width='2'/>")
 
 func _make_relic_icon(shapes: String) -> Texture2D:
 	var svg := "<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'>%s</svg>" % shapes
@@ -218,20 +222,20 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_footstep_pitch_randomness: float = 0.08
 
 @export_group("Sand Footstep Volume Offsets (dB)", "player_footstep_sand_")
-## Sand_01 相对 player_footstep_volume_db 的音量偏移 (dB)，0 不改变原音量。
-@export var player_footstep_sand_01_volume_offset_db: float = 0.0
+## Sand_01 相对 player_footstep_volume_db 的音量偏移 (dB)，按原音源 RMS 与 Brick_01 对齐。
+@export var player_footstep_sand_01_volume_offset_db: float = 10
 ## Sand_02 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_02_volume_offset_db: float = 0.0
+@export var player_footstep_sand_02_volume_offset_db: float = 10
 ## Sand_03 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_03_volume_offset_db: float = 0.0
+@export var player_footstep_sand_03_volume_offset_db: float = 10
 ## Sand_04 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_04_volume_offset_db: float = 0.0
+@export var player_footstep_sand_04_volume_offset_db: float = 10
 ## Sand_05 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_05_volume_offset_db: float = 0.0
+@export var player_footstep_sand_05_volume_offset_db: float = 10
 ## SandLand 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_land_volume_offset_db: float = 0.0
+@export var player_footstep_sand_land_volume_offset_db: float = 10
 ## SandTurn 相对脚步声公共基准音量的偏移 (dB)。
-@export var player_footstep_sand_turn_volume_offset_db: float = 0.0
+@export var player_footstep_sand_turn_volume_offset_db: float = 10
 
 @export_group("Brick Footstep Volume Offsets (dB)", "player_footstep_brick_")
 ## Brick_01 相对 player_footstep_volume_db 的音量偏移 (dB)，0 不改变原音量。
