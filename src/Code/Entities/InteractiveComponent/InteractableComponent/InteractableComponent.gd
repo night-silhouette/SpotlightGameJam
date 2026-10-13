@@ -13,6 +13,19 @@ signal MonologueRequested(lines: Array[String])
 @export var interaction_action: StringName = &"interact"
 @export var use_export_settings: bool = true
 
+@export_group("进入区域对话")
+@export var show_enter_dialog: bool = false
+@export_multiline var enter_dialog_text: String = ""
+
+@export_group("首次交互对话")
+@export var show_first_dialog: bool = false
+@export_multiline var first_dialog_text: String = ""
+
+@export_group("后续交互对话")
+@export var show_repeat_dialog: bool = false
+@export_multiline var repeat_dialog_text: String = ""
+@export_group("")
+
 @onready var _prompt: Control = $PromptContainer
 @onready var _button: Button = $PromptContainer/PromptButton
 @onready var _key_badge: Label = $PromptContainer/HBox/KeyBadge
@@ -65,10 +78,14 @@ func Interact(interactor: Node2D) -> bool:
 		lines.assign(description_lines)
 		DescriptionRequested.emit(lines)
 		SignalBus.ComponentDescriptionRequested.emit(self, lines)
+		if show_first_dialog:
+			SignalBus.DialogBox.emit(&"旁白", first_dialog_text)
 	else:
 		lines.assign(monologue_lines)
 		MonologueRequested.emit(lines)
 		SignalBus.ComponentMonologueRequested.emit(self, lines)
+		if show_repeat_dialog:
+			SignalBus.DialogBox.emit(&"独白", repeat_dialog_text)
 	_dispatching = false
 	return true
 
@@ -84,6 +101,8 @@ func LoadSaveData(data: Dictionary) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if (body.is_in_group("player") or body is CharacterBody2D) and body not in _players:
 		_players.append(body)
+		if show_enter_dialog:
+			SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
 	_refresh_prompt()
 
 func _on_body_exited(body: Node2D) -> void:
