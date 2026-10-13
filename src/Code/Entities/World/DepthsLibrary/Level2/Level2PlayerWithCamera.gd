@@ -13,9 +13,9 @@ func _enter_tree() -> void:
 	$PhantomCamera2D.zoom = Vector2.ONE * _level_zoom()
 	$PhantomCamera2D.follow_offset = ExportSettings.level2_camera_offset
 
-func _start_camera(mode: StringName) -> void:
+func _start_camera(mode: StringName, instant: bool = false) -> void:
 	if mode != &"normal" and mode != &"descent":
-		super._start_camera(mode)
+		super._start_camera(mode, instant)
 		return
 	# 连续探索使用同一台 Phantom Camera，避免高速下落被过场插值拖住。
 	_active = _base

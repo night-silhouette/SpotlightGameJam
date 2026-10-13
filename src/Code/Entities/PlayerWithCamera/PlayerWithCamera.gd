@@ -291,6 +291,9 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 			zoom_value = ExportSettings.camera_descent_zoom
 			_frame = ExportSettings.camera_descent_frame
 			next.follow_damping_value = ExportSettings.camera_descent_damping
+			if bool(_options.get("level2_slow_descent", false)):
+				_frame = Vector2(0.5, ExportSettings.level2_descent_frame_y)
+				next.follow_damping_value = ExportSettings.level2_descent_camera_damping
 			axis_lock = PhantomCamera2D.FollowLockAxis.X
 		&"boat":
 			zoom_value = ExportSettings.camera_boat_zoom

@@ -20,6 +20,7 @@ var _fountain_fall_camera_held: bool = false
 var _fountain_fall_death_requested: bool = false
 var _previous_fountain_point := Vector2.ZERO
 var _has_previous_fountain_point: bool = false
+var _slow_descent_camera: bool = false
 
 func _ready() -> void:
 	var configured: PackedStringArray = ExportSettings.level2_rune_order
@@ -30,6 +31,7 @@ func _ready() -> void:
 	_checkpoint = $Rooms/EntryCollapse/Spawn.global_position
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
+	SignalBus.PlayerBeforeMotion.connect(_on_player_before_motion)
 	$Rooms/SurfaceExit/FinishArea.body_entered.connect(_on_exit_reached)
 	for platform in find_children("*", "AnimatableBody2D", true, false):
 		platform.set("movement_speed", ExportSettings.level2_platform_speed)
@@ -69,6 +71,35 @@ func _physics_process(delta: float) -> void:
 	if fountain_active and $Rooms/FountainShaft/Updraft.overlaps_body(_player):
 		_player.velocity.y = -ExportSettings.level2_fountain_speed
 		_player.ResetDoubleJump()
+
+## 返回左侧竖井是否正在使用慢下落镜头；供预览镜头导演让出控制。
+func IsSlowDescentActive() -> bool:
+	return _slow_descent_camera
+
+func _on_player_before_motion(player: CharacterBody2D, delta: float) -> void:
+	if player != get_tree().get_first_node_in_group("player"):
+		return
+	var shaft: Node2D = $Rooms/DescentShaft
+	var bounds: Rect2 = shaft.get_meta("scenery_bounds")
+	var point := shaft.to_local(player.global_position)
+	var inside := ExportSettings.level2_descent_enabled and bounds.has_point(point)
+	inside = inside and not player.debug_flight_enabled and player.now_HP > 0.0 and not _fountain_return_falling
+	if inside != _slow_descent_camera:
+		_slow_descent_camera = inside
+		if inside:
+			SignalBus.CameraShotRequested.emit(player, &"descent", {"intro": false, "level2_slow_descent": true})
+		elif not _fountain_return_falling:
+			SignalBus.CameraNormalRequested.emit(player)
+	var background_speed := 0.0
+	# 跳跃、冲刺、钩索等特殊状态不改；只限制自由下落。
+	if inside and not player.is_special_state and not player.is_on_floor() and player.velocity.y > 0.0:
+		var edge := minf(point.y - bounds.position.y, bounds.end.y - point.y)
+		var strength := smoothstep(0.0, maxf(1.0, ExportSettings.level2_descent_edge_fade), edge)
+		var slow_speed := maxf(1.0, ExportSettings.level2_descent_fall_speed)
+		var cap := lerpf(maxf(slow_speed, ExportSettings.level2_descent_edge_speed), slow_speed, strength)
+		player.velocity.y = move_toward(player.velocity.y, minf(player.velocity.y, cap), ExportSettings.level2_descent_braking * delta)
+		background_speed = ExportSettings.level2_descent_background_speed * strength * clampf(player.velocity.y / slow_speed, 0.0, 1.0)
+	SignalBus.Level2DescentVisualChanged.emit(self, background_speed)
 
 ## 返回是否正在从地表落入喷泉井；镜头导演在此期间让出两阶段下落镜头。
 func IsFountainReturnFallActive() -> bool:
