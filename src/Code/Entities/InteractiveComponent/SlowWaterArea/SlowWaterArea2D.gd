@@ -22,9 +22,17 @@ func _ready() -> void:
 	process_physics_priority = -10
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
+	if SignalBus and not SignalBus.PlayerRespawned.is_connected(_on_player_respawned):
+		SignalBus.PlayerRespawned.connect(_on_player_respawned)
 
 
 func _exit_tree() -> void:
+	if SignalBus and SignalBus.PlayerRespawned.is_connected(_on_player_respawned):
+		SignalBus.PlayerRespawned.disconnect(_on_player_respawned)
+	_restore_all_speeds()
+
+
+func _on_player_respawned(_pos: Vector2) -> void:
 	_restore_all_speeds()
 
 

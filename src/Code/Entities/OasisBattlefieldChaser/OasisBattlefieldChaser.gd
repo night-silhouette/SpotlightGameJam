@@ -21,12 +21,17 @@ func _ready() -> void:
 func StartChase() -> void:
 	if _chase_finished:
 		return
+	visible = true
+	_movement_component.visible = true
 	_movement_component.StartChase()
 
 ## 重置第三关追逐实体到初始出生点，清空追逐进度并保持停止，等待再次触发。
 func ResetChase() -> void:
 	_chase_finished = false
 	global_position = _initial_global_position
+	# 确保在未重新触发追逐前，实体保持隐藏，彻底避免复活时在屏幕上闪现残影
+	visible = false
+	_movement_component.visible = false
 	_movement_component.ResetMover()
 
 ## 暂停第三关追逐实体并保留当前阶段。

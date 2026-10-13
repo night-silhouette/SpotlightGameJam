@@ -4,6 +4,8 @@ extends Area2D
 
 var _fill_stage: int = 0
 var _player_inside: Node2D = null
+var _heal_requested_inside: bool = false
+var _overlap_arm_generation: int = 0
 var _interaction_ready: bool = false
 var _blocked_until_exit: bool = false
 var _awaiting_relic_state: bool = false
@@ -27,22 +29,33 @@ func _ready() -> void:
 
 func _arm_after_initial_overlap() -> void:
 	# 避免场景实例化/存档还原时，已经在水中的玩家被当作一次新进入。
+	_overlap_arm_generation += 1
+	var generation := _overlap_arm_generation
 	await get_tree().physics_frame
 	await get_tree().physics_frame
-	if not is_inside_tree():
+	if not is_inside_tree() or generation != _overlap_arm_generation:
 		return
 	_blocked_until_exit = false
 	for body in get_overlapping_bodies():
 		if body.is_in_group("player"):
 			_player_inside = body
+			_request_heal_if_needed(body)
 			_blocked_until_exit = true
 	_interaction_ready = true
+
+
+func _request_heal_if_needed(player: Node2D) -> void:
+	if _heal_requested_inside:
+		return
+	_heal_requested_inside = true
+	SignalBus.PlayerFullHealRequested.emit(player)
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player"):
 		return
 	_player_inside = body
+	_request_heal_if_needed(body)
 	if not _interaction_ready:
 		_blocked_until_exit = true
 		return
@@ -57,6 +70,7 @@ func _on_body_exited(body: Node2D) -> void:
 	if body != _player_inside:
 		return
 	_player_inside = null
+	_heal_requested_inside = false
 	_blocked_until_exit = false
 	_awaiting_relic_state = false
 
@@ -134,6 +148,7 @@ func LoadSaveData(data: Dictionary) -> void:
 		global_position = Vector2(data["position_x"], data["position_y"])
 	_fill_stage = clampi(int(data.get("fill_stage", _fill_stage)), 0, 2)
 	_awaiting_relic_state = false
+	_heal_requested_inside = false
 	_interaction_ready = false
 	_blocked_until_exit = true
 	_update_water(false)

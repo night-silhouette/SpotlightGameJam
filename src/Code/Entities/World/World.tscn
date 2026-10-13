@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/DialogBox.tscn" id="9_dialog"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -59,9 +60,6 @@ shader_parameter/outline_strength = 0.0
 shader_parameter/outline_width = 3.0
 shader_parameter/edge_damage = 0.16
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_35sqx"]
-load_path = "res://.godot/imported/turn.png-ce46d3d5066e6517910f7e2e59056fda.ctex"
-
 [sub_resource type="Resource" id="Resource_hfiwn"]
 script = ExtResource("2_mkscu")
 
@@ -73,9 +71,13 @@ script = ExtResource("2_mkscu")
 
 [node name="World" type="Node2D" unique_id=2146248688]
 
+[node name="DialogBox" parent="." instance=ExtResource("9_dialog")]
+
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
 position = Vector2(1224, 55)
+scale = Vector2(1.2, 1.2)
 speed = 250.0
+is_hp_draining = true
 
 [node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
 position = Vector2(1.3272558, 6.636482)
@@ -93,15 +95,12 @@ material = SubResource("ShaderMaterial_yocbw")
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
 material = SubResource("ShaderMaterial_yocbw")
 
-[node name="Turn" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="3" unique_id=1352150481]
-material = SubResource("ShaderMaterial_yocbw")
-texture = SubResource("CompressedTexture2D_35sqx")
-
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1224, 55)
+scale = Vector2(1.2, 1.2)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
-position = Vector2(1225.3273, 61.636482)
+position = Vector2(1225.5927, 62.96378)
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]
@@ -149,8 +148,8 @@ left_surface = "Sand"
 left_footstep_bus = &"SFX_Footstep_Wet"
 left_move_bus = &"SFX_Move_Wet"
 right_surface = "Brick"
-right_footstep_bus = &"SFX_Footstep_Dry "
-right_move_bus = &"SFX_Move_ Dry"
+right_footstep_bus = &"SFX_Footstep_Dry"
+right_move_bus = &"SFX_Move_Dry"
 
 [node name="FootstepSurfaceArea2" parent="MusicNode" unique_id=2142110010 instance=ExtResource("8_35sqx")]
 position = Vector2(37, 200)
@@ -161,7 +160,7 @@ left_surface = "Sand"
 left_footstep_bus = &"SFX_Footstep_Wet"
 left_move_bus = &"SFX_Move_Wet"
 right_surface = "Brick"
-right_move_bus = &"SFX_Move_ Wet"
+right_move_bus = &"SFX_Move_Dry"
 
 [node name="FootstepSurfaceArea3" parent="MusicNode" unique_id=1436223171 instance=ExtResource("8_35sqx")]
 position = Vector2(-73, -372)
@@ -173,7 +172,7 @@ left_footstep_bus = &"SFX_Footstep_Wet"
 left_move_bus = &"SFX_Move_Wet"
 right_surface = "Brick"
 right_footstep_bus = &"SFX_Footstep_Dry"
-right_move_bus = &"SFX_Move_ Dry"
+right_move_bus = &"SFX_Move_Dry"
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]

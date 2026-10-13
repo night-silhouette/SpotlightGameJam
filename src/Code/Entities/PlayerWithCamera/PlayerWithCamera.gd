@@ -60,6 +60,7 @@ func _enter_tree() -> void:
 
 
 func _ready() -> void:
+	hp_drain_rate = ExportSettings.player_hp_drain_rate
 	_sync_player_properties()
 	_active = _base
 	_target = _player
@@ -88,6 +89,9 @@ func _ready() -> void:
 	SignalBus.CameraGateChanged.connect(_on_camera_gate_changed)
 	SignalBus.CameraGateSideChanged.connect(_on_camera_gate_side_changed)
 	SignalBus.CameraGateSideRemoved.connect(_on_camera_gate_side_removed)
+	SignalBus.PlayerDied.connect(_on_player_died)
+	if is_hp_draining:
+		SignalBus.StartPlayerHpDrain.emit(_player.hp_drain_rate)
 
 
 func _sync_player_properties() -> void:
@@ -186,6 +190,15 @@ func _on_normal_requested(player: Node2D) -> void:
 	_on_shot_requested(player, &"normal", {})
 
 
+func _on_player_died(player: Node2D) -> void:
+	if player != _player:
+		return
+	_on_shot_requested(player, &"normal", {}, true)
+	_base.teleport_position()
+	$Camera2D.global_position = _base.get_transform_output().origin
+	$Camera2D.reset_physics_interpolation()
+
+
 func _on_desert_requested(player: Node2D, title: String, text: String, intro: bool, bounds: Rect2) -> void:
 	_on_shot_requested(player, &"desert", {"title": title, "text": text, "intro": intro, "bounds": bounds})
 
@@ -206,7 +219,7 @@ func _on_fixed_requested(player: Node2D, anchor: Node2D, title: String, text: St
 	_on_shot_requested(player, &"fixed", {"anchor": anchor, "title": title, "text": text, "bounds": bounds})
 
 
-func _on_shot_requested(player: Node2D, mode: StringName, options: Dictionary) -> void:
+func _on_shot_requested(player: Node2D, mode: StringName, options: Dictionary, instant: bool = false) -> void:
 	if player != _player:
 		return
 	if mode not in MODES:
@@ -236,7 +249,7 @@ func _on_shot_requested(player: Node2D, mode: StringName, options: Dictionary) -
 		_lock_player()
 		# 锚点取快照，最终空镜不会继续追踪移动中的标记。
 		_options["anchor_position"] = (options.anchor as Node2D).global_position
-	_start_camera(mode)
+	_start_camera(mode, instant)
 
 
 func _on_end_requested(player: Node2D) -> void:
@@ -253,7 +266,7 @@ func _on_end_requested(player: Node2D) -> void:
 	_on_shot_requested(_player, mode, options)
 
 
-func _start_camera(mode: StringName) -> void:
+func _start_camera(mode: StringName, instant: bool = false) -> void:
 	var next: PhantomCamera2D = $ShotB if _active == $ShotA else $ShotA
 	if mode == &"normal":
 		next = _base
@@ -302,7 +315,7 @@ func _start_camera(mode: StringName) -> void:
 		var base_bounds: Vector4i = _camera_bounds[_base]
 		_camera_bounds[next] = Vector4i(floori(bounds.position.x), floori(bounds.position.y), ceili(bounds.end.x), ceili(bounds.end.y)) if bounds.has_area() else base_bounds
 	_apply_gate_limits()
-	next.set_tween_duration(maxf(0.01, ExportSettings.camera_ritual_pan_duration if _phase == &"wide" else ExportSettings.camera_transition_duration))
+	next.set_tween_duration(0.0 if instant else maxf(0.01, ExportSettings.camera_ritual_pan_duration if _phase == &"wide" else ExportSettings.camera_transition_duration))
 	if next == _active:
 		_pending = true
 		_on_arrived(next)

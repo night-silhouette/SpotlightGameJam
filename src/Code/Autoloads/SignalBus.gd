@@ -7,6 +7,9 @@ signal Level2StateChanged(level: Node2D)
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
 
+## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
+signal DialogBox(type: StringName, content: String)
+
 ## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
 signal ComponentInteracted(component: Node2D, interactor: Node2D)
 ## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。
@@ -182,6 +185,9 @@ signal StartPlayerHpDrain(drain_rate: float)
 ## 停止玩家随时间自然流失血量
 signal StopPlayerHpDrain
 
+## 湖边请求将目标玩家立即补满血；player 为进入湖边范围的 Player 节点，每次进入只请求一次。
+signal PlayerFullHealRequested(player: Node2D)
+
 ## 玩家生命值/当前血量变化时触发 (供 UI 等响应)
 ## @param current_hp 当前血量
 ## @param max_hp 最大血量
@@ -334,7 +340,27 @@ signal SaveSlotLoaded(slot_index: int)
 ## @param slot_index 槽位索引 (1-5)
 signal SaveSlotDeleted(slot_index: int)
 
+## 菜单确认退出游戏时触发；无参数，窗口关闭同样走退出存档流程。
+signal GameQuitRequested
+
 #endregion
 
+const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 
- 
+func _ready() -> void:
+	get_tree().auto_accept_quit = false
+	GameQuitRequested.connect(_quit_with_auto_save)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_quit_with_auto_save()
+
+func _quit_with_auto_save() -> void:
+	var tree = get_tree()
+	var scene = tree.current_scene
+	if scene and scene.scene_file_path == ExportSettings.start_menu_world_scene_path:
+		var slot = SaveManagerRef.GetActiveSlot()
+		if SaveManagerRef.HasSlot(slot) and not SaveManagerRef.AutoSave(tree):
+			push_error("退出游戏时自动保存至存档槽位 %d 失败，已取消退出" % slot)
+			return
+	tree.quit()

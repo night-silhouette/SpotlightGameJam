@@ -29,6 +29,7 @@ func _ready() -> void:
 	if _target == null:
 		_target = get_tree().get_first_node_in_group("player") as Node2D
 	_active = start_active
+	visible = start_active
 	_set_stage(0)
 	$KillArea.body_entered.connect(_on_kill_area_body_entered)
 
@@ -85,11 +86,20 @@ func _set_stage(stage: int) -> void:
 ## 开始或继续追逐，不会清空已经经过的阶段时间。
 func StartChase() -> void:
 	_active = true
+	visible = true
 	SignalBus.ChaseMoverActiveChanged.emit(self, true)
 
 ## 重置移动组件到进入场景时的出生点，清空计时、速度和阶段，并保持停止状态。
 func ResetMover() -> void:
 	_active = false
+	process_mode = Node.PROCESS_MODE_INHERIT
+	collision_layer = 1
+	collision_mask = 2
+	var kill_area := get_node_or_null("KillArea") as Area2D
+	if is_instance_valid(kill_area):
+		kill_area.set_deferred("monitoring", true)
+		kill_area.set_deferred("monitorable", true)
+	visible = false
 	global_position = _initial_global_position
 	# 同时恢复场景中配置的本地偏移，避免父节点运行时移动后残留相对位移。
 	position = _initial_position
