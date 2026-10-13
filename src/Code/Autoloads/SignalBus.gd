@@ -7,6 +7,9 @@ signal Level2StateChanged(level: Node2D)
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
 
+## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
+signal DialogBox(type: StringName, content: String)
+
 ## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
 signal ComponentInteracted(component: Node2D, interactor: Node2D)
 ## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。

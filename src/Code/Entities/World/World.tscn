@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/DialogBox.tscn" id="9_dialog"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -69,6 +70,8 @@ script = ExtResource("2_mkscu")
 script = ExtResource("2_mkscu")
 
 [node name="World" type="Node2D" unique_id=2146248688]
+
+[node name="DialogBox" parent="." instance=ExtResource("9_dialog")]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
 position = Vector2(1224, 55)
