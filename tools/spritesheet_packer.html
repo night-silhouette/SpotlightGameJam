@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Godot 原地序列帧拼接器</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 20px;
+    background: #1e1e24; color: #f0f0f5;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", sans-serif;
+    display: flex; justify-content: center; align-items: center; min-height: 100vh;
+  }
+  .card {
+    background: #2b2b36; border: 1px solid #3c3c4a;
+    border-radius: 12px; padding: 28px; width: 440px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4); text-align: center;
+  }
+  h2 { margin: 0 0 18px 0; font-size: 19px; font-weight: 600; }
+  .btn {
+    display: block; width: 100%; padding: 13px; margin: 10px 0;
+    border: none; border-radius: 8px; font-size: 15px; font-weight: bold;
+    cursor: pointer; transition: 0.2s;
+  }
+  .btn-import { background: #4a90e2; color: white; }
+  .btn-import:hover { background: #357abd; }
+  .btn-export { background: #27ae60; color: white; }
+  .btn-export:hover { background: #219150; }
+  .btn:disabled { background: #444452; color: #888899; cursor: not-allowed; }
+  #status { font-size: 13px; color: #9999aa; margin: 14px 0; min-height: 18px; }
+  #status.success { color: #2ecc71; font-weight: 500; }
+  input[type="file"] { display: none; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2>Godot 原地序列帧拼接器</h2>
+  
+  <input type="file" id="fileInput" accept="image/png" multiple>
+  <button class="btn btn-import" onclick="document.getElementById('fileInput').click()">1. 导入序列帧图片 (多选 PNG)</button>
+  
+  <div id="status">请先导入图片</div>
+  
+  <button class="btn btn-export" id="btnExport" disabled onclick="exportSheet()">2. 导出 Godot SpriteSheet</button>
+</div>
+
+<script>
+let loadedFrames = [];
+
+document.getElementById('fileInput').addEventListener('change', async function(e) {
+  const files = Array.from(e.target.files).filter(f => f.name.toLowerCase().endsWith('.png'));
+  if (files.length === 0) return;
+  
+  files.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }));
+  
+  const statusEl = document.getElementById('status');
+  statusEl.className = '';
+  statusEl.textContent = `正在分析 ${files.length} 帧图像...`;
+  
+  loadedFrames = [];
+  
+  for (const f of files) {
+    const img = await loadImage(f);
+    const canvas = document.createElement('canvas');
+    canvas.width = img.width; canvas.height = img.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0);
+    const imgData = ctx.getImageData(0, 0, img.width, img.height);
+    const data = imgData.data;
+    
+    let xmin = img.width, xmax = 0, ymin = img.height, ymax = 0;
+    let hasPix = false;
+    
+    for (let y = 0; y < img.height; y++) {
+      for (let x = 0; x < img.width; x++) {
+        if (data[(y * img.width + x) * 4 + 3] > 10) {
+          hasPix = true;
+          if (x < xmin) xmin = x;
+          if (x > xmax) xmax = x;
+          if (y < ymin) ymin = y;
+          if (y > ymax) ymax = y;
+        }
+      }
+    }
+    
+    if (!hasPix) continue;
+    
+    const w = xmax - xmin + 1;
+    const h = ymax - ymin + 1;
+    
+    // 头部/脊椎中轴锁定算法：提取顶部 25% 水平质心
+    const headThresh = ymin + h * 0.25;
+    let headXSum = 0, headCount = 0;
+    
+    for (let y = ymin; y <= headThresh; y++) {
+      for (let x = xmin; x <= xmax; x++) {
+        if (data[(y * img.width + x) * 4 + 3] > 10) {
+          headXSum += x;
+          headCount++;
+        }
+      }
+    }
+    
+    const anchorX = headCount > 0 ? (headXSum / headCount) : (xmin + w / 2);
+    
+    loadedFrames.push({
+      img, xmin, ymin, xmax, ymax, w, h, anchorX
+    });
+  }
+  
+  if (loadedFrames.length === 0) {
+    statusEl.textContent = '未检测到有效像素！';
+    return;
+  }
+  
+  statusEl.className = 'success';
+  statusEl.textContent = `已就绪: ${loadedFrames.length} 帧图片 (头部脊椎锁定算法已应用)`;
+  document.getElementById('btnExport').disabled = false;
+});
+
+function loadImage(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function exportSheet() {
+  if (loadedFrames.length === 0) return;
+  
+  const pad = 2;
+  let maxLeft = 0, maxRight = 0, maxH = 0;
+  
+  loadedFrames.forEach(f => {
+    const leftDist = f.anchorX - f.xmin;
+    const rightDist = f.xmax - f.anchorX;
+    if (leftDist > maxLeft) maxLeft = leftDist;
+    if (rightDist > maxRight) maxRight = rightDist;
+    if (f.h > maxH) maxH = f.h;
+  });
+  
+  const cellW = Math.ceil(maxLeft + maxRight) + pad * 2;
+  const cellH = Math.ceil(maxH) + pad * 2;
+  const centerX = Math.ceil(maxLeft) + pad;
+  
+  const outCanvas = document.createElement('canvas');
+  outCanvas.width = cellW * loadedFrames.length;
+  outCanvas.height = cellH;
+  const outCtx = outCanvas.getContext('2d');
+  
+  loadedFrames.forEach((f, i) => {
+    const pasteX = i * cellW + Math.round(centerX - (f.anchorX - f.xmin));
+    const pasteY = cellH - pad - f.h;
+    outCtx.drawImage(f.img, f.xmin, f.ymin, f.w, f.h, pasteX, pasteY, f.w, f.h);
+  });
+  
+  const link = document.createElement('a');
+  link.download = 'spritesheet_inplace.png';
+  link.href = outCanvas.toDataURL('image/png');
+  link.click();
+}
+</script>
+
+</body>
+</html>

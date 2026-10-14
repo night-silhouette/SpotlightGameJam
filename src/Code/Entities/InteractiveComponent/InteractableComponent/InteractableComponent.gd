@@ -24,6 +24,8 @@ signal MonologueRequested(lines: Array[String])
 @export var show_enter_dialog: bool = false
 ## 进入区域时显示的旁白文字；仅在 [member show_enter_dialog] 开启时使用。
 @export_multiline var enter_dialog_text: String = ""
+## 进入区域旁白是否仅触发一次；开启后首次进入时显示并存档标记，之后（含读档后）不再显示。仅在 [member show_enter_dialog] 开启时生效。
+@export var enter_dialog_once: bool = false
 
 @export_group("首次交互对话")
 ## 第一次成功交互时是否显示旁白对话框；首次状态可随组件存档恢复。
@@ -48,6 +50,7 @@ signal MonologueRequested(lines: Array[String])
 
 var _players: Array[Node2D] = []
 var _description_requested: bool = false
+var _enter_dialog_triggered: bool = false
 var _dispatching: bool = false
 
 func _ready() -> void:
@@ -106,18 +109,24 @@ func Interact(interactor: Node2D) -> bool:
 
 ## 导出交互组件持久化存档数据。
 func ExportSaveData() -> Dictionary:
-	return {"description_requested": _description_requested}
+	return {"description_requested": _description_requested, "enter_dialog_triggered": _enter_dialog_triggered}
 
 ## 加载并恢复交互组件存档数据。
-## @param data 包含 description_requested 状态的字典。
+## @param data 包含 description_requested 与 enter_dialog_triggered 状态的字典。
 func LoadSaveData(data: Dictionary) -> void:
 	_description_requested = bool(data.get("description_requested", false))
+	_enter_dialog_triggered = bool(data.get("enter_dialog_triggered", false))
 
 func _on_body_entered(body: Node2D) -> void:
 	if (body.is_in_group("player") or body is CharacterBody2D) and body not in _players:
 		_players.append(body)
 		if show_enter_dialog:
-			SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
+			if enter_dialog_once:
+				if not _enter_dialog_triggered:
+					_enter_dialog_triggered = true
+					SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
+			else:
+				SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
 	_refresh_prompt()
 
 func _on_body_exited(body: Node2D) -> void:
