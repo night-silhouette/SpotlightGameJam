@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.gd" id="1_trigger"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextCard.tscn" id="2_card"]
+
+[sub_resource type="RectangleShape2D" id="Shape"]
+size = Vector2(64, 64)
+
+[node name="GradualTextTrigger" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_trigger")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape")
+
+[node name="GradualTextCardLayer" parent="." instance=ExtResource("2_card")]
+
+[node name="GradualTextCard" parent="GradualTextCardLayer" index="0"]
+mouse_filter = 2
+auto_play = false
+
+[node name="Background" parent="GradualTextCardLayer/GradualTextCard" index="0"]
+visible = false
+
+[editable path="GradualTextCardLayer"]

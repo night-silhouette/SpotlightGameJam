@@ -18,7 +18,8 @@ const CONFIGURABLE_ACTIONS: Array[StringName] = [
 	&"jump",
 	&"dash",
 	&"rope_shoot",
-	&"interact"
+	&"interact",
+	&"skip_story"
 ]
 
 ## 获取动作友好中文名称
@@ -32,6 +33,7 @@ static func GetActionDisplayName(action: StringName) -> String:
 		&"dash": return "冲刺"
 		&"rope_shoot": return "绳索发射/拉取"
 		&"interact": return "交互"
+		&"skip_story": return "跳过当前剧情文字"
 		_: return String(action)
 
 

@@ -1,0 +1,100 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/PictureBook.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_book"]
+bg_color = Color(0.79, 0.71, 0.54, 1)
+border_width_left = 12
+border_width_top = 12
+border_width_right = 12
+border_width_bottom = 12
+border_color = Color(0.35, 0.27, 0.22, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 14
+
+[node name="PictureBook" type="CanvasLayer"]
+layer = 40
+script = ExtResource("1_script")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+
+[node name="Dim" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+color = Color(0.035, 0.04, 0.08, 0.82)
+
+[node name="Book" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -230.0
+offset_right = 340.0
+offset_bottom = 230.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBox_book")
+
+[node name="Pages" type="VBoxContainer" parent="Root/Book"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Root/Book/Pages"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.18, 0.15, 1)
+theme_override_font_sizes/font_size = 30
+text = "月族图书馆藏书 · 残缺的绘本"
+horizontal_alignment = 1
+
+[node name="Rule" type="HSeparator" parent="Root/Book/Pages"]
+layout_mode = 2
+
+[node name="PageText" type="Label" parent="Root/Book/Pages"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.17, 0.14, 0.13, 1)
+theme_override_font_sizes/font_size = 22
+autowrap_mode = 3
+vertical_alignment = 1
+
+[node name="Navigation" type="HBoxContainer" parent="Root/Book/Pages"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 26
+
+[node name="Previous" type="Button" parent="Root/Book/Pages/Navigation"]
+layout_mode = 2
+text = "上一页"
+
+[node name="PageNumber" type="Label" parent="Root/Book/Pages/Navigation"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.24, 0.18, 0.15, 1)
+text = "1 / 3"
+vertical_alignment = 1
+
+[node name="Next" type="Button" parent="Root/Book/Pages/Navigation"]
+layout_mode = 2
+text = "下一页"
+
+[node name="Close" type="Button" parent="Root/Book/Pages"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "合上书"

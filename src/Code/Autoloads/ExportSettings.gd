@@ -1,5 +1,9 @@
 extends Node
 
+@export_group("Level 3 - Outward Scenery", "outward_scenery_")
+## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
+@export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
+
 @export_group("Camp - Scenery", "camp_scenery_")
 ## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
 @export var camp_scenery_enabled: bool = true
@@ -60,6 +64,14 @@ extends Node
 @export_group("Level 2 - Terrain Art", "level2_terrain_art_")
 ## 第二关石砖外观总开关；关闭后恢复原有灰盒显示，碰撞不变。
 @export var level2_terrain_art_enabled: bool = true
+## 薄平台优先使用原图自带半透明的蓝色款；关闭后统一使用石边黑芯。
+@export var level2_terrain_art_glass_platforms: bool = true
+## 可使用半透明款的独立矩形平台最大厚度，单位为地形格数。
+@export_range(1, 4, 1) var level2_terrain_art_glass_max_rows: int = 2
+## 石墙边缘宽度占一格的比例；包含蓝色石边与向黑色内层过渡的碎石。
+@export_range(0.15, 0.48, 0.01) var level2_terrain_art_border_ratio: float = 0.44
+## 折返阶梯竖井左墙向外增加的美术厚度（格）；0 恢复原宽，不改变碰撞。
+@export_range(0, 3, 1) var level2_terrain_art_stairwell_left_extra_columns: int = 1
 
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。

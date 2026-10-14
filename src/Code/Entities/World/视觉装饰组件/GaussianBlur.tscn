@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="Shader" id="Shader_gaussian_blur"]
+code = "shader_type canvas_item;\nrender_mode unshaded;\n\nuniform sampler2D screen_texture : hint_screen_texture, filter_linear_mipmap;\nuniform float blur_radius : hint_range(0.0, 12.0, 0.1) = 4.0;\nuniform float blur_amount : hint_range(0.0, 1.0) = 1.0;\n\nvoid fragment() {\n    vec2 step_size = SCREEN_PIXEL_SIZE * blur_radius;\n    vec4 blurred = vec4(0.0);\n    float total_weight = 0.0;\n    for (int x = -2; x <= 2; x++) {\n        for (int y = -2; y <= 2; y++) {\n            float weight = exp(-float(x * x + y * y) / 2.0);\n            blurred += textureLod(screen_texture, SCREEN_UV + vec2(float(x), float(y)) * step_size, 0.0) * weight;\n            total_weight += weight;\n        }\n    }\n    vec4 original = textureLod(screen_texture, SCREEN_UV, 0.0);\n    COLOR = mix(original, blurred / total_weight, blur_amount);\n}\n"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gaussian_blur"]
+shader = SubResource("Shader_gaussian_blur")
+
+[node name="GaussianBlur" type="ColorRect"]
+material = SubResource("ShaderMaterial_gaussian_blur")
+offset_right = 512.0
+offset_bottom = 256.0
+mouse_filter = 2
+color = Color(1, 1, 1, 1)

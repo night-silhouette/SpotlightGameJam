@@ -45,4 +45,6 @@ vertical_alignment = 1
 [node name="Close" type="Button" parent="Margin/Content"]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "继续"
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "X键跳过"

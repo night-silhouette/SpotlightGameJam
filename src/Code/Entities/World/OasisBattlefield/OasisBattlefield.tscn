@@ -26,6 +26,9 @@
 [ext_resource type="Texture2D" uid="uid://cclwelgra0j74" path="res://Art/New/component/extracted/mechanism_pin_lever_4.png" id="14_mtaqt"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisMovingBlock.tscn" id="15_block_skin"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="20_2dcg1"]
+[ext_resource type="TileSet" uid="uid://5kb7joqm70qv" path="res://Code/Entities/World/OasisBattlefield/OasisTerrainTileSet.tres" id="14_stone"]
+[ext_resource type="Texture2D" uid="uid://cxdiklvgide7c" path="res://Art/New/map3/3.png" id="19_kxg64"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.tscn" id="21_outward_scenery"]
 
 [sub_resource type="Curve2D" id="Curve2D_1ev11"]
 _data = {
@@ -47,8 +50,6 @@ height = 32.59961
 script = ExtResource("12_oasis_battlefield")
 chase_respawn_point = NodePath("OutwardPhase/ChaseRespawnPoint")
 metadata/_edit_lock_ = true
-
-[node name="Chapter4" parent="." unique_id=6763687 instance=ExtResource("13_chapter4")]
 
 [node name="InstantKillArea" parent="." unique_id=403203110 instance=ExtResource("2_rko1d")]
 position = Vector2(7133, 1599)
@@ -267,6 +268,9 @@ shape = SubResource("CircleShape2D_lvx6x")
 position = Vector2(13685.991, 1394.8789)
 scale = Vector2(73.39413, 0.1563437)
 blocked_side = 1
+
+[node name="OutwardScenery" parent="OutwardPhase" unique_id=1852138962 instance=ExtResource("21_outward_scenery")]
+position = Vector2(4831, 223)
 
 [node name="ReturnPhase" type="Node2D" parent="." unique_id=1083308710]
 visible = false

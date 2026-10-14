@@ -80,7 +80,7 @@ func exit() -> void:
 func physics_process(delta: float) -> void:
 	frame += delta * obj.jump_ability
 	temp = (1.0 - ease(frame, 0.32)) * GlobalValue.gravity
-	if Input.is_action_pressed("jump"):
+	if gameInputControl.is_physics_processing() and Input.is_action_pressed("jump"):
 		obj.velocity.y = move_toward(obj.velocity.y, -obj.jump_speed, temp * delta)
 	if obj.velocity.y >= 0:
 		s_fall.emit()

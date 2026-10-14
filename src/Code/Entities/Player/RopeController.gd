@@ -130,7 +130,7 @@ func _ready() -> void:
 	line_2d.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not player or player.now_HP <= 0.0 or not player.enable_rope:
+	if not player or player.now_HP <= 0.0 or not player.enable_rope or not player.gameInputControl.is_physics_processing():
 		return
 
 	# 移动端触屏事件拦截与处理
@@ -195,7 +195,7 @@ func _update_touch_aim_from_screen_pos(screen_pos: Vector2) -> void:
 		has_touch_aim = true
 
 func _is_rope_shoot_held() -> bool:
-	return Input.is_action_pressed("rope_shoot") or touch_screen_pressed
+	return player.gameInputControl.is_physics_processing() and (Input.is_action_pressed("rope_shoot") or touch_screen_pressed)
 
 func _physics_process(delta: float) -> void:
 	if not player:

@@ -1,56 +1,46 @@
-[gd_scene format=3]
-[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
+[gd_scene format=4 uid="uid://dsvfjlmmaraxx"]
+
+[ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+
 [sub_resource type="RectangleShape2D" id="EntryPitShape"]
 size = Vector2(240, 40)
 
-[node name="EntryCollapse" type="Node2D"]
+[node name="EntryCollapse" type="Node2D" unique_id=1966376624]
 metadata/width = 860
 metadata/title = "左侧井口 · 二段跳与塌陷"
 metadata/height = 440
 
-[node name="RoomTitle" type="Label" parent="."]
-offset_left = 45
-offset_top = 10
-offset_right = 815
-offset_bottom = 90
+[node name="RoomTitle" type="Label" parent="." unique_id=1269413593]
+offset_left = 45.0
+offset_top = 10.0
+offset_right = 815.0
+offset_bottom = 90.0
 theme_override_font_sizes/font_size = 30
-mouse_filter = 2
 text = "左侧井口 · 二段跳与塌陷"
 
-[node name="RoomHint" type="Label" parent="."]
-offset_left = 45
-offset_top = 58
-offset_right = 815
-offset_bottom = 138
+[node name="RoomHint" type="Label" parent="." unique_id=2014103057]
+offset_left = 45.0
+offset_top = 58.0
+offset_right = 815.0
+offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-mouse_filter = 2
 text = "从主城左口落入；二段跳跃过断层，踩上裂纹平台进入竖井。"
 
-[node name="Collapse" parent="." instance=ExtResource("crumble")]
-position = Vector2(690, 110)
-platform_size = Vector2(240, 20)
-
-[node name="EntryFallReset" type="Area2D" parent="."]
+[node name="EntryFallReset" type="Area2D" parent="." unique_id=1582447420]
 position = Vector2(440, 420)
 collision_layer = 0
 collision_mask = 2
 metadata/fall_reset = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryFallReset"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryFallReset" unique_id=507234731]
 shape = SubResource("EntryPitShape")
 
-[node name="CityEntrance" type="Marker2D" parent="."]
+[node name="CityEntrance" type="Marker2D" parent="." unique_id=278157676]
 position = Vector2(160, -80)
 metadata/opening_width = 256.0
 metadata/description = "主城左口中心；地表高度；朝下进入第二关"
 
-
-[node name="Terrain" type="TileMapLayer" parent="."]
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=2035735057]
 position = Vector2(0, 16)
 tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAAQAP3/AAAAAAAAAAARAP3/AAAAAAAAAAASAP3/AAAAAAAAAAATAP3/AAAAAAAAAAAUAP3/AAAAAAAAAAAVAP3/AAAAAAAAAAAWAP3/AAAAAAAAAAAXAP3/AAAAAAAAAAAYAP3/AAAAAAAAAAAZAP3/AAAAAAAAAAAaAP3/AAAAAAAAAAAbAP3/AAAAAAAAAAD///7/AAAAAAAAAAAbAP7/AAAAAAAAAAD/////AAAAAAAAAAAbAP//AAAAAAAAAAD//wAAAAAAAAAAAAAbAAAAAAAAAAAAAAAaAAEAAAAAAAAAAAAaAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAAPAAMAAAAAAAAAAAAQAAMAAAAAAAAAAAARAAMAAAAAAAAAAAAaAAMAAAAAAAAAAAAaAAQAAAAAAAAAAAAaAAUAAAAAAAAAAAAaAAYAAAAAAAAAAAAaAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAABAAgAAAAAAAAAAAACAAgAAAAAAAAAAAADAAgAAAAAAAAAAAAEAAgAAAAAAAAAAAAFAAgAAAAAAAAAAAAGAAgAAAAAAAAAAAAHAAgAAAAAAAAAAAAIAAgAAAAAAAAAAAAJAAgAAAAAAAAAAAAaAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAABAAkAAAAAAAAAAAACAAkAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAkAAAAAAAAAAAAFAAkAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAkAAAAAAAAAAAAaAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAABAAoAAAAAAAAAAAACAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAEAAoAAAAAAAAAAAAFAAoAAAAAAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAaAAoAAAAAAAAAAAA=")
 tile_set = ExtResource("L2Terrain")

@@ -10,9 +10,8 @@
 		"type": "key"
 	},
 	"interact": {
-		"keycode": 69,
-		"physical_keycode": 69,
-		"type": "key"
+		"button_index": 2,
+		"type": "mouse_button"
 	},
 	"jump": {
 		"keycode": 0,
@@ -32,6 +31,11 @@
 	"rope_shoot": {
 		"button_index": 1,
 		"type": "mouse_button"
+	},
+	"skip_story": {
+		"keycode": 0,
+		"physical_keycode": 88,
+		"type": "key"
 	},
 	"up": {
 		"keycode": 0,

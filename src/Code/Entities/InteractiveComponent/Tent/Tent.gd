@@ -1,7 +1,7 @@
 extends InteractableComponent
 class_name Tent
 
-## 帐篷重生点：玩家靠近时可右键点击帐篷或上方提示按钮激活。
+## 帐篷重生点：玩家靠近时可点击帐篷碰撞区域激活。
 ## 激活后广播全局 TentActivated 信号，其他帐篷自动取消激活。
 
 @export_category("Tent Settings")
@@ -18,7 +18,6 @@ class_name Tent
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var tent_sprite: CanvasItem = $TentVisual
 @onready var light_glow: PointLight2D = $LightGlow
-@onready var action_label: Label = $PromptContainer/HBox/ActionLabel
 @onready var status_label: Label = $StatusLabel
 
 var _glow_tween: Tween = null
@@ -81,10 +80,6 @@ func _update_visual_state() -> void:
 	else:
 		if status_label:
 			status_label.visible = false
-
-	# 提示显示由 InteractableComponent 管理
-	if action_label:
-		action_label.text = "重设重生点" if is_active else "设为重生点"
 
 ## 导出帐篷持久化数据。
 ## @return 位置、重生偏移和激活状态组成的字典。

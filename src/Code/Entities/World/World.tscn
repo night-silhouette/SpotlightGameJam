@@ -6,9 +6,20 @@
 [ext_resource type="PackedScene" uid="uid://dklah3ylrtypq" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.tscn" id="2_palace"]
 [ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" uid="uid://cdq48ot4um03o" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
+[ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="5_acpp2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
+[ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
+[ext_resource type="Texture2D" uid="uid://cr8v8th45p3ul" path="res://Art/New/component/stargazing_desk.svg" id="13_stargazing_desk"]
+[ext_resource type="Texture2D" uid="uid://cl2s2a6edeh3e" path="res://Art/New/component/brass_magnifier.svg" id="14_magnifier"]
+[ext_resource type="Texture2D" uid="uid://bh5wg0taldg8l" path="res://Art/New/component/moon_phase_dial.svg" id="15_moon_phase_dial"]
+[ext_resource type="Texture2D" uid="uid://5jd43vy6horr" path="res://Art/New/component/torn_picture_book.svg" id="16_torn_picture_book"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/PictureBook.tscn" id="17_picture_book"]
+[ext_resource type="Texture2D" uid="uid://b7m1livmw8npo" path="res://Art/New/component/proverb_stele.svg" id="18_proverb_stele"]
+[ext_resource type="Texture2D" uid="uid://bla1x5c0rw0ji" path="res://Art/New/component/scholars_notebook.svg" id="19_scholars_notebook"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -18,7 +29,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yocbw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_womvd"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -52,7 +63,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mvgin"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4qq5m"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -69,6 +80,116 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
+[sub_resource type="Resource" id="Resource_bvdhl"]
+script = ExtResource("5_acpp2")
+text = "冰凉舒缓的水滑入喉管。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_abrb0"]
+script = ExtResource("5_acpp2")
+text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_wotbi"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Reflection_enter_line"]
+script = ExtResource("5_acpp2")
+text = "水面的涟漪倒映出一张完全陌生的脸。"
+
+[sub_resource type="Resource" id="Resource_qv0jn"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这，这是我吗……脸上是什么……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_3t6bi"]
+script = ExtResource("5_acpp2")
+text = "月亮在长夜里留下了无主的诗"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_be8n8"]
+script = ExtResource("5_acpp2")
+text = "昏暗的石廊向深处延伸，高耸的书架一列列延伸至深处，散落的书卷覆着尘土，羽毛笔与残页横七竖八地留在书案上。屋顶破开一道缺口，月光从那里倾落下来。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_1p2nt"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这里与外面的氛围完全不同，却不会让人觉得逼仄，反而有种……说不出的庄严……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_terh4"]
+script = ExtResource("5_acpp2")
+text = "石桌上蒙着一层尘土。尘土之下，是几张繁复的星图。密密麻麻的星点与刻线，圆环层层套叠，还有绘制到一半，散落一旁。像是书写它们的人只是暂时离开了。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_hrpuy"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "好复杂……浩瀚的星芒之中，藏着怎样的答案？"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_0dlu5"]
+script = ExtResource("5_acpp2")
+text = "石桌上蒙着一层尘土。尘土之下，是几张繁复的星图。密密麻麻的星点与刻线，圆环层层套叠，还有绘制到一半，散落一旁。像是书写它们的人只是暂时离开了。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_ciajo"]
+script = ExtResource("5_acpp2")
+text = "黄铜制成的单片放大镜。静静躺在桌边，已失去光泽，但很精巧。试了试感觉很趁手。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_7posy"]
+script = ExtResource("5_acpp2")
+text = "黄铜制成的单片放大镜。静静躺在桌边，已失去光泽，但很精巧。试了试感觉很趁手。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_d0knf"]
+script = ExtResource("5_acpp2")
+text = "石面被打磨得近乎光滑，中央是一轮完整的满月，周围依次刻着盈亏不一的月相。月相周围，有细密的银白色刻痕。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_yq83x"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这些月相之间的纹路……像是交织的河流，被什么无形之物牵引着。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_m8xep"]
+script = ExtResource("5_acpp2")
+text = "石面被打磨得近乎光滑，中央是一轮完整的满月，周围依次刻着盈亏不一的月相。月相周围，有细密的银白色刻痕。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_womvd"]
+script = ExtResource("5_acpp2")
+text = "展开的图册。与周围其他书卷不同，它没有密密麻麻的文字，只有一幅幅连续的图画。纸页边缘还留着被反复翻看的痕迹，扉页上写着：月族图书馆藏书。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_e17ub"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "都是图画，这是给小孩子看的吗？"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_4qq5m"]
+script = ExtResource("5_acpp2")
+text = "石碑立在书架之间，碑身布满细密的裂痕。岁月已经磨去了大半刻痕，唯有中央的一句话仍清晰可辨：“昼与夜相依，日与月相生。”"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_2x4ys"]
+script = ExtResource("5_acpp2")
+text = "石碑立在书架之间，碑身布满细密的裂痕。岁月已经磨去了大半刻痕，唯有中央的一句话仍清晰可辨：“昼与夜相依，日与月相生。”"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_r37dm"]
+script = ExtResource("5_acpp2")
+text = "封面已经褪色，纸页皱皱巴巴，边角也有点卷曲，显然曾被一次又一次翻阅。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
 [node name="World" type="Node2D" unique_id=2146248688]
 
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
@@ -84,16 +205,16 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_yocbw")
+material = SubResource("ShaderMaterial_womvd")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_mvgin")
+material = SubResource("ShaderMaterial_4qq5m")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_mvgin")
+material = SubResource("ShaderMaterial_4qq5m")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_mvgin")
+material = SubResource("ShaderMaterial_4qq5m")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1470, 2)
@@ -111,6 +232,14 @@ tween_resource = SubResource("Resource_yocbw")
 
 [node name="Camp" parent="." unique_id=1903763566 instance=ExtResource("1_camp")]
 position = Vector2(-96, -1560)
+
+[node name="WaterApproach_1_3_to_1_6" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="0" unique_id=593165859]
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
+
+[node name="Reflection_1_7_to_1_8" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="1" unique_id=229158232]
+position = Vector2(1595, 1569)
+scale = Vector2(0.6254726, 1.1105114)
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Reflection_enter_line"), SubResource("Resource_qv0jn")])
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
@@ -132,9 +261,17 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
-position = Vector2(-73, -480)
+position = Vector2(-115.999985, -362.99997)
 scale = Vector2(0.4082091, 2.459945)
 blocked_side = 0
+player_path = NodePath("../../PlayerWithCamera/Player")
+one_shot = false
+
+[node name="CameraGate3" parent="CameraNode" unique_id=2049029743 instance=ExtResource("7_hfiwn")]
+position = Vector2(327, 200)
+rotation = -1.5707964
+scale = Vector2(0.35954776, 6.7938075)
+blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
@@ -163,7 +300,7 @@ right_surface = "Brick"
 right_move_bus = &"SFX_Move_Dry"
 
 [node name="FootstepSurfaceArea3" parent="MusicNode" unique_id=1436223171 instance=ExtResource("8_35sqx")]
-position = Vector2(-73.00001, -543)
+position = Vector2(-124, -378)
 rotation = -3.1539626
 scale = Vector2(0.5244628, 1.910881)
 player_path = NodePath("../../PlayerWithCamera/Player")
@@ -174,7 +311,134 @@ right_surface = "Brick"
 right_footstep_bus = &"SFX_Footstep_Dry"
 right_move_bus = &"SFX_Move_Dry"
 
+[node name="chapter" type="Node2D" parent="." unique_id=516342595]
+position = Vector2(2119, -18)
+scale = Vector2(0.42096186, 3.7220325)
+
+[node name="ChapterTrigger" parent="chapter" unique_id=2099740132 instance=ExtResource("10_mvgin")]
+chapter_text = "烈阳遗梦"
+
+[node name="ChapterTrigger2" parent="chapter" unique_id=520894648 instance=ExtResource("10_mvgin")]
+position = Vector2(-3639.2844, 95.109314)
+scale = Vector2(10.814299, 0.09030984)
+act_text = "第二幕"
+chapter_text = "烈阳遗梦"
+
+[node name="ChapterTrigger3" parent="chapter" unique_id=1761084445 instance=ExtResource("10_mvgin")]
+position = Vector2(-5359.1553, -172.75507)
+rotation = -1.5707964
+scale = Vector2(4, 0.4)
+act_text = "第三幕"
+chapter_text = "绿洲悲歌"
+
+[node name="story" type="Node2D" parent="." unique_id=1662514281]
+
+[node name="c2" type="Node2D" parent="story" unique_id=420887994]
+
+[node name="进入的场合描述" parent="story/c2" unique_id=1000769939 instance=ExtResource("12_terh4")]
+position = Vector2(62, 422)
+scale = Vector2(1.66195, 1.689001)
+enable_interaction = false
+show_enter_dialog = true
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_3t6bi"), SubResource("Resource_be8n8")])
+enter_dialog_once = true
+
+[node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]
+position = Vector2(201, 625.00006)
+scale = Vector2(1.8545073, 2.0664856)
+enable_interaction = false
+show_enter_dialog = true
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_1p2nt")])
+enter_dialog_once = true
+
+[node name="观星桌案" parent="story/c2" unique_id=1286710586 instance=ExtResource("12_terh4")]
+position = Vector2(-42, 638)
+scale = Vector2(1.4325283, 1.5979006)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_terh4"), SubResource("Resource_hrpuy")])
+show_repeat_dialog = true
+repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_0dlu5")])
+
+[node name="观星桌案贴图" type="Sprite2D" parent="story/c2/观星桌案" unique_id=1213739031]
+position = Vector2(1.3961328, 0.6258278)
+scale = Vector2(0.7409028, 1)
+texture = ExtResource("13_stargazing_desk")
+
+[node name="放大镜" parent="story/c2" unique_id=1866626411 instance=ExtResource("12_terh4")]
+position = Vector2(22, 676)
+scale = Vector2(0.3446726, 0.368074)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_ciajo")])
+show_repeat_dialog = true
+repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7posy")])
+
+[node name="放大镜贴图" type="Sprite2D" parent="story/c2/放大镜" unique_id=211672534]
+texture = ExtResource("14_magnifier")
+
+[node name="月相刻盘" parent="story/c2" unique_id=1549139785 instance=ExtResource("12_terh4")]
+position = Vector2(-4154, 3472)
+scale = Vector2(2.958631, 3.1635995)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_d0knf"), SubResource("Resource_yq83x")])
+show_repeat_dialog = true
+repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_m8xep")])
+
+[node name="月相刻盘贴图" type="Sprite2D" parent="story/c2/月相刻盘" unique_id=1287020260]
+texture = ExtResource("15_moon_phase_dial")
+
+[node name="残缺的绘本" parent="story/c2" unique_id=1763227010 instance=ExtResource("12_terh4")]
+position = Vector2(-4184, 3738)
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_womvd"), SubResource("Resource_e17ub")])
+
+[node name="残缺的绘本贴图" type="Sprite2D" parent="story/c2/残缺的绘本" unique_id=1071641378]
+texture = ExtResource("16_torn_picture_book")
+
+[node name="PictureBook" parent="story/c2/残缺的绘本" unique_id=85174331 instance=ExtResource("17_picture_book")]
+
+[node name="刻有谚语的石碑" parent="story/c2" unique_id=1341038314 instance=ExtResource("12_terh4")]
+position = Vector2(-414, 3710)
+scale = Vector2(1.1128523, 2.4469175)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_4qq5m")])
+show_repeat_dialog = true
+repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_2x4ys")])
+
+[node name="石碑贴图" type="Sprite2D" parent="story/c2/刻有谚语的石碑" unique_id=746643710]
+scale = Vector2(1, 0.40868)
+texture = ExtResource("18_proverb_stele")
+
+[node name="学者的笔记" parent="story/c2" unique_id=313767927 instance=ExtResource("12_terh4")]
+position = Vector2(-626, 3752)
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_r37dm")])
+
+[node name="笔记贴图" type="Sprite2D" parent="story/c2/学者的笔记" unique_id=1374682915]
+texture = ExtResource("19_scholars_notebook")
+
+[node name="ScholarNotebook" parent="story/c2/学者的笔记" unique_id=137594361 instance=ExtResource("17_picture_book")]
+book_title = "学者的笔记"
+pages = Array[String](["我们曾经共同生活在这片土地上。日族守护白昼，在阳光下耕种、劳作；月族行走长夜，循着月色寻找水源。
+没有人问水属于谁。因为所有人都知道，水若不能流动，便无法抵达需要它的地方。水像一条看不见的线，将昼与夜缝在一起，我们从未觉得彼此有什么不同。", "最初，我们只是拥有不同的分工。后来，白昼与长夜，将我们带向不同的道路，也让我们渐渐习惯只与自己的族人同行。我们开始用不同的名字称呼自己，自然而然形成了界限，我们站在这界限的两边，互相推搡。", "后来，我们惊讶地发现昼与夜并非永恒。日族越强，白昼便越长；月族越强，长夜便越长。若让另一方永远消失，世界是否就永远属于我们？当第一次有人指出这问题时，一切都失控了。", "可这个世界不属于日，也不属于月。昼与夜彼此成全，水与土地相互依存。一方存在的意义，从来都不在自己之中。可当我终于看清这一点时，已经太迟了。", "决战只剩两日。世界将会朝一边倾覆，而另一边同样得不到幸福。", "他们同时拥有……同生于这片天地……新世界……"])
+page_monologues = Array[String](["", "", "原来如此……", "", "日族宫殿里的痕迹，还有这里留下的文字，都在讲同一场战争。那场战争，月族战败了，世界也不再是原来的世界了。", "欸？这页内容好模糊……看不懂啊，这说的是我吗？可‘他们’是什么意思？还有很多和我一样的人吗"])
+close_monologues = Array[String]([])
+
+[node name="GradualTextTrigger" parent="story/c2" unique_id=1879339704 instance=ExtResource("20_m8xep")]
+position = Vector2(870, 2665.0002)
+scale = Vector2(2.2155194, 0.55301255)
+content = "水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
+display_duration = 9.9
+
+[node name="GradualTextTrigger2" parent="story/c2" unique_id=927648948 instance=ExtResource("20_m8xep")]
+position = Vector2(872.99994, 2996.0002)
+scale = Vector2(2.2155194, 0.55301255)
+content = "《水的法则》
+"
+display_duration = 2.0
+
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
+[editable path="Camp"]
+[editable path="Camp/Lake"]
+[editable path="Camp/Chapter1"]
+[editable path="DepthsLibrary"]
 [editable path="OasisBattlefield"]
 [editable path="OasisBattlefield/ReturnPhase/MovingPlatform2"]
