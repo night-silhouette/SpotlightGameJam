@@ -16,9 +16,27 @@ extends Node
 ## 从地表落入喷泉井时启用离屏死亡；不影响由地下乘水柱上升。
 @export var level2_fountain_return_fall_enabled: bool = true
 ## 从井口向下落多少像素后镜头停止跟随；随后人物继续落出画面才死亡。
-@export_range(32.0, 2000.0, 32.0) var level2_fountain_return_fall_distance: float = 800.0
+@export_range(32.0, 2000.0, 32.0) var level2_fountain_return_fall_distance: float = 400.0
 ## 人物中心越过画面底边的额外屏幕像素，确保身体完全离屏。
 @export_range(0.0, 300.0, 8.0) var level2_fountain_return_fall_screen_margin: float = 96.0
+
+@export_group("Level 2 - Slow Descent", "level2_descent_")
+## 仅左侧高落差竖井启用慢下落、快速背景效果。
+@export var level2_descent_enabled: bool = true
+## 竖井中段的下落限速，像素/秒；越小下降越慢。
+@export_range(80.0, 1000.0, 10.0) var level2_descent_fall_speed: float = 260.0
+## 进入竖井后的减速强度，像素/秒平方。
+@export_range(1000.0, 10000.0, 100.0) var level2_descent_braking: float = 3200.0
+## 井口和井底的渐变距离，像素。
+@export_range(32.0, 800.0, 16.0) var level2_descent_edge_fade: float = 240.0
+## 井口、井底过渡区的宽松限速，像素/秒；离开区域后取消限速。
+@export_range(260.0, 3000.0, 20.0) var level2_descent_edge_speed: float = 1200.0
+## 两层循环柱子额外向上滚动的基础速度，像素/秒；远柱为其 0.65 倍。
+@export_range(0.0, 2400.0, 20.0) var level2_descent_background_speed: float = 900.0
+## 正式世界竖井镜头中人物的纵向位置，0.5 为中央。
+@export_range(0.2, 0.8) var level2_descent_frame_y: float = 0.5
+## 正式世界竖井镜头跟随阻尼，越小跟随越紧。
+@export var level2_descent_camera_damping: Vector2 = Vector2(0.08, 0.08)
 
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。

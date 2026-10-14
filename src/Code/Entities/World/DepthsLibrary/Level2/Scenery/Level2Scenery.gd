@@ -5,12 +5,15 @@ extends Node2D
 @onready var _map: Node2D = get_parent() as Node2D
 var _regions: Array[Control] = []
 var _layers: Dictionary = {}
+var _descent_speed: float = 0.0
+var _descent_scroll: float = 0.0
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		_sync_editor_shaft_widths()
 		return
 	visible = ExportSettings.level2_scenery_enabled
+	SignalBus.Level2DescentVisualChanged.connect(_on_descent_visual_changed)
 	for region_node in get_children():
 		if not region_node is Control:
 			continue
@@ -32,10 +35,15 @@ func _ready() -> void:
 		_layers[region] = textures
 	_update_layers()
 
+func _on_descent_visual_changed(level: Node2D, speed: float) -> void:
+	if level == _map:
+		_descent_speed = speed
+
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		_sync_editor_shaft_widths()
 		return
+	_descent_scroll += _descent_speed * _delta
 	if visible:
 		_update_layers()
 
@@ -84,6 +92,10 @@ func _update_layers() -> void:
 			var scroll := Vector2(region.position.x + camera_local.x * (speed - 1.0), 0.0)
 			if vertical:
 				scroll = Vector2(0.0, (camera_local.y - region.position.y) * (speed - 1.0))
+				# 只为左侧下落井的循环柱增加采样位移；底图与地形不动。
+				if region.name == &"DescentShaft" and layer.name in [&"NearColumn", &"RightColumns"]:
+					var depth_scale := 0.65 if layer.name == &"NearColumn" else 1.0
+					scroll.y += _descent_scroll * depth_scale
 			material.set_shader_parameter("vertical_layout", vertical)
 			material.set_shader_parameter("shaft_width", region.size.x)
 			material.set_shader_parameter("artwork_height", ExportSettings.level2_scenery_artwork_height)

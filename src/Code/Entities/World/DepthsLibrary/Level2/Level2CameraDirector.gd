@@ -17,6 +17,11 @@ func _physics_process(_delta: float) -> void:
 	$ShaftOcclusion/Mask.queue_redraw()
 
 func _update_zone(force: bool) -> void:
+	if _map.IsSlowDescentActive():
+		current_zone = &""
+		var shaft: Node2D = _map.get_node("Rooms/DescentShaft")
+		_shaft_rect = Rect2(shaft.position, Vector2(280, 2860))
+		return
 	if _map.IsFountainReturnFallActive():
 		current_zone = &""
 		_shaft_rect = Rect2()

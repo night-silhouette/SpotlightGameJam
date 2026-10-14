@@ -512,6 +512,7 @@ func _physics_process(delta: float) -> void:
 		debug.text = "速度<%d,%d> %s%s%s" % [int(velocity.x), int(velocity.y), move_state_machine.cur_state_name, rope_info, dj_info]
 
 	if debug_flight_enabled and now_HP > 0.0:
+		SignalBus.PlayerBeforeMotion.emit(self, delta)
 		velocity = Vector2(gameInputControl.row_dir, gameInputControl.column_dir).normalized() * ExportSettings.player_debug_flight_speed
 		if gameInputControl.row_dir != 0.0:
 			SetFacingDirection(int(sign(gameInputControl.row_dir)))
@@ -570,6 +571,7 @@ func _physics_process(delta: float) -> void:
 		SetFacingDirection(walking_dir)
 	if walking_forward:
 		_try_step_up(walking_dir)
+	SignalBus.PlayerBeforeMotion.emit(self, delta)
 	var was_on_floor := is_on_floor()
 	move_and_slide()
 	if not was_on_floor and is_on_floor():

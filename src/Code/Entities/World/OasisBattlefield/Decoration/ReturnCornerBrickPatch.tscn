@@ -1,0 +1,2388 @@
+[gd_scene format=3 uid="uid://cb2iaci03unpw"]
+
+[ext_resource type="Texture2D" uid="uid://cxdiklvgide7c" path="res://Art/New/map3/3.png" id="1_bricks"]
+
+[sub_resource type="Shader" id="Shader_edge_blend"]
+code = "shader_type canvas_item;
+uniform vec2 sprite_size = vec2(665.0, 665.0);
+uniform vec4 fade_edges = vec4(0.0);
+varying vec2 local_pixel;
+void vertex() { local_pixel = VERTEX; }
+void fragment() {
+ float a = 1.0;
+ if (fade_edges.x > 0.0) a *= smoothstep(0.0, fade_edges.x, local_pixel.x);
+ if (fade_edges.y > 0.0) a *= smoothstep(0.0, fade_edges.y, local_pixel.y);
+ if (fade_edges.z > 0.0) a *= smoothstep(0.0, fade_edges.z, sprite_size.x - local_pixel.x);
+ if (fade_edges.w > 0.0) a *= smoothstep(0.0, fade_edges.w, sprite_size.y - local_pixel.y);
+ COLOR.a *= a;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rim"]
+shader = SubResource("Shader_edge_blend")
+shader_parameter/sprite_size = Vector2(665, 533)
+shader_parameter/fade_edges = Vector4(0, 0, 0, 100)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_left"]
+shader = SubResource("Shader_edge_blend")
+shader_parameter/sprite_size = Vector2(665, 3325)
+shader_parameter/fade_edges = Vector4(0, 0, 145, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_right"]
+shader = SubResource("Shader_edge_blend")
+shader_parameter/sprite_size = Vector2(665, 3325)
+shader_parameter/fade_edges = Vector4(145, 0, 0, 0)
+
+[node name="ReturnCornerBrickPatch" type="Node2D" unique_id=359651014]
+z_index = 1
+position = Vector2(18684, 877)
+metadata/_patch_note = "Visual-only patch for ReturnTileMap cells (434,29)..(441,29) and (434,30)..(434,35). Delete this scene instance to undo."
+
+[node name="TopLeftTurn" type="Sprite2D" parent="." unique_id=1240564158]
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(1578, 1650, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick1" type="Sprite2D" parent="." unique_id=2007911532]
+position = Vector2(32, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick2" type="Sprite2D" parent="." unique_id=1238063277]
+position = Vector2(64, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick3" type="Sprite2D" parent="." unique_id=1060775139]
+position = Vector2(96, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick4" type="Sprite2D" parent="." unique_id=140073983]
+position = Vector2(128, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick5" type="Sprite2D" parent="." unique_id=171450177]
+position = Vector2(160, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick6" type="Sprite2D" parent="." unique_id=726431942]
+position = Vector2(192, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopBrick7" type="Sprite2D" parent="." unique_id=1139334668]
+position = Vector2(224, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2173, 270.15625, 665)
+region_filter_clip_enabled = true
+
+[node name="WallBrick1" type="Sprite2D" parent="." unique_id=295187632]
+position = Vector2(32, 32)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="WallBrick2" type="Sprite2D" parent="." unique_id=1293212700]
+position = Vector2(32, 64)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="WallBrick3" type="Sprite2D" parent="." unique_id=738246336]
+position = Vector2(32, 96)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="WallBrick4" type="Sprite2D" parent="." unique_id=1155052205]
+position = Vector2(32, 128)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="WallBrick5" type="Sprite2D" parent="." unique_id=1255436638]
+position = Vector2(32, 160)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2173, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="BottomRightTurn" type="Sprite2D" parent="." unique_id=1096091356]
+position = Vector2(32, 224)
+rotation = 3.1415927
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(1578, 1650, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="SolidRockFill" type="Node2D" parent="." unique_id=1644326696]
+position = Vector2(-1056, -320)
+metadata/_patch_note = "Visual fill for ReturnTileMap x401..405, y19..29. No added physics."
+
+[node name="DarkRockCore" type="Sprite2D" parent="SolidRockFill" unique_id=762964069]
+modulate = Color(0.6, 0.6, 0.6, 1)
+position = Vector2(25, 20)
+scale = Vector2(0.11, 1.328)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(2350, 1850, 1000, 250)
+region_filter_clip_enabled = true
+
+[node name="TopLeftRock" type="Sprite2D" parent="SolidRockFill" unique_id=41273706]
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(1578, 1650, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopRightRock" type="Sprite2D" parent="SolidRockFill" unique_id=552260058]
+position = Vector2(128, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1578, 1650, 665, 665)
+region_filter_clip_enabled = true
+
+[node name="TopRim1" type="Sprite2D" parent="SolidRockFill" unique_id=1563018907]
+material = SubResource("ShaderMaterial_rim")
+position = Vector2(32, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(2243, 1650, 665, 533)
+region_filter_clip_enabled = true
+
+[node name="TopRim2" type="Sprite2D" parent="SolidRockFill" unique_id=618548954]
+material = SubResource("ShaderMaterial_rim")
+position = Vector2(64, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(2243, 1650, 665, 533)
+region_filter_clip_enabled = true
+
+[node name="TopRim3" type="Sprite2D" parent="SolidRockFill" unique_id=1580807593]
+material = SubResource("ShaderMaterial_rim")
+position = Vector2(96, 0)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(2243, 1650, 665, 533)
+region_filter_clip_enabled = true
+
+[node name="LeftWall1" type="Sprite2D" parent="SolidRockFill" unique_id=1470510415]
+material = SubResource("ShaderMaterial_left")
+position = Vector2(0, 32)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(1578, 2173, 665, 3325)
+region_filter_clip_enabled = true
+
+[node name="RightWall1" type="Sprite2D" parent="SolidRockFill" unique_id=1720371953]
+material = SubResource("ShaderMaterial_right")
+position = Vector2(128, 32)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1578, 2173, 665, 3325)
+region_filter_clip_enabled = true
+
+[node name="LeftWall2" type="Sprite2D" parent="SolidRockFill" unique_id=378011849]
+material = SubResource("ShaderMaterial_left")
+position = Vector2(0, 192)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1578, 2173, 665, 3325)
+region_filter_clip_enabled = true
+
+[node name="RightWall2" type="Sprite2D" parent="SolidRockFill" unique_id=1742204974]
+material = SubResource("ShaderMaterial_right")
+position = Vector2(128, 192)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+flip_h = true
+flip_v = true
+region_enabled = true
+region_rect = Rect2(1578, 2173, 665, 3325)
+region_filter_clip_enabled = true
+
+[node name="SlopeBlackBricks" type="Node2D" parent="." unique_id=1071617503]
+position = Vector2(-3360, -320)
+metadata/_patch_note = "Art-only overlay of ReturnTileMap x329..362, y19..35. Uses only regions of Art/New/map3/3.png. Remove this node to revert."
+
+[node name="Rock_329_19" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1293698847]
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_330_20" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1980335015]
+position = Vector2(32, 32)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_331_21" type="Sprite2D" parent="SlopeBlackBricks" unique_id=79202430]
+position = Vector2(64, 64)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_332_22" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1607369906]
+position = Vector2(96, 96)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_333_23" type="Sprite2D" parent="SlopeBlackBricks" unique_id=993706881]
+position = Vector2(128, 128)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_334_24" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1216219733]
+position = Vector2(160, 160)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_334_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=579428988]
+position = Vector2(160, 192)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_335_24" type="Sprite2D" parent="SlopeBlackBricks" unique_id=88019817]
+position = Vector2(192, 160)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_335_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=117391251]
+position = Vector2(192, 192)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_335_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1435510046]
+position = Vector2(192, 224)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_336_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=377315718]
+position = Vector2(224, 192)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_336_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1279260474]
+position = Vector2(224, 224)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_336_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=553393802]
+position = Vector2(224, 256)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_337_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1450309875]
+position = Vector2(256, 224)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_337_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1501990700]
+position = Vector2(256, 256)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_337_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1187225952]
+position = Vector2(256, 288)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_338_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1807482693]
+position = Vector2(288, 256)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_338_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=274895723]
+position = Vector2(288, 288)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_338_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2056687517]
+position = Vector2(288, 320)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_339_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1036332835]
+position = Vector2(320, 288)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_339_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1766999335]
+position = Vector2(320, 320)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_339_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1420405038]
+position = Vector2(320, 352)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_340_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1122445919]
+position = Vector2(352, 320)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_340_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=685008128]
+position = Vector2(352, 352)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_340_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=252412971]
+position = Vector2(352, 384)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_341_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1144739262]
+position = Vector2(384, 352)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_341_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1637936722]
+position = Vector2(384, 384)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_342_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1461812996]
+position = Vector2(416, 384)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_342_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1814123471]
+position = Vector2(416, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_343_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=761365422]
+position = Vector2(448, 384)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_343_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=19893119]
+position = Vector2(448, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_343_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1497689189]
+position = Vector2(448, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_344_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1527267790]
+position = Vector2(480, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_344_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1324948864]
+position = Vector2(480, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_345_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=476160560]
+position = Vector2(512, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_345_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=972746841]
+position = Vector2(512, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_345_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1506748854]
+position = Vector2(512, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_346_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=719568213]
+position = Vector2(544, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_346_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=257529439]
+position = Vector2(544, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_346_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1770616515]
+position = Vector2(544, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_347_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1172573160]
+position = Vector2(576, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_347_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=499122912]
+position = Vector2(576, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_347_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=488259447]
+position = Vector2(576, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_348_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1631009546]
+position = Vector2(608, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_348_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=744118134]
+position = Vector2(608, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_348_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=219325993]
+position = Vector2(608, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_349_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1106856216]
+position = Vector2(640, 416)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_349_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=883500568]
+position = Vector2(640, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_349_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1314124800]
+position = Vector2(640, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_349_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1406761580]
+position = Vector2(640, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_350_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=556410072]
+position = Vector2(672, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_350_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2077424442]
+position = Vector2(672, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_350_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1564172755]
+position = Vector2(672, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_351_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=809233179]
+position = Vector2(704, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_351_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=291681532]
+position = Vector2(704, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_351_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=670738799]
+position = Vector2(704, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_352_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1662970979]
+position = Vector2(736, 448)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_352_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=615336973]
+position = Vector2(736, 480)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_352_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1058572773]
+position = Vector2(736, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_353_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=605837874]
+position = Vector2(768, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_354_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=301787650]
+position = Vector2(800, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_355_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=514919635]
+position = Vector2(832, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_356_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=40005028]
+position = Vector2(864, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_357_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=975642120]
+position = Vector2(896, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_358_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1043272342]
+position = Vector2(928, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_359_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=472976212]
+position = Vector2(960, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_360_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2095419142]
+position = Vector2(992, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_361_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=152082023]
+position = Vector2(1024, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Rock_362_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=745686514]
+position = Vector2(1056, 512)
+scale = Vector2(0.0481203, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Top_329_19" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1327045598]
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_329_19" type="Sprite2D" parent="SlopeBlackBricks" unique_id=665053807]
+position = Vector2(0, 24.781956)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_329_19" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1098747743]
+position = Vector2(7.218045, 0)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_329_19" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1409443059]
+position = Vector2(32, 0)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_330_20" type="Sprite2D" parent="SlopeBlackBricks" unique_id=590136288]
+position = Vector2(32, 32)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_330_20" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1689609613]
+position = Vector2(32, 56.781956)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_330_20" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2055730503]
+position = Vector2(39.218044, 32)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_330_20" type="Sprite2D" parent="SlopeBlackBricks" unique_id=755736262]
+position = Vector2(64, 32)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_331_21" type="Sprite2D" parent="SlopeBlackBricks" unique_id=896625871]
+position = Vector2(64, 64)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_331_21" type="Sprite2D" parent="SlopeBlackBricks" unique_id=274754168]
+position = Vector2(64, 88.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_331_21" type="Sprite2D" parent="SlopeBlackBricks" unique_id=65001282]
+position = Vector2(71.21805, 64)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_331_21" type="Sprite2D" parent="SlopeBlackBricks" unique_id=159832530]
+position = Vector2(96, 64)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_332_22" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2113769606]
+position = Vector2(96, 96)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_332_22" type="Sprite2D" parent="SlopeBlackBricks" unique_id=47210388]
+position = Vector2(96, 120.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_332_22" type="Sprite2D" parent="SlopeBlackBricks" unique_id=538925311]
+position = Vector2(103.21805, 96)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_332_22" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1013850936]
+position = Vector2(128, 96)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_333_23" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1897409270]
+position = Vector2(128, 128)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_333_23" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1724559917]
+position = Vector2(128, 152.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_333_23" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1884034187]
+position = Vector2(135.21805, 128)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_333_23" type="Sprite2D" parent="SlopeBlackBricks" unique_id=167212913]
+position = Vector2(160, 128)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_334_24" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1250807527]
+position = Vector2(160, 160)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_334_24" type="Sprite2D" parent="SlopeBlackBricks" unique_id=676245162]
+position = Vector2(167.21805, 160)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_334_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2045093073]
+position = Vector2(160, 216.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_334_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1892366120]
+position = Vector2(167.21805, 192)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_335_24" type="Sprite2D" parent="SlopeBlackBricks" unique_id=526401208]
+position = Vector2(192, 160)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_335_24" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1630853326]
+position = Vector2(224, 160)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_335_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=645170931]
+position = Vector2(192, 248.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_335_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=801438442]
+position = Vector2(199.21805, 224)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_336_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=148469004]
+position = Vector2(224, 192)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_336_25" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2095374546]
+position = Vector2(256, 192)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_336_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1842596534]
+position = Vector2(224, 280.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_336_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=432760346]
+position = Vector2(231.21805, 256)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_337_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=111983899]
+position = Vector2(256, 224)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_337_26" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1430790568]
+position = Vector2(288, 224)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_337_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1304586759]
+position = Vector2(256, 312.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_337_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2104654041]
+position = Vector2(263.21805, 288)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_338_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1805249906]
+position = Vector2(288, 256)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_338_27" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2074945585]
+position = Vector2(320, 256)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_338_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=594860819]
+position = Vector2(288, 344.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_338_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1845490521]
+position = Vector2(295.21805, 320)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_339_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=500741791]
+position = Vector2(320, 288)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_339_28" type="Sprite2D" parent="SlopeBlackBricks" unique_id=30074738]
+position = Vector2(352, 288)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_339_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=263984884]
+position = Vector2(320, 376.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_339_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1198431967]
+position = Vector2(327.21805, 352)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_340_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1853175622]
+position = Vector2(352, 320)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_340_29" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1285885246]
+position = Vector2(384, 320)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_340_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=359048588]
+position = Vector2(352, 408.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_340_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1656041152]
+position = Vector2(359.21805, 384)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_341_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1737428522]
+position = Vector2(384, 352)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_341_30" type="Sprite2D" parent="SlopeBlackBricks" unique_id=325172174]
+position = Vector2(416, 352)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_341_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1023267317]
+position = Vector2(384, 408.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_342_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1589117899]
+position = Vector2(416, 384)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_342_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1338774228]
+position = Vector2(416, 440.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_342_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=482237962]
+position = Vector2(423.21805, 416)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_343_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1438184040]
+position = Vector2(448, 384)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_343_31" type="Sprite2D" parent="SlopeBlackBricks" unique_id=660598727]
+position = Vector2(480, 384)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_343_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2007817965]
+position = Vector2(448, 472.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_343_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=489915183]
+position = Vector2(455.21805, 448)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_344_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2085868009]
+position = Vector2(480, 416)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_344_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1600786534]
+position = Vector2(480, 472.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_345_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1789621320]
+position = Vector2(512, 416)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_345_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1809644492]
+position = Vector2(512, 504.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_345_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1976610356]
+position = Vector2(519.218, 480)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_346_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1958432232]
+position = Vector2(544, 416)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_346_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=996792801]
+position = Vector2(544, 504.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_347_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=931437929]
+position = Vector2(576, 416)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_347_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1110739536]
+position = Vector2(576, 504.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_348_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1604704653]
+position = Vector2(608, 416)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_348_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1750814881]
+position = Vector2(608, 504.78195)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_349_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=933612585]
+position = Vector2(640, 416)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_349_32" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1325449230]
+position = Vector2(672, 416)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_349_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1823575617]
+position = Vector2(640, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_349_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1407378829]
+position = Vector2(647.218, 512)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_350_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=675299522]
+position = Vector2(672, 448)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_350_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=904783790]
+position = Vector2(672, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_351_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=386913341]
+position = Vector2(704, 448)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_351_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=250550960]
+position = Vector2(704, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_352_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1244244176]
+position = Vector2(736, 448)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_352_33" type="Sprite2D" parent="SlopeBlackBricks" unique_id=857498990]
+position = Vector2(768, 448)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_352_34" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1911012769]
+position = Vector2(768, 480)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_352_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=141949961]
+position = Vector2(736, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_353_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=843674918]
+position = Vector2(768, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_353_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=814149535]
+position = Vector2(768, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_354_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1599360844]
+position = Vector2(800, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_354_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1990445387]
+position = Vector2(800, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_355_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=723562761]
+position = Vector2(832, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_355_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1697033316]
+position = Vector2(832, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_356_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=385381493]
+position = Vector2(864, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_356_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2018255673]
+position = Vector2(864, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_357_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=487271012]
+position = Vector2(896, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_357_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=222923383]
+position = Vector2(896, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_358_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=2003259636]
+position = Vector2(928, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_358_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1305888498]
+position = Vector2(928, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_359_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=876167670]
+position = Vector2(960, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_359_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=401463087]
+position = Vector2(960, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_360_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=438354230]
+position = Vector2(992, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_360_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1551498615]
+position = Vector2(992, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_361_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1152617301]
+position = Vector2(1024, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_361_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=1594900088]
+position = Vector2(1024, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_362_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=913056406]
+position = Vector2(1056, 512)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_362_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=161111630]
+position = Vector2(1056, 536.782)
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_362_35" type="Sprite2D" parent="SlopeBlackBricks" unique_id=355080878]
+position = Vector2(1088, 512)
+rotation = 1.5707964
+scale = Vector2(0.0481203, 0.0481203)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="TwinWallBlackBricks" type="Node2D" parent="."]
+position = Vector2(-13280, 96)
+
+[node name="Core_19_32" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 0)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_19_33" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 32)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_19_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 64)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_19_35" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 96)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_19_36" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 128)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_19_37" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 160)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_19_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 192)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 64)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_35" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 96)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_36" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 128)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_37" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 160)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 192)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_39" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 224)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_40" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 256)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_41" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 288)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_23_42" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 320)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_24_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 64)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Core_25_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(192, 64)
+scale = Vector2(0.0481203007518797, 0.2)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2400, 665, 160)
+region_filter_clip_enabled = true
+
+[node name="Top_19_32" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 0)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_32" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 0)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_19_33" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(7.218045112781955, 32)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_33" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 32)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_19_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(7.218045112781955, 64)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 64)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_19_35" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(7.218045112781955, 96)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_35" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 96)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_19_36" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(7.218045112781955, 128)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_36" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 128)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_19_37" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(7.218045112781955, 160)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_37" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 160)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_19_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(0, 216.78195488721803)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_19_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(7.218045112781955, 192)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_19_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(32, 192)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_23_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 64)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 64)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_35" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 96)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_35" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 96)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_36" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 128)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_36" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 128)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_37" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 160)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_37" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 160)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 192)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_38" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 192)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_39" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 224)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_39" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 224)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_40" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 256)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_40" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 256)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4238, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Left_23_41" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(135.21804511278197, 288)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_41" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 288)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_23_42" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(128, 344.78195488721803)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_23_42" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 320)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_24_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 64)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_24_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(160, 88.78195488721805)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(4903, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Top_25_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(192, 64)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Bottom_25_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(192, 88.78195488721805)
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2673, 665, 150)
+region_filter_clip_enabled = true
+
+[node name="Right_25_34" type="Sprite2D" parent="TwinWallBlackBricks"]
+position = Vector2(224, 64)
+rotation = 1.5707963267948966
+scale = Vector2(0.0481203007518797, 0.0481203007518797)
+texture = ExtResource("1_bricks")
+centered = false
+region_enabled = true
+region_rect = Rect2(5568, 2230, 665, 150)
+region_filter_clip_enabled = true
