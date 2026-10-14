@@ -1,11 +1,19 @@
 extends Node
 
+## 玩家应用本帧重力后、移动碰撞前发出；区域可在此限制速度，delta 为物理帧秒数。
+signal PlayerBeforeMotion(player: CharacterBody2D, delta: float)
+## 第二关下落背景速度更新；level 为地图实例，speed 为额外向上滚动的像素/秒，0 表示停止。
+signal Level2DescentVisualChanged(level: Node2D, speed: float)
+
 ## 第二关物件请求交互。source 为关卡内设备，player 为靠近的角色。
 signal Level2InteractionRequested(source: Node2D, player: Node2D)
 ## 第二关钥匙、谜题或出口状态改变。level 为对应关卡实例。
 signal Level2StateChanged(level: Node2D)
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
+
+## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
+signal DialogBox(type: StringName, content: String)
 
 ## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
 signal ComponentInteracted(component: Node2D, interactor: Node2D)

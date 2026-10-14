@@ -89,7 +89,7 @@ func _ready() -> void:
 	SignalBus.CameraGateChanged.connect(_on_camera_gate_changed)
 	SignalBus.CameraGateSideChanged.connect(_on_camera_gate_side_changed)
 	SignalBus.CameraGateSideRemoved.connect(_on_camera_gate_side_removed)
-	SignalBus.PlayerDied.connect(_on_player_died)
+	SignalBus.PlayerRespawned.connect(_on_player_respawned)
 	if is_hp_draining:
 		SignalBus.StartPlayerHpDrain.emit(_player.hp_drain_rate)
 
@@ -190,10 +190,8 @@ func _on_normal_requested(player: Node2D) -> void:
 	_on_shot_requested(player, &"normal", {})
 
 
-func _on_player_died(player: Node2D) -> void:
-	if player != _player:
-		return
-	_on_shot_requested(player, &"normal", {}, true)
+func _on_player_respawned(_position: Vector2) -> void:
+	_on_shot_requested(_player, &"normal", {}, true)
 	_base.teleport_position()
 	$Camera2D.global_position = _base.get_transform_output().origin
 	$Camera2D.reset_physics_interpolation()
@@ -291,6 +289,9 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 			zoom_value = ExportSettings.camera_descent_zoom
 			_frame = ExportSettings.camera_descent_frame
 			next.follow_damping_value = ExportSettings.camera_descent_damping
+			if bool(_options.get("level2_slow_descent", false)):
+				_frame = Vector2(0.5, ExportSettings.level2_descent_frame_y)
+				next.follow_damping_value = ExportSettings.level2_descent_camera_damping
 			axis_lock = PhantomCamera2D.FollowLockAxis.X
 		&"boat":
 			zoom_value = ExportSettings.camera_boat_zoom

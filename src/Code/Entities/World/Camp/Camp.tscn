@@ -3,6 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="1_xf26i"]
 [ext_resource type="PackedScene" uid="uid://c7mxy8v3k1q1w" path="res://Code/Entities/InteractiveComponent/Tent/Tent.tscn" id="2_rjnff"]
 [ext_resource type="PackedScene" uid="uid://begpdtx5e6uy8" path="res://Code/Entities/InteractiveComponent/Lake/Lake.tscn" id="4_bci5y"]
+[ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5.tscn" id="6_chapter5"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
 size = Vector2(96, 32)
@@ -32,6 +36,9 @@ sources/0 = SubResource("TileSetAtlasSource_qba5b")
 
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
+[node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
+position = Vector2(96, -98.5)
+
 [node name="06" type="Sprite2D" parent="." unique_id=646416155]
 visible = false
 position = Vector2(1228, 698)
@@ -53,3 +60,7 @@ metadata/_edit_lock_ = true
 [node name="Lake" parent="." unique_id=231864433 instance=ExtResource("4_bci5y")]
 position = Vector2(1292, 1656)
 scale = Vector2(1.6936214, 1.6936214)
+
+[node name="Chapter1" parent="." instance=ExtResource("5_chapter")]
+
+[node name="Chapter5" parent="." instance=ExtResource("6_chapter5")]

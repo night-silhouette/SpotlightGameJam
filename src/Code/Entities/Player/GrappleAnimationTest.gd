@@ -32,7 +32,8 @@ func _run() -> void:
 	var settings: Node = root.get_node("ExportSettings")
 	var bus: Node = root.get_node("SignalBus")
 	await physics_frame
-	_check(animator.has_animation("RopeSend") and animator.has_animation("fly"), "ani_move 必须拥有严格命名的 RopeSend、fly")
+	player.SetAbilityEnabled(&"rope", true)
+	_check(animator.has_animation("RopeSend") and animator.has_animation("fly_right") and animator.has_animation("fly_left"), "ani_move 必须拥有 RopeSend、fly_right 和 fly_left")
 	_check(not player.has_node("GrappleVisual/Deploy"), "独立视觉层不再含人物 Sprite")
 	_check(origin.position.is_equal_approx(Vector2(-5.5555553, -33.333336)), "手调 Marker 坐标不可丢失")
 	_check(is_equal_approx(settings.rope_visual_width, 1.5) and is_equal_approx(settings.rope_visual_hook_scale, 0.4), "绳宽和钩头缩放须保留")
@@ -72,14 +73,22 @@ func _run() -> void:
 	_check(machine.cur_state_name == "rope_send", "近距离挂接不跳过发射第二帧")
 	rope.TriggerPull() # 飞行阶段不应改变物理状态。
 	animator.advance(1.1 / settings.rope_visual_deploy_fps)
-	_check(machine.cur_state_name == "fly" and animator.current_animation == "fly", "发射结束自动进入 fly")
-	_check(action.texture.resource_path.ends_with("graphook/fly.png"), "fly 使用人物素材而非绳子图片")
+	_check(machine.cur_state_name == "fly" and animator.current_animation == "fly_right", "发射结束自动进入 fly_right")
+	_check(action.texture.resource_path.ends_with("graphook/fly_right.png") and action.hframes == 3, "fly_right 使用三帧人物素材")
 	rope.current_state = rope.RopeState.LATCHED
 	rope.TriggerPull()
 	_check(rope.current_state == rope.RopeState.PULLING and machine.cur_state_name == "fly", "拉拽保持 fly")
+	player.velocity.x = -300.0
+	machine.current_state.physics_process(0.0)
+	_check(animator.current_animation == "fly_right", "拉拽朝反方向运动仍使用 fly_right")
 	rope.current_state = rope.RopeState.LATCHED
 	rope.TriggerSwing()
 	_check(rope.current_state == rope.RopeState.SWINGING and machine.cur_state_name == "fly", "摆动保持 fly")
+	machine.current_state.physics_process(0.0)
+	_check(animator.current_animation == "fly_right", "朝背后荡使用 fly_right")
+	player.velocity.x = 300.0
+	machine.current_state.physics_process(0.0)
+	_check(animator.current_animation == "fly_left" and action.texture.resource_path.ends_with("graphook/fly_left.png"), "越过最低点向前荡切换 fly_left")
 	rope.ReleaseRope()
 	visual._process(0.0)
 	_check(not visual.get_node("Rope").is_visible_in_tree() and not visual.get_node("Hook").is_visible_in_tree(), "释放后绳身和钩头必须隐藏")
@@ -92,7 +101,7 @@ func _run() -> void:
 	rope.hook_point = player.global_position + Vector2(100.0, -100.0)
 	rope.current_state = rope.RopeState.LATCHED
 	rope.TriggerPull()
-	_check(rope.current_state == rope.RopeState.PULLING and machine.cur_state_name == "fly" and animator.current_animation == "fly", "RopeSend 未播完时开始拉拽须立即进入 fly")
+	_check(rope.current_state == rope.RopeState.PULLING and machine.cur_state_name == "fly" and animator.current_animation == "fly_right", "RopeSend 未播完时开始拉拽须立即进入 fly_right")
 	rope.ReleaseRope()
 
 	_shoot(player, -1.0)
@@ -102,6 +111,18 @@ func _run() -> void:
 	player.gameInputControl.row_dir = 1.0
 	player._physics_process(0.0)
 	_check(player.face_dir == -1, "反向移动输入不能改变持绳人物朝向")
+	rope.current_state = rope.RopeState.LATCHED
+	rope.TriggerPull()
+	rope.current_state = rope.RopeState.LATCHED
+	rope.TriggerSwing()
+	player.velocity.x = 300.0
+	machine.current_state.physics_process(0.0)
+	_check(animator.current_animation == "fly_right" and player.face_dir == -1, "面左时朝右荡使用 fly_right 且不转身")
+	player.velocity.x = -300.0
+	machine.current_state.physics_process(0.0)
+	_check(animator.current_animation == "fly_left", "面左时朝左荡使用 fly_left")
+	rope.ReleaseRope()
+	_shoot(player, -1.0)
 	rope.collision_mask = 0
 	rope._process_flying(1.0)
 	_check(rope.current_state == rope.RopeState.IDLE and not machine.IsRopePoseActive(), "射程落空必须退出绳索动作")
