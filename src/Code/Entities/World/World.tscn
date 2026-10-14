@@ -19,7 +19,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_acpp2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mvgin"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -53,7 +53,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_terh4"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_acpp2"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -85,16 +85,16 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_acpp2")
+material = SubResource("ShaderMaterial_mvgin")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_terh4")
+material = SubResource("ShaderMaterial_acpp2")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_terh4")
+material = SubResource("ShaderMaterial_acpp2")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_terh4")
+material = SubResource("ShaderMaterial_acpp2")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1470, 2)
@@ -112,6 +112,10 @@ tween_resource = SubResource("Resource_yocbw")
 
 [node name="Camp" parent="." unique_id=1903763566 instance=ExtResource("1_camp")]
 position = Vector2(-96, -1560)
+
+[node name="Reflection_1_7_to_1_8" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="1" unique_id=229158232]
+position = Vector2(1585, 1570)
+scale = Vector2(0.6254726, 1.1105114)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
@@ -136,6 +140,14 @@ one_shot = false
 position = Vector2(-74.99999, -308.99997)
 scale = Vector2(0.4082091, 2.459945)
 blocked_side = 0
+player_path = NodePath("../../PlayerWithCamera/Player")
+one_shot = false
+
+[node name="CameraGate3" parent="CameraNode" unique_id=2049029743 instance=ExtResource("7_hfiwn")]
+position = Vector2(327, 200)
+rotation = -1.5707964
+scale = Vector2(0.35954776, 6.7938075)
+blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
@@ -182,8 +194,19 @@ scale = Vector2(0.42096186, 3.7220325)
 [node name="ChapterTrigger" parent="chapter" unique_id=2099740132 instance=ExtResource("10_mvgin")]
 chapter_text = "烈阳遗梦"
 
+[node name="ChapterTrigger2" parent="chapter" unique_id=520894648 instance=ExtResource("10_mvgin")]
+position = Vector2(-3639.2844, 95.109314)
+scale = Vector2(10.814299, 0.09030984)
+act_text = "第二幕"
+chapter_text = "烈阳遗梦"
+
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
+[editable path="Camp"]
+[editable path="Camp/Lake"]
+[editable path="Camp/Chapter1"]
+[editable path="DepthsLibrary"]
+[editable path="DepthsLibrary/Chapter3"]
 [editable path="OasisBattlefield"]
 [editable path="OasisBattlefield/ReturnPhase/MovingPlatform2"]
 [editable path="OasisBattlefield/ReturnPhase/ReturnCornerBrickPatch"]

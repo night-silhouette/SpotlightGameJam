@@ -2,11 +2,12 @@ extends Control
 
 signal Finished
 
+const DISPLAY_DURATION := 2.0
+
 @export var act_text: String = "第一幕"
 @export var chapter_text: String = "纺织"
 @export var auto_play: bool = true
 @export var fade_duration: float = 0.7
-@export var hold_duration: float = 2.5
 
 @onready var _act_label: Label = $Act
 @onready var _chapter_label: Label = $Title
@@ -29,10 +30,11 @@ func Play() -> void:
 	_chapter_label.text = chapter_text
 	show()
 	modulate.a = 0.0
+	var transition_duration: float = minf(maxf(fade_duration, 0.0), DISPLAY_DURATION / 2.0)
 	_tween = create_tween()
-	_tween.tween_property(self, "modulate:a", 1.0, fade_duration)
-	_tween.tween_interval(hold_duration)
-	_tween.tween_property(self, "modulate:a", 0.0, fade_duration)
+	_tween.tween_property(self, "modulate:a", 1.0, transition_duration)
+	_tween.tween_interval(DISPLAY_DURATION - transition_duration * 2.0)
+	_tween.tween_property(self, "modulate:a", 0.0, transition_duration)
 	_tween.tween_callback(_finish)
 
 func ShowChapter(act: String, heading: String) -> void:
