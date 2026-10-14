@@ -26,10 +26,17 @@ func _configure_seam(sprite: Sprite2D, period: float, transition_width: float, y
 
 
 func _configure_layer(layer: Parallax2D, horizontal_speed: float, period: float) -> void:
+	# Parallax2D 按世界相机位置计算循环；不要再叠加关卡父节点的位移。
+	# 仅脱离变换继承，仍由 ReturnPhase 控制显示与处理状态。
+	layer.top_level = true
 	layer.scroll_scale = Vector2(horizontal_speed, 1.0)
 	layer.repeat_size = Vector2(period, 0.0)
-	# 不同速度的图层在参考镜头处仍对齐原画，避免更改速度就改变开场构图。
-	layer.scroll_offset.x = (horizontal_speed - 1.0) * ExportSettings.parallax_reference_view_left
+	# 将场景摆放位置纳入滚动基准，保留原画高度及各层在参考镜头处的对齐。
+	layer.scroll_offset = Vector2(
+		global_position.x * horizontal_speed
+			+ (horizontal_speed - 1.0) * ExportSettings.parallax_reference_view_left,
+		global_position.y
+	)
 	for child in layer.get_children():
 		if child is Sprite2D:
 			_configure_sprite_region(child, period)
