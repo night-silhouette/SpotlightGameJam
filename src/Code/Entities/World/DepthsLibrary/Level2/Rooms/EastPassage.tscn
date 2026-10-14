@@ -28,12 +28,6 @@ theme_override_font_sizes/font_size = 18
 mouse_filter = 2
 text = "钟乳石松动后会掉落，看到晃动及时离开。"
 
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(60, 485)
-
-[node name="ReturnSpawn" type="Marker2D" parent="."]
-position = Vector2(440, 485)
-
 [node name="CeilingTrap" parent="." instance=ExtResource("stalactite")]
 position = Vector2(260, 170)
 

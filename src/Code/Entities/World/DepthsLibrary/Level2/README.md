@@ -61,7 +61,7 @@ F5 和 World.tscn 保持原项目入口。本轮没有直接替换队友的正�
 在 Level2Map / Rooms 下：
 | 节点 | 内容及编辑位置 |
 | --- | --- |
-| EntryCollapse | Floor、UpperStep、Collapse、EntryFallReset。移除中间 Step；上方平台比出生地面高 170 像素，需要二段跳到达；断层跌落后返回检查点。入口跳台与易碎平台，位置在 Transform → Position。 |
+| EntryCollapse | Floor、UpperStep、Collapse、EntryFallReset。移除中间 Step；上方平台比出生地面高 170 像素，需要二段跳到达；死亡后按玩家当前重生点复活。入口跳台与易碎平台，位置在 Transform → Position。 |
 | DescentShaft | LeftWall、RightWall、RestLedge0..5。280 宽、2940 高的井段；算上入口到大厅的距离，实际下落约 3000。 |
 | Hub | Fountain 提交钥匙；HubChalice 补水；FloorWest / FloorEast 中间开口连接下层阶梯；三段 Roof 留出下落井与上升井。 |
 | WestPassage / EastPassage | 左右实体矿道。EastPassage / CeilingTrap 引用队友的钟乳石组件。 |
@@ -73,7 +73,7 @@ F5 和 World.tscn 保持原项目入口。本轮没有直接替换队友的正�
 | FountainShaft | Updraft 为物理推动区域，Stream 为水柱占位图形；不会直接设定玩家目的地坐标。 |
 | SurfaceExit | Spout 为井口横向喷流，ExitFloor 为落脚地面，FinishArea 发出完成信号。 |
 
-各房间 Spawn 是安全复活点；有 ReturnSpawn 的房间在进入时选离玩家较近的安全端点。
+第二关不设置自动检查点，各房间的 Spawn 和 ReturnSpawn 标记已移除。进入房间不会覆盖玩家重生点；死亡后由玩家系统返回最近激活的帐篷，没有激活帐篷时沿用玩家初始出生点或读档恢复的重生点。独立测试场景的 CityInterfacePreview/Spawn 只用于测试初始出生。
 房间间界面已经对齐：单独挪动整间房会断开通道，需要同步调整相邻地面与井壁。
 平台可以单独调整。静态平台改变大小时，同时调整 CollisionShape2D 的 Shape/Size 和 Stone、Edge 的形状。
 易碎平台和移动平台用它们已有的 Platform Size 参数调整。
@@ -81,7 +81,7 @@ F5 和 World.tscn 保持原项目入口。本轮没有直接替换队友的正�
 ## 钥匙、失败与喷泉
 - 携带钥匙：拿到后暂存在身上，对应钥匙隐藏，书库/水道返程栈道开放。
 - 提交钥匙：返回 Hub/Fountain，F 或鼠标提交当前携带的全部钥匙；可分批提交。
-- 死亡/掉入深水：回最近检查点。未提交的钥匙回到各自原位，已提交的保留。
+- 死亡：由玩家系统返回当前重生点，第二关不改写该位置。未提交的钥匙回到各自原位，已提交的保留。
 - 三把全部提交：开启实体水柱。走进去持续上升，井口喷流把玩家推出到地表平台。
 - 存档接口：ExportSaveData / LoadSaveData 包含携带、已提交、符文、喷泉和完成状态；本地图不写存档文件。
 “永久保存”在此指关卡导出的状态不会因死亡回滚；跨游戏会话仍需正式存档管理器按节点路径调用上述接口。

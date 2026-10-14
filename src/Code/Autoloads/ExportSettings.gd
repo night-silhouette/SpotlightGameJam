@@ -1,5 +1,24 @@
 extends Node
 
+@export_group("Camp - Scenery", "camp_scenery_")
+## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
+@export var camp_scenery_enabled: bool = true
+## 原画统一缩放；所有图层保持同一构图，不逐张拉伸。
+@export var camp_scenery_scale: float = 1.75
+## 布景节点内的地面高度，原画的 1900 像素线对齐这里；完整保留线下前景。
+@export var camp_scenery_ground_y: float = 1606.0
+## Camp 本地横向位置偏移。
+@export var camp_scenery_offset_x: float = 0.0
+## 默认关闭视差，准确还原原画构图；启用后使用下面三项速度。
+@export var camp_scenery_parallax_enabled: bool = false
+## 远景、中景、前景的横向视差比例；1 为跟地形一致。
+@export var camp_scenery_far_speed: float = 0.85
+@export var camp_scenery_middle_speed: float = 0.96
+@export var camp_scenery_foreground_speed: float = 1.06
+## 前景透明度及人物周围淡出半径，防止草石挡住玩家。
+@export_range(0.0, 1.0) var camp_scenery_foreground_opacity: float = 1.0
+@export var camp_scenery_player_clear_radius: float = 100.0
+
 @export_group("Level 2 - Blockout", "level2_")
 ## 物品提示出现距离，像素。
 @export var level2_interact_radius: float = 85.0
@@ -37,6 +56,10 @@ extends Node
 @export_range(0.2, 0.8) var level2_descent_frame_y: float = 0.5
 ## 正式世界竖井镜头跟随阻尼，越小跟随越紧。
 @export var level2_descent_camera_damping: Vector2 = Vector2(0.08, 0.08)
+
+@export_group("Level 2 - Terrain Art", "level2_terrain_art_")
+## 第二关石砖外观总开关；关闭后恢复原有灰盒显示，碰撞不变。
+@export var level2_terrain_art_enabled: bool = true
 
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。

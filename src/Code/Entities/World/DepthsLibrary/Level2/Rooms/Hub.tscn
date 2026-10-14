@@ -35,12 +35,6 @@ position = Vector2(925, -80)
 color = Color(0.12, 0.7, 0.85, 0.35)
 polygon = PackedVector2Array(0, 0, 130, 0, 130, 600, 0, 600)
 
-[node name="Spawn" type="Marker2D" parent="." unique_id=754390349]
-position = Vector2(710, 485)
-
-[node name="ReturnSpawn" type="Marker2D" parent="." unique_id=1786285727]
-position = Vector2(1330, 485)
-
 [node name="WestSign" type="Label" parent="." unique_id=790934189]
 offset_left = 120.0
 offset_top = 370.0

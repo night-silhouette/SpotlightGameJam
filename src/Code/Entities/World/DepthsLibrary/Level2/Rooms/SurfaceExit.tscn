@@ -8,8 +8,6 @@ size = Vector2(260, 180)
 metadata/width = 900
 metadata/height = 120
 metadata/title = "主城右口 · 喷泉返程"
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(350, -35)
 [node name="RoomTitle" type="Label" parent="."]
 text = "主城右口 · 喷泉返程"
 mouse_filter = 2

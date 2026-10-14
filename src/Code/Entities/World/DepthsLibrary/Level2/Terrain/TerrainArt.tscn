@@ -1,0 +1,6 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/TerrainArt.gd" id="script"]
+
+[node name="TerrainArt" type="Node2D"]
+script = ExtResource("script")

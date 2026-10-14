@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="1_xf26i"]
 [ext_resource type="PackedScene" uid="uid://c7mxy8v3k1q1w" path="res://Code/Entities/InteractiveComponent/Tent/Tent.tscn" id="2_rjnff"]
 [ext_resource type="PackedScene" uid="uid://begpdtx5e6uy8" path="res://Code/Entities/InteractiveComponent/Lake/Lake.tscn" id="4_bci5y"]
+[ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
 
@@ -33,6 +34,9 @@ custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_qba5b")
 
 [node name="Camp" type="Node2D" unique_id=1903763566]
+
+[node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
+position = Vector2(96, -98.5)
 
 [node name="06" type="Sprite2D" parent="." unique_id=646416155]
 visible = false
