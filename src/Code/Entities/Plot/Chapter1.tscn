@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dtsf0m778x60b" path="res://Code/Entities/Plot/Chapter1.gd" id="1_chapter"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="2_trigger"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="3_line"]
+[ext_resource type="Texture2D" uid="uid://kt6luo4owmgw" path="res://Art/AI/broken_stele.svg" id="4_stele"]
 
 [sub_resource type="Resource" id="Line_1_1"]
 script = ExtResource("3_line")
@@ -41,11 +42,6 @@ script = ExtResource("3_line")
 dialog_type = "独白"
 text = "这，这是我吗……脸上是什么……"
 
-[sub_resource type="Resource" id="Line_1_9"]
-script = ExtResource("3_line")
-dialog_type = "独白"
-text = "这帐篷……是用无数片颜色各异的碎布料拼凑缝补的。有人在这里生活过？"
-
 [sub_resource type="Resource" id="Line_1_12"]
 script = ExtResource("3_line")
 text = "残破的石碑，上方一行字，下方有刻痕形成的图案，经历了风吹日晒，还附着着很多沙土，均已有些模糊不清。图案是几个火柴人影，看起来像是高举手臂，整个身体向上延伸（其实是幻化成云的过程）；天上的云；短而粗劣的竖向线条（其实是雨）。"
@@ -82,18 +78,15 @@ use_export_settings = false
 enable_interaction = false
 story_lines = Array[ExtResource("3_line")]([SubResource("Line_1_7"), SubResource("Line_1_8")])
 
-[node name="TentStory_1_9" parent="." unique_id=364887064 instance=ExtResource("2_trigger")]
-position = Vector2(1672, 1603)
-use_export_settings = false
-enable_interaction = false
-story_lines = Array[ExtResource("3_line")]([SubResource("Line_1_9")])
-
 [node name="SteleStory_1_12_to_1_14" parent="." unique_id=28622851 instance=ExtResource("2_trigger")]
 position = Vector2(1680, 1500)
 use_export_settings = false
 enable_interaction = false
 story_lines = Array[ExtResource("3_line")]([SubResource("Line_1_12"), SubResource("Line_1_13"), SubResource("Line_1_14")])
-metadata/placement_note = "临时触发区：Camp 目前没有残碑实体。请在放入残碑后移动至实际物件位置。"
+
+[node name="BrokenStele" type="Sprite2D" parent="SteleStory_1_12_to_1_14" unique_id=1866377039]
+position = Vector2(0, -32)
+texture = ExtResource("4_stele")
 
 [node name="LeaveStory_1_15" parent="." unique_id=1367280678 instance=ExtResource("2_trigger")]
 position = Vector2(1940, 1603)

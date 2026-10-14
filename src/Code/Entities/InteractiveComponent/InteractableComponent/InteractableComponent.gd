@@ -18,26 +18,28 @@ signal MonologueRequested(lines: Array[String])
 @export var use_export_settings: bool = true
 ## 是否允许按键或提示按钮交互；关闭后隐藏提示，但仍会检测玩家进入区域并按配置显示进入区域对话。
 @export var enable_interaction: bool = true
+## 本组件触发的对话框显示期间是否禁止玩家移动；关闭对话后恢复。
+@export var disable_movement_during_dialog: bool = false
 
 @export_group("进入区域对话")
-## 玩家每次进入交互区域时，是否立即显示旁白对话框；不受 [member enable_interaction] 影响。
+## 玩家每次进入交互区域时，是否立即显示进入区域对话；不受 [member enable_interaction] 影响。
 @export var show_enter_dialog: bool = false
-## 进入区域时显示的旁白文字；仅在 [member show_enter_dialog] 开启时使用。
-@export_multiline var enter_dialog_text: String = ""
-## 进入区域旁白是否仅触发一次；开启后首次进入时显示并存档标记，之后（含读档后）不再显示。仅在 [member show_enter_dialog] 开启时生效。
+## 进入区域时按顺序显示的对话；仅在 [member show_enter_dialog] 开启时使用。
+@export var enter_dialog_lines: Array[PlotDialogLine] = []
+## 进入区域对话是否仅触发一次；开启后首次进入时显示并存档标记，之后（含读档后）不再显示。仅在 [member show_enter_dialog] 开启时生效。
 @export var enter_dialog_once: bool = false
 
 @export_group("首次交互对话")
-## 第一次成功交互时是否显示旁白对话框；首次状态可随组件存档恢复。
+## 第一次成功交互时是否显示对话；首次状态可随组件存档恢复。
 @export var show_first_dialog: bool = false
-## 首次交互时显示的旁白文字；仅在 [member show_first_dialog] 开启时使用。
-@export_multiline var first_dialog_text: String = ""
+## 首次交互时按顺序显示的对话；仅在 [member show_first_dialog] 开启时使用。
+@export var first_dialog_lines: Array[PlotDialogLine] = []
 
 @export_group("后续交互对话")
-## 第二次及以后成功交互时是否显示独白对话框。
+## 第二次及以后成功交互时是否显示对话。
 @export var show_repeat_dialog: bool = false
-## 后续交互时显示的独白文字；仅在 [member show_repeat_dialog] 开启时使用。
-@export_multiline var repeat_dialog_text: String = ""
+## 后续交互时按顺序显示的对话；仅在 [member show_repeat_dialog] 开启时使用。
+@export var repeat_dialog_lines: Array[PlotDialogLine] = []
 @export_group("剧情对话")
 ## 供关卡剧情脚本逐句展示的旁白／独白；按数组顺序排列，每句的类型和文字可在检查器中编辑。
 @export var story_lines: Array[PlotDialogLine] = []
@@ -52,8 +54,16 @@ var _players: Array[Node2D] = []
 var _description_requested: bool = false
 var _enter_dialog_triggered: bool = false
 var _dispatching: bool = false
+var _dialog_box: Node
+var _locked_players: Dictionary = {}
 
 func _ready() -> void:
+	var ancestor: Node = self
+	while ancestor != null and _dialog_box == null:
+		_dialog_box = ancestor.get_node_or_null("DialogBox")
+		ancestor = ancestor.get_parent()
+	if _dialog_box != null:
+		_dialog_box.Finished.connect(_unlock_players)
 	if use_export_settings:
 		interaction_action = ExportSettings.interactable_action
 		if description_lines.is_empty():
@@ -97,13 +107,13 @@ func Interact(interactor: Node2D) -> bool:
 		DescriptionRequested.emit(lines)
 		SignalBus.ComponentDescriptionRequested.emit(self, lines)
 		if show_first_dialog:
-			SignalBus.DialogBox.emit(&"旁白", first_dialog_text)
+			_show_dialog_lines(first_dialog_lines)
 	else:
 		lines.assign(monologue_lines)
 		MonologueRequested.emit(lines)
 		SignalBus.ComponentMonologueRequested.emit(self, lines)
 		if show_repeat_dialog:
-			SignalBus.DialogBox.emit(&"独白", repeat_dialog_text)
+			_show_dialog_lines(repeat_dialog_lines)
 	_dispatching = false
 	return true
 
@@ -120,14 +130,40 @@ func LoadSaveData(data: Dictionary) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if (body.is_in_group("player") or body is CharacterBody2D) and body not in _players:
 		_players.append(body)
-		if show_enter_dialog:
-			if enter_dialog_once:
-				if not _enter_dialog_triggered:
-					_enter_dialog_triggered = true
-					SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
-			else:
-				SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
+		if show_enter_dialog and (not enter_dialog_once or not _enter_dialog_triggered):
+			_enter_dialog_triggered = true
+			_show_dialog_lines(enter_dialog_lines)
 	_refresh_prompt()
+
+func ShowStoryDialogLine(line: PlotDialogLine) -> void:
+	if line != null:
+		var lines: Array[PlotDialogLine] = [line]
+		_show_dialog_lines(lines)
+
+func _show_dialog_lines(lines: Array[PlotDialogLine]) -> void:
+	for line in lines:
+		if line != null:
+			var dialog_type := StringName(line.dialog_type)
+			if disable_movement_during_dialog and _dialog_box != null and dialog_type in [&"旁白", &"独白"]:
+				_lock_players()
+			SignalBus.DialogBox.emit(dialog_type, line.text)
+
+func _lock_players() -> void:
+	for player in _players:
+		if is_instance_valid(player) and not _locked_players.has(player):
+			_locked_players[player] = player.process_mode
+			if player is CharacterBody2D:
+				player.velocity = Vector2.ZERO
+			player.process_mode = Node.PROCESS_MODE_DISABLED
+
+func _unlock_players() -> void:
+	for player in _locked_players:
+		if is_instance_valid(player):
+			player.process_mode = _locked_players[player]
+	_locked_players.clear()
+
+func _exit_tree() -> void:
+	_unlock_players()
 
 func _on_body_exited(body: Node2D) -> void:
 	_players.erase(body)
