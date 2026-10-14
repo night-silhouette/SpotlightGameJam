@@ -68,4 +68,10 @@ vertical_alignment = 1
 [node name="Close" type="Button" parent="Root/Box/Margin/Content"]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "关闭"
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "X键跳过"
+
+[node name="AutoCloseTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
