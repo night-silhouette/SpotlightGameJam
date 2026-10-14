@@ -3,8 +3,9 @@
 [ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="1_xf26i"]
 [ext_resource type="PackedScene" uid="uid://c7mxy8v3k1q1w" path="res://Code/Entities/InteractiveComponent/Tent/Tent.tscn" id="2_rjnff"]
 [ext_resource type="PackedScene" uid="uid://begpdtx5e6uy8" path="res://Code/Entities/InteractiveComponent/Lake/Lake.tscn" id="4_bci5y"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
+[ext_resource type="PackedScene" uid="uid://kltw4unihbsh" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5.tscn" id="6_chapter5"]
+[ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="6_qv0jn"]
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
@@ -33,6 +34,40 @@ custom_data_layer_1/name = "is_rune_wall"
 custom_data_layer_1/type = 1
 sources/0 = SubResource("TileSetAtlasSource_qba5b")
 
+[sub_resource type="Resource" id="Line_1_1"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这是哪里……"
+
+[sub_resource type="Resource" id="Line_1_2"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "好痛……身体像被火烧过一样……水，我需要水！"
+
+[sub_resource type="Resource" id="Resource_yo42o"]
+script = ExtResource("6_qv0jn")
+text = "【靠近水源可快速补充水分】"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Line_1_4"]
+script = ExtResource("6_qv0jn")
+text = "冰凉舒缓的水滑入喉管。"
+
+[sub_resource type="Resource" id="Line_1_5"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
+
+[sub_resource type="Resource" id="Line_1_6"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
+
+[sub_resource type="Resource" id="Line_1_8"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这，这是我吗……脸上是什么……"
+
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
 [node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
@@ -60,9 +95,26 @@ metadata/_edit_lock_ = true
 position = Vector2(1292, 1656)
 scale = Vector2(1.6936214, 1.6936214)
 
+[node name="CollisionShape2D" parent="Lake" index="3" unique_id=1216154260]
+position = Vector2(1.0967255e-05, -28.932087)
+scale = Vector2(1.0590968, 1.0590968)
+
 [node name="Chapter1" parent="." unique_id=257404343 instance=ExtResource("5_chapter")]
 position = Vector2(-116, 4)
+opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResource("Line_1_2"), SubResource("Resource_yo42o")])
+
+[node name="WaterApproach_1_3_to_1_6" parent="Chapter1" index="0" unique_id=593165859]
+position = Vector2(1408, 1599)
+scale = Vector2(5.3155513, 2.2144632)
+story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_4"), SubResource("Line_1_5"), SubResource("Line_1_6")])
+
+[node name="Reflection_1_7_to_1_8" parent="Chapter1" index="1" unique_id=229158232]
+position = Vector2(1615, 1571)
+enter_dialog_text = "水面的涟漪倒映出一张完全陌生的脸。"
+enter_dialog_once = true
+story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_8")])
 
 [node name="Chapter5" parent="." unique_id=952693905 instance=ExtResource("6_chapter5")]
 
+[editable path="Lake"]
 [editable path="Chapter1"]
