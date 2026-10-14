@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b01trvnhhpuhx"]
 
 [ext_resource type="PackedScene" uid="uid://bopjvl4pbi3mj" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.tscn" id="1_wyy2v"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter3.tscn" id="2_chapter3"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
 size = Vector2(96, 32)
@@ -31,15 +30,7 @@ sources/0 = SubResource("TileSetAtlasSource_base")
 
 [node name="DepthsLibrary" type="Node2D" unique_id=893453042]
 
-[node name="Chapter3" parent="." unique_id=1736086478 instance=ExtResource("2_chapter3")]
-
-[node name="Entrance_3_1_to_3_3" parent="Chapter3" index="0"]
-position = Vector2(171, -2990.0002)
-scale = Vector2(1.3386354, 1.3375583)
-
 [node name="Level2Map" parent="." unique_id=1757350464 instance=ExtResource("1_wyy2v")]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1130932168]
 tile_set = SubResource("TileSet_qba5b")
-
-[editable path="Chapter3"]

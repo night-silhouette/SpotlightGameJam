@@ -16,8 +16,10 @@ signal MonologueRequested(lines: Array[String])
 @export var interaction_action: StringName = &"interact"
 ## 是否读取 ExportSettings 中的交互动作及默认描述／独白数组；仅在对应数组为空时才填入默认文本。
 @export var use_export_settings: bool = true
-## 是否允许按键或提示按钮交互；关闭后隐藏提示，但仍会检测玩家进入区域并按配置显示进入区域对话。
+## 是否允许通过交互键或点击碰撞区域交互。
 @export var enable_interaction: bool = true
+## 碰撞区域边缘之外允许玩家交互的距离（世界单位）。
+@export var interaction_reach: float = 64.0
 ## 本组件触发的对话框显示期间是否禁止玩家输入；关闭对话后恢复，玩家动画与物理仍继续运行。
 @export var disable_movement_during_dialog: bool = false
 
@@ -45,9 +47,6 @@ signal MonologueRequested(lines: Array[String])
 @export var story_lines: Array[PlotDialogLine] = []
 @export_group("")
 
-@onready var _prompt: Control = $PromptContainer
-@onready var _button: Button = $PromptContainer/PromptButton
-@onready var _key_badge: Label = $PromptContainer/HBox/KeyBadge
 @onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
 var _players: Array[Node2D] = []
@@ -72,8 +71,6 @@ func _ready() -> void:
 			monologue_lines.assign(ExportSettings.interactable_monologue_lines)
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
-	_button.pressed.connect(_on_prompt_pressed)
-	_refresh_prompt()
 
 func _physics_process(_delta: float) -> void:
 	_players = _players.filter(func(player: Node2D) -> bool: return is_instance_valid(player))
@@ -83,24 +80,35 @@ func _physics_process(_delta: float) -> void:
 		var player := input_control.get_parent() as Player
 		if player != null and player.is_on_floor() and player.move_state_machine.cur_state_name == "fall":
 			input_control.set("is_idle", true)
-	_refresh_prompt()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not enable_interaction or not event.is_action_pressed(interaction_action) or _players.is_empty():
+	if not enable_interaction or not event.is_action_pressed(interaction_action):
 		return
 	if event is InputEventMouseButton:
 		var shape := _collision_shape.shape as RectangleShape2D
 		var point := _collision_shape.to_local(get_global_mouse_position())
-		if not shape or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
+		if shape == null or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
 			return
-	if Interact(_players[0]):
-		get_viewport().set_input_as_handled()
+	for candidate in get_tree().get_nodes_in_group("player"):
+		var player := candidate as Node2D
+		if player != null and _is_in_reach(player) and Interact(player):
+			get_viewport().set_input_as_handled()
+			return
+
+func _is_in_reach(player: Node2D) -> bool:
+	var shape := _collision_shape.shape as RectangleShape2D
+	if shape == null:
+		return false
+	var point := _collision_shape.to_local(player.global_position)
+	var half_size := shape.size * 0.5
+	var nearest := Vector2(clampf(point.x, -half_size.x, half_size.x), clampf(point.y, -half_size.y, half_size.y))
+	return _collision_shape.to_global(nearest).distance_to(player.global_position) <= interaction_reach
 
 ## 执行交互逻辑：首次交互请求描述文本，后续交互请求内心独白文本。
 ## @param interactor 必须为当前重叠区域内有效的玩家节点。
 ## @return 交互成功返回 true，否则返回 false。
 func Interact(interactor: Node2D) -> bool:
-	if not enable_interaction or _dispatching or not is_instance_valid(interactor) or interactor not in _players:
+	if not enable_interaction or _dispatching or not is_instance_valid(interactor) or not _is_in_reach(interactor):
 		return false
 	_dispatching = true
 	var is_description: bool = not _description_requested
@@ -139,7 +147,6 @@ func _on_body_entered(body: Node2D) -> void:
 		if show_enter_dialog and (not enter_dialog_once or not _enter_dialog_triggered):
 			_enter_dialog_triggered = true
 			_show_dialog_lines(enter_dialog_lines)
-	_refresh_prompt()
 
 func ShowStoryDialogLine(line: PlotDialogLine) -> void:
 	if line != null:
@@ -155,8 +162,9 @@ func _show_dialog_lines(lines: Array[PlotDialogLine]) -> void:
 			SignalBus.DialogBox.emit(dialog_type, line.text)
 
 func _lock_players() -> void:
-	for player in _players:
-		if not is_instance_valid(player):
+	for candidate in get_tree().get_nodes_in_group("player"):
+		var player := candidate as Node2D
+		if player == null or not _is_in_reach(player):
 			continue
 		var input_control := player.get_node_or_null("GameInputControl")
 		if input_control == null or _locked_players.has(input_control):
@@ -172,7 +180,7 @@ func _lock_players() -> void:
 		var wait_for_run: bool = player is Player and player.move_state_machine.cur_state_name == "run"
 		input_control.set("is_idle", player is CharacterBody2D and player.is_on_floor() and not wait_for_run)
 		if wait_for_run:
-			_finish_running_cycle(player, input_control)
+			_finish_running_cycle(player as Player, input_control)
 
 func _finish_running_cycle(player: Player, input_control: Node) -> void:
 	var animation := player.ani_move.get_animation("run")
@@ -198,18 +206,3 @@ func _exit_tree() -> void:
 
 func _on_body_exited(body: Node2D) -> void:
 	_players.erase(body)
-	_refresh_prompt()
-
-func _on_prompt_pressed() -> void:
-	if not _players.is_empty():
-		Interact(_players[0])
-
-func _refresh_prompt() -> void:
-	_prompt.visible = enable_interaction and not _players.is_empty()
-	if not enable_interaction:
-		return
-	var bound_event := KeybindManager.GetPrimaryEventForAction(interaction_action)
-	_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
-	if bound_event is InputEventMouseButton:
-		_button.button_mask |= 1 << (bound_event.button_index - 1)
-	_key_badge.text = KeybindManager.GetActionKeyBadgeText(interaction_action, "右键")

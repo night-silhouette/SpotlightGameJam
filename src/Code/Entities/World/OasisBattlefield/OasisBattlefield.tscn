@@ -16,7 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://blpltt0tkgjce" path="res://Code/Entities/InteractiveComponent/SlowWaterArea/SlowWaterArea.tscn" id="10_rko1d"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisRisingSpikes.tscn" id="11_rising_spikes"]
 [ext_resource type="Script" uid="uid://dk54k02xio8mt" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.gd" id="12_oasis_battlefield"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter4.tscn" id="13_chapter4"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardBrickArt.tscn" id="14_mtaqt"]
 [ext_resource type="TileSet" uid="uid://5kb7joqm70qv" path="res://Code/Entities/World/OasisBattlefield/OasisTerrainTileSet.tres" id="14_stone"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisMovingBlock.tscn" id="15_block_skin"]
@@ -231,8 +230,6 @@ sources/1 = SubResource("TileSetAtlasSource_kxg64")
 script = ExtResource("12_oasis_battlefield")
 chase_respawn_point = NodePath("OutwardPhase/ChaseRespawnPoint")
 metadata/_edit_lock_ = true
-
-[node name="Chapter4" parent="." unique_id=6763687 instance=ExtResource("13_chapter4")]
 
 [node name="InstantKillArea" parent="." unique_id=403203110 instance=ExtResource("2_rko1d")]
 position = Vector2(7133, 1599)

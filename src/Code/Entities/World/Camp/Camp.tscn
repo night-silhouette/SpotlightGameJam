@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://begpdtx5e6uy8" path="res://Code/Entities/InteractiveComponent/Lake/Lake.tscn" id="4_bci5y"]
 [ext_resource type="TileSet" uid="uid://erbpx3namsju" path="res://Art/New/map1/map1.tres" id="4_map1"]
 [ext_resource type="PackedScene" uid="uid://kltw4unihbsh" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5.tscn" id="6_chapter5"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="6_qv0jn"]
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
@@ -55,10 +54,6 @@ text = "好痛……身体像被火烧过一样……水，我需要水！"
 script = ExtResource("6_qv0jn")
 text = "【靠近水源可快速补充水分】"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Reflection_enter_line"]
-script = ExtResource("6_qv0jn")
-text = "水面的涟漪倒映出一张完全陌生的脸。"
 
 [sub_resource type="Resource" id="Resource_bvdhl"]
 script = ExtResource("6_qv0jn")
@@ -166,7 +161,7 @@ opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResou
 position = Vector2(1407, 1640.0001)
 scale = Vector2(5.121913, 1.2101797)
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Reflection_enter_line"), SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
+enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
 enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([])
 
@@ -193,8 +188,6 @@ show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_tf67n")])
 enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([])
-
-[node name="Chapter5" parent="." unique_id=952693905 instance=ExtResource("6_chapter5")]
 
 [editable path="Lake"]
 [editable path="Chapter1"]

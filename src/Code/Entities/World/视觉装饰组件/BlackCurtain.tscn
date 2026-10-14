@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://lltd8w7jtyho"]
+
+[ext_resource type="Script" uid="uid://dpvlbpn66lqp5" path="res://Code/Entities/World/视觉装饰组件/BlackCurtain.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/视觉装饰组件/GradientBlackCurtain.tscn" id="2_nhgre"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_curtain"]
+size = Vector2(512, 256)
+
+[node name="BlackCurtain" type="Area2D" unique_id=1021218863]
+z_index = 10
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=58919221]
+shape = SubResource("RectangleShape2D_curtain")
+
+[node name="GradientBlackCurtain" parent="." unique_id=1953226883 instance=ExtResource("2_nhgre")]
+offset_left = -310.00003
+offset_top = -157.0
+offset_right = 201.99997
+offset_bottom = 99.0
+scale = Vector2(1.2084255, 1.2126315)

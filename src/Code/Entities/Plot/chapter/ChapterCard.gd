@@ -2,7 +2,7 @@ extends Control
 
 signal Finished
 
-const DISPLAY_DURATION := 2.0
+const DISPLAY_DURATION := 3.0
 
 @export var act_text: String = "第一幕"
 @export var chapter_text: String = "纺织"
