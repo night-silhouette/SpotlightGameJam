@@ -1,7 +1,7 @@
 {
 	"dash": {
-		"keycode": 4194327,
-		"physical_keycode": 4194327,
+		"keycode": 4194325,
+		"physical_keycode": 4194325,
 		"type": "key"
 	},
 	"down": {
@@ -10,9 +10,8 @@
 		"type": "key"
 	},
 	"interact": {
-		"keycode": 69,
-		"physical_keycode": 69,
-		"type": "key"
+		"button_index": 2,
+		"type": "mouse_button"
 	},
 	"jump": {
 		"keycode": 0,
@@ -25,7 +24,7 @@
 		"type": "key"
 	},
 	"move_r": {
-		"keycode": 0,
+		"keycode": 68,
 		"physical_keycode": 68,
 		"type": "key"
 	},

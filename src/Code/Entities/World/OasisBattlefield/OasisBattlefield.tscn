@@ -231,7 +231,7 @@ script = ExtResource("12_oasis_battlefield")
 chase_respawn_point = NodePath("OutwardPhase/ChaseRespawnPoint")
 metadata/_edit_lock_ = true
 
-[node name="Chapter4" parent="." instance=ExtResource("13_chapter4")]
+[node name="Chapter4" parent="." unique_id=6763687 instance=ExtResource("13_chapter4")]
 
 [node name="InstantKillArea" parent="." unique_id=403203110 instance=ExtResource("2_rko1d")]
 position = Vector2(7133, 1599)
@@ -346,7 +346,6 @@ tile_set = SubResource("TileSet_bufyr")
 [node name="OutwardBrickArt" parent="OutwardPhase" unique_id=723690729 instance=ExtResource("14_mtaqt")]
 
 [node name="ReturnPhase" type="Node2D" parent="." unique_id=1083308710]
-visible = false
 
 [node name="ReturnTileMap" type="TileMapLayer" parent="ReturnPhase" unique_id=1027236603]
 position = Vector2(4796, -51)
@@ -576,6 +575,7 @@ shape = SubResource("CapsuleShape2D_ak84r")
 position = Vector2(4785, -48)
 scale = Vector2(0.048, 0.048)
 tile_map_data = PackedByteArray("AAD8//j/AAAFAAMAAFD8//n/AAAGAAMAAFD8//r/AAAGAAMAAFD8//v/AAAGAAMAAFD8//z/AAAGAAMAAFD8//3/AAAGAAMAAFD8//7/AAAGAAMAAFD8////AAAGAAMAAFD8/wAAAAAGAAMAAFD8/wEAAAAGAAMAAFD8/wIAAAAGAAMAAFD8/wMAAAAGAAMAAFD8/wQAAAAGAAMAAFD8/wUAAAAGAAMAAFD8/wYAAAAGAAMAAFD8/wcAAAAGAAMAAFD8/wgAAAAGAAMAAFD8/wkAAAAGAAMAAFD8/woAAAAGAAMAAFD8/wsAAAAGAAMAAFD8/wwAAAAGAAMAAFD8/w0AAAAGAAMAAFD8/w4AAAAGAAMAAFD8/w8AAAAGAAMAAFD8/xAAAAAGAAMAAFD8/xEAAAAGAAMAAFD8/xIAAAAGAAMAAFD8/xMAAAAGAAMAAFD8/xQAAAAGAAMAAFD8/xUAAAAGAAMAAFD8/xYAAAAGAAMAAFBp//r/AAAFAAMAAFBp//v/AAAGAAMAAFBp//z/AAAGAAMAAFBp//3/AAAGAAMAAFBp//7/AAAGAAMAAFBp////AAAGAAMAAFBp/wAAAAAGAAMAAFBp/wEAAAAGAAMAAFBp/wIAAAAGAAMAAFBp/wMAAAAGAAMAAFBp/wQAAAAGAAMAAFBp/wUAAAAGAAMAAFBp/wYAAAAGAAMAAFBp/wcAAAAGAAMAAFBp/wgAAAAGAAMAAFBp/wkAAAAGAAMAAFBp/woAAAAGAAMAAFBp/wsAAAAGAAMAAFBp/wwAAAAGAAMAAFBp/w0AAAAGAAMAAFBp/w4AAAAGAAMAAFBp/w8AAAAGAAMAAFBp/xAAAAAGAAMAAFBp/xEAAAAGAAMAAFBp/xIAAAAGAAMAAFBp/xMAAAAGAAMAAFBp/xQAAAAGAAMAAFBp/xUAAAAGAAMAAFBp/xYAAAAGAAMAAFBp/xcAAAAGAAMAAFBp/xgAAAAGAAMAAFBp/xkAAAAGAAMAAFBp/xoAAAAGAAMAAFBp/xsAAAAGAAMAAFA=")
+enabled = false
 tile_set = SubResource("TileSet_8botp")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="ReturnPhase" unique_id=1612034063]
