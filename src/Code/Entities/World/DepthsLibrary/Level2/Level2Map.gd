@@ -115,6 +115,9 @@ func _update_fountain_return_fall() -> bool:
 		return false
 	var half_width := float(exit_port.get_meta("opening_width", 128.0)) * 0.5
 	var in_opening := absf(point.x) < half_width
+	if fountain_active:
+		_end_fountain_return_fall()
+		return in_opening and point.y <= 0.0 and _player.velocity.y > 0.0
 	# 只识别向下穿越地表的轨迹；正常上升及地下出生不会触发。
 	if not _fountain_return_falling and had_previous and previous.y <= 0.0 and point.y > 0.0 and _player.velocity.y > 0.0:
 		var crossing_x := lerpf(previous.x, point.x, -previous.y / (point.y - previous.y))
@@ -207,7 +210,11 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 			if submitted_keys.size() < 3:
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
+				var newly_activated := not fountain_active
 				fountain_active = true
+				if newly_activated:
+					SignalBus.DialogBox.emit(&"旁白", "一卷残卷显现，纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。")
+					SignalBus.DialogBox.emit(&"独白", "这股力量，和之前的王冠好像。")
 				if not codex_claimed and not codex_offered:
 					codex_claimed = true
 					if not bool(player.get("has_starseekers_codex")):
