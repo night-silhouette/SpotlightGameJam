@@ -1,6 +1,509 @@
 {
-	"entities": {},
+	"entities": {
+		"CameraNode/CameraGate": {
+			"unlocked": false
+		},
+		"CameraNode/CameraGate2": {
+			"unlocked": false
+		},
+		"Camp/Lake": {
+			"fill_stage": 0,
+			"position_x": 1196.0,
+			"position_y": 96.0
+		},
+		"Camp/collision_layer/Tent": {
+			"is_active": false,
+			"position_x": 1576.00012207031,
+			"position_y": 43.0001220703125,
+			"respawn_offset_x": 0.0,
+			"respawn_offset_y": 0.0,
+			"respawn_world_x": 1576.00012207031,
+			"respawn_world_y": 43.0001220703125
+		},
+		"DepthsLibrary/Level2Map": {
+			"codex_claimed": false,
+			"completed": false,
+			"fountain_active": false,
+			"keys": [],
+			"puzzle_solved": false,
+			"rune_progress": 0,
+			"submitted_keys": []
+		},
+		"DepthsLibrary/Level2Map/Rooms/EastPassage/CeilingTrap": {
+			"current_state": 0,
+			"position_x": 1534.0,
+			"position_y": 3404.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/EntryCollapse/Collapse": {
+			"current_state": 0,
+			"position_x": 564.0,
+			"position_y": 344.0,
+			"remaining_respawn_time": 0.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/MoonAqueduct/FerryA": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.987938596491233,
+			"position_x": 2513.0,
+			"position_y": 3739.0,
+			"wait_remaining": 0.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/MoonAqueduct/FerryB": {
+			"direction": -1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.533393782421504,
+			"position_x": 3134.06787109375,
+			"position_y": 3640.32495117188,
+			"wait_remaining": 0.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/SunStacks/Crumble2": {
+			"current_state": 0,
+			"position_x": -1496.0,
+			"position_y": 3664.0,
+			"remaining_respawn_time": 0.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/SunStacks/Crumble4": {
+			"current_state": 0,
+			"position_x": -1956.0,
+			"position_y": 3654.0,
+			"remaining_respawn_time": 0.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/WeaveArchive/TimingSpikesA": {
+			"is_extended": false,
+			"position_x": 2109.0,
+			"position_y": 5134.0,
+			"rotation": 0.0
+		},
+		"DepthsLibrary/Level2Map/Rooms/WeaveArchive/TimingSpikesB": {
+			"is_extended": false,
+			"position_x": 2684.0,
+			"position_y": 5134.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield": {
+			"checkpoint_reached": true,
+			"respawn_x": -18681.0,
+			"respawn_y": -446.0
+		},
+		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform": {
+			"current_state": 0,
+			"position_x": -14835.0,
+			"position_y": -173.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform2": {
+			"current_state": 0,
+			"position_x": -15044.0,
+			"position_y": -240.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform3": {
+			"current_state": 0,
+			"position_x": -15300.0,
+			"position_y": -293.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform4": {
+			"current_state": 0,
+			"position_x": -15611.0,
+			"position_y": -312.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform5": {
+			"current_state": 0,
+			"position_x": -15812.0,
+			"position_y": -318.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform6": {
+			"current_state": 0,
+			"position_x": -16049.0,
+			"position_y": -358.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/InteractableComponent": {
+			"description_requested": false
+		},
+		"OasisBattlefield/OutwardPhase/MovingPlatform": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.390000000000001,
+			"position_x": -17080.333984375,
+			"position_y": -588.0,
+			"wait_remaining": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/Spikes": {
+			"position_x": -12214.0,
+			"position_y": -124.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/OutwardPhase/VanishingBlockerComponent": {
+			"modulate_a": 1.0,
+			"vanishing": false,
+			"visible": true
+		},
+		"OasisBattlefield/ReturnPhase/CrumblingPlatform12": {
+			"current_state": 0,
+			"position_x": -8504.0,
+			"position_y": -579.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/MovingPlatform": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.0,
+			"position_x": -15940.0,
+			"position_y": -4.0,
+			"wait_remaining": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/MovingPlatform2": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.0,
+			"position_x": -11457.0,
+			"position_y": -392.0,
+			"wait_remaining": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/MovingPlatform3": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.0,
+			"position_x": -6733.0,
+			"position_y": 31.0,
+			"wait_remaining": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/OasisBattlefieldChaser": {
+			"active": false,
+			"elapsed_time": 0.0,
+			"position_x": -19502.0,
+			"position_y": -1040.0,
+			"speed": 0.0,
+			"stage": 0
+		},
+		"OasisBattlefield/ReturnPhase/OasisBattlefieldChaser/DirectionalChaseMover": {
+			"active": false,
+			"elapsed_time": 0.0,
+			"position_x": -19502.0,
+			"position_y": -1040.0,
+			"speed": 0.0,
+			"stage": 0
+		},
+		"OasisBattlefield/ReturnPhase/Spikes": {
+			"position_x": -12121.0,
+			"position_y": -146.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/Spikes2": {
+			"position_x": -11813.0,
+			"position_y": -146.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/Spikes3": {
+			"position_x": -9362.0,
+			"position_y": -728.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/block": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.0,
+			"position_x": -9948.0,
+			"position_y": -613.0,
+			"wait_remaining": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/block2": {
+			"direction": 1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.0,
+			"position_x": -13222.0,
+			"position_y": -976.0,
+			"wait_remaining": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes5": {
+			"is_extended": false,
+			"position_x": -8808.0,
+			"position_y": -16.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes6": {
+			"is_extended": false,
+			"position_x": -8778.0,
+			"position_y": -16.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes7": {
+			"is_extended": false,
+			"position_x": -8746.0,
+			"position_y": -16.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes8": {
+			"is_extended": false,
+			"position_x": -8713.0,
+			"position_y": -16.0,
+			"rotation": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite": {
+			"current_state": 0,
+			"position_x": -13332.0,
+			"position_y": -270.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite10": {
+			"current_state": 0,
+			"position_x": -12253.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite11": {
+			"current_state": 0,
+			"position_x": -12274.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite12": {
+			"current_state": 0,
+			"position_x": -12295.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite2": {
+			"current_state": 0,
+			"position_x": -13018.0,
+			"position_y": -460.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite3": {
+			"current_state": 0,
+			"position_x": -12532.0,
+			"position_y": -499.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite4": {
+			"current_state": 0,
+			"position_x": -12400.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite5": {
+			"current_state": 0,
+			"position_x": -12317.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite6": {
+			"current_state": 0,
+			"position_x": -12337.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite7": {
+			"current_state": 0,
+			"position_x": -12358.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite8": {
+			"current_state": 0,
+			"position_x": -12379.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/stalactite/Stalactite9": {
+			"current_state": 0,
+			"position_x": -12233.0,
+			"position_y": -359.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform": {
+			"current_state": 0,
+			"position_x": -5931.0,
+			"position_y": -472.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform10": {
+			"current_state": 0,
+			"position_x": -4579.0,
+			"position_y": -636.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform11": {
+			"current_state": 0,
+			"position_x": -6358.0,
+			"position_y": 31.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform12": {
+			"current_state": 0,
+			"position_x": -6189.0,
+			"position_y": -53.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform13": {
+			"current_state": 0,
+			"position_x": -6052.0,
+			"position_y": -116.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform14": {
+			"current_state": 0,
+			"position_x": -6272.0,
+			"position_y": -473.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform15": {
+			"current_state": 0,
+			"position_x": -5870.0,
+			"position_y": -242.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform16": {
+			"current_state": 0,
+			"position_x": -6551.0,
+			"position_y": 32.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform17": {
+			"current_state": 0,
+			"position_x": -5725.0,
+			"position_y": -395.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform2": {
+			"current_state": 0,
+			"position_x": -5724.0,
+			"position_y": -617.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform3": {
+			"current_state": 0,
+			"position_x": -5485.0,
+			"position_y": -489.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform4": {
+			"current_state": 0,
+			"position_x": -5268.0,
+			"position_y": -663.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform5": {
+			"current_state": 0,
+			"position_x": -5031.0,
+			"position_y": -828.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform6": {
+			"current_state": 0,
+			"position_x": -5044.0,
+			"position_y": -385.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform7": {
+			"current_state": 0,
+			"position_x": -4792.0,
+			"position_y": -693.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform8": {
+			"current_state": 0,
+			"position_x": -4401.0,
+			"position_y": -750.0,
+			"remaining_respawn_time": 0.0
+		},
+		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform9": {
+			"current_state": 0,
+			"position_x": -4703.0,
+			"position_y": -467.0,
+			"remaining_respawn_time": 0.0
+		},
+		"PlayerWithCamera/Player": {
+			"enable_double_jump": false,
+			"enable_rope": false,
+			"footstep_bus": "SFX_Footstep_Dry",
+			"footstep_surface": "Brick",
+			"has_scarred_bones": false,
+			"has_starseekers_codex": false,
+			"has_sunken_crown": false,
+			"max_hp": 200.0,
+			"move_bus": "SFX_Move_Dry",
+			"now_hp": 196.239490666656,
+			"position_x": 1725.54919433594,
+			"position_y": 12.8052597045898,
+			"respawn_x": 1124.0,
+			"respawn_y": 119.0,
+			"spawn_x": 1225.59265136719,
+			"spawn_y": 62.9637794494629
+		},
+		"SunkenPalace/collisionlayer/Door/SignalDoor": {},
+		"SunkenPalace/collisionlayer/InterRa/Crown": {
+			"description_requested": true
+		},
+		"SunkenPalace/collisionlayer/InterRa/InteractableComponent": {
+			"description_requested": false
+		},
+		"SunkenPalace/collisionlayer/InterRa/InteractableComponent2": {
+			"description_requested": false
+		},
+		"SunkenPalace/collisionlayer/InterRa/InteractableComponent3": {
+			"description_requested": false
+		},
+		"SunkenPalace/collisionlayer/InterRa/InteractableComponent4": {
+			"description_requested": false
+		},
+		"SunkenPalace/collisionlayer/MiniCh/MiniChaliceStation": {
+			"is_available": true,
+			"position_x": 5679.0,
+			"position_y": -1050.0,
+			"remaining_reset_time": 0.0
+		},
+		"SunkenPalace/collisionlayer/MiniCh/MiniChaliceStation2": {
+			"is_available": true,
+			"position_x": 5146.0,
+			"position_y": -1757.0,
+			"remaining_reset_time": 0.0
+		},
+		"SunkenPalace/collisionlayer/MiniCh/MiniChaliceStation3": {
+			"is_available": true,
+			"position_x": 3316.0,
+			"position_y": -2597.0,
+			"remaining_reset_time": 0.0
+		},
+		"SunkenPalace/collisionlayer/MovePl/1": {
+			"direction": 1,
+			"is_activated": false,
+			"movement_finished": false,
+			"path_progress": 0.0,
+			"position_x": 2645.0,
+			"position_y": -1128.0,
+			"wait_remaining": 0.0
+		},
+		"SunkenPalace/collisionlayer/MovePl/MovingPlatform2": {
+			"direction": -1,
+			"is_activated": true,
+			"movement_finished": false,
+			"path_progress": 0.15227272727272,
+			"position_x": 3472.0,
+			"position_y": -1704.0,
+			"wait_remaining": 0.0
+		},
+		"SunkenPalace/collisionlayer/SignalVanishBlocker": {
+			"vanished": true
+		},
+		"SunkenPalace/collisionlayer/button/1": {
+			"is_pressed": false,
+			"output_channel": "door_1"
+		},
+		"SunkenPalace/collisionlayer/button/2": {
+			"is_pressed": true,
+			"output_channel": "door_1"
+		},
+		"SunkenPalace/collisionlayer/button/3": {
+			"is_pressed": false,
+			"output_channel": "door_1"
+		},
+		"SunkenPalace/collisionlayer/button/4": {
+			"is_pressed": false,
+			"output_channel": "door_1"
+		}
+	},
 	"scene_path": "res://Code/Entities/World/World.tscn",
 	"slot_index": 3,
-	"timestamp": "2026-10-12 15:34:48"
+	"timestamp": "2026-10-13 15:25:47"
 }
