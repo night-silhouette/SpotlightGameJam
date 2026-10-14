@@ -119,7 +119,7 @@ position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
-position = Vector2(-126, 3234)
+position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
