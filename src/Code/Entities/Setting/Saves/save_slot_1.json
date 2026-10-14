@@ -6,6 +6,9 @@
 		"CameraNode/CameraGate2": {
 			"unlocked": false
 		},
+		"CameraNode/CameraGate3": {
+			"unlocked": false
+		},
 		"Camp/Chapter1": {
 			"line_index": 0,
 			"next_event": 2
@@ -26,27 +29,6 @@
 			"description_requested": false,
 			"enter_dialog_triggered": false
 		},
-		"Camp/Chapter5": {
-			"active_event": -1,
-			"completed": [],
-			"line_index": 0
-		},
-		"Camp/Chapter5/PendingLake_5_4_to_5_8": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"Camp/Chapter5/PendingRain_5_12_to_5_24": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"Camp/Chapter5/PendingStele_5_9_to_5_11": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"Camp/Chapter5/ReturnToPool_5_1_to_5_3": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
 		"Camp/Lake": {
 			"fill_stage": 0,
 			"position_x": 1196.0,
@@ -63,43 +45,6 @@
 			"respawn_world_x": 1576.00012207031,
 			"respawn_world_y": 43.0001220703125
 		},
-		"DepthsLibrary/Chapter3": {
-			"active_event": -1,
-			"completed": [],
-			"line_index": 0
-		},
-		"DepthsLibrary/Chapter3/Entrance_3_1_to_3_3": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/Epilogue_3_30": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/MoonDisk_3_7_to_3_8": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/Notebook_3_15_to_3_24": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/PictureBook_3_9_to_3_13": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/SageAndScroll_3_25_to_3_28": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/StarDesk_3_4_to_3_6": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"DepthsLibrary/Chapter3/Stele_3_14": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
 		"DepthsLibrary/Level2Map": {
 			"codex_claimed": false,
 			"codex_offered": false,
@@ -115,28 +60,22 @@
 			"position_x": 1542.0,
 			"position_y": 3420.0
 		},
-		"DepthsLibrary/Level2Map/Rooms/EntryCollapse/Collapse": {
-			"current_state": 0,
-			"position_x": 572.0,
-			"position_y": 360.0,
-			"remaining_respawn_time": 0.0
-		},
 		"DepthsLibrary/Level2Map/Rooms/MoonAqueduct/FerryA": {
 			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.515350877192977,
-			"position_x": 1974.16674804688,
+			"path_progress": 0.720394736842102,
+			"position_x": 2236.25,
 			"position_y": 3755.0,
 			"wait_remaining": 0.0
 		},
 		"DepthsLibrary/Level2Map/Rooms/MoonAqueduct/FerryB": {
-			"direction": -1,
+			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.177564580527118,
-			"position_x": 2833.91552734375,
-			"position_y": 3731.48388671875,
+			"path_progress": 0.704944645262467,
+			"position_x": 3146.48388671875,
+			"position_y": 3655.24780273438,
 			"wait_remaining": 0.0
 		},
 		"DepthsLibrary/Level2Map/Rooms/SunStacks/Crumble2": {
@@ -152,13 +91,13 @@
 			"remaining_respawn_time": 0.0
 		},
 		"DepthsLibrary/Level2Map/Rooms/WeaveArchive/TimingSpikesA": {
-			"is_extended": false,
+			"is_extended": true,
 			"position_x": 2117.0,
 			"position_y": 5150.0,
 			"rotation": 0.0
 		},
 		"DepthsLibrary/Level2Map/Rooms/WeaveArchive/TimingSpikesB": {
-			"is_extended": false,
+			"is_extended": true,
 			"position_x": 2692.0,
 			"position_y": 5150.0,
 			"rotation": 0.0
@@ -170,41 +109,8 @@
 			"respawn_x": -18681.0,
 			"respawn_y": -446.0
 		},
-		"OasisBattlefield/Chapter4": {
-			"active_event": 2,
-			"completed": [
-				0,
-				1
-			],
-			"line_index": 0
-		},
-		"OasisBattlefield/Chapter4/BonePickup_4_10_to_4_11": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"OasisBattlefield/Chapter4/Bones_4_6_to_4_9": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"OasisBattlefield/Chapter4/Chase_4_13": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"OasisBattlefield/Chapter4/Entrance_4_1_to_4_2": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"OasisBattlefield/Chapter4/Exit_4_19_to_4_20": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"OasisBattlefield/Chapter4/PendingBoss_4_14_to_4_18": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"OasisBattlefield/Chapter4/Swords_4_4_to_4_5": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
+		"OasisBattlefield/OutwardPhase/CameraGate": {
+			"unlocked": false
 		},
 		"OasisBattlefield/OutwardPhase/CrumblingP/CrumblingPlatform": {
 			"current_state": 0,
@@ -247,11 +153,11 @@
 			"enter_dialog_triggered": false
 		},
 		"OasisBattlefield/OutwardPhase/MovingPlatform": {
-			"direction": 1,
+			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.550000000000001,
-			"position_x": -17670.33203125,
+			"path_progress": 0.583333333333338,
+			"position_x": -17407.0,
 			"position_y": -588.0,
 			"wait_remaining": 0.0
 		},
@@ -275,33 +181,33 @@
 			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.71904761904762,
-			"position_x": -15433.3330078125,
+			"path_progress": 0.0,
+			"position_x": -16443.333984375,
 			"position_y": -4.0,
-			"wait_remaining": 0.0
+			"wait_remaining": 0.45
 		},
 		"OasisBattlefield/ReturnPhase/MovingPlatform2": {
 			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.199999999999997,
-			"position_x": -11353.666015625,
+			"path_progress": 0.0,
+			"position_x": -11557.0,
 			"position_y": -392.0,
-			"wait_remaining": 0.0
+			"wait_remaining": 0.283333333333333
 		},
 		"OasisBattlefield/ReturnPhase/MovingPlatform3": {
-			"direction": -1,
+			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.0949033589124352,
-			"position_x": -6682.0126953125,
-			"position_y": -19.9871826171875,
+			"path_progress": 0.325269105390843,
+			"position_x": -6621.353515625,
+			"position_y": -80.6473388671875,
 			"wait_remaining": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/OasisBattlefieldChaser": {
 			"active": true,
 			"elapsed_time": 0.0,
-			"position_x": -18808.298828125,
+			"position_x": -15727.5244140625,
 			"position_y": -1040.0,
 			"speed": 0.0,
 			"stage": 0
@@ -309,7 +215,7 @@
 		"OasisBattlefield/ReturnPhase/OasisBattlefieldChaser/DirectionalChaseMover": {
 			"active": true,
 			"elapsed_time": 0.0,
-			"position_x": -18808.298828125,
+			"position_x": -15727.5244140625,
 			"position_y": -1040.0,
 			"speed": 0.0,
 			"stage": 0
@@ -333,40 +239,40 @@
 			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.123809523809524,
+			"path_progress": 0.0,
 			"position_x": -9948.0,
-			"position_y": -499.666687011719,
-			"wait_remaining": 0.0
+			"position_y": -699.666687011719,
+			"wait_remaining": 0.383333333333333
 		},
 		"OasisBattlefield/ReturnPhase/block2": {
-			"direction": 1,
+			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.906666666666666,
+			"path_progress": 0.466666666666668,
 			"position_x": -13222.0,
-			"position_y": -96.0,
+			"position_y": -1389.33337402344,
 			"wait_remaining": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes5": {
-			"is_extended": true,
+			"is_extended": false,
 			"position_x": -8808.0,
 			"position_y": -16.0,
 			"rotation": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes6": {
-			"is_extended": true,
+			"is_extended": false,
 			"position_x": -8778.0,
 			"position_y": -16.0,
 			"rotation": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes7": {
-			"is_extended": true,
+			"is_extended": false,
 			"position_x": -8746.0,
 			"position_y": -16.0,
 			"rotation": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes8": {
-			"is_extended": true,
+			"is_extended": false,
 			"position_x": -8713.0,
 			"position_y": -16.0,
 			"rotation": 0.0
@@ -543,8 +449,8 @@
 			"has_sunken_crown": false,
 			"max_hp": 200.0,
 			"move_bus": "SFX_Move_Dry",
-			"now_hp": 199.01126933333,
-			"position_x": -18807.451171875,
+			"now_hp": 135.698157999863,
+			"position_x": -18855.919921875,
 			"position_y": -399.807952880859,
 			"respawn_x": -18681.0,
 			"respawn_y": -446.0,
@@ -554,47 +460,6 @@
 		"SunkenPalace": {
 			"crown_offered": false,
 			"crown_triggered": false
-		},
-		"SunkenPalace/Chapter2": {
-			"active_event": -1,
-			"completed": [],
-			"line_index": 0
-		},
-		"SunkenPalace/Chapter2/Council_2_14_to_2_15": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Entrance_2_1_to_2_3": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Epilogue_2_25": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Mural_2_10_to_2_11": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Nameplates_2_12_to_2_13": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Pottery_2_5_to_2_6": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Reservoir_2_22_to_2_23": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/StatueAndCrown_2_17_to_2_21": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
-		},
-		"SunkenPalace/Chapter2/Tools_2_7_to_2_8": {
-			"description_requested": false,
-			"enter_dialog_triggered": false
 		},
 		"SunkenPalace/collisionlayer/Door/SignalDoor": {},
 		"SunkenPalace/collisionlayer/InterRa/Crown": {
@@ -645,11 +510,11 @@
 			"wait_remaining": 0.0
 		},
 		"SunkenPalace/collisionlayer/MovePl/MovingPlatform2": {
-			"direction": 1,
+			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.31590909090909,
-			"position_x": 2787.0,
+			"path_progress": 0.277272727272719,
+			"position_x": 3279.5,
 			"position_y": -1704.0,
 			"wait_remaining": 0.0
 		},
@@ -671,9 +536,41 @@
 		"SunkenPalace/collisionlayer/button/4": {
 			"is_pressed": false,
 			"output_channel": "door_1"
+		},
+		"story/c2/刻有谚语的石碑": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/学者的笔记": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/放大镜": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/月相刻盘": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/残缺的绘本": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/自我感叹": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/观星桌案": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
+		},
+		"story/c2/进入的场合描述": {
+			"description_requested": false,
+			"enter_dialog_triggered": false
 		}
 	},
 	"scene_path": "res://Code/Entities/World/World.tscn",
 	"slot_index": 1,
-	"timestamp": "2026-10-15 03:14:25"
+	"timestamp": "2026-10-15 04:20:50"
 }
