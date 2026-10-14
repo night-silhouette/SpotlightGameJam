@@ -1,5 +1,9 @@
 extends Node
 
+@export_group("Level 3 - Outward Scenery", "outward_scenery_")
+## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
+@export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
+
 @export_group("Camp - Scenery", "camp_scenery_")
 ## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
 @export var camp_scenery_enabled: bool = true
