@@ -13,9 +13,16 @@
 [ext_resource type="Script" uid="uid://c7de6nrehw02k" path="res://Code/Entities/World/Camp/Scenery/CampScenery.gd" id="script"]
 [ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="sky"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ic58v"]
+shader = ExtResource("2_ic58v")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tanxx"]
 shader = ExtResource("2_ic58v")
-shader_parameter/world_bounds = Vector4(-100000, -100000, 100000, 100000)
 shader_parameter/foreground = false
 shader_parameter/opacity = 1.0
 shader_parameter/enabled = 1.0
@@ -24,7 +31,6 @@ shader_parameter/clear_radius = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dt7dg"]
 shader = ExtResource("2_ic58v")
-shader_parameter/world_bounds = Vector4(-100000, -100000, 100000, 100000)
 shader_parameter/foreground = false
 shader_parameter/opacity = 1.0
 shader_parameter/enabled = 1.0
@@ -33,16 +39,6 @@ shader_parameter/clear_radius = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3dgdd"]
 shader = ExtResource("2_ic58v")
-shader_parameter/world_bounds = Vector4(-100000, -100000, 100000, 100000)
-shader_parameter/foreground = false
-shader_parameter/opacity = 1.0
-shader_parameter/enabled = 1.0
-shader_parameter/player_world = Vector2(-100000, -100000)
-shader_parameter/clear_radius = 100.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uxxey"]
-shader = ExtResource("2_ic58v")
-shader_parameter/world_bounds = Vector4(-100000, -100000, 100000, 100000)
 shader_parameter/foreground = true
 shader_parameter/opacity = 1.0
 shader_parameter/enabled = 1.0
@@ -54,70 +50,70 @@ script = ExtResource("script")
 
 [node name="Sky" type="Node2D" parent="." unique_id=1588897703]
 z_index = -60
-position = Vector2(0, -2194)
-scale = Vector2(2, 2)
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
 
 [node name="Gradient" type="Sprite2D" parent="Sky" unique_id=696304547]
-material = SubResource("ShaderMaterial_tanxx")
+material = SubResource("ShaderMaterial_ic58v")
 texture = ExtResource("sky")
 centered = false
 
 [node name="FarBackground" type="Node2D" parent="." unique_id=980766610]
 z_index = -45
-position = Vector2(0, -2194)
-scale = Vector2(2, 2)
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
 
 [node name="DarkRocks" type="Sprite2D" parent="FarBackground" unique_id=846003260]
-material = SubResource("ShaderMaterial_dt7dg")
+material = SubResource("ShaderMaterial_tanxx")
 texture = ExtResource("middle_rocks")
 centered = false
 
 [node name="MiddleBackground" type="Node2D" parent="." unique_id=264031973]
 z_index = -20
-position = Vector2(0, -2194)
-scale = Vector2(2, 2)
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
 
 [node name="LightRocks" type="Sprite2D" parent="MiddleBackground" unique_id=329074955]
-material = SubResource("ShaderMaterial_3dgdd")
+material = SubResource("ShaderMaterial_dt7dg")
 texture = ExtResource("back_rocks")
 centered = false
 
 [node name="RockSilhouettes" type="Sprite2D" parent="MiddleBackground" unique_id=947449126]
-material = SubResource("ShaderMaterial_3dgdd")
+material = SubResource("ShaderMaterial_dt7dg")
 texture = ExtResource("far_rocks")
 centered = false
 
 [node name="Ground" type="Sprite2D" parent="MiddleBackground" unique_id=917999471]
-material = SubResource("ShaderMaterial_3dgdd")
+material = SubResource("ShaderMaterial_dt7dg")
 texture = ExtResource("ground")
 centered = false
 
 [node name="StonePath" type="Sprite2D" parent="MiddleBackground" unique_id=406286267]
-material = SubResource("ShaderMaterial_3dgdd")
+material = SubResource("ShaderMaterial_dt7dg")
 texture = ExtResource("path")
 centered = false
 
 [node name="Grass" type="Sprite2D" parent="MiddleBackground" unique_id=602218901]
-material = SubResource("ShaderMaterial_3dgdd")
+material = SubResource("ShaderMaterial_dt7dg")
 texture = ExtResource("grass")
 centered = false
 
 [node name="Lights" type="Sprite2D" parent="MiddleBackground" unique_id=1875193169]
-material = SubResource("ShaderMaterial_3dgdd")
+material = SubResource("ShaderMaterial_dt7dg")
 texture = ExtResource("lights")
 centered = false
 
 [node name="Foreground" type="Node2D" parent="." unique_id=608532223]
 z_index = 3
-position = Vector2(0, -2194)
-scale = Vector2(2, 2)
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
 
 [node name="SideSilhouettes" type="Sprite2D" parent="Foreground" unique_id=1093020250]
-material = SubResource("ShaderMaterial_uxxey")
+material = SubResource("ShaderMaterial_3dgdd")
 texture = ExtResource("frame")
 centered = false
 
 [node name="PlantsAndStones" type="Sprite2D" parent="Foreground" unique_id=1485423885]
-material = SubResource("ShaderMaterial_uxxey")
+material = SubResource("ShaderMaterial_3dgdd")
 texture = ExtResource("front_rocks")
 centered = false

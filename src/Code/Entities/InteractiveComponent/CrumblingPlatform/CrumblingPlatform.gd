@@ -28,6 +28,9 @@ class_name CrumblingPlatform
 @onready var visual_rect: ColorRect = $VisualRoot/VisualRect
 @onready var crack_line: Line2D = $VisualRoot/CrackLine
 
+var _dissolve_sprite: Sprite2D = null
+var _dissolve_mat: ShaderMaterial = null
+
 enum PlatformState { INTACT, CRUMBLING, COLLAPSED }
 
 var current_state: PlatformState = PlatformState.INTACT
@@ -47,6 +50,19 @@ func _ready() -> void:
 	_respawn_timer.one_shot = true
 	_respawn_timer.timeout.connect(_on_respawn_timeout)
 	add_child(_respawn_timer)
+	
+	_setup_shader_visuals()
+
+func _setup_shader_visuals() -> void:
+	# 检查子节点或 VisualRoot 中是否存在 Sprite2D 材质
+	for node in [visual_root.get_node_or_null("Sprite2D"), get_node_or_null("Sprite2D")]:
+		if node and node is Sprite2D:
+			_dissolve_sprite = node
+			if _dissolve_sprite.material is ShaderMaterial:
+				# 强制复制材质实例，保证各组件动画与着色器参数完全独立
+				_dissolve_mat = _dissolve_sprite.material.duplicate() as ShaderMaterial
+				_dissolve_sprite.material = _dissolve_mat
+			break
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -96,6 +112,10 @@ func _start_crumble() -> void:
 	if crack_line:
 		crack_line.visible = true
 	
+	if _dissolve_mat:
+		var crack_tween = create_tween()
+		crack_tween.tween_method(func(v: float): _dissolve_mat.set_shader_parameter("crack_intensity", v), 0.25, 0.85, crumble_delay)
+
 	# 启动高频震颤 Tween
 	if _shake_tween and _shake_tween.is_valid():
 		_shake_tween.kill()
@@ -122,23 +142,32 @@ func _collapse() -> void:
 	if SignalBus:
 		SignalBus.PlatformCollapsed.emit(self)
 
-	# 播放下坠破碎淡出演出
+	# 播放下坠破碎/Shader瓦解演出
 	var collapse_tween = create_tween().set_parallel(true)
-	collapse_tween.tween_property(visual_root, "position:y", _original_visual_pos.y + 24.0, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	collapse_tween.tween_property(visual_root, "modulate:a", 0.0, 0.25)
+	collapse_tween.tween_property(visual_root, "position:y", _original_visual_pos.y + 16.0, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	
+	if _dissolve_mat:
+		collapse_tween.tween_method(func(v: float): _dissolve_mat.set_shader_parameter("dissolve_progress", v), 0.0, 1.0, 0.35)
+	else:
+		collapse_tween.tween_property(visual_root, "modulate:a", 0.0, 0.25)
 	
 	# 启动重生计时
 	_respawn_timer.start(respawn_time)
 
 func _on_respawn_timeout() -> void:
-	# 复原位置与透明度并渐显
+	# 复原位置与透明度并渐显 / 反向瓦解复原
 	visual_root.position = _original_visual_pos
-	visual_root.modulate.a = 0.0
 	if crack_line:
 		crack_line.visible = false
 	
 	var respawn_tween = create_tween()
-	respawn_tween.tween_property(visual_root, "modulate:a", 1.0, 0.35)
+	if _dissolve_mat:
+		_dissolve_mat.set_shader_parameter("crack_intensity", 0.25)
+		visual_root.modulate.a = 1.0
+		respawn_tween.tween_method(func(v: float): _dissolve_mat.set_shader_parameter("dissolve_progress", v), 1.0, 0.0, 0.4)
+	else:
+		visual_root.modulate.a = 0.0
+		respawn_tween.tween_property(visual_root, "modulate:a", 1.0, 0.35)
 	respawn_tween.finished.connect(func():
 		current_state = PlatformState.INTACT
 		solid_collision.set_deferred("disabled", false)

@@ -96,8 +96,6 @@ material = SubResource("ShaderMaterial_mvgin")
 material = SubResource("ShaderMaterial_mvgin")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-physics_interpolation_mode = 1
-top_level = false
 position = Vector2(1470, 2)
 scale = Vector2(1.2, 1.2)
 
@@ -134,7 +132,7 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
-position = Vector2(-74.99999, -308.99997)
+position = Vector2(-73, -480)
 scale = Vector2(0.4082091, 2.459945)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
@@ -165,7 +163,7 @@ right_surface = "Brick"
 right_move_bus = &"SFX_Move_Dry"
 
 [node name="FootstepSurfaceArea3" parent="MusicNode" unique_id=1436223171 instance=ExtResource("8_35sqx")]
-position = Vector2(-73, -372)
+position = Vector2(-73.00001, -543)
 rotation = -3.1539626
 scale = Vector2(0.5244628, 1.910881)
 player_path = NodePath("../../PlayerWithCamera/Player")
@@ -180,4 +178,3 @@ right_move_bus = &"SFX_Move_Dry"
 [editable path="PlayerWithCamera/Player"]
 [editable path="OasisBattlefield"]
 [editable path="OasisBattlefield/ReturnPhase/MovingPlatform2"]
-[editable path="OasisBattlefield/ReturnPhase/ReturnCornerBrickPatch"]
