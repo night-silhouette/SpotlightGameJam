@@ -23,9 +23,6 @@ offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
 text = "可选支路：补水、阅读线索。残卷正式剧情待策划提供。"
 
-[node name="Spawn" type="Marker2D" parent="." unique_id=1729748090]
-position = Vector2(1300, 485)
-
 [node name="ObservatoryScroll" parent="." unique_id=887468177 instance=ExtResource("device")]
 position = Vector2(1090, 360)
 metadata/kind = "lore"

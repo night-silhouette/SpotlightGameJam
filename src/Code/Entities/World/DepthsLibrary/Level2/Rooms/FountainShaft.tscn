@@ -47,9 +47,6 @@ theme_override_font_sizes/font_size = 22
 mouse_filter = 2
 text = "水柱将你托起；到顶向右离开井口。"
 
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(90, 3545)
-
 [node name="CityExit" type="Marker2D" parent="."]
 position = Vector2(92, 0)
 metadata/opening_width = 128.0

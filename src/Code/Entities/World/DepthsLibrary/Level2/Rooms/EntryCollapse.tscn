@@ -35,9 +35,6 @@ text = "从主城左口落入；二段跳跃过断层，踩上裂纹平台进入
 position = Vector2(690, 110)
 platform_size = Vector2(240, 20)
 
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(100, 245)
-
 [node name="EntryFallReset" type="Area2D" parent="."]
 position = Vector2(440, 420)
 collision_layer = 0

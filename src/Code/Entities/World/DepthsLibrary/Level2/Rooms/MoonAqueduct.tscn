@@ -82,9 +82,6 @@ metadata/key_id = "moon"
 [node name="Caption" parent="MoonKey" index="1"]
 text = "月族银钥匙"
 
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(100, 485)
-
 [node name="FallReset" type="Area2D" parent="."]
 position = Vector2(1100, 850)
 collision_layer = 0

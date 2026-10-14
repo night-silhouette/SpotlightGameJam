@@ -11,7 +11,6 @@ var fountain_active: bool = false
 var codex_claimed: bool = false
 var _elapsed: float = 0.0
 var _player: CharacterBody2D
-var _checkpoint: Vector2
 var _owns_player: bool = false
 var _active_room: Node2D
 var _toast_left: float = 0.0
@@ -28,7 +27,6 @@ func _ready() -> void:
 		_rune_order = configured.duplicate()
 	var names := {"sun": "日", "moon": "月", "weave": "交织"}
 	$Rooms/WeaveArchive/RoomHint.text = "石碑线索：" + str(names[_rune_order[0]]) + " → " + str(names[_rune_order[1]]) + " → " + str(names[_rune_order[2]]) + "。错误会重置顺序。"
-	_checkpoint = $Rooms/EntryCollapse/Spawn.global_position
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
 	SignalBus.PlayerBeforeMotion.connect(_on_player_before_motion)
@@ -49,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		_player = get_tree().get_first_node_in_group("player") as CharacterBody2D
 	if not is_instance_valid(_player):
 		return
-	# 先判定从地表落井，避免水柱反推或切换房间时把重生点写到井底。
+	# 先判定从地表落井，避免水柱反推并让下落镜头优先处理。
 	if _update_fountain_return_fall():
 		return
 	var room: Node2D = GetRoomAt(_player.global_position)
@@ -62,11 +60,6 @@ func _physics_process(delta: float) -> void:
 		if room != _active_room:
 			_active_room = room
 			$HUD/Root/Objective.text = room.get_node("RoomHint").text
-			_checkpoint = room.get_node("Spawn").global_position
-			var other := room.get_node_or_null("ReturnSpawn") as Marker2D
-			if other and other.global_position.distance_to(_player.global_position) < _checkpoint.distance_to(_player.global_position):
-				_checkpoint = other.global_position
-			SignalBus.TentActivated.emit(self, _checkpoint)
 		$HUD/Root/Status.text = str(room.get_meta("title", room.name)) + "  |  携带 %d · 已提交 %d / 3  |  %02d:%02d" % [keys.size() - submitted_keys.size(), submitted_keys.size(), int(_elapsed) / 60, int(_elapsed) % 60]
 	if fountain_active and $Rooms/FountainShaft/Updraft.overlaps_body(_player):
 		_player.velocity.y = -ExportSettings.level2_fountain_speed
@@ -229,7 +222,7 @@ func _on_respawned(_position: Vector2) -> void:
 	keys.assign(submitted_keys)
 	_refresh()
 	if not from_fountain_fall:
-		_toast("回到检查点。未提交钥匙已回到原位，已提交的保留。" if lost > 0 else "回到检查点，已提交钥匙保留。")
+		_toast("未提交钥匙已回到原位，已提交的保留。" if lost > 0 else "已提交钥匙保留。")
 	SignalBus.Level2StateChanged.emit(self)
 
 func _on_exit_reached(body: Node2D) -> void:

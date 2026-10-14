@@ -78,12 +78,6 @@ metadata/key_id = "sun"
 [node name="Caption" parent="SunKey" index="1"]
 text = "日族铜钥匙"
 
-[node name="Spawn" type="Marker2D" parent="."]
-position = Vector2(2090, 485)
-
-[node name="ReturnSpawn" type="Marker2D" parent="."]
-position = Vector2(110, 485)
-
 [node name="FallReset" type="Area2D" parent="."]
 position = Vector2(1100, 850)
 collision_layer = 0
