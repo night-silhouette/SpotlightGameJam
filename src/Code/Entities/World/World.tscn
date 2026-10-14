@@ -20,6 +20,14 @@
 [ext_resource type="Texture2D" uid="uid://b7m1livmw8npo" path="res://Art/New/component/proverb_stele.svg" id="18_proverb_stele"]
 [ext_resource type="Texture2D" uid="uid://bla1x5c0rw0ji" path="res://Art/New/component/scholars_notebook.svg" id="19_scholars_notebook"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
+[ext_resource type="Texture2D" path="res://Art/AI/pottery.svg" id="21_pottery"]
+[ext_resource type="Texture2D" path="res://Art/AI/tools.svg" id="22_tools"]
+[ext_resource type="Texture2D" path="res://Art/AI/mural.svg" id="23_mural"]
+[ext_resource type="Texture2D" path="res://Art/AI/nameplates.svg" id="24_nameplates"]
+[ext_resource type="Texture2D" path="res://Art/AI/council_table.svg" id="25_council_table"]
+[ext_resource type="Texture2D" path="res://Art/AI/snake_statue.svg" id="26_snake_statue"]
+[ext_resource type="Texture2D" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
+[ext_resource type="Texture2D" path="res://Art/AI/cistern.svg" id="28_cistern"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -29,7 +37,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_womvd"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m8xep"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -63,7 +71,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4qq5m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_womvd"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -190,6 +198,96 @@ script = ExtResource("5_acpp2")
 text = "封面已经褪色，纸页皱皱巴巴，边角也有点卷曲，显然曾被一次又一次翻阅。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
+[sub_resource type="Resource" id="C3_2_1"]
+script = ExtResource("5_acpp2")
+text = "太阳在沙丘上留下了无名的城"
+
+[sub_resource type="Resource" id="C3_2_2"]
+script = ExtResource("5_acpp2")
+text = "一座破败的宫殿半埋于炙热的黄沙之中。高大的石墙早已倾颓，断裂的石柱仍倔强地撑起残存的穹顶，但仍能看出这里旧日的恢宏。墙边留存着几处规整的蓄水池与水道。"
+
+[sub_resource type="Resource" id="C3_2_3"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这宫殿即使已经残破，依然能看出昔日的辉煌。"
+
+[sub_resource type="Resource" id="C3_2_5"]
+script = ExtResource("5_acpp2")
+text = "许多陶罐。堆在墙角与石阶旁，大小不一，形制各异，罐身残留着褪色的纹饰。部分已经干燥破裂，边缘参差，裂纹密布。"
+
+[sub_resource type="Resource" id="C3_2_6"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这么多陶罐碎片，是用来储水的吧……曾经是。"
+
+[sub_resource type="Resource" id="C3_2_7"]
+script = ExtResource("5_acpp2")
+text = "一些工具与农具散落在残墙边，长柄木器已朽坏，金属部分覆着厚厚的锈迹，边缘均已磨损。它们曾被频繁使用，如今却静静地躺在沙土之中。"
+
+[sub_resource type="Resource" id="C3_2_8"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这些工具和农具，有些形制简单，有些已有精巧的结构……不仅建造了这样庞大的宫殿，还曾开辟土地、耕种作物。在这片沙漠里要做到这些，并不容易。"
+
+[sub_resource type="Resource" id="C3_2_10"]
+script = ExtResource("5_acpp2")
+text = "沿着高大的墙面铺展开的壁画。残缺不全。\n画中，日族（蛇样）在烈日下筑起高墙，建造宫殿与蓄水设施。\n另一侧，日族战士列阵出征，旌旗与兵刃交错。\n画面逐渐延伸，接连几幅都是在描绘战场情景，日月轮换，晴雨交替，战役从白昼持续到黑夜，又从黑夜延续至白昼。\n再往下，很多日族的民众聚在一起，围着宫殿，庆祝着什么。\n最后一幅，映入眼帘的是一轮巨大的、比例失调的，甚至有些畸形的太阳，将原本的城池和族民都挤压到了底边。"
+
+[sub_resource type="Resource" id="C3_2_11"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "奇怪……壁画怎么突然断了？\n这太阳……让人有一种很不安的感觉，像是要将一切吞没。"
+
+[sub_resource type="Resource" id="C3_2_12"]
+script = ExtResource("5_acpp2")
+text = "一堆铭牌散落在石桌边。边上刻着相似的纹饰与文字，部分铭文仍能辨认：日族先锋军。"
+
+[sub_resource type="Resource" id="C3_2_13"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这是为战死者准备的哀荣……怎么都堆在这里，没有分发出去呢？"
+
+[sub_resource type="Resource" id="C3_2_14"]
+script = ExtResource("5_acpp2")
+text = "一张巨大的石桌。横亘在宫殿中央，桌面覆着一层厚重的沙土。桌沿雕刻着繁复的日轮纹饰，几处边角已经有崩裂的趋势。\n桌面一侧有一片不自然的擦痕，露出了光滑的石面。"
+
+[sub_resource type="Resource" id="C3_2_15"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "像是他们开会议事的地方。这里曾经有着相当完善的制度啊。"
+
+[sub_resource type="Resource" id="C3_2_17"]
+script = ExtResource("5_acpp2")
+text = "一尊蛇身雕塑。矗立在石台之上，颜色已经被磨损殆尽，但轮廓完整。蛇身盘踞，昂首向天，充满神秘的压迫感。这是这片废墟里唯一保有完整形态的造物。"
+
+[sub_resource type="Resource" id="C3_2_18"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这地方到处是积尘，怎么这尊雕塑上却干干净净……咦？尾巴好像还被人反复修缮过。"
+
+[sub_resource type="Resource" id="C3_2_19"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "啊！雕塑头顶的纹饰，和我脸上的一模一样……"
+
+[sub_resource type="Resource" id="C3_2_20"]
+script = ExtResource("5_acpp2")
+text = "一顶日轮冠。嵌在蛇身雕塑的头顶，仍保留着精巧而庄严的形制，冠体金色，纹饰层层舒展。"
+
+[sub_resource type="Resource" id="C3_2_21"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……\n先带走吧，说不定之后会用得到。"
+
+[sub_resource type="Resource" id="C3_2_22"]
+script = ExtResource("5_acpp2")
+text = "位于高处的巨型蓄水池发出一声低沉而绝望的轰鸣，竟突然崩塌。石板接连断裂，积蓄已久的水伴随着沙土与碎石倾泻而下，四周的地板随之急剧破裂，轰鸣声在空旷的城池间回荡。"
+
+[sub_resource type="Resource" id="C3_2_23"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "得快点躲开！\n这么多水，怎么会，这座城不是已经荒废了吗？"
+
 [node name="World" type="Node2D" unique_id=2146248688]
 
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
@@ -205,16 +303,16 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_womvd")
+material = SubResource("ShaderMaterial_m8xep")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_4qq5m")
+material = SubResource("ShaderMaterial_womvd")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_4qq5m")
+material = SubResource("ShaderMaterial_womvd")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_4qq5m")
+material = SubResource("ShaderMaterial_womvd")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1470, 2)
@@ -244,6 +342,13 @@ enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Reflection_ente
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
+
+[node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 228707374, 2044761266) index="4"]
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_20"), SubResource("C3_2_21")])
+
+[node name="日轮冠贴图" type="Sprite2D" parent="SunkenPalace/collisionlayer/InterRa/Crown" index="1"]
+texture = ExtResource("27_sun_crown")
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-118, 3250)
@@ -316,19 +421,21 @@ position = Vector2(2119, -18)
 scale = Vector2(0.42096186, 3.7220325)
 
 [node name="ChapterTrigger" parent="chapter" unique_id=2099740132 instance=ExtResource("10_mvgin")]
-chapter_text = "烈阳遗梦"
-
-[node name="ChapterTrigger2" parent="chapter" unique_id=520894648 instance=ExtResource("10_mvgin")]
-position = Vector2(-3639.2844, 95.109314)
-scale = Vector2(10.814299, 0.09030984)
+position = Vector2(1814.8912, -1.0746815)
 act_text = "第二幕"
 chapter_text = "烈阳遗梦"
 
+[node name="ChapterTrigger2" parent="chapter" unique_id=520894648 instance=ExtResource("10_mvgin")]
+position = Vector2(-3634.5337, 101.82608)
+scale = Vector2(10.814299, 0.09030984)
+act_text = "第三幕"
+chapter_text = "月影寻源"
+
 [node name="ChapterTrigger3" parent="chapter" unique_id=1761084445 instance=ExtResource("10_mvgin")]
-position = Vector2(-5359.1553, -172.75507)
+position = Vector2(-13424.02, -39.763226)
 rotation = -1.5707964
 scale = Vector2(4, 0.4)
-act_text = "第三幕"
+act_text = "第四幕"
 chapter_text = "绿洲悲歌"
 
 [node name="story" type="Node2D" parent="." unique_id=1662514281]
@@ -422,18 +529,107 @@ page_monologues = Array[String](["", "", "原来如此……", "", "日族宫殿
 close_monologues = Array[String]([])
 
 [node name="GradualTextTrigger" parent="story/c2" unique_id=1879339704 instance=ExtResource("20_m8xep")]
-position = Vector2(870, 2665.0002)
+position = Vector2(875, 2406.0002)
 scale = Vector2(2.2155194, 0.55301255)
 content = "水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
 display_duration = 9.9
 
 [node name="GradualTextTrigger2" parent="story/c2" unique_id=927648948 instance=ExtResource("20_m8xep")]
-position = Vector2(872.99994, 2996.0002)
+position = Vector2(877, 2962)
 scale = Vector2(2.2155194, 0.55301255)
 content = "《水的法则》
 "
-display_duration = 2.0
+display_duration = 1.2000000000000002
 
+[node name="c3" type="Node2D" parent="story" unique_id=207949406]
+
+[node name="入城_2_1至2_3" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(2885, -22)
+scale = Vector2(3, 3)
+enable_interaction = false
+show_enter_dialog = true
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_1"), SubResource("C3_2_2"), SubResource("C3_2_3")])
+enter_dialog_once = true
+metadata/_editor_description_ = "按第二幕章节触发器约(2883,-22)及宫殿入口锚点暂放；请在编辑器确认入城必经路径。"
+
+[node name="陶罐_2_5至2_6" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(4680, -1580)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_5"), SubResource("C3_2_6")])
+metadata/_editor_description_ = "参考宫殿原交互锚点(4672,-1583)暂放；请在编辑器核对墙角与石阶。"
+
+[node name="陶罐贴图" type="Sprite2D" parent="story/c3/陶罐_2_5至2_6"]
+texture = ExtResource("21_pottery")
+
+[node name="工具农具_2_7至2_8" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(4740, -1580)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_7"), SubResource("C3_2_8")])
+metadata/_editor_description_ = "靠宫殿交互锚点(4672,-1583)暂放，请核对残墙与行走面。"
+
+[node name="工具农具贴图" type="Sprite2D" parent="story/c3/工具农具_2_7至2_8"]
+texture = ExtResource("22_tools")
+
+[node name="壁画_2_10至2_11" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(5915, -1365)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_10"), SubResource("C3_2_11")])
+metadata/_editor_description_ = "参考宫殿交互锚点(5915,-1365)暂放；需在编辑器确认墙面方向。"
+
+[node name="壁画贴图" type="Sprite2D" parent="story/c3/壁画_2_10至2_11"]
+position = Vector2(0, -64)
+texture = ExtResource("23_mural")
+
+[node name="战士铭牌_2_12至2_13" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(4615, -1235)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_12"), SubResource("C3_2_13")])
+metadata/_editor_description_ = "靠宫殿交互锚点(4683,-1235)暂放，请确认铭牌与石桌布局。"
+
+[node name="战士铭牌贴图" type="Sprite2D" parent="story/c3/战士铭牌_2_12至2_13"]
+texture = ExtResource("24_nameplates")
+
+[node name="议政桌_2_14至2_15" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(4683, -1235)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_14"), SubResource("C3_2_15")])
+metadata/_editor_description_ = "参考宫殿交互锚点(4683,-1235)暂放，请确认中央石桌位置。"
+
+[node name="议政桌贴图" type="Sprite2D" parent="story/c3/议政桌_2_14至2_15"]
+texture = ExtResource("25_council_table")
+
+[node name="蛇身雕塑_2_17至2_19" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(1724, -1820)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubResource("C3_2_18"), SubResource("C3_2_19")])
+metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
+
+[node name="蛇身雕塑贴图" type="Sprite2D" parent="story/c3/蛇身雕塑_2_17至2_19"]
+texture = ExtResource("26_snake_statue")
+
+[node name="高处蓄水池_2_22至2_23" parent="story/c3" instance=ExtResource("12_terh4")]
+position = Vector2(1672, -2562)
+scale = Vector2(2, 2)
+enable_interaction = false
+show_enter_dialog = true
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_22"), SubResource("C3_2_23")])
+enter_dialog_once = true
+metadata/_editor_description_ = "参考宫殿高处 WaterFlowArea5 锚点(1672,-2562)；仅叙事，不控制地形崩塌，请确认玩家路径及与冠拾取的先后顺序。"
+
+[node name="蓄水池贴图" type="Sprite2D" parent="story/c3/高处蓄水池_2_22至2_23"]
+position = Vector2(0, -48)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("28_cistern")
+
+[node name="献给沉默的神_2_25" parent="story/c3" instance=ExtResource("20_m8xep")]
+position = Vector2(1338, -1762)
+scale = Vector2(2, 2)
+content = "《献给沉默的神》\n作者佚名\n我曾以为世界的苦难源于缺少，缺少水，缺少土地，缺少足以安眠的夜晚。后来我才知道，苦难也可以诞生于丰饶，当酒水可以灌满所有人的杯盏，人们便开始争论谁的杯子更精美，当每一个夜晚都有灯火可亲，人们就开始计较谁的烛火更明亮。难道我们渴求的本就是痛苦？"
+display_duration = 12.0
+metadata/_editor_description_ = "参考宫殿左侧 SignalVanishBlocker 锚点(1338,-1762)暂放，须核对章节终点/离开宫殿路径；该组件仅运行时一次且不存档、不保证拾冠后才触发。"
+
+[editable path="SunkenPalace"]
+[editable path="SunkenPalace/collisionlayer/InterRa/Crown"]
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
 [editable path="Camp"]

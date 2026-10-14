@@ -3,6 +3,8 @@ extends Node2D
 ## 开场对话，按数组顺序播放；每句类型与文字均在检查器中编辑。
 @export var opening_lines: Array[PlotDialogLine] = []
 
+const CHAPTER_CARD = preload("res://Code/Entities/Plot/chapter/ChapterCard.tscn")
+
 @onready var _dialog_box = get_node("../../DialogBox")
 
 var _next_event: int = 0
@@ -52,6 +54,13 @@ func _run_event(event_index: int) -> void:
 	_next_event = event_index + 1
 	_line_index = 0
 	_running = false
+	if event_index == 0:
+		var card_layer := CHAPTER_CARD.instantiate()
+		var card := card_layer.get_node("ChapterCard")
+		card.set("auto_play", false)
+		get_parent().add_child(card_layer)
+		card.connect("Finished", card_layer.queue_free)
+		card.call("ShowChapter", "第一章", "沙海初醒")
 	_try_next_if_overlapping()
 
 func _try_next_if_overlapping() -> void:

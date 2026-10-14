@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://bopjvl4pbi3mj"]
 
+[ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="16_aevo3"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EastPassage.tscn" id="EastPassage"]
@@ -16,6 +17,66 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/TerrainArt.tscn" id="TerrainArt"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WeaveArchive.tscn" id="WeaveArchive"]
 [ext_resource type="PackedScene" uid="uid://b2ahpf27jgsmf" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WestPassage.tscn" id="WestPassage"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oniul"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ewexw"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2lkc"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2bs3"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kfeio"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
 
 [node name="Level2Map" type="Node2D" unique_id=2089776168 groups=["level2_map"]]
 script = ExtResource("script")
@@ -199,6 +260,21 @@ tile_map_data = PackedByteArray("AADy/w0AAAAAAAAAAADx/w0AAAAAAAAAAADw/w0AAAAAAAA
 
 [node name="Scenery" parent="." unique_id=346300600 instance=ExtResource("scenery")]
 
+[node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" index="0"]
+material = SubResource("ShaderMaterial_oniul")
+
+[node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" index="1"]
+material = SubResource("ShaderMaterial_ewexw")
+
+[node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" index="2"]
+material = SubResource("ShaderMaterial_r2lkc")
+
+[node name="NearColumn" parent="Scenery/FountainShaft/Foreground" index="0"]
+material = SubResource("ShaderMaterial_j2bs3")
+
+[node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" index="1"]
+material = SubResource("ShaderMaterial_kfeio")
+
 [node name="TerrainArt" parent="." unique_id=1368075065 instance=ExtResource("TerrainArt")]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=418277367]
@@ -280,3 +356,5 @@ autowrap_mode = 3
 [editable path="Rooms/WeaveArchive"]
 [editable path="Rooms/FountainShaft"]
 [editable path="Rooms/SurfaceExit"]
+[editable path="Scenery"]
+[editable path="Scenery/FountainShaft"]

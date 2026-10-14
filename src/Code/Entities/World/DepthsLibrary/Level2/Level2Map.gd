@@ -74,7 +74,7 @@ func _physics_process(delta: float) -> void:
 func IsSlowDescentActive() -> bool:
 	return _slow_descent_camera
 
-func _on_player_before_motion(player: CharacterBody2D, delta: float) -> void:
+func _on_player_before_motion(player: CharacterBody2D, _delta: float) -> void:
 	if player != get_tree().get_first_node_in_group("player"):
 		return
 	var shaft: Node2D = $Rooms/DescentShaft
@@ -89,14 +89,10 @@ func _on_player_before_motion(player: CharacterBody2D, delta: float) -> void:
 		elif not _fountain_return_falling:
 			SignalBus.CameraNormalRequested.emit(player)
 	var background_speed := 0.0
-	# 跳跃、冲刺、钩索等特殊状态不改；只限制自由下落。
 	if inside and not player.is_special_state and not player.is_on_floor() and player.velocity.y > 0.0:
 		var edge := minf(point.y - bounds.position.y, bounds.end.y - point.y)
 		var strength := smoothstep(0.0, maxf(1.0, ExportSettings.level2_descent_edge_fade), edge)
-		var slow_speed := maxf(1.0, ExportSettings.level2_descent_fall_speed)
-		var cap := lerpf(maxf(slow_speed, ExportSettings.level2_descent_edge_speed), slow_speed, strength)
-		player.velocity.y = move_toward(player.velocity.y, minf(player.velocity.y, cap), ExportSettings.level2_descent_braking * delta)
-		background_speed = ExportSettings.level2_descent_background_speed * strength * clampf(player.velocity.y / slow_speed, 0.0, 1.0)
+		background_speed = ExportSettings.level2_descent_background_speed * strength * clampf(player.velocity.y / maxf(1.0, ExportSettings.level2_descent_fall_speed), 0.0, 1.0)
 	SignalBus.Level2DescentVisualChanged.emit(self, background_speed)
 
 ## 返回是否正在从地表落入喷泉井；镜头导演在此期间让出两阶段下落镜头。

@@ -504,7 +504,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 镜头门边界沿禁止露出方向向内收缩的距离（世界像素）。
 @export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
 ## 非一次性镜头门允许画面移动一个视口宽/高所需的秒数。
-@export_range(0.05, 5.0, 0.05) var camera_gate_transition_duration: float = 0.25
+@export_range(0.05, 5.0, 0.05) var camera_gate_transition_duration: float = 0.4
 
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。

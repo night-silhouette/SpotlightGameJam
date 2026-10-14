@@ -20,7 +20,4 @@ shape = SubResource("Shape")
 mouse_filter = 2
 auto_play = false
 
-[node name="Background" parent="GradualTextCardLayer/GradualTextCard" index="0"]
-visible = false
-
 [editable path="GradualTextCardLayer"]

@@ -2,7 +2,7 @@ extends Control
 
 signal Finished
 
-const DISPLAY_DURATION := 3.0
+const DISPLAY_DURATION := 4.0
 
 @export var act_text: String = "第一幕"
 @export var chapter_text: String = "纺织"
@@ -47,7 +47,6 @@ func _finish() -> void:
 	Finished.emit()
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color.BLACK)
 	var center := size * 0.5 + Vector2(0, -20)
 	var white := Color(0.92, 0.92, 0.92)
 	for side in [-1.0, 1.0]:
