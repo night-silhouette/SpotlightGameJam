@@ -58,13 +58,18 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_bvdhl"]
 script = ExtResource("6_qv0jn")
-text = "水面的涟漪倒映出一张完全陌生的脸。"
+text = "冰凉舒缓的水滑入喉管。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_abrb0"]
 script = ExtResource("6_qv0jn")
+text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_wotbi"]
+script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "这，这是我吗……脸上是什么……w"
+text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Reflection_enter_line"]
@@ -160,7 +165,7 @@ opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResou
 position = Vector2(1407, 1640.0001)
 scale = Vector2(5.121913, 1.2101797)
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0")])
+enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
 enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([])
 
@@ -173,7 +178,7 @@ enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_8")])
 
 [node name="SteleStory_1_12_to_1_14" parent="Chapter1" index="2" unique_id=28622851]
-position = Vector2(1959, 1575)
+position = Vector2(2161, 1574)
 enable_interaction = true
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_1khv5"), SubResource("Resource_wx588"), SubResource("Resource_na041"), SubResource("Resource_0yts4")])

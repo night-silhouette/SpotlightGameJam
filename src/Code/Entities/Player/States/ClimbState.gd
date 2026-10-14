@@ -45,7 +45,7 @@ func physics_process(delta: float) -> void:
 			return
 	if obj.velocity.y > obj.max_fall_speed:
 		obj.velocity.y = obj.max_fall_speed
-	if Input.is_action_just_pressed("jump"):
+	if gameInputControl.is_physics_processing() and Input.is_action_just_pressed("jump"):
 		obj.velocity.y = -obj.climb_ability
 		obj.velocity.x = -obj.climb_ability * 0.9 * wall_dir
 		if obj.has_method("PlayWallJumpSFX"):

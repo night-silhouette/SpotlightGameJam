@@ -18,7 +18,7 @@ signal MonologueRequested(lines: Array[String])
 @export var use_export_settings: bool = true
 ## 是否允许按键或提示按钮交互；关闭后隐藏提示，但仍会检测玩家进入区域并按配置显示进入区域对话。
 @export var enable_interaction: bool = true
-## 本组件触发的对话框显示期间是否禁止玩家移动；关闭对话后恢复。
+## 本组件触发的对话框显示期间是否禁止玩家输入；关闭对话后恢复，玩家动画与物理仍继续运行。
 @export var disable_movement_during_dialog: bool = false
 
 @export_group("进入区域对话")
@@ -150,16 +150,25 @@ func _show_dialog_lines(lines: Array[PlotDialogLine]) -> void:
 
 func _lock_players() -> void:
 	for player in _players:
-		if is_instance_valid(player) and not _locked_players.has(player):
-			_locked_players[player] = player.process_mode
-			if player is CharacterBody2D:
-				player.velocity = Vector2.ZERO
-			player.process_mode = Node.PROCESS_MODE_DISABLED
+		if not is_instance_valid(player):
+			continue
+		var input_control := player.get_node_or_null("GameInputControl")
+		if input_control == null or _locked_players.has(input_control):
+			continue
+		_locked_players[input_control] = input_control.is_physics_processing()
+		input_control.set_physics_process(false)
+		input_control.set("row_dir", 0.0)
+		input_control.set("column_dir", 0.0)
+		input_control.set("is_jump", false)
+		input_control.set("is_double_jump", false)
+		input_control.set("is_dash", false)
+		input_control.set("is_run", false)
+		input_control.set("is_idle", player is CharacterBody2D and player.is_on_floor())
 
 func _unlock_players() -> void:
-	for player in _locked_players:
-		if is_instance_valid(player):
-			player.process_mode = _locked_players[player]
+	for input_control in _locked_players:
+		if is_instance_valid(input_control):
+			input_control.set_physics_process(_locked_players[input_control])
 	_locked_players.clear()
 
 func _exit_tree() -> void:
