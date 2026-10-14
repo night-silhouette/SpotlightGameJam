@@ -8,23 +8,37 @@ signal DescriptionRequested(lines: Array[String])
 ## 后续重复交互时触发，按展示顺序传递内心独白文本数组。
 signal MonologueRequested(lines: Array[String])
 
+## 首次交互时通过 [signal DescriptionRequested] 及全局信号发出的描述文本数组；为空且启用 [member use_export_settings] 时使用全局默认值。此数组不会自动显示在对话框中。
 @export var description_lines: Array[String] = []
+## 后续交互时通过 [signal MonologueRequested] 及全局信号发出的独白文本数组；为空且启用 [member use_export_settings] 时使用全局默认值。此数组不会自动显示在对话框中。
 @export var monologue_lines: Array[String] = []
+## 触发交互的输入动作名；启用 [member use_export_settings] 时会被全局设置覆盖。
 @export var interaction_action: StringName = &"interact"
+## 是否读取 ExportSettings 中的交互动作及默认描述／独白数组；仅在对应数组为空时才填入默认文本。
 @export var use_export_settings: bool = true
+## 是否允许按键或提示按钮交互；关闭后隐藏提示，但仍会检测玩家进入区域并按配置显示进入区域对话。
 @export var enable_interaction: bool = true
 
 @export_group("进入区域对话")
+## 玩家每次进入交互区域时，是否立即显示旁白对话框；不受 [member enable_interaction] 影响。
 @export var show_enter_dialog: bool = false
+## 进入区域时显示的旁白文字；仅在 [member show_enter_dialog] 开启时使用。
 @export_multiline var enter_dialog_text: String = ""
 
 @export_group("首次交互对话")
+## 第一次成功交互时是否显示旁白对话框；首次状态可随组件存档恢复。
 @export var show_first_dialog: bool = false
+## 首次交互时显示的旁白文字；仅在 [member show_first_dialog] 开启时使用。
 @export_multiline var first_dialog_text: String = ""
 
 @export_group("后续交互对话")
+## 第二次及以后成功交互时是否显示独白对话框。
 @export var show_repeat_dialog: bool = false
+## 后续交互时显示的独白文字；仅在 [member show_repeat_dialog] 开启时使用。
 @export_multiline var repeat_dialog_text: String = ""
+@export_group("剧情对话")
+## 供关卡剧情脚本逐句展示的旁白／独白；按数组顺序排列，每句的类型和文字可在检查器中编辑。
+@export var story_lines: Array[PlotDialogLine] = []
 @export_group("")
 
 @onready var _prompt: Control = $PromptContainer
