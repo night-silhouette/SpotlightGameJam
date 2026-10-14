@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5.tscn" id="6_chapter5"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
 size = Vector2(96, 32)
@@ -61,3 +62,5 @@ position = Vector2(1292, 1656)
 scale = Vector2(1.6936214, 1.6936214)
 
 [node name="Chapter1" parent="." instance=ExtResource("5_chapter")]
+
+[node name="Chapter5" parent="." instance=ExtResource("6_chapter5")]

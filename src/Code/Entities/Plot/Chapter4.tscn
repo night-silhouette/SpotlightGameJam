@@ -1,0 +1,171 @@
+[gd_scene load_steps=23 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Plot/Chapter4.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="2"]
+[ext_resource type="Script" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="3"]
+
+[sub_resource type="RectangleShape2D" id="area"]
+size = Vector2(180, 130)
+
+[sub_resource type="Resource" id="4_1"]
+script = ExtResource("3")
+text = "绿洲从未竟的声声叹息中生长"
+
+[sub_resource type="Resource" id="4_2"]
+script = ExtResource("3")
+text = "金色瀚海在此处骤然断截，层层叠叠的绿意涌到眼前。藤蔓攀缘，枝干交错，阳光在水面上留下细碎的鳞光。"
+
+[sub_resource type="Resource" id="4_4"]
+script = ExtResource("3")
+text = "两把剑。剑刃已经锈蚀、断裂，剑柄上还留着不同的纹饰。它们曾经指向彼此，可现在植物根系已经将它们紧紧盘绕包裹在一起，如同一座铁墓碑。"
+
+[sub_resource type="Resource" id="4_5"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "它们的主人站在战场上时，一定坚信自己有挥剑的理由。如果仇恨与希望已经无从辨认，那么他们曾忍受的究竟是什么呢？"
+
+[sub_resource type="Resource" id="4_6"]
+script = ExtResource("3")
+text = "半埋于泥土中的骨架，与葳蕤的草木浑然交融，若不细看会以为它们本就是这片土地的一部分。\n白骨丛间，奇异的发光植物肆意舒展，明灭起落，莹莹微光随风四散。"
+
+[sub_resource type="Resource" id="4_7"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "看来，这里就是那场最终战役的古战场了。那么多交错的白骨……究竟有多少人在此长眠？曾经旌旗蔽日，刀兵相接，喊杀声与哀号声此起彼伏。直到……直到一切都被风沙吞没。\n不过奇怪的是，这里却并没有腐朽和绝望的气息。"
+
+[sub_resource type="Resource" id="4_8"]
+script = ExtResource("3")
+text = "诸多白骨之中，唯独有一具显得尤为奇异。半截枯骨露在土壤之外，形态奇特，边缘有不规则的磨损痕迹，骨面上分布着残缺的几何纹样。若隐若现的光芒从斑驳的刻痕间隐约透出，沿着纹路缓缓流动。\n走近时，隐隐约约的低语声似乎从骨头深处传来。顺着骨缝钻出的嫩芽在风中颤抖，像是在阻止，又像是在渴求着什么。"
+
+[sub_resource type="Resource" id="4_9"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "无论怎么看，这具枯骨都不太对劲。\n把它拔出来……真的好吗？\n……算了，既然已经走到这里，就没有回头的理由。"
+
+[sub_resource type="Resource" id="4_10"]
+script = ExtResource("3")
+text = "一阵低沉的震颤穿过大地，林间骤然响起由远及近的纷杂的低语声与兵刃相击的响声。\n低语声骤然拔高，尖锐得近乎凄厉\n平静的绿洲泛起涟漪，原本温和的微风变成了狂乱的乱流"
+
+[sub_resource type="Resource" id="4_11"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "怎么回事？！\n风……风变大了！有什么东西醒过来了！\n得赶紧跑！原路返回！快！"
+
+[sub_resource type="Resource" id="4_13"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "那些声音……越来越近了！\n必须赶快离开！"
+
+[sub_resource type="Resource" id="4_14"]
+script = ExtResource("3")
+text = "无数光点在半空中纠缠，逐渐凝成庞大的身躯。残缺的甲胄与扭曲的兵刃交叠其间，两种不同的纹饰在它身上明灭不定。偶尔有光点从躯壳间逸出，映出一张模糊的面容，又立刻被另一道影子吞没。它没有完整的面孔，只有无数重叠的身影，在沉默中彼此撕扯。"
+
+[sub_resource type="Resource" id="4_15"]
+script = ExtResource("3")
+text = "它的身躯轰然崩解，分裂成两股颜色迥异的光流。它们彼此排斥，又不断向对方靠近，在空中数度交汇、分离。渐渐地，两股光流不再泾渭分明，而是彼此穿过、交融，化作无数细碎的光点，缓缓飘向四周。"
+
+[sub_resource type="Resource" id="4_16"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "那些光点……是曾经在这里陷入鏖战的日族与月族的战士们……\n哪怕身躯早已腐朽，甚至忘记了自己在同谁作战，这股战意也依然在这片废墟中盲目地盘旋、重复着自以为的守护……\n他们曾经有自己的名字，自己的生活，可最后，留在这里的只剩下这些破碎的身影。\n（发现光点散开后并未消失）"
+
+[sub_resource type="Resource" id="4_17"]
+script = ExtResource("3")
+text = "光点或浮游在风中，或沉入水面，或没入泥土，或停留在草木初生的叶稍。\n随着光点跳跃，细小的根须缓缓伸展，水流悄然汇聚。\n它们散发着温柔的微光，相互依偎，彼此追随，融入了绿洲的每一寸生机之中。"
+
+[sub_resource type="Resource" id="4_18"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "原来这些绿洲是这样出现的……曾经水火不容的两族，那些愤怒的灵魂，连同他们遗留的血肉、骨骼，一同归还给了这片土地，孕育出了这片葱茏……"
+
+[sub_resource type="Resource" id="4_19"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "走吧，该离开这里了，把这片绿洲的故事……带回去。"
+
+[sub_resource type="Resource" id="4_20"]
+script = ExtResource("3")
+text = "这场战争有两种开端。一种发生在战争之前，由边界、生命、恐惧和那些不会被兑现的承诺构成。另一种发生在战争之后，由演说家、祭祀和历史学家共同撰写。我看到了，对面有我的朋友。我说，我们曾相依为命，长官说，他们注定会背叛。原来敌人可以是一个与你素不相识的人，也可以是那个被要求忘记的人。"
+
+[node name="Chapter4" type="Node2D" node_paths=PackedStringArray("outward_phase", "return_phase", "bone_interactable")]
+script = ExtResource("1")
+outward_phase = NodePath("../OutwardPhase")
+return_phase = NodePath("../ReturnPhase")
+bone_interactable = NodePath("../OutwardPhase/InteractableComponent")
+
+[node name="Entrance_4_1_to_4_2" parent="." instance=ExtResource("2")]
+position = Vector2(15700, 1120)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_1"), SubResource("4_2")])
+metadata/placement_note = "临时触发区：去程入口，待按实景入口校准。"
+
+[node name="CollisionShape2D" parent="Entrance_4_1_to_4_2" index="0"]
+shape = SubResource("area")
+
+[node name="Swords_4_4_to_4_5" parent="." instance=ExtResource("2")]
+position = Vector2(12000, 1180)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_4"), SubResource("4_5")])
+metadata/placement_note = "临时触发区：残破双剑未设置实体，待道具落位后校准。"
+
+[node name="CollisionShape2D" parent="Swords_4_4_to_4_5" index="0"]
+shape = SubResource("area")
+
+[node name="Bones_4_6_to_4_9" parent="." instance=ExtResource("2")]
+position = Vector2(520, 770)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_6"), SubResource("4_7"), SubResource("4_8"), SubResource("4_9")])
+metadata/placement_note = "临时叙事触发区：位于现有刻痕枯骨交互点旁；不拾取、不触发追逐。"
+
+[node name="CollisionShape2D" parent="Bones_4_6_to_4_9" index="0"]
+shape = SubResource("area")
+
+[node name="BonePickup_4_10_to_4_11" parent="." instance=ExtResource("2")]
+position = Vector2(281, 769)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_10"), SubResource("4_11")])
+metadata/story_phase = "bone"
+metadata/placement_note = "仅监听既有枯骨交互信号播放文案；震颤、低语和乱流演出尚未实现，不代替拾取或追逐逻辑。"
+
+[node name="CollisionShape2D" parent="BonePickup_4_10_to_4_11" index="0"]
+shape = SubResource("area")
+disabled = true
+
+[node name="Chase_4_13" parent="." instance=ExtResource("2")]
+position = Vector2(8800, 850)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_13")])
+metadata/story_phase = "return"
+metadata/placement_note = "临时返程触发区；不控制追逐者。"
+
+[node name="CollisionShape2D" parent="Chase_4_13" index="0"]
+shape = SubResource("area")
+
+[node name="Exit_4_19_to_4_20" parent="." instance=ExtResource("2")]
+position = Vector2(18142, 640)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_19"), SubResource("4_20")])
+metadata/story_phase = "pending"
+metadata/placement_note = "临时触发区（禁用）：4-19 与《敌人的定义》须待真实 boss 胜利和离场事件联动；现有 TheEnd 仅代表追逐结束，不宣告击败。"
+
+[node name="CollisionShape2D" parent="Exit_4_19_to_4_20" index="0"]
+shape = SubResource("area")
+disabled = true
+
+[node name="PendingBoss_4_14_to_4_18" parent="." instance=ExtResource("2")]
+position = Vector2(17700, 640)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("4_14"), SubResource("4_15"), SubResource("4_16"), SubResource("4_17"), SubResource("4_18")])
+metadata/story_phase = "pending"
+metadata/placement_note = "临时触发区（禁用）：战意聚合体实体、击败及灵魂光点演出未实现；待真实胜利事件接入后才可播放，不能凭逃脱宣告击败。"
+
+[node name="CollisionShape2D" parent="PendingBoss_4_14_to_4_18" index="0"]
+shape = SubResource("area")
+disabled = true

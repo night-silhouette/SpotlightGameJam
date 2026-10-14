@@ -1,0 +1,218 @@
+[gd_scene load_steps=34 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Plot/Chapter3.gd" id="1"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="2"]
+[ext_resource type="Script" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="3"]
+
+[sub_resource type="RectangleShape2D" id="area"]
+size = Vector2(180, 130)
+
+[sub_resource type="Resource" id="3_1"]
+script = ExtResource("3")
+text = "月亮在长夜里留下了无主的诗"
+
+[sub_resource type="Resource" id="3_2"]
+script = ExtResource("3")
+text = "昏暗的石廊向深处延伸，高耸的书架一列列延伸至深处，散落的书卷覆着尘土，羽毛笔与残页横七竖八地留在书案上。屋顶破开一道缺口，月光从那里倾落下来。"
+
+[sub_resource type="Resource" id="3_3"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "这里与外面的氛围完全不同，却不会让人觉得逼仄，反而有种……说不出的庄严……"
+
+[sub_resource type="Resource" id="3_4"]
+script = ExtResource("3")
+text = "石桌上蒙着一层尘土。尘土之下，是几张繁复的星图。密密麻麻的星点与刻线，圆环层层套叠，还有绘制到一半，散落一旁。像是书写它们的人只是暂时离开了。"
+
+[sub_resource type="Resource" id="3_5"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "好复杂……浩瀚的星芒之中，藏着怎样的答案？"
+
+[sub_resource type="Resource" id="3_6"]
+script = ExtResource("3")
+text = "黄铜制成的单片放大镜。静静躺在桌边，已失去光泽，但很精巧。试了试感觉很趁手。"
+
+[sub_resource type="Resource" id="3_7"]
+script = ExtResource("3")
+text = "石面被打磨得近乎光滑，中央是一轮完整的满月，周围依次刻着盈亏不一的月相。月相周围，有细密的银白色刻痕。"
+
+[sub_resource type="Resource" id="3_8"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "这些月相之间的纹路……像是交织的河流，被什么无形之物牵引着。"
+
+[sub_resource type="Resource" id="3_9"]
+script = ExtResource("3")
+text = "展开的图册。与周围其他书卷不同，它没有密密麻麻的文字，只有一幅幅连续的图画。纸页边缘还留着被反复翻看的痕迹，扉页上写着：月族图书馆藏书。"
+
+[sub_resource type="Resource" id="3_10"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "都是图画，这是给小孩子看的吗？"
+
+[sub_resource type="Resource" id="3_11"]
+script = ExtResource("3")
+text = "画册前半部分，日族与月族会一起出现。有人在白昼下耕作，有人在长夜中寻找水源；他们交换食物与水，一起商议决策、休闲娱乐。他们的脸上挂着笑容。\n可最后几页，画面出现了奇怪的变化，有些人物的表情被改成了悲伤，原本空着的手上被添上了刀剑、长矛，画面的角落也被画上了武器。\n最后一页，原本画的是在广场上一起庆祝节日的集会，但现在每个人的表情都被改了，全都是悲伤的表情。"
+
+[sub_resource type="Resource" id="3_12"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "这些月族人……有和我一样的耳朵和尾巴……"
+
+[sub_resource type="Resource" id="3_13"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "他们曾经毫无嫌隙地生活在一起。后来究竟发生了什么事情……"
+
+[sub_resource type="Resource" id="3_14"]
+script = ExtResource("3")
+text = "石碑立在书架之间，碑身布满细密的裂痕。岁月已经磨去了大半刻痕，唯有中央的一句话仍清晰可辨：“昼与夜相依，日与月相生。”"
+
+[sub_resource type="Resource" id="3_15"]
+script = ExtResource("3")
+text = "书架深处压着一本厚重的笔记。封面已经褪色，纸页皱皱巴巴，边角也有点卷曲，显然曾被一次又一次翻阅。"
+
+[sub_resource type="Resource" id="3_16"]
+script = ExtResource("3")
+text = "我们曾经共同生活在这片土地上。日族守护白昼，在阳光下耕种、劳作；月族行走长夜，循着月色寻找水源。\n没有人问水属于谁。因为所有人都知道，水若不能流动，便无法抵达需要它的地方。水像一条看不见的线，将昼与夜缝在一起，我们从未觉得彼此有什么不同。"
+
+[sub_resource type="Resource" id="3_17"]
+script = ExtResource("3")
+text = "最初，我们只是拥有不同的分工。后来，白昼与长夜，将我们带向不同的道路，也让我们渐渐习惯只与自己的族人同行。我们开始用不同的名字称呼自己，自然而然形成了界限，我们站在这界限的两边，互相推搡。"
+
+[sub_resource type="Resource" id="3_18"]
+script = ExtResource("3")
+text = "后来，我们惊讶地发现昼与夜并非永恒。日族越强，白昼便越长；月族越强，长夜便越长。若让另一方永远消失，世界是否就永远属于我们？当第一次有人指出这问题时，一切都失控了。"
+
+[sub_resource type="Resource" id="3_19"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "原来如此……"
+
+[sub_resource type="Resource" id="3_20"]
+script = ExtResource("3")
+text = "可这个世界不属于日，也不属于月。昼与夜彼此成全，水与土地相互依存。一方存在的意义，从来都不在自己之中。可当我终于看清这一点时，已经太迟了。"
+
+[sub_resource type="Resource" id="3_21"]
+script = ExtResource("3")
+text = "决战只剩两日。世界将会朝一边倾覆，而另一边同样得不到幸福。"
+
+[sub_resource type="Resource" id="3_22"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "日族宫殿里的痕迹，还有这里留下的文字，都在讲同一场战争。那场战争，月族战败了，世界也不再是原来的世界了。"
+
+[sub_resource type="Resource" id="3_23"]
+script = ExtResource("3")
+text = "他们同时拥有……同生于这片天地……新世界……"
+
+[sub_resource type="Resource" id="3_24"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "欸？这页内容好模糊……看不懂啊。"
+
+[sub_resource type="Resource" id="3_25"]
+script = ExtResource("3")
+text = "书架尽头立着一座狼形的雕塑。它双耳高竖，前爪捧着一卷书册。石制的书页有小块缺损，唯有它闭合的双眼仍保存着最初的轮廓。"
+
+[sub_resource type="Resource" id="3_26"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "好想……摸摸他的耳朵。"
+
+[sub_resource type="Resource" id="3_27"]
+script = ExtResource("3")
+text = "纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。"
+
+[sub_resource type="Resource" id="3_28"]
+script = ExtResource("3")
+dialog_type = "独白"
+text = "这股力量，和之前的王冠好像。"
+
+[sub_resource type="Resource" id="3_30"]
+script = ExtResource("3")
+text = "水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动。"
+
+[node name="Chapter3" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Entrance_3_1_to_3_3" parent="." instance=ExtResource("2")]
+position = Vector2(180, -2920)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_1"), SubResource("3_2"), SubResource("3_3")])
+metadata/placement_note = "临时触发区：图书馆入口，待实景入口校准。"
+
+[node name="CollisionShape2D" parent="Entrance_3_1_to_3_3" index="0"]
+shape = SubResource("area")
+
+[node name="StarDesk_3_4_to_3_6" parent="." instance=ExtResource("2")]
+position = Vector2(0, -100)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_4"), SubResource("3_5"), SubResource("3_6")])
+metadata/placement_note = "临时触发区：观星桌案与放大镜尚无明确实体坐标；不发放道具。"
+
+[node name="CollisionShape2D" parent="StarDesk_3_4_to_3_6" index="0"]
+shape = SubResource("area")
+
+[node name="MoonDisk_3_7_to_3_8" parent="." instance=ExtResource("2")]
+position = Vector2(1950, -80)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_7"), SubResource("3_8")])
+metadata/placement_note = "临时触发区：月相刻盘尚无明确实体坐标。"
+
+[node name="CollisionShape2D" parent="MoonDisk_3_7_to_3_8" index="0"]
+shape = SubResource("area")
+
+[node name="PictureBook_3_9_to_3_13" parent="." instance=ExtResource("2")]
+position = Vector2(-2700, -100)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_9"), SubResource("3_10"), SubResource("3_11"), SubResource("3_12"), SubResource("3_13")])
+metadata/placement_note = "临时触发区：绘本尚无明确实体坐标。"
+
+[node name="CollisionShape2D" parent="PictureBook_3_9_to_3_13" index="0"]
+shape = SubResource("area")
+
+[node name="Stele_3_14" parent="." instance=ExtResource("2")]
+position = Vector2(-3000, -100)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_14")])
+metadata/placement_note = "临时触发区：谚语石碑尚无明确实体坐标。"
+
+[node name="CollisionShape2D" parent="Stele_3_14" index="0"]
+shape = SubResource("area")
+
+[node name="Notebook_3_15_to_3_24" parent="." instance=ExtResource("2")]
+position = Vector2(-4300, -100)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_15"), SubResource("3_16"), SubResource("3_17"), SubResource("3_18"), SubResource("3_19"), SubResource("3_20"), SubResource("3_21"), SubResource("3_22"), SubResource("3_23"), SubResource("3_24")])
+metadata/placement_note = "临时触发区：学者笔记尚无明确实体坐标；3-23/3-24 仅取正文第一版。"
+
+[node name="CollisionShape2D" parent="Notebook_3_15_to_3_24" index="0"]
+shape = SubResource("area")
+
+[node name="SageAndScroll_3_25_to_3_28" parent="." instance=ExtResource("2")]
+position = Vector2(1650, 1400)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_25"), SubResource("3_26"), SubResource("3_27"), SubResource("3_28")])
+metadata/placement_note = "临时展示区：贤者雕塑与残卷尚无明确实体坐标；不发放残卷，既有喷泉奖励独立。"
+
+[node name="CollisionShape2D" parent="SageAndScroll_3_25_to_3_28" index="0"]
+shape = SubResource("area")
+
+[node name="Epilogue_3_30" parent="." instance=ExtResource("2")]
+position = Vector2(900, -3000)
+enable_interaction = false
+use_export_settings = false
+story_lines = Array[ExtResource("3")]([SubResource("3_30")])
+metadata/placement_note = "临时结尾区域：《水的法则》；尚未与实际离场节点联动。"
+
+[node name="CollisionShape2D" parent="Epilogue_3_30" index="0"]
+shape = SubResource("area")

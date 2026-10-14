@@ -10,10 +10,13 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/SignalDoor/SignalDoor.tscn" id="8_sccv2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/SignalVanishBlocker/SignalVanishBlocker.tscn" id="9_es0s6"]
 [ext_resource type="Script" uid="uid://b1d7drhgx7ra0" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.gd" id="10_sunken_palace"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter2.tscn" id="12_chapter2"]
 [ext_resource type="TileSet" uid="uid://erbpx3namsju" path="res://Art/New/map1/map1.tres" id="11_flekk"]
 
 [node name="SunkenPalace" type="Node2D" unique_id=715814505]
 script = ExtResource("10_sunken_palace")
+
+[node name="Chapter2" parent="." instance=ExtResource("12_chapter2")]
 
 [node name="1" type="ColorRect" parent="." unique_id=834169181]
 visible = false
