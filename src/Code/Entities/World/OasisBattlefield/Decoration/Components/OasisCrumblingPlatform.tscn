@@ -1,17 +1,30 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://br2iafyty2hgj"]
 
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="1"]
-[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://d3v3y4c7t1nar" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="1"]
+[ext_resource type="Texture2D" uid="uid://d1l7p0nqflvhk" path="res://Art/New/component/extracted/platform_floating_rock_lower.png" id="2_d4knm"]
+[ext_resource type="Shader" uid="uid://coupyv8p6rmoo" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/dissolve_crumble.gdshader" id="2_shader"]
 
-[node name="OasisCrumblingPlatform" instance=ExtResource("1")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dissolve"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+shader_parameter/crack_intensity = 0.5
+shader_parameter/crack_width = 0.22
+shader_parameter/crack_color = Color(0, 0, 0, 1)
+shader_parameter/crack_scale = 14.0
+shader_parameter/dissolve_progress = 0.0
+shader_parameter/edge_width = 0.06
+shader_parameter/edge_color = Color(0.95, 0.65, 0.3, 1)
 
-[node name="VisualRect" parent="VisualRoot"]
+[node name="OasisCrumblingPlatform" unique_id=1431151287 instance=ExtResource("1")]
+scale = Vector2(1.4264884, 1.4264884)
+
+[node name="VisualRect" parent="VisualRoot" index="0"]
 self_modulate = Color(1, 1, 1, 0)
 
-[node name="CrackLine" parent="VisualRoot"]
+[node name="CrackLine" parent="VisualRoot" index="1"]
 self_modulate = Color(1, 1, 1, 0)
 
-[node name="OasisArt" type="Node2D" parent="VisualRoot"]
-script = ExtResource("2")
-metadata/kind = "crumble"
-metadata/target_path = "../.."
+[node name="Sprite2D" type="Sprite2D" parent="VisualRoot" index="2" unique_id=521583543]
+material = SubResource("ShaderMaterial_dissolve")
+scale = Vector2(0.077840656, 0.077840656)
+texture = ExtResource("2_d4knm")

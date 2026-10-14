@@ -1,18 +1,18 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://b3krbfef3qvtb"]
 
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="1"]
-[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://xmsqdhy4cvha" path="res://Art/New/component/extracted/platform_floating_rock_upper.png" id="2_t5cxb"]
 
-[node name="OasisMovingPlatform" instance=ExtResource("1")]
+[node name="OasisMovingPlatform" unique_id=920986103 instance=ExtResource("1")]
 show_path_preview = false
 
-[node name="VisualRect" parent="."]
+[node name="VisualRect" parent="." index="1"]
 self_modulate = Color(1, 1, 1, 0)
 
-[node name="TopHighlight" parent="."]
+[node name="TopHighlight" parent="." index="2"]
 self_modulate = Color(1, 1, 1, 0)
 
-[node name="OasisArt" type="Node2D" parent="."]
-script = ExtResource("2")
-metadata/kind = "moving"
-metadata/target_path = ".."
+[node name="Sprite2D" type="Sprite2D" parent="." index="6" unique_id=1140352604]
+position = Vector2(0, 10)
+scale = Vector2(0.119584724, 0.11152979)
+texture = ExtResource("2_t5cxb")

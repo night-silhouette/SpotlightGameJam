@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://yhp6y1bc4ewn"]
 
 [ext_resource type="Script" uid="uid://p3vkhdwhtj5y" path="res://Code/Entities/InteractiveComponent/OasisBoat/OasisBoat.gd" id="1_oasis_boat"]
+[ext_resource type="Texture2D" uid="uid://ck8gupu5udu3s" path="res://Art/New/component/extracted/vehicle_boat_wooden_rowboat.png" id="2_chhpr"]
 
 [sub_resource type="Curve2D" id="Curve2D_boat"]
 _data = {
@@ -8,11 +9,11 @@ _data = {
 }
 point_count = 2
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_deck"]
-size = Vector2(120, 24)
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_4mb1d"]
+points = PackedVector2Array(-76.5, -32.5, 126.5, -13.5, 106.5, 23.5, -38.5, 20.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_detector"]
-size = Vector2(110, 24)
+size = Vector2(151.26855, 19)
 
 [node name="OasisBoat" type="Path2D" unique_id=1923686483 groups=["interactive_component", "oasis_boat"]]
 curve = SubResource("Curve2D_boat")
@@ -27,8 +28,8 @@ loop = false
 collision_mask = 2
 
 [node name="SolidDeck" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D" unique_id=1361617645]
-position = Vector2(0, 12)
-shape = SubResource("RectangleShape2D_deck")
+position = Vector2(-8.231445, 11.5)
+shape = SubResource("ConvexPolygonShape2D_4mb1d")
 
 [node name="BoardingDetector" type="Area2D" parent="PathFollow2D/AnimatableBody2D" unique_id=801204866]
 position = Vector2(0, -6)
@@ -36,4 +37,11 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="DetectorShape" type="CollisionShape2D" parent="PathFollow2D/AnimatableBody2D/BoardingDetector" unique_id=326992002]
+position = Vector2(21.268555, -8)
 shape = SubResource("RectangleShape2D_detector")
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D" unique_id=117138206]
+z_index = -1
+position = Vector2(12.268539, 1.0000153)
+scale = Vector2(0.08131311, 0.08131311)
+texture = ExtResource("2_chhpr")
