@@ -12,6 +12,20 @@ signal MonologueRequested(lines: Array[String])
 @export var monologue_lines: Array[String] = []
 @export var interaction_action: StringName = &"interact"
 @export var use_export_settings: bool = true
+@export var enable_interaction: bool = true
+
+@export_group("进入区域对话")
+@export var show_enter_dialog: bool = false
+@export_multiline var enter_dialog_text: String = ""
+
+@export_group("首次交互对话")
+@export var show_first_dialog: bool = false
+@export_multiline var first_dialog_text: String = ""
+
+@export_group("后续交互对话")
+@export var show_repeat_dialog: bool = false
+@export_multiline var repeat_dialog_text: String = ""
+@export_group("")
 
 @onready var _prompt: Control = $PromptContainer
 @onready var _button: Button = $PromptContainer/PromptButton
@@ -39,7 +53,7 @@ func _physics_process(_delta: float) -> void:
 	_refresh_prompt()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_action_pressed(interaction_action) or _players.is_empty():
+	if not enable_interaction or not event.is_action_pressed(interaction_action) or _players.is_empty():
 		return
 	if event is InputEventMouseButton:
 		var shape := _collision_shape.shape as RectangleShape2D
@@ -53,7 +67,7 @@ func _unhandled_input(event: InputEvent) -> void:
 ## @param interactor 必须为当前重叠区域内有效的玩家节点。
 ## @return 交互成功返回 true，否则返回 false。
 func Interact(interactor: Node2D) -> bool:
-	if _dispatching or not is_instance_valid(interactor) or interactor not in _players:
+	if not enable_interaction or _dispatching or not is_instance_valid(interactor) or interactor not in _players:
 		return false
 	_dispatching = true
 	var is_description: bool = not _description_requested
@@ -65,10 +79,14 @@ func Interact(interactor: Node2D) -> bool:
 		lines.assign(description_lines)
 		DescriptionRequested.emit(lines)
 		SignalBus.ComponentDescriptionRequested.emit(self, lines)
+		if show_first_dialog:
+			SignalBus.DialogBox.emit(&"旁白", first_dialog_text)
 	else:
 		lines.assign(monologue_lines)
 		MonologueRequested.emit(lines)
 		SignalBus.ComponentMonologueRequested.emit(self, lines)
+		if show_repeat_dialog:
+			SignalBus.DialogBox.emit(&"独白", repeat_dialog_text)
 	_dispatching = false
 	return true
 
@@ -84,6 +102,8 @@ func LoadSaveData(data: Dictionary) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if (body.is_in_group("player") or body is CharacterBody2D) and body not in _players:
 		_players.append(body)
+		if show_enter_dialog:
+			SignalBus.DialogBox.emit(&"旁白", enter_dialog_text)
 	_refresh_prompt()
 
 func _on_body_exited(body: Node2D) -> void:
@@ -95,7 +115,9 @@ func _on_prompt_pressed() -> void:
 		Interact(_players[0])
 
 func _refresh_prompt() -> void:
-	_prompt.visible = not _players.is_empty()
+	_prompt.visible = enable_interaction and not _players.is_empty()
+	if not enable_interaction:
+		return
 	var bound_event := KeybindManager.GetPrimaryEventForAction(interaction_action)
 	_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 	if bound_event is InputEventMouseButton:

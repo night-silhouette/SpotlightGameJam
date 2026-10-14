@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://begpdtx5e6uy8" path="res://Code/Entities/InteractiveComponent/Lake/Lake.tscn" id="4_bci5y"]
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
+
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
 size = Vector2(96, 32)
 
@@ -57,3 +59,5 @@ metadata/_edit_lock_ = true
 [node name="Lake" parent="." unique_id=231864433 instance=ExtResource("4_bci5y")]
 position = Vector2(1292, 1656)
 scale = Vector2(1.6936214, 1.6936214)
+
+[node name="Chapter1" parent="." instance=ExtResource("5_chapter")]
