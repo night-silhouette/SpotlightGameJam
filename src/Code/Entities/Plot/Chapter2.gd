@@ -45,7 +45,7 @@ func _play_next() -> void:
 	var lines := trigger.story_lines
 	while _line_index < lines.size():
 		var line := lines[_line_index]
-		SignalBus.DialogBox.emit(StringName(line.dialog_type), line.text)
+		trigger.ShowStoryDialogLine(line)
 		await _dialog_box.Closed
 		if generation != _generation or not is_inside_tree():
 			return

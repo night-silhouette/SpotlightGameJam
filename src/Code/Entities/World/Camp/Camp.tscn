@@ -9,6 +9,12 @@
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="6_qv0jn"]
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
+[sub_resource type="Resource" id="Resource_68lmy"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这帐篷……是用无数片颜色各异的碎布料拼凑缝补的。有人在这里生活过？"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_base"]
 size = Vector2(96, 32)
 
@@ -50,6 +56,17 @@ script = ExtResource("6_qv0jn")
 text = "【靠近水源可快速补充水分】"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
+[sub_resource type="Resource" id="Resource_bvdhl"]
+script = ExtResource("6_qv0jn")
+text = "水面的涟漪倒映出一张完全陌生的脸。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_abrb0"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这，这是我吗……脸上是什么……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
 [sub_resource type="Resource" id="Line_1_4"]
 script = ExtResource("6_qv0jn")
 text = "冰凉舒缓的水滑入喉管。"
@@ -64,10 +81,20 @@ script = ExtResource("6_qv0jn")
 dialog_type = "独白"
 text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
 
+[sub_resource type="Resource" id="Reflection_enter_line"]
+script = ExtResource("6_qv0jn")
+text = "水面的涟漪倒映出一张完全陌生的脸。"
+
 [sub_resource type="Resource" id="Line_1_8"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
 text = "这，这是我吗……脸上是什么……"
+
+[sub_resource type="Resource" id="Resource_tf67n"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "不管怎样，看来我只能沿着这些线索继续走下去了。那么，先去画上人挥手的方向看看吧"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
@@ -85,6 +112,7 @@ metadata/_edit_lock_ = true
 [node name="Tent" parent="collision_layer" unique_id=1329819976 instance=ExtResource("2_rjnff")]
 position = Vector2(1672.0001, 1603.0001)
 scale = Vector2(2.0279982, 2.0279982)
+first_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_68lmy")])
 
 [node name="TileMapLayer" type="TileMapLayer" parent="collision_layer" unique_id=1261001140]
 position = Vector2(-51, 198)
@@ -115,13 +143,28 @@ opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResou
 [node name="WaterApproach_1_3_to_1_6" parent="Chapter1" index="0" unique_id=593165859]
 position = Vector2(1408, 1599)
 scale = Vector2(5.3155513, 2.2144632)
+enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0")])
+enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_4"), SubResource("Line_1_5"), SubResource("Line_1_6")])
 
 [node name="Reflection_1_7_to_1_8" parent="Chapter1" index="1" unique_id=229158232]
-position = Vector2(1615, 1571)
-enter_dialog_text = "水面的涟漪倒映出一张完全陌生的脸。"
+position = Vector2(1612, 1570)
+disable_movement_during_dialog = true
+enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Reflection_enter_line")])
 enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_8")])
+
+[node name="SteleStory_1_12_to_1_14" parent="Chapter1" index="2" unique_id=28622851]
+position = Vector2(1963, 1576)
+enable_interaction = true
+story_lines = Array[ExtResource("6_qv0jn")]([])
+metadata/placement_note = "临时触发区：Camp 目前没有残碑实体。请在放入残碑后移动至实际物件位置。"
+
+[node name="LeaveStory_1_15" parent="Chapter1" index="3" unique_id=1367280678]
+position = Vector2(2287, 1572)
+enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_tf67n")])
+enter_dialog_once = true
+story_lines = Array[ExtResource("6_qv0jn")]([])
 
 [node name="Chapter5" parent="." unique_id=952693905 instance=ExtResource("6_chapter5")]
 

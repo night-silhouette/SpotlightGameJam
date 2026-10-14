@@ -1,4 +1,4 @@
-extends Area2D
+extends InteractableComponent
 class_name Tent
 
 ## 帐篷重生点：玩家靠近时可右键点击帐篷或上方提示按钮激活。
@@ -18,35 +18,22 @@ class_name Tent
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var tent_sprite: CanvasItem = $TentVisual
 @onready var light_glow: PointLight2D = $LightGlow
-@onready var prompt_container: Control = $PromptContainer
-@onready var prompt_button: Button = $PromptContainer/PromptButton
-@onready var key_badge: Label = $PromptContainer/HBox/KeyBadge
 @onready var action_label: Label = $PromptContainer/HBox/ActionLabel
 @onready var status_label: Label = $StatusLabel
 
-var _player_in_range: bool = false
-var _cached_player: Node2D = null
 var _glow_tween: Tween = null
 
 func _ready() -> void:
+	super._ready()
 	_sync_from_export_settings()
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
-	if prompt_button:
-		prompt_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
-		prompt_button.pressed.connect(_on_prompt_pressed)
-	if SignalBus:
-		SignalBus.TentActivated.connect(_on_tent_activated_externally)
+	SignalBus.TentActivated.connect(_on_tent_activated_externally)
 	_update_visual_state()
 
-func _process(_delta: float) -> void:
-	if not _player_in_range:
-		return
-	var bound_event := KeybindManager.GetPrimaryEventForAction(ExportSettings.interactable_action)
-	prompt_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
-	if bound_event is InputEventMouseButton:
-		prompt_button.button_mask |= 1 << (bound_event.button_index - 1)
-	key_badge.text = KeybindManager.GetActionKeyBadgeText(ExportSettings.interactable_action, "右键")
+func Interact(interactor: Node2D) -> bool:
+	if not super.Interact(interactor):
+		return false
+	ActivateTent()
+	return true
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -54,34 +41,6 @@ func _sync_from_export_settings() -> void:
 			respawn_offset = ExportSettings.tent_respawn_offset
 		if "tent_interaction_size" in ExportSettings and collision_shape and collision_shape.shape is RectangleShape2D:
 			(collision_shape.shape as RectangleShape2D).size = ExportSettings.tent_interaction_size
-
-func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_action_pressed(ExportSettings.interactable_action):
-		return
-	if _player_in_range and is_instance_valid(_cached_player):
-		if event is InputEventMouseButton:
-			var shape := collision_shape.shape as RectangleShape2D
-			var point := collision_shape.to_local(get_global_mouse_position())
-			if not shape or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
-				return
-		ActivateTent()
-		get_viewport().set_input_as_handled()
-
-func _on_prompt_pressed() -> void:
-	if _player_in_range and is_instance_valid(_cached_player):
-		ActivateTent()
-
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player") or body is CharacterBody2D:
-		_player_in_range = true
-		_cached_player = body
-		_update_visual_state()
-
-func _on_body_exited(body: Node2D) -> void:
-	if body == _cached_player:
-		_player_in_range = false
-		_cached_player = null
-		_update_visual_state()
 
 ## 激活当前帐篷为重生点。
 func ActivateTent() -> void:
@@ -123,22 +82,15 @@ func _update_visual_state() -> void:
 		if status_label:
 			status_label.visible = false
 
-	# 交互提示与小圣杯保持一致
-	if _player_in_range:
-		if prompt_container:
-			prompt_container.visible = true
-		if action_label:
-			action_label.text = "重设重生点" if is_active else "设为重生点"
-		if key_badge:
-			key_badge.text = KeybindManager.GetActionKeyBadgeText(ExportSettings.interactable_action, "右键")
-	else:
-		if prompt_container:
-			prompt_container.visible = false
+	# 提示显示由 InteractableComponent 管理
+	if action_label:
+		action_label.text = "重设重生点" if is_active else "设为重生点"
 
 ## 导出帐篷持久化数据。
 ## @return 位置、重生偏移和激活状态组成的字典。
 func ExportSaveData() -> Dictionary:
-	return {
+	var data := super.ExportSaveData()
+	data.merge({
 		"position_x": global_position.x,
 		"position_y": global_position.y,
 		"respawn_offset_x": respawn_offset.x,
@@ -146,11 +98,13 @@ func ExportSaveData() -> Dictionary:
 		"respawn_world_x": GetRespawnPosition().x,
 		"respawn_world_y": GetRespawnPosition().y,
 		"is_active": is_active
-	}
+	})
+	return data
 
 ## 加载帐篷持久化数据。
 ## @param data 存档字典。
 func LoadSaveData(data: Dictionary) -> void:
+	super.LoadSaveData(data)
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(data["position_x"], data["position_y"])
 	if data.has("respawn_offset_x") and data.has("respawn_offset_y"):
