@@ -12,6 +12,7 @@ signal MonologueRequested(lines: Array[String])
 @export var monologue_lines: Array[String] = []
 @export var interaction_action: StringName = &"interact"
 @export var use_export_settings: bool = true
+@export var enable_interaction: bool = true
 
 @export_group("进入区域对话")
 @export var show_enter_dialog: bool = false
@@ -52,7 +53,7 @@ func _physics_process(_delta: float) -> void:
 	_refresh_prompt()
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not event.is_action_pressed(interaction_action) or _players.is_empty():
+	if not enable_interaction or not event.is_action_pressed(interaction_action) or _players.is_empty():
 		return
 	if event is InputEventMouseButton:
 		var shape := _collision_shape.shape as RectangleShape2D
@@ -66,7 +67,7 @@ func _unhandled_input(event: InputEvent) -> void:
 ## @param interactor 必须为当前重叠区域内有效的玩家节点。
 ## @return 交互成功返回 true，否则返回 false。
 func Interact(interactor: Node2D) -> bool:
-	if _dispatching or not is_instance_valid(interactor) or interactor not in _players:
+	if not enable_interaction or _dispatching or not is_instance_valid(interactor) or interactor not in _players:
 		return false
 	_dispatching = true
 	var is_description: bool = not _description_requested
@@ -114,7 +115,9 @@ func _on_prompt_pressed() -> void:
 		Interact(_players[0])
 
 func _refresh_prompt() -> void:
-	_prompt.visible = not _players.is_empty()
+	_prompt.visible = enable_interaction and not _players.is_empty()
+	if not enable_interaction:
+		return
 	var bound_event := KeybindManager.GetPrimaryEventForAction(interaction_action)
 	_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 	if bound_event is InputEventMouseButton:

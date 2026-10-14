@@ -1,0 +1,72 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Plot/Chapter1.gd" id="1_chapter"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="2_trigger"]
+
+[sub_resource type="RectangleShape2D" id="WaterArea"]
+size = Vector2(350, 160)
+
+[sub_resource type="RectangleShape2D" id="ReflectionArea"]
+size = Vector2(90, 90)
+
+[sub_resource type="RectangleShape2D" id="LandmarkArea"]
+size = Vector2(100, 100)
+
+[node name="Chapter1" type="Node2D"]
+script = ExtResource("1_chapter")
+
+[node name="WaterApproach_1_3_to_1_6" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(1292, 1580)
+enable_interaction = false
+use_export_settings = false
+metadata/chapter_event = 1
+
+[node name="CollisionShape2D" parent="WaterApproach_1_3_to_1_6" index="0"]
+shape = SubResource("WaterArea")
+
+[node name="Reflection_1_7_to_1_8" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(1410, 1600)
+enable_interaction = false
+use_export_settings = false
+metadata/chapter_event = 2
+
+[node name="CollisionShape2D" parent="Reflection_1_7_to_1_8" index="0"]
+shape = SubResource("ReflectionArea")
+
+[node name="TentStory_1_9" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(1672, 1603)
+enable_interaction = false
+use_export_settings = false
+metadata/chapter_event = 3
+
+[node name="CollisionShape2D" parent="TentStory_1_9" index="0"]
+shape = SubResource("LandmarkArea")
+
+[node name="CloakStory_1_10" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(1760, 1650)
+enable_interaction = false
+use_export_settings = false
+metadata/chapter_event = 4
+metadata/placement_note = "临时触发区：Camp 目前没有斗篷实体。请在放入斗篷后移动至实际物件位置；这里只播放 1-10 文案，不执行拾取。"
+
+[node name="CollisionShape2D" parent="CloakStory_1_10" index="0"]
+shape = SubResource("LandmarkArea")
+
+[node name="SteleStory_1_12_to_1_14" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(1680, 1500)
+enable_interaction = false
+use_export_settings = false
+metadata/chapter_event = 5
+metadata/placement_note = "临时触发区：Camp 目前没有残碑实体。请在放入残碑后移动至实际物件位置。"
+
+[node name="CollisionShape2D" parent="SteleStory_1_12_to_1_14" index="0"]
+shape = SubResource("LandmarkArea")
+
+[node name="LeaveStory_1_15" parent="." instance=ExtResource("2_trigger")]
+position = Vector2(1940, 1603)
+enable_interaction = false
+use_export_settings = false
+metadata/chapter_event = 6
+
+[node name="CollisionShape2D" parent="LeaveStory_1_15" index="0"]
+shape = SubResource("LandmarkArea")
