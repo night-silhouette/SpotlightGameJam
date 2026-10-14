@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Plot/chapter/ChapterTrigger.gd" id="1_trigger"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterCard.tscn" id="2_card"]
+
+[sub_resource type="RectangleShape2D" id="Shape"]
+size = Vector2(64, 64)
+
+[node name="ChapterTrigger" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_trigger")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("Shape")
+
+[node name="ChapterCardLayer" parent="." instance=ExtResource("2_card")]
+
+[node name="ChapterCard" parent="ChapterCardLayer" index="0"]
+auto_play = false
+
+[editable path="ChapterCardLayer"]

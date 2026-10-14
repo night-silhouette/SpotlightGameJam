@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -18,7 +19,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yocbw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_acpp2"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -52,7 +53,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mvgin"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_terh4"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -74,7 +75,7 @@ script = ExtResource("2_mkscu")
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
-position = Vector2(1441, 3)
+position = Vector2(1470, 2)
 scale = Vector2(1.2, 1.2)
 speed = 250.0
 is_hp_draining = true
@@ -84,23 +85,23 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_yocbw")
+material = SubResource("ShaderMaterial_acpp2")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_mvgin")
+material = SubResource("ShaderMaterial_terh4")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_mvgin")
+material = SubResource("ShaderMaterial_terh4")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_mvgin")
+material = SubResource("ShaderMaterial_terh4")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(1441, 3)
+position = Vector2(1470, 2)
 scale = Vector2(1.2, 1.2)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
-position = Vector2(1442.5927, 10.9637785)
+position = Vector2(1471.5927, 9.9637785)
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]
@@ -117,7 +118,7 @@ position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
-position = Vector2(-126, 3234)
+position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
@@ -174,5 +175,15 @@ right_surface = "Brick"
 right_footstep_bus = &"SFX_Footstep_Dry"
 right_move_bus = &"SFX_Move_Dry"
 
+[node name="chapter" type="Node2D" parent="." unique_id=516342595]
+position = Vector2(2119, -18)
+scale = Vector2(0.42096186, 3.7220325)
+
+[node name="ChapterTrigger" parent="chapter" unique_id=2099740132 instance=ExtResource("10_mvgin")]
+chapter_text = "烈阳遗梦"
+
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
+[editable path="OasisBattlefield"]
+[editable path="OasisBattlefield/ReturnPhase/MovingPlatform2"]
+[editable path="OasisBattlefield/ReturnPhase/ReturnCornerBrickPatch"]

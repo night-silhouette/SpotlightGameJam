@@ -7,8 +7,9 @@ var completed: bool = false
 var _rune_order: PackedStringArray = ["sun", "moon", "weave"]
 var submitted_keys: Array[String] = []
 var fountain_active: bool = false
-# 奖励领取记录独立于玩家当前持有状态；残卷交给主城水池后也不能再次领取。
+# 领取状态死亡后可重置；献湖状态永久保留。
 var codex_claimed: bool = false
+var codex_offered: bool = false
 var _elapsed: float = 0.0
 var _player: CharacterBody2D
 var _owns_player: bool = false
@@ -20,6 +21,7 @@ var _fountain_fall_death_requested: bool = false
 var _previous_fountain_point := Vector2.ZERO
 var _has_previous_fountain_point: bool = false
 var _slow_descent_camera: bool = false
+var _has_explicit_codex_offered: bool = false
 
 func _ready() -> void:
 	var configured: PackedStringArray = ExportSettings.level2_rune_order
@@ -29,6 +31,9 @@ func _ready() -> void:
 	$Rooms/WeaveArchive/RoomHint.text = "石碑线索：" + str(names[_rune_order[0]]) + " → " + str(names[_rune_order[1]]) + " → " + str(names[_rune_order[2]]) + "。错误会重置顺序。"
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
+	SignalBus.PlayerDied.connect(_on_player_died)
+	SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
+	SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
 	SignalBus.PlayerBeforeMotion.connect(_on_player_before_motion)
 	$Rooms/SurfaceExit/FinishArea.body_entered.connect(_on_exit_reached)
 	for platform in find_children("*", "AnimatableBody2D", true, false):
@@ -203,14 +208,36 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
 				fountain_active = true
-				if not codex_claimed:
+				if not codex_claimed and not codex_offered:
 					codex_claimed = true
-					SignalBus.lock2.emit()
-					_toast("获得观星者残卷！水泵启动，沿喷泉升回地表，将残卷带回主城水池。", 7.0)
+					if not bool(player.get("has_starseekers_codex")):
+						SignalBus.lock2.emit()
+						_toast("获得观星者残卷！水泵启动，沿喷泉升回地表，将残卷带回主城水池。", 7.0)
+					else:
+						_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
 				else:
 					_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
 			_refresh()
 	SignalBus.Level2StateChanged.emit(self)
+
+func _on_player_died(player: Node2D) -> void:
+	if player != get_tree().get_first_node_in_group(&"player") or codex_offered:
+		return
+	codex_claimed = false
+
+func _on_relic_consumed(relic: StringName) -> void:
+	if relic == &"codex":
+		codex_offered = true
+		codex_claimed = true
+
+func _on_save_loaded(_slot: int) -> void:
+	var player := get_tree().get_first_node_in_group(&"player")
+	if not is_instance_valid(player):
+		return
+	var carrying := bool(player.get("has_starseekers_codex"))
+	if not _has_explicit_codex_offered and bool(player.get("enable_rope")) and not carrying:
+		codex_offered = true
+	codex_claimed = codex_offered or carrying
 
 func _on_respawned(_position: Vector2) -> void:
 	var from_fountain_fall := _fountain_fall_death_requested
@@ -260,7 +287,7 @@ func _refresh() -> void:
 
 ## 导出钥匙、谜题、通关和残卷领取状态；由现有存档系统保存，地图本身不写文件。
 func ExportSaveData() -> Dictionary:
-	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed}
+	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed, "codex_offered": codex_offered}
 
 ## 还原关卡状态；data 为 ExportSaveData 返回的字典，未知钥匙会被忽略。
 func LoadSaveData(data: Dictionary) -> void:
@@ -275,8 +302,10 @@ func LoadSaveData(data: Dictionary) -> void:
 		if str(key) in keys and not str(key) in submitted_keys:
 			submitted_keys.append(str(key))
 	fountain_active = bool(data.get("fountain_active", false)) and submitted_keys.size() == 3
-	# 旧存档尚未发放残卷：允许再次与喷泉交互补领；读档本身不发奖励信号。
-	codex_claimed = bool(data.get("codex_claimed", false))
+	# 玩家数据可能尚未加载；在 SaveSlotLoaded 后统一根据最终持有状态同步。
+	_has_explicit_codex_offered = data.has("codex_offered")
+	codex_offered = bool(data.get("codex_offered", false))
+	codex_claimed = codex_offered or bool(data.get("codex_claimed", false))
 	puzzle_solved = bool(data.get("puzzle_solved", false))
 	completed = bool(data.get("completed", false)) and fountain_active
 	rune_progress = _rune_order.size() if puzzle_solved else clampi(int(data.get("rune_progress", 0)), 0, maxi(0, _rune_order.size() - 1))

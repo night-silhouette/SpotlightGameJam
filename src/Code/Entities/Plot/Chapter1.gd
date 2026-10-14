@@ -40,7 +40,11 @@ func _run_event(event_index: int) -> void:
 	var lines: Array[PlotDialogLine] = _event_lines(event_index)
 	while _line_index < lines.size():
 		var line := lines[_line_index]
-		SignalBus.DialogBox.emit(StringName(line.dialog_type), line.text)
+		var trigger := get_child(event_index - 1) as InteractableComponent if event_index > 0 else null
+		if trigger != null:
+			trigger.ShowStoryDialogLine(line)
+		else:
+			SignalBus.DialogBox.emit(StringName(line.dialog_type), line.text)
 		await _dialog_box.Closed
 		if generation != _generation or not is_inside_tree():
 			return

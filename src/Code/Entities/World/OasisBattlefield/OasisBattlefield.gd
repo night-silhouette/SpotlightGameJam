@@ -19,6 +19,11 @@ var _in_return_phase: bool = false
 var _boat_departure_triggered: bool = false
 var _chase_finished: bool = false
 var _chase_activation_pending: bool = false
+var _bone_claimed: bool = false
+var _bone_offered: bool = false
+var _loaded_checkpoint: bool = false
+var _loaded_respawn_position: Vector2 = Vector2.ZERO
+var _reset_chase_on_respawn: bool = false
 
 
 func _ready() -> void:
@@ -28,6 +33,9 @@ func _ready() -> void:
 		SignalBus.ComponentInteracted.connect(_on_component_interacted)
 	if not SignalBus.PlayerRespawned.is_connected(_on_player_respawned):
 		SignalBus.PlayerRespawned.connect(_on_player_respawned)
+	SignalBus.PlayerDied.connect(_on_player_died)
+	SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
+	SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
 	_get_boat_area.body_entered.connect(_on_get_boat_body_entered)
 	_the_end_area.body_entered.connect(_on_the_end_body_entered)
 	if start_in_return_phase:
@@ -35,6 +43,7 @@ func _ready() -> void:
 	else:
 		_set_phase_enabled(outward_phase, true)
 		_set_phase_enabled(return_phase, false)
+	_refresh_bone()
 
 
 ## 切换到返程/追逐阶段，启用返程内容、关闭去程内容，并在追逐者可用时开始追逐。
@@ -60,21 +69,23 @@ func SwitchToReturnPhase() -> void:
 ## 骨头收集完成后的关卡入口；调用后切换到返程/追逐阶段。
 func OnBoneCollected() -> void:
 	_chase_activation_pending = false
-	if _in_return_phase:
+	if _in_return_phase or _bone_claimed or _bone_offered:
 		return
 
 	# 1. 骨头拾取后立即将玩家重生点锁定至复活节点
 	var player := get_tree().get_first_node_in_group(&"player")
-	if is_instance_valid(player) and player.has_method(&"SetRespawnPosition"):
+	if not is_instance_valid(player) or float(player.get("now_HP")) <= 0.0:
+		return
+	if player.has_method(&"SetRespawnPosition"):
 		player.call(&"SetRespawnPosition", _get_chase_respawn_position())
 
-	# 2. 触发即时持久化存档（复活点兼存档点）
-	SaveManager.AutoSave(get_tree())
-
-	# 3. 发射信号（严格遵守不改动 SignalBus 约定的动态发送）
+	# 拾取与发奖先于存档，使复活点、地图和玩家持有状态一起落盘。
+	_bone_claimed = true
+	_refresh_bone()
 	if SignalBus.has_signal(&"lock3"):
 		SignalBus.emit_signal(&"lock3")
 	SwitchToReturnPhase()
+	SaveManager.AutoSave(get_tree())
 
 
 ## 导出第三关关卡与复活点存档数据
@@ -84,36 +95,51 @@ func ExportSaveData() -> Dictionary:
 		"checkpoint_reached": _in_return_phase or is_instance_valid(chase_respawn_point),
 		"respawn_x": respawn_pos.x,
 		"respawn_y": respawn_pos.y,
+		"bone_claimed": _bone_claimed,
+		"bone_offered": _bone_offered,
 	}
 
 
-## 从存档还原第三关状态：
-## 进入游戏读取存档进关卡时，将玩家放置在复活节点，场景保持追逐战前待交互状态。
+## 从存档还原第三关状态；若仍持有骨头则恢复返程，否则在拾取点待交互。
 func LoadSaveData(data: Dictionary) -> void:
-	if not bool(data.get("checkpoint_reached", false)):
-		return
+	_bone_offered = bool(data.get("bone_offered", false))
+	_bone_claimed = _bone_offered or bool(data.get("bone_claimed", false))
+	_loaded_checkpoint = bool(data.get("checkpoint_reached", false))
+	if _loaded_checkpoint:
+		_loaded_respawn_position = Vector2(
+			float(data.get("respawn_x", _get_chase_respawn_position().x)),
+			float(data.get("respawn_y", _get_chase_respawn_position().y))
+		)
+	_refresh_bone()
 
-	# 1. 确保追逐实体完全归位原点并停止
+	# 先恢复场景，玩家持有状态和存档点位置待所有实体加载后同步。
 	if is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):
 		_chaser.call(&"ResetChase")
-
-	# 2. 场景保持追逐战前待交互状态
 	_in_return_phase = false
 	_chase_activation_pending = false
 	_chase_finished = false
 	_set_phase_enabled(outward_phase, true)
 	_set_phase_enabled(return_phase, false)
 
-	# 3. 将玩家精准定位到该复活/存档点并同步重生坐标
-	var respawn_pos := Vector2(
-		float(data.get("respawn_x", _get_chase_respawn_position().x)),
-		float(data.get("respawn_y", _get_chase_respawn_position().y))
-	)
+
+func _on_save_loaded(_slot: int) -> void:
 	var player := get_tree().get_first_node_in_group(&"player")
-	if is_instance_valid(player):
-		player.global_position = respawn_pos
+	if not is_instance_valid(player):
+		return
+	var carrying := bool(player.get("has_scarred_bones"))
+	_bone_claimed = _bone_offered or carrying
+	_refresh_bone()
+	if _loaded_checkpoint:
+		player.global_position = _loaded_respawn_position
 		if player.has_method(&"SetRespawnPosition"):
-			player.call(&"SetRespawnPosition", respawn_pos)
+			player.call(&"SetRespawnPosition", _loaded_respawn_position)
+		_loaded_checkpoint = false
+	if carrying and not _bone_offered:
+		SwitchToReturnPhase()
+	elif _in_return_phase and not _bone_offered:
+		_in_return_phase = false
+		_set_phase_enabled(outward_phase, true)
+		_set_phase_enabled(return_phase, false)
 
 
 func _set_phase_enabled(phase: Node2D, enabled: bool) -> void:
@@ -140,14 +166,45 @@ func _on_blocker_vanished(blocker: Node2D) -> void:
 		_boat.SolvePuzzle("vanishing_blocker")
 
 
-func _on_component_interacted(component: Node2D, _interactor: Node2D) -> void:
-	if not _in_return_phase and not _chase_activation_pending and component == _bone_interactable:
+func _on_component_interacted(component: Node2D, interactor: Node2D) -> void:
+	if not _in_return_phase and not _chase_activation_pending and not _bone_claimed and not _bone_offered and component == _bone_interactable:
+		if bool(interactor.get("has_scarred_bones")):
+			_bone_claimed = true
+			_refresh_bone()
+			return
 		# Interaction can originate from a physics callback; switch outside the query flush.
 		_chase_activation_pending = true
 		call_deferred(&"OnBoneCollected")
 
 
+func _on_player_died(player: Node2D) -> void:
+	if player != get_tree().get_first_node_in_group(&"player"):
+		return
+	var return_tiles: TileMapLayer = $ReturnPhase/ReturnTileMap
+	_reset_chase_on_respawn = _in_return_phase and return_tiles.get_used_rect().has_point(return_tiles.local_to_map(return_tiles.to_local(player.global_position)))
+	if _bone_claimed and not _bone_offered:
+		_reset_chase_on_respawn = _reset_chase_on_respawn or _in_return_phase
+		_bone_claimed = false
+		_refresh_bone()
+
+
+func _on_relic_consumed(relic: StringName) -> void:
+	if relic != &"bones":
+		return
+	_bone_offered = true
+	_bone_claimed = true
+	_refresh_bone()
+
+
+func _refresh_bone() -> void:
+	_bone_interactable.visible = not _bone_claimed and not _bone_offered
+	_bone_interactable.set("enable_interaction", _bone_interactable.visible)
+
+
 func _on_player_respawned(_respawn_position: Vector2) -> void:
+	if not _reset_chase_on_respawn:
+		return
+	_reset_chase_on_respawn = false
 	# 无论是复活前已经进入追逐，还是出生在追逐战复活点，都重置为待交互追逐状态
 	_chase_activation_pending = false
 	_chase_finished = false

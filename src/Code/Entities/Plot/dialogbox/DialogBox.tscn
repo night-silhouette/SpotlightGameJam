@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/Plot/dialogbox/DialogBox.gd" id="1_dialog"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/NarrationPanel.tscn" id="2_narration"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBox_dialog"]
 bg_color = Color(0.07, 0.09, 0.14, 0.94)
@@ -26,6 +27,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="NarrationPanel" parent="Root" instance=ExtResource("2_narration")]
 
 [node name="Box" type="PanelContainer" parent="Root"]
 visible = false
@@ -53,7 +56,7 @@ theme_override_constants/separation = 8
 [node name="Title" type="Label" parent="Root/Box/Margin/Content"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 22
-text = "旁白"
+text = "独白"
 
 [node name="Text" type="Label" parent="Root/Box/Margin/Content"]
 layout_mode = 2
@@ -65,4 +68,10 @@ vertical_alignment = 1
 [node name="Close" type="Button" parent="Root/Box/Margin/Content"]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "关闭"
+focus_mode = 0
+theme_override_font_sizes/font_size = 12
+text = "X键跳过"
+
+[node name="AutoCloseTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
