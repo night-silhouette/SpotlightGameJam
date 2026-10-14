@@ -77,6 +77,12 @@ func _ready() -> void:
 
 func _physics_process(_delta: float) -> void:
 	_players = _players.filter(func(player: Node2D) -> bool: return is_instance_valid(player))
+	for input_control in _locked_players:
+		if not is_instance_valid(input_control):
+			continue
+		var player := input_control.get_parent() as Player
+		if player != null and player.is_on_floor() and player.move_state_machine.cur_state_name == "fall":
+			input_control.set("is_idle", true)
 	_refresh_prompt()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -163,7 +169,23 @@ func _lock_players() -> void:
 		input_control.set("is_double_jump", false)
 		input_control.set("is_dash", false)
 		input_control.set("is_run", false)
-		input_control.set("is_idle", player is CharacterBody2D and player.is_on_floor())
+		var wait_for_run: bool = player is Player and player.move_state_machine.cur_state_name == "run"
+		input_control.set("is_idle", player is CharacterBody2D and player.is_on_floor() and not wait_for_run)
+		if wait_for_run:
+			_finish_running_cycle(player, input_control)
+
+func _finish_running_cycle(player: Player, input_control: Node) -> void:
+	var animation := player.ani_move.get_animation("run")
+	var remaining := (animation.length - player.ani_move.current_animation_position) / absf(player.ani_move.get_playing_speed())
+	await get_tree().create_timer(maxf(remaining, 0.0)).timeout
+	if not is_inside_tree() or not is_instance_valid(player) or not _locked_players.has(input_control):
+		return
+	if player.move_state_machine.cur_state_name == "run":
+		if player.is_on_floor():
+			input_control.set("is_idle", true)
+			player.move_state_machine.change_state("idle")
+		else:
+			player.move_state_machine.change_state("fall")
 
 func _unlock_players() -> void:
 	for input_control in _locked_players:
