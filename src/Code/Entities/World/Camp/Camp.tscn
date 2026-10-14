@@ -63,31 +63,46 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 [sub_resource type="Resource" id="Resource_abrb0"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "这，这是我吗……脸上是什么……"
+text = "这，这是我吗……脸上是什么……w"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Line_1_4"]
-script = ExtResource("6_qv0jn")
-text = "冰凉舒缓的水滑入喉管。"
-
-[sub_resource type="Resource" id="Line_1_5"]
-script = ExtResource("6_qv0jn")
-dialog_type = "独白"
-text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
-
-[sub_resource type="Resource" id="Line_1_6"]
-script = ExtResource("6_qv0jn")
-dialog_type = "独白"
-text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
 
 [sub_resource type="Resource" id="Reflection_enter_line"]
 script = ExtResource("6_qv0jn")
 text = "水面的涟漪倒映出一张完全陌生的脸。"
 
+[sub_resource type="Resource" id="Resource_qv0jn"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这，这是我吗……脸上是什么……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
 [sub_resource type="Resource" id="Line_1_8"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
 text = "这，这是我吗……脸上是什么……"
+
+[sub_resource type="Resource" id="Resource_1khv5"]
+script = ExtResource("6_qv0jn")
+text = "残破的石碑，上方一行字，下方有刻痕形成的图案，经历了风吹日晒，还附着着很多沙土，均已有些模糊不清。图案是几个火柴人影，看起来像是高举手臂，整个身体向上延伸"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_wx588"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这上面有字，“寻找，直到最后XXXXX。”好难辨认，后面几个字几乎看不清了"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_na041"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "还有……这是一幅画吗？画上的人在干什么，好像在朝着远处挥手？这些竖道又是什么……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_0yts4"]
+script = ExtResource("6_qv0jn")
+dialog_type = "独白"
+text = "这是谁留下的，为什么偏偏出现在这里？他似乎知道些什么……难道他也曾像我一样，不知何去何从……"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_tf67n"]
 script = ExtResource("6_qv0jn")
@@ -111,6 +126,7 @@ metadata/_edit_lock_ = true
 [node name="Tent" parent="collision_layer" unique_id=1329819976 instance=ExtResource("2_rjnff")]
 position = Vector2(1672.0001, 1603.0001)
 scale = Vector2(2.0279982, 2.0279982)
+show_first_dialog = true
 first_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_68lmy")])
 
 [node name="TileMapLayer" type="TileMapLayer" parent="collision_layer" unique_id=1261001140]
@@ -124,35 +140,40 @@ position = Vector2(1292, 1656)
 scale = Vector2(1.6936214, 1.6936214)
 
 [node name="CollisionShape2D" parent="Lake" index="3" unique_id=1216154260]
-position = Vector2(1.0967255e-05, -28.932087)
-scale = Vector2(1.0590968, 1.0590968)
+position = Vector2(-0.5904398, -10.628114)
+scale = Vector2(1.002371, 0.4668637)
 
 [node name="Chapter1" parent="." unique_id=257404343 instance=ExtResource("5_chapter")]
 position = Vector2(-116, 4)
 opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResource("Line_1_2"), SubResource("Resource_yo42o")])
 
 [node name="WaterApproach_1_3_to_1_6" parent="Chapter1" index="0" unique_id=593165859]
-position = Vector2(1408, 1599)
-scale = Vector2(5.3155513, 2.2144632)
+position = Vector2(1407, 1640.0001)
+scale = Vector2(5.121913, 1.2101797)
+show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0")])
 enter_dialog_once = true
-story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_4"), SubResource("Line_1_5"), SubResource("Line_1_6")])
+story_lines = Array[ExtResource("6_qv0jn")]([])
 
 [node name="Reflection_1_7_to_1_8" parent="Chapter1" index="1" unique_id=229158232]
-position = Vector2(1612, 1570)
+position = Vector2(1624, 1570)
 disable_movement_during_dialog = true
-enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Reflection_enter_line")])
+show_enter_dialog = true
+enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Reflection_enter_line"), SubResource("Resource_qv0jn")])
 enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_8")])
 
 [node name="SteleStory_1_12_to_1_14" parent="Chapter1" index="2" unique_id=28622851]
-position = Vector2(1963, 1576)
+position = Vector2(1959, 1575)
 enable_interaction = true
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_1khv5"), SubResource("Resource_wx588"), SubResource("Resource_na041"), SubResource("Resource_0yts4")])
 story_lines = Array[ExtResource("6_qv0jn")]([])
 metadata/placement_note = "临时触发区：Camp 目前没有残碑实体。请在放入残碑后移动至实际物件位置。"
 
 [node name="LeaveStory_1_15" parent="Chapter1" index="3" unique_id=1367280678]
 position = Vector2(2287, 1572)
+show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_tf67n")])
 enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([])
