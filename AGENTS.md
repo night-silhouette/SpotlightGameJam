@@ -58,22 +58,10 @@ Code/
 ## 九、通信
 - 实体之间的通信要使用信号总线(signalbus),来达到解耦的目的,实体状态变化的时候,都最好通过信号总线发送信号来通知其他实体,而不是直接调用其他实体的方法.
 
-## 杂项
-- 关于可交互物,InteractiveComponent 在这个文件夹里做一些可交互物,每一个都单独在这里开一个文件夹,与 WaterFlowArea 这个文件夹并行
-- 关于可交互物,如果他是那种需要f键交互的,那同时增加一个可用鼠标点击的ui,来触发交互,ui样式与Mini圣水杯的ui样式一致
+
 - C:\Users\jixiegm\Desktop\Godot_v4.7.2-stable_win64.exe"
 这是godot路径
 
 
-## 现有项目分析
 
-### 角色场景与存档流程
-- 正式世界场景是`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\World\World.tscn` ：第 56–62 行的结构为`World/PlayerWithCamera/Player` 。相机包装场景在`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\PlayerWithCamera\PlayerWithCamera.tscn` 第 19–23 行实例化`Player.tscn` ；角色本体及其输入、状态机、钩索控制器、HUD 节点见`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Player\Player.tscn` 第 1583、1603、1645、1705、1718 行。
-- 存档服务是`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Setting\SaveManager.gd` 。`SaveToSlot` （136–178 行）从当前场景递归收集具有`ExportSaveData` 的节点，以 相对节点路径 作`entities` 键（323–334 行），连同场景路径写入槽位 JSON。`LoadFromSlot` （185–244 行）必要时先切换场景、等待两帧，再还原；优先按路径匹配，未匹配时才按节点名或玩家特征兜底（248–290 行）。因此新交互物若需保存“已领取”，应有稳定的场景节点名和层级，避免多个实例在结构变更后仅靠同名兜底误配。
-- 角色的`ExportSaveData` /`LoadSaveData` 位于`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Player\Player.gd` 第 826–855 行：保存位置、血量、出生/重生点，以及永久二段跳和钩索状态；加载时通过`SetAbilityEnabled` 恢复。旧存档缺少能力字段时，当前实现会按`false` 恢复（854–855 行）。
-- 新游戏及默认载入目标是`World.tscn` ，见`SaveManager.gd` 第 84–129、211–218 行；配置入口是`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Autoloads\ExportSettings.gd` 第 458、467 行。项目启动先进入开始菜单，而不是直接进入世界：`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\project.godot` 第 14 行。
-### 2. SignalBus、配置与现有解锁方式
-- `c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Autoloads\SignalBus.gd` 第 90–95 行已经定义了完整的能力请求／回报链：`PlayerAbilityChangeRequested(ability, enabled)` 、`PlayerAbilityStateRequested` 、`PlayerAbilitiesChanged(double_jump_enabled, rope_enabled)` 。同文件第 10–15 行是通用交互事件，第 187 行是圣水杯使用事件，第 288–296 行是存档槽位事件。`project.godot` 第 25、28 行注册了`SignalBus` 和`ExportSettings` 自动加载。
-- 默认值不是领取状态 ：`ExportSettings.gd` 第 59–66 行提供二段跳速度、次数和两项能力的初始开关，二段跳与钩索默认均为`false` ；实际场景配置还应核对`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Autoloads\ExportSettings.tscn` 。角色`_ready` 时从配置初始化并订阅总线（`Player.gd` 第 184–196、273–300 行）。`SetAbilityEnabled` （302–320 行）接受`&"double_jump"` 或`&"rope"` ，更新永久状态并广播结果。
-- 现成的 调试解锁入口 在`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Player\playerUi\HpUi\PlayerUI.gd` 第 27–62 行：面板开关经`PlayerAbilityChangeRequested` 请求角色改变能力，再用`PlayerAbilitiesChanged` 同步显示。若做关卡领取物，可复用同一请求信号，不必让交互物直接找玩家调用方法。
-- 二段跳运行判定在`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Player\PlayerInputControl.gd` 第 53–65 行，检查的是当前`enable_double_jump` 与剩余次数；消耗发生在`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Player\States\JumpState.gd` 第 31 行。钩索控制器在`c:\Users\jixiegm\Desktop\SpotlightGameJam\src\Code\Entities\Player\RopeController.gd` 第 133、290 行检查`enable_rope` 。
+

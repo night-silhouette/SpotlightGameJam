@@ -3,15 +3,17 @@ class_name PlayerUI
 
 ## =============================================================================
 ## PlayerUI.gd - 玩家界面 HUD
-## 负责显示生命值进度条、文本及状态提示，响应 SignalBus 全局生命值与状态事件
+## 负责显示生命值图标、文本及状态提示，响应 SignalBus 全局生命值与状态事件
 ## =============================================================================
 
 const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutManager.gd")
 
-@onready var health_bar: ProgressBar = $Control/MarginContainer/VBoxContainer/HealthBar
-@onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthBar/HealthLabel
+const HEALTH_FRAME_X = [25, 146, 258, 379, 503, 626]
+
+@onready var health_icon: TextureRect = $Control/MarginContainer/VBoxContainer/HealthIcon
+@onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
-@onready var setting_button: Button = $Control/MarginContainer/VBoxContainer/SettingButton
+@onready var setting_button: TextureButton = $Control/SettingButton
 @onready var debug_toggle: Button = $Control/DebugPanel/ToggleButton
 @onready var debug_abilities: VBoxContainer = $Control/DebugPanel/Abilities
 @onready var double_jump_toggle: CheckButton = $Control/DebugPanel/Abilities/DoubleJump
@@ -30,7 +32,7 @@ const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutMa
 
 var touch_interaction_mode: bool = false
 
-## 目标血量，用于平滑过渡动画（可选效果）
+## 当前显示的血量
 var _target_hp: float = 200.0
 var _max_hp: float = 200.0
 
@@ -163,25 +165,18 @@ func _check_mobile_controls() -> void:
 		right_action_buttons.visible = should_show
 
 
-func _process(delta: float) -> void:
-	if health_bar:
-		# 平滑插值动画让血条变动更加流畅
-		if abs(health_bar.value - _target_hp) > 0.05:
-			health_bar.value = move_toward(health_bar.value, _target_hp, 150.0 * delta)
-		else:
-			health_bar.value = _target_hp
-
 ## 更新血量显示界面的公共方法
 ## @param current_hp 当前生命值
 ## @param max_hp 最大生命值
 func UpdateHealthDisplay(current_hp: float, max_hp: float) -> void:
-	_target_hp = max(0.0, current_hp)
-	_max_hp = max(1.0, max_hp)
-	
-	if health_bar:
-		health_bar.max_value = _max_hp
+	_max_hp = maxf(1.0, max_hp)
+	_target_hp = clampf(current_hp, 0.0, _max_hp)
+	# 前五帧每 20% 一档，最后一帧为空瓶；统一裁切尺寸避免切换时跳动。
+	var frame: int = 5 - clampi(int(ceil(_target_hp / _max_hp * 5.0)), 0, 5)
+	var atlas := health_icon.texture as AtlasTexture
+	atlas.region = Rect2(HEALTH_FRAME_X[frame], 33, 106, 221)
 	if health_label:
-		health_label.text = "%d / %d HP" % [int(ceil(_target_hp)), int(_max_hp)]
+		health_label.text = "%d / %d" % [int(ceil(_target_hp)), int(_max_hp)]
 
 func _on_player_health_changed(current_hp: float, max_hp: float) -> void:
 	UpdateHealthDisplay(current_hp, max_hp)

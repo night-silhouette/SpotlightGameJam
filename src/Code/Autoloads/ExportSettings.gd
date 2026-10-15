@@ -654,6 +654,14 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
 ## 设置界面背景透明度
 @export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
+## 设置和读档共用面板的设计尺寸；小屏等比缩小，内容最小尺寸优先。
+@export var setting_panel_design_size: Vector2 = Vector2(900, 620)
+## 共用面板与屏幕边缘的安全距离，屏幕像素。
+@export_range(0.0, 64.0, 1.0) var setting_panel_screen_margin: float = 12.0
+## 共用面板内容留白，依次为左、上、右、下，避免覆盖顶部原画纹样。
+@export var setting_panel_content_margins: Vector4 = Vector4(44, 82, 44, 54)
+## 补绘边缘的线宽，设计坐标像素。
+@export_range(0.5, 4.0, 0.1) var setting_panel_edge_width: float = 1.6
 
 @export_group("Start Menu", "start_menu_")
 ## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)

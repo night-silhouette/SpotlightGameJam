@@ -1,19 +1,12 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b82hsxmaxlust"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBox_narration"]
-bg_color = Color(0.05, 0.08, 0.13, 0.9)
-border_width_bottom = 2
-border_color = Color(0.81, 0.73, 0.52, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-shadow_color = Color(0, 0, 0, 0.35)
-shadow_size = 6
+[ext_resource type="Texture2D" path="res://Art/New/ui/dialogue_plain.png" id="1_background"]
 
-[node name="NarrationPanel" type="PanelContainer"]
-visible = false
-layout_mode = 1
+[sub_resource type="StyleBoxTexture" id="StyleBox_narration"]
+texture = ExtResource("1_background")
+
+[node name="NarrationPanel" type="PanelContainer" unique_id=1414271297]
+anchors_preset = -1
 anchor_left = 0.15
 anchor_top = 0.04
 anchor_right = 0.85
@@ -22,27 +15,27 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBox_narration")
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="." unique_id=868000688]
 layout_mode = 2
 theme_override_constants/margin_left = 28
 theme_override_constants/margin_top = 14
 theme_override_constants/margin_right = 28
 theme_override_constants/margin_bottom = 12
 
-[node name="Content" type="VBoxContainer" parent="Margin"]
+[node name="Content" type="VBoxContainer" parent="Margin" unique_id=857550697]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Text" type="Label" parent="Margin/Content"]
+[node name="Text" type="Label" parent="Margin/Content" unique_id=441553506]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_colors/font_color = Color(0.97, 0.93, 0.81, 1)
 theme_override_font_sizes/font_size = 23
-autowrap_mode = 3
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="Close" type="Button" parent="Margin/Content"]
+[node name="Close" type="Button" parent="Margin/Content" unique_id=645326325]
 layout_mode = 2
 size_flags_horizontal = 8
 focus_mode = 0

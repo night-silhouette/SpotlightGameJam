@@ -1,30 +1,16 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/Player/playerUi/HpUi/PlayerUI.gd" id="1_ui"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/StartLoseHpButton/StartLoseHpButton.tscn" id="2_btn"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Player/playerUi/RuneUi/RuneUI.tscn" id="3_rune"]
+[ext_resource type="Texture2D" path="res://Art/New/ui/main_settings.png" id="2_settings_icon"]
 [ext_resource type="Script" path="res://Code/Common/TouchActionButton.gd" id="4_touch_btn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Setting/Setting.tscn" id="5_setting"]
 
+[ext_resource type="Texture2D" path="res://Art/New/ui/血条.PNG" id="6_health"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
-bg_color = Color(0.12, 0.12, 0.14, 0.75)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.35, 0.35, 0.4, 0.8)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fill"]
-bg_color = Color(0.15, 0.65, 0.95, 0.9)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+[sub_resource type="AtlasTexture" id="AtlasTexture_health"]
+resource_local_to_scene = true
+atlas = ExtResource("6_health")
+region = Rect2(25, 33, 106, 221)
 
 [node name="PlayerUI" type="CanvasLayer" unique_id=741029482]
 script = ExtResource("1_ui")
@@ -49,25 +35,22 @@ offset_bottom = 120.0
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="HealthBar" type="ProgressBar" parent="Control/MarginContainer/VBoxContainer" unique_id=1498129048]
-custom_minimum_size = Vector2(240, 22)
+[node name="HealthIcon" type="TextureRect" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(72, 150)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_bg")
-theme_override_styles/fill = SubResource("StyleBoxFlat_fill")
-max_value = 200.0
-step = 0.1
-value = 200.0
-show_percentage = false
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_health")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="HealthLabel" type="Label" parent="Control/MarginContainer/VBoxContainer/HealthBar" unique_id=1582910482]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/font_size = 13
-text = "200 / 200 HP"
+[node name="HealthLabel" type="Label" parent="Control/MarginContainer/VBoxContainer" unique_id=1582910482]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 18
+text = "200 / 200"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -78,18 +61,22 @@ theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 12
 text = "生命流失中..."
 
-[node name="RuneUI" parent="Control/MarginContainer/VBoxContainer" unique_id=1948201948 instance=ExtResource("3_rune")]
-layout_mode = 2
-
-[node name="StartLoseHpButton" parent="Control/MarginContainer/VBoxContainer" unique_id=987162534 instance=ExtResource("2_btn")]
-layout_mode = 2
-
-[node name="SettingButton" type="Button" parent="Control/MarginContainer/VBoxContainer" unique_id=987162535]
-custom_minimum_size = Vector2(0, 28)
-layout_mode = 2
+[node name="SettingButton" type="TextureButton" parent="Control" unique_id=987162535]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -94.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = 94.0
+grow_horizontal = 0
 focus_mode = 0
 mouse_default_cursor_shape = 2
-text = "设置 (ESC)"
+tooltip_text = "设置 (ESC)"
+texture_normal = ExtResource("2_settings_icon")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="RelicIcons" type="HBoxContainer" parent="Control"]
 layout_mode = 1
@@ -159,14 +146,14 @@ vertical_alignment = 1
 
 [node name="DebugPanel" type="VBoxContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -224.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
 offset_top = 24.0
-offset_right = -24.0
+offset_right = 100.0
 offset_bottom = 56.0
-grow_horizontal = 0
+grow_horizontal = 2
 mouse_filter = 2
 
 [node name="ToggleButton" type="Button" parent="Control/DebugPanel"]
