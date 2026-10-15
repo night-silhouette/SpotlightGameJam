@@ -8,6 +8,17 @@ const ROCKS = preload("res://Art/Archived/platforms/fallingrocks_spitesheet.png"
 const SPIKE = preload("res://Art/Archived/platforms/spines.png")
 const RUNE = preload("res://Art/Archived/platforms/waterpattern.png")
 const TERRAIN = preload("res://Art/Archived/Tilemap/2.png")
+
+@export_category("Stalactite Appearance")
+## 第三关坠落陷阱悬挂时使用的完整透明纹理；留空时沿用默认图集。
+@export var stalactite_hanging_texture: Texture2D
+## 第三关坠落陷阱开始下落后使用的完整透明纹理；留空时沿用默认图集。
+@export var stalactite_falling_texture: Texture2D
+
+@export_category("Rising Spikes Appearance")
+## 可选：第三关升降突刺的完整透明纹理；留空时沿用默认图集。
+@export var rising_spike_texture: Texture2D
+
 const BREAK_REGIONS = [
 	Rect2(150, 0, 450, 154), Rect2(595, 0, 450, 154),
 	Rect2(1360, 0, 450, 154), Rect2(1975, 0, 450, 154),
@@ -54,12 +65,16 @@ func _draw() -> void:
 			_draw_crumble()
 		"stalactite":
 			var size: Vector2 = _target.get("stalactite_size")
-			var frame: int = 0
-			if _last_state == 1:
-				frame = mini(int(_state_time / maxf(float(_target.get("shake_duration")), 0.01) * 4.0), 3)
-			elif _last_state == 2:
-				frame = int(_state_time * 12.0) % 4
-			draw_texture_rect_region(ROCKS, Rect2(-size.x * 0.5, 0, size.x, size.y), Rect2(frame * 185, 0, 185, 264))
+			var custom_texture: Texture2D = stalactite_falling_texture if _last_state == 2 else stalactite_hanging_texture
+			if custom_texture:
+				draw_texture_rect(custom_texture, Rect2(-size.x * 0.5, 0, size.x, size.y), false)
+			else:
+				var frame: int = 0
+				if _last_state == 1:
+					frame = mini(int(_state_time / maxf(float(_target.get("shake_duration")), 0.01) * 4.0), 3)
+				elif _last_state == 2:
+					frame = int(_state_time * 12.0) % 4
+				draw_texture_rect_region(ROCKS, Rect2(-size.x * 0.5, 0, size.x, size.y), Rect2(frame * 185, 0, 185, 264))
 		"spikes", "rising":
 			_draw_spikes()
 		"water":
@@ -97,10 +112,17 @@ func _draw_spikes() -> void:
 	var ceiling: bool = _kind == "spikes" and bool(_target.get_meta("oasis_art_flip_v", false))
 	if ceiling:
 		draw_set_transform(Vector2(0, -size.y), 0.0, Vector2(1, -1))
+	var texture: Texture2D = rising_spike_texture if rising_spike_texture else SPIKE
+	var source_size := Vector2(texture.get_width(), texture.get_height())
+	var source_position := Vector2.ZERO
+	if not rising_spike_texture:
+		source_size = Vector2(236, 354)
+		source_position = Vector2(116, 138)
+	var source_height: float = source_size.y * visible_height / size.y
 	for index in range(count):
-		draw_texture_rect_region(SPIKE,
+		draw_texture_rect_region(texture,
 			Rect2(-size.x * 0.5 + index * step, top, step + 0.05, visible_height),
-			Rect2(116, 138, 236, 354.0 * visible_height / size.y))
+			Rect2(source_position.x, source_position.y, source_size.x, source_height))
 
 	if ceiling:
 		draw_set_transform(Vector2.ZERO)

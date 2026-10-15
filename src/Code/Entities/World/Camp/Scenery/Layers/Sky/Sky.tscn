@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" uid="uid://70fl2r1h5vno" path="res://Code/Entities/World/Camp/Scenery/CampCoverage.gdshader" id="1_shader"]
+[ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="2_sky"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sky"]
+shader = ExtResource("1_shader")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+
+[node name="Sky" type="Node2D"]
+z_index = -60
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
+metadata/_editor_description_ = "Camp 天空远景层；由 CampScenery 统一控制位置、缩放和可选视差。"
+
+[node name="Gradient" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_sky")
+texture = ExtResource("2_sky")
+centered = false

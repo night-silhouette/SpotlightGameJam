@@ -3,6 +3,9 @@ class_name WaterFlowArea
 
 ## 流水区域：右键点击区域切换固态与流体；流体状态下为进入的玩家提供加速。
 
+## 流水区域完成初始化或流体状态发生变化时触发；is_fluid 为当前是否处于流体状态。
+signal FluidStateChanged(is_fluid: bool)
+
 @export_category("WaterFlowArea Settings")
 ## 区域尺寸（宽、高）
 @export var area_size: Vector2 = Vector2(160.0, 100.0):
@@ -32,8 +35,13 @@ class_name WaterFlowArea
 @onready var fluid_area: Area2D = $FluidArea
 @onready var fluid_collision: CollisionShape2D = $FluidArea/FluidCollision
 @onready var visual_rect: ColorRect = $VisualRect
+@onready var before_visual: TileMapLayer = get_node_or_null("BeforeVisual") as TileMapLayer
+@onready var before_sprite_visuals: Node2D = get_node_or_null("BeforeSpriteVisuals") as Node2D
+@onready var after_visual: NinePatchRect = get_node_or_null("AfterVisual") as NinePatchRect
 
 var _bodies_in_water: Array[CharacterBody2D] = []
+var _has_applied_state: bool = false
+var _last_applied_fluid: bool = false
 
 func _ready() -> void:
 	add_to_group("touch_interactables")
@@ -68,6 +76,9 @@ func _update_dimensions() -> void:
 	if visual_rect:
 		visual_rect.size = area_size
 		visual_rect.position = -area_size * 0.5
+	if after_visual:
+		after_visual.size = area_size
+		after_visual.position = -area_size * 0.5
 
 ## 判断世界坐标是否落在流水区域可见矩形内；world_point 为鼠标的世界坐标，返回是否命中。
 func ContainsWorldPoint(world_point: Vector2) -> bool:
@@ -91,6 +102,11 @@ func _apply_state(fluid: bool) -> void:
 	if not is_inside_tree():
 		return
 
+	var state_changed := not _has_applied_state or _last_applied_fluid != fluid
+	_has_applied_state = true
+	_last_applied_fluid = fluid
+	_update_visual_state(fluid)
+
 	if fluid:
 		# 转换为流体：关闭实体阻挡碰撞，启用感应触发 Area
 		solid_collision.set_deferred("disabled", true)
@@ -103,6 +119,45 @@ func _apply_state(fluid: bool) -> void:
 		fluid_collision.set_deferred("disabled", true)
 		visual_rect.color = Color(0.28, 0.42, 0.55, 1.0)
 		_clear_all_bodies_in_water()
+
+	if state_changed:
+		FluidStateChanged.emit(fluid)
+
+func _update_visual_state(fluid: bool) -> void:
+	var has_tile_content := _has_before_visual_content()
+	var has_sprite_content := _has_before_sprite_visual_content()
+	var has_before_content := has_tile_content or has_sprite_content
+	var has_after_content := _has_after_visual_content()
+
+	if before_visual:
+		before_visual.visible = not fluid and has_tile_content
+	if before_sprite_visuals:
+		before_sprite_visuals.visible = not fluid and has_sprite_content
+	if after_visual:
+		after_visual.visible = fluid and has_after_content
+	if visual_rect:
+		visual_rect.visible = not (has_after_content if fluid else has_before_content)
+
+func _has_before_visual_content() -> bool:
+	return before_visual != null and before_visual.tile_set != null and not before_visual.get_used_cells().is_empty()
+
+func _has_before_sprite_visual_content() -> bool:
+	if before_sprite_visuals == null:
+		return false
+	return _has_configured_canvas_visual(before_sprite_visuals)
+
+func _has_configured_canvas_visual(node: Node) -> bool:
+	for child in node.get_children():
+		if child is Sprite2D and (child as Sprite2D).texture != null:
+			return true
+		if child is TextureRect and (child as TextureRect).texture != null:
+			return true
+		if _has_configured_canvas_visual(child):
+			return true
+	return false
+
+func _has_after_visual_content() -> bool:
+	return after_visual != null and after_visual.texture != null
 
 ## 切换符文流水与凝固状态。
 func ToggleRuneFluid() -> void:

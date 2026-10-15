@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
+[ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
 [ext_resource type="Texture2D" uid="uid://cr8v8th45p3ul" path="res://Art/New/component/extracted/stargazing_desk.svg" id="13_stargazing_desk"]
 [ext_resource type="Texture2D" uid="uid://cl2s2a6edeh3e" path="res://Art/New/ai/brass_magnifier.svg" id="14_magnifier"]
@@ -439,10 +440,22 @@ position = Vector2(-118, 3250)
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
 
+[node name="OasisBoat" parent="OasisBattlefield/OutwardPhase" parent_id_path=PackedInt32Array(958829481, 135291713) index="0" unique_id=1388656376]
+visible = true
+
+[node name="VS_OutwardTileMap3" parent="OasisBattlefield/OutwardPhase" parent_id_path=PackedInt32Array(958829481, 135291713) index="2" unique_id=721517602]
+visible = true
+
 [node name="InteractableComponent" parent="OasisBattlefield/OutwardPhase" parent_id_path=PackedInt32Array(958829481, 135291713) index="11" unique_id=1366914613]
 disable_movement_during_dialog = true
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_2ucdk"), SubResource("Resource_bone_form"), SubResource("Resource_bone_dissolve"), SubResource("Resource_a4q47")])
+
+[node name="OutwardScenery" parent="OasisBattlefield/OutwardPhase" parent_id_path=PackedInt32Array(958829481, 135291713) index="18" unique_id=1852138962]
+visible = false
+
+[node name="VisualRect" parent="OasisBattlefield/ReturnPhase/MovingPlatform2" parent_id_path=PackedInt32Array(958829481, 1524005509) index="1"]
+visible = true
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
@@ -467,6 +480,9 @@ scale = Vector2(0.35954776, 6.7938075)
 blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
+
+[node name="MiniChaliceStation" parent="CameraNode" unique_id=78567387 instance=ExtResource("11_a4q47")]
+position = Vector2(-18736, -371)
 
 [node name="MusicNode" type="Node2D" parent="." unique_id=1909380459]
 
@@ -774,11 +790,11 @@ metadata/_editor_description_ = "一次性离场对白；不改变 OasisBattlefi
 
 [node name="敌人的定义_4_20" parent="story/c4" unique_id=861258208 instance=ExtResource("20_m8xep")]
 position = Vector2(-6500, -210)
-trigger_relic = &"bones"
 content = "《敌人的定义》
 作者佚名
 这场战争有两种开端。一种发生在战争之前，由边界、生命、恐惧和那些不会被兑现的承诺构成。另一种发生在战争之后，由演说家、祭祀和历史学家共同撰写。我看到了，对面有我的朋友。我说，我们曾相依为命，长官说，他们注定会背叛。原来敌人可以是一个与你素不相识的人，也可以是那个被要求忘记的人。"
 display_duration = 12.0
+trigger_relic = &"bones"
 metadata/_editor_description_ = "第四章尾声；使用 GradualTextTrigger，位置与离场路径需在编辑器确认。"
 
 [editable path="PlayerWithCamera"]

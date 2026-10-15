@@ -1,9 +1,37 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://565bal3mh80l"]
 
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/DirectionalChaseMover/DirectionalChaseMover.tscn" id="1_mover"]
-[ext_resource type="Script" path="res://Code/Entities/OasisBattlefieldChaser/OasisBattlefieldChaser.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://b7oitni6r78l8" path="res://Code/Entities/OasisBattlefieldChaser/OasisBattlefieldChaser.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://Art/New/boss/processed/boss_sprite_frames.tres" id="2_boss_frames"]
+[ext_resource type="Shader" path="res://Art/New/boss/processed/boss_infection_blur.gdshader" id="3_boss_shader"]
+[ext_resource type="PackedScene" path="res://Code/Entities/OasisBattlefieldChaser/CameraEdgeInfectionVisual/CameraEdgeInfectionVisual.tscn" id="4_camera_edge_visual"]
 
-[node name="OasisBattlefieldChaser" type="Node2D" groups=["oasis_battlefield_chaser"]]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_boss_infection"]
+resource_local_to_scene = true
+shader = ExtResource("3_boss_shader")
+
+[node name="OasisBattlefieldChaser" type="Node2D" unique_id=359283040 groups=["oasis_battlefield_chaser"]]
 script = ExtResource("1_script")
 
-[node name="DirectionalChaseMover" parent="." instance=ExtResource("1_mover")]
+[node name="DirectionalChaseMover" parent="." unique_id=1025271247 instance=ExtResource("1_mover")]
+
+[node name="WarningWall" parent="DirectionalChaseMover" index="2"]
+visible = false
+
+[node name="LeadingEdge" parent="DirectionalChaseMover" index="3"]
+visible = false
+
+[node name="BossAnimation" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1717793824]
+process_mode = 4
+visible = false
+material = SubResource("ShaderMaterial_boss_infection")
+position = Vector2(-685.97534, -99.57471)
+scale = Vector2(4.7448745, 4.7448745)
+sprite_frames = ExtResource("2_boss_frames")
+autoplay = "default"
+frame = 4
+frame_progress = 0.59746355
+
+[node name="CameraEdgeInfectionVisual" parent="." instance=ExtResource("4_camera_edge_visual")]
+
+[editable path="DirectionalChaseMover"]

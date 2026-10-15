@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" uid="uid://70fl2r1h5vno" path="res://Code/Entities/World/Camp/Scenery/CampCoverage.gdshader" id="1_shader"]
+[ext_resource type="Texture2D" uid="uid://cm2gxoq50ioys" path="res://Art/Archived/Camp/13.png" id="2_middle_rocks"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_far"]
+shader = ExtResource("1_shader")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+
+[node name="FarBackground" type="Node2D"]
+z_index = -45
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
+metadata/_editor_description_ = "Camp 远背景层；由 CampScenery 统一控制位置、缩放和可选视差。"
+
+[node name="DarkRocks" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_far")
+texture = ExtResource("2_middle_rocks")
+centered = false

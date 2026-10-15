@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/OasisBattlefieldChaser/CameraEdgeInfectionVisual/CameraEdgeInfectionVisual.gd" id="1_visual"]
+[ext_resource type="SpriteFrames" path="res://Art/New/boss/processed/boss_sprite_frames.tres" id="2_frames"]
+[ext_resource type="Shader" path="res://Art/New/boss/processed/boss_infection_blur.gdshader" id="3_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_infection"]
+resource_local_to_scene = true
+shader = ExtResource("3_shader")
+
+[node name="CameraEdgeInfectionVisual" type="Node2D"]
+top_level = true
+z_as_relative = false
+process_physics_priority = 1000
+script = ExtResource("1_visual")
+
+[node name="BlackMask" type="Polygon2D" parent="."]
+show_behind_parent = true
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
+
+[node name="BossAnimation" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_infection")
+sprite_frames = ExtResource("2_frames")
+autoplay = "default"

@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Shader" uid="uid://70fl2r1h5vno" path="res://Code/Entities/World/Camp/Scenery/CampCoverage.gdshader" id="1_shader"]
+[ext_resource type="Texture2D" uid="uid://xl8duvp41ucs" path="res://Art/Archived/Camp/08.png" id="2_back_rocks"]
+[ext_resource type="Texture2D" uid="uid://b1m5s3c5qgcqj" path="res://Art/Archived/Camp/03.png" id="3_far_rocks"]
+[ext_resource type="Texture2D" uid="uid://xfi77i3dwqtp" path="res://Art/Archived/Camp/14.png" id="4_ground"]
+[ext_resource type="Texture2D" uid="uid://s4sunl06h0ta" path="res://Art/Archived/Camp/12.png" id="5_path"]
+[ext_resource type="Texture2D" uid="uid://sw7i576dui5b" path="res://Art/Archived/Camp/10.png" id="6_grass"]
+[ext_resource type="Texture2D" uid="uid://cj54wsd4q2c8u" path="res://Art/Archived/Camp/01.png" id="7_lights"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_middle"]
+shader = ExtResource("1_shader")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+
+[node name="MiddleBackground" type="Node2D"]
+z_index = -20
+position = Vector2(0, -1719)
+scale = Vector2(1.75, 1.75)
+metadata/_editor_description_ = "Camp 中近背景层；地面、道路、草与灯光保持统一画布对齐。"
+
+[node name="LightRocks" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_middle")
+texture = ExtResource("2_back_rocks")
+centered = false
+
+[node name="RockSilhouettes" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_middle")
+texture = ExtResource("3_far_rocks")
+centered = false
+
+[node name="Ground" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_middle")
+texture = ExtResource("4_ground")
+centered = false
+
+[node name="StonePath" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_middle")
+texture = ExtResource("5_path")
+centered = false
+
+[node name="Grass" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_middle")
+texture = ExtResource("6_grass")
+centered = false
+
+[node name="Lights" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_middle")
+texture = ExtResource("7_lights")
+centered = false

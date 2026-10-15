@@ -1,0 +1,215 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/LayeredOutwardScenery/LayeredOutwardScenery.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/01.png" id="2_near_ground_a"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/05.png" id="3_near_ground_b"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/09.png" id="4_mountains"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/10.png" id="5_sky"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/11.png" id="6_moon_sheet"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/06.png" id="7_cloud_sheet"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/08.png" id="8_oasis_sheet"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/03.png" id="9_cactus_sheet"]
+[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/04.png" id="10_tree_sheet"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/LayeredOutwardScenery/TileDecoration.tscn" id="11_tile_decoration"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_moon"]
+atlas = ExtResource("6_moon_sheet")
+region = Rect2(3690, 60, 680, 650)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cloud_left"]
+atlas = ExtResource("7_cloud_sheet")
+region = Rect2(360, 690, 920, 300)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cloud_right"]
+atlas = ExtResource("7_cloud_sheet")
+region = Rect2(4300, 710, 820, 310)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oasis"]
+atlas = ExtResource("8_oasis_sheet")
+region = Rect2(2940, 390, 2660, 890)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cactus_cluster"]
+atlas = ExtResource("9_cactus_sheet")
+region = Rect2(980, 700, 550, 350)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_low_shrubs"]
+atlas = ExtResource("9_cactus_sheet")
+region = Rect2(2740, 790, 410, 150)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pebbles"]
+atlas = ExtResource("9_cactus_sheet")
+region = Rect2(2520, 655, 245, 285)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tree"]
+atlas = ExtResource("10_tree_sheet")
+region = Rect2(285, 0, 1285, 1296)
+filter_clip = true
+
+[sub_resource type="Animation" id="Animation_reset"]
+resource_name = "RESET"
+length = 0.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MidGround/DriftingCloud:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1700, 235)]
+}
+
+[sub_resource type="Animation" id="Animation_cloud_drift"]
+resource_name = "CloudDrift"
+length = 8.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MidGround/DriftingCloud:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 8),
+"transitions": PackedFloat32Array(0.5, 0.5, 0.5),
+"update": 0,
+"values": [Vector2(1700, 235), Vector2(1740, 225), Vector2(1700, 235)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_scenery"]
+_data = {
+&"CloudDrift": SubResource("Animation_cloud_drift"),
+&"RESET": SubResource("Animation_reset")
+}
+
+[node name="LayeredOutwardScenery" type="Node2D"]
+texture_filter = 2
+script = ExtResource("1_script")
+metadata/_editor_description_ = "第三关去程分层拼景。Far/Mid/Near 三层均不自动重复；Sprite2D 可分别改位置、缩放和纹理。TileForeground 是普通世界空间装饰容器。"
+
+[node name="FarBackground" type="Parallax2D" parent="."]
+top_level = true
+z_index = -30
+scroll_scale = Vector2(0.12, 1)
+repeat_size = Vector2(0, 0)
+repeat_times = 1
+autoscroll = Vector2(0, 0)
+metadata/_editor_description_ = "远景：不重复、不自动滚动。直接编辑子 Sprite2D 的 transform/texture。"
+
+[node name="SkyBackdrop" type="Sprite2D" parent="FarBackground"]
+position = Vector2(-1100, -500)
+texture = ExtResource("5_sky")
+centered = false
+
+[node name="Moon" type="Sprite2D" parent="FarBackground"]
+position = Vector2(2100, 115)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_moon")
+
+[node name="MidGround" type="Parallax2D" parent="."]
+top_level = true
+z_index = -20
+scroll_scale = Vector2(0.28, 1)
+repeat_size = Vector2(0, 0)
+repeat_times = 1
+autoscroll = Vector2(0, 0)
+metadata/_editor_description_ = "中景：山脉与两朵独立裁切云；DriftingCloud 由 AnimationPlayer 做轻量往返。"
+
+[node name="DistantMountains" type="Sprite2D" parent="MidGround"]
+position = Vector2(-180, 0)
+texture = ExtResource("4_mountains")
+centered = false
+
+[node name="DistantMountainsRight" type="Sprite2D" parent="MidGround"]
+position = Vector2(5600, 0)
+texture = ExtResource("4_mountains")
+centered = false
+
+[node name="DriftingCloud" type="Sprite2D" parent="MidGround"]
+self_modulate = Color(1, 1, 1, 0.72)
+position = Vector2(1700, 235)
+scale = Vector2(0.52, 0.52)
+texture = SubResource("AtlasTexture_cloud_left")
+
+[node name="StillCloud" type="Sprite2D" parent="MidGround"]
+self_modulate = Color(1, 1, 1, 0.62)
+position = Vector2(4300, 285)
+scale = Vector2(0.48, 0.48)
+texture = SubResource("AtlasTexture_cloud_right")
+
+[node name="NearBackground" type="Parallax2D" parent="."]
+top_level = true
+z_index = -10
+scroll_scale = Vector2(0.62, 1)
+repeat_size = Vector2(0, 0)
+repeat_times = 1
+autoscroll = Vector2(0, 0)
+metadata/_editor_description_ = "近背景：两张不同地表层手工衔接并覆盖关卡宽度；无 repeat_size 循环。"
+
+[node name="GroundLeft" type="Sprite2D" parent="NearBackground"]
+position = Vector2(-160, 0)
+texture = ExtResource("2_near_ground_a")
+centered = false
+
+[node name="GroundRight" type="Sprite2D" parent="NearBackground"]
+position = Vector2(5520, 0)
+texture = ExtResource("3_near_ground_b")
+centered = false
+
+[node name="GroundExit" type="Sprite2D" parent="NearBackground"]
+position = Vector2(11000, 0)
+texture = ExtResource("2_near_ground_a")
+centered = false
+
+[node name="Oasis" type="Sprite2D" parent="NearBackground"]
+position = Vector2(6600, 820)
+scale = Vector2(0.72, 0.72)
+texture = SubResource("AtlasTexture_oasis")
+
+[node name="TileForeground" type="Node2D" parent="."]
+z_index = 3
+metadata/_editor_description_ = "普通世界空间砖前装饰。复制任一实例到任意砖块前即可独立调整；若需跟随动态砖块，请把实例改挂为该平台的子节点。"
+
+[node name="StartCactus" parent="TileForeground" instance=ExtResource("11_tile_decoration")]
+position = Vector2(920, 970)
+scale = Vector2(0.42, 0.42)
+texture = SubResource("AtlasTexture_cactus_cluster")
+
+[node name="StepCactus" parent="TileForeground" instance=ExtResource("11_tile_decoration")]
+position = Vector2(3210, 545)
+scale = Vector2(0.32, 0.32)
+
+[node name="BrokenStepShrubs" parent="TileForeground" instance=ExtResource("11_tile_decoration")]
+position = Vector2(4250, 785)
+scale = Vector2(0.48, 0.48)
+texture = SubResource("AtlasTexture_low_shrubs")
+
+[node name="HazardPebbles" parent="TileForeground" instance=ExtResource("11_tile_decoration")]
+position = Vector2(6400, 750)
+scale = Vector2(0.3, 0.3)
+texture = SubResource("AtlasTexture_pebbles")
+
+[node name="OasisCactus" parent="TileForeground" instance=ExtResource("11_tile_decoration")]
+position = Vector2(9800, 990)
+scale = Vector2(0.34, 0.34)
+texture = SubResource("AtlasTexture_cactus_cluster")
+
+[node name="ExitTree" parent="TileForeground" instance=ExtResource("11_tile_decoration")]
+position = Vector2(14400, 850)
+scale = Vector2(0.25, 0.25)
+texture = SubResource("AtlasTexture_tree")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_scenery")
+}
+autoplay = "CloudDrift"

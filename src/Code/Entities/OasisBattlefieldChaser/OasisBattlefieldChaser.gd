@@ -21,6 +21,9 @@ func _ready() -> void:
 func StartChase() -> void:
 	if _chase_finished:
 		return
+	# 每次复苏都从场景中记录的出生位置重新开始，不能沿用上一次追逐留下的位置。
+	global_position = _initial_global_position
+	_movement_component.ResetMover()
 	visible = true
 	_movement_component.visible = true
 	_movement_component.StartChase()

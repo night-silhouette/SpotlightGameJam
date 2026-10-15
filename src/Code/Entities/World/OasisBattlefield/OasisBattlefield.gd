@@ -24,6 +24,7 @@ var _bone_offered: bool = false
 var _loaded_checkpoint: bool = false
 var _loaded_respawn_position: Vector2 = Vector2.ZERO
 var _reset_chase_on_respawn: bool = false
+var _phase_collision_states: Dictionary = {}
 
 
 func _ready() -> void:
@@ -33,11 +34,16 @@ func _ready() -> void:
 		SignalBus.ComponentInteracted.connect(_on_component_interacted)
 	if not SignalBus.PlayerRespawned.is_connected(_on_player_respawned):
 		SignalBus.PlayerRespawned.connect(_on_player_respawned)
-	SignalBus.PlayerDied.connect(_on_player_died)
-	SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
-	SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
-	_get_boat_area.body_entered.connect(_on_get_boat_body_entered)
-	_the_end_area.body_entered.connect(_on_the_end_body_entered)
+	if not SignalBus.PlayerDied.is_connected(_on_player_died):
+		SignalBus.PlayerDied.connect(_on_player_died)
+	if not SignalBus.PlayerRelicConsumeRequested.is_connected(_on_relic_consumed):
+		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
+	if not SignalBus.SaveSlotLoaded.is_connected(_on_save_loaded):
+		SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
+	if not _get_boat_area.body_entered.is_connected(_on_get_boat_body_entered):
+		_get_boat_area.body_entered.connect(_on_get_boat_body_entered)
+	if not _the_end_area.body_entered.is_connected(_on_the_end_body_entered):
+		_the_end_area.body_entered.connect(_on_the_end_body_entered)
 	if start_in_return_phase:
 		SwitchToReturnPhase()
 	else:
@@ -54,9 +60,9 @@ func SwitchToReturnPhase() -> void:
 	var player := get_tree().get_first_node_in_group(&"player")
 	if is_instance_valid(player) and player.has_method(&"SetRespawnPosition"):
 		player.call(&"SetRespawnPosition", _get_chase_respawn_position())
+	_set_phase_enabled(outward_phase, false)
 	return_phase.modulate.a = 1.0
 	_set_phase_enabled(return_phase, true)
-	_set_phase_enabled(outward_phase, false)
 
 	if is_instance_valid(_chaser):
 		if _chaser.has_method(&"ResetChase"):
@@ -123,8 +129,8 @@ func LoadSaveData(data: Dictionary) -> void:
 	_in_return_phase = false
 	_chase_activation_pending = false
 	_chase_finished = false
-	_set_phase_enabled(outward_phase, true)
 	_set_phase_enabled(return_phase, false)
+	_set_phase_enabled(outward_phase, true)
 
 
 func _on_save_loaded(_slot: int) -> void:
@@ -143,25 +149,44 @@ func _on_save_loaded(_slot: int) -> void:
 		SwitchToReturnPhase()
 	elif _in_return_phase and not _bone_offered:
 		_in_return_phase = false
-		_set_phase_enabled(outward_phase, true)
 		_set_phase_enabled(return_phase, false)
+		_set_phase_enabled(outward_phase, true)
 
 
 func _set_phase_enabled(phase: Node2D, enabled: bool) -> void:
-	phase.visible = enabled
-	phase.process_mode = (
-		Node.PROCESS_MODE_INHERIT
-		if enabled
-		else Node.PROCESS_MODE_DISABLED
-	)
-	_set_phase_collisions(phase, enabled)
+	if enabled:
+		phase.process_mode = Node.PROCESS_MODE_INHERIT
+		_set_phase_collisions(phase, true)
+		phase.visible = true
+	else:
+		phase.visible = false
+		_set_phase_collisions(phase, false)
+		phase.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 func _set_phase_collisions(node: Node, enabled: bool) -> void:
-	if node is TileMapLayer:
-		node.collision_enabled = enabled
-	elif node is CollisionShape2D or node is CollisionPolygon2D:
-		node.set_deferred("disabled", not enabled)
+	if node is CollisionObject2D:
+		var collision_object := node as CollisionObject2D
+		if not _phase_collision_states.has(collision_object):
+			_phase_collision_states[collision_object] = Vector2i(
+				collision_object.collision_layer,
+				collision_object.collision_mask
+			)
+		var collision_state: Vector2i = _phase_collision_states[collision_object]
+		collision_object.set_deferred(
+			"collision_layer", collision_state.x if enabled else 0
+		)
+		collision_object.set_deferred(
+			"collision_mask", collision_state.y if enabled else 0
+		)
+	elif node is TileMapLayer:
+		var tile_layer := node as TileMapLayer
+		if not _phase_collision_states.has(tile_layer):
+			_phase_collision_states[tile_layer] = tile_layer.collision_enabled
+		tile_layer.set_deferred(
+			"collision_enabled",
+			bool(_phase_collision_states[tile_layer]) if enabled else false
+		)
 	for child in node.get_children():
 		_set_phase_collisions(child, enabled)
 
@@ -185,10 +210,12 @@ func _on_component_interacted(component: Node2D, interactor: Node2D) -> void:
 func _on_player_died(player: Node2D) -> void:
 	if player != get_tree().get_first_node_in_group(&"player"):
 		return
-	var return_tiles: TileMapLayer = $ReturnPhase/ReturnTileMap
-	_reset_chase_on_respawn = _in_return_phase and return_tiles.get_used_rect().has_point(return_tiles.local_to_map(return_tiles.to_local(player.global_position)))
+	_reset_chase_on_respawn = _in_return_phase and not _chase_finished
+	# 必须在死亡信号这一帧立刻停止、关闭伤害并复位。之前仅在复活时
+	# ResetChase，会留下约一秒的移动窗口，Boss 可移动到复活点造成连续死亡。
+	if _reset_chase_on_respawn and is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):
+		_chaser.call(&"ResetChase")
 	if _bone_claimed and not _bone_offered:
-		_reset_chase_on_respawn = _reset_chase_on_respawn or _in_return_phase
 		_bone_claimed = false
 		_refresh_bone()
 
@@ -219,8 +246,8 @@ func _on_player_respawned(_respawn_position: Vector2) -> void:
 		_chaser.call(&"ResetChase")
 
 	# 切回去程 OutwardPhase 激活骨头交互，关闭 ReturnPhase
-	_set_phase_enabled(outward_phase, true)
 	_set_phase_enabled(return_phase, false)
+	_set_phase_enabled(outward_phase, true)
 
 	if is_instance_valid(_boat) and _boat.has_method(&"ResetBoat"):
 		_boat.ResetBoat()

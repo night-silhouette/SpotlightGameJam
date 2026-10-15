@@ -882,7 +882,9 @@ func _on_player_full_heal_requested(player: Node2D) -> void:
 		now_HP = Max_HP
 
 func _on_player_instant_death_requested(player_node: Node2D, _source_node: Node2D) -> void:
-	if player_node == self:
+	# 已死亡或正在死亡时忽略重复致死请求，避免同一物理帧的碰撞事件
+	# 在复活流程中重复把生命值写回 0。
+	if player_node == self and now_HP > 0.0 and (not move_state_machine or move_state_machine.cur_state_name != "died"):
 		now_HP = 0.0
 
 func _on_tent_activated(_tent_node: Node2D, spawn_pos: Vector2) -> void:

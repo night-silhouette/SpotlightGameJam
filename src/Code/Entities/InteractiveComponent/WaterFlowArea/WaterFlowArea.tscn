@@ -12,6 +12,19 @@ size = Vector2(160, 100)
 collision_mask = 2
 script = ExtResource("1_water")
 
+[node name="BeforeVisual" type="TileMapLayer" parent="."]
+visible = false
+collision_enabled = false
+navigation_enabled = false
+
+[node name="AfterVisual" type="NinePatchRect" parent="."]
+visible = false
+offset_left = -80.0
+offset_top = -50.0
+offset_right = 80.0
+offset_bottom = 50.0
+mouse_filter = 2
+
 [node name="VisualRect" type="ColorRect" parent="." unique_id=141421356]
 offset_left = -80.0
 offset_top = -50.0

@@ -76,7 +76,9 @@ func _apply_distance_control(base_speed: float) -> float:
 	return base_speed * speed_multiplier
 
 func _on_kill_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player"):
+	# monitoring 的关闭需要延迟到物理帧结束；用同步更新的 _active 拦截
+	# 同一物理帧中已经排队的 body_entered，避免 ResetMover 后再次致死。
+	if _active and body.is_in_group("player"):
 		SignalBus.PlayerInstantDeathRequested.emit(body, self)
 
 func _set_stage(stage: int) -> void:
@@ -85,6 +87,13 @@ func _set_stage(stage: int) -> void:
 
 ## 开始或继续追逐，不会清空已经经过的阶段时间。
 func StartChase() -> void:
+	process_mode = Node.PROCESS_MODE_INHERIT
+	collision_layer = 1
+	collision_mask = 2
+	var kill_area := get_node_or_null("KillArea") as Area2D
+	if is_instance_valid(kill_area):
+		kill_area.set_deferred("monitoring", true)
+		kill_area.set_deferred("monitorable", true)
 	_active = true
 	visible = true
 	SignalBus.ChaseMoverActiveChanged.emit(self, true)
@@ -93,12 +102,13 @@ func StartChase() -> void:
 func ResetMover() -> void:
 	_active = false
 	process_mode = Node.PROCESS_MODE_INHERIT
-	collision_layer = 1
-	collision_mask = 2
+	# 休眠期间必须彻底关闭实体碰撞与致死区；重新点击骨头时由 StartChase 恢复。
+	collision_layer = 0
+	collision_mask = 0
 	var kill_area := get_node_or_null("KillArea") as Area2D
 	if is_instance_valid(kill_area):
-		kill_area.set_deferred("monitoring", true)
-		kill_area.set_deferred("monitorable", true)
+		kill_area.set_deferred("monitoring", false)
+		kill_area.set_deferred("monitorable", false)
 	visible = false
 	global_position = _initial_global_position
 	# 同时恢复场景中配置的本地偏移，避免父节点运行时移动后残留相对位移。
