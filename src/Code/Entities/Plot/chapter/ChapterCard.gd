@@ -3,26 +3,31 @@ extends Control
 signal Finished
 
 const DISPLAY_DURATION := 4.0
+const SETTINGS_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export var act_text: String = "第一幕"
 @export var chapter_text: String = "纺织"
 @export var auto_play: bool = true
 @export var fade_duration: float = 0.7
 
-@onready var _act_label: Label = $Act
-@onready var _chapter_label: Label = $Title
+@onready var _act_label: Label = $Layout/Act
+@onready var _chapter_label: Label = $Layout/Title
+@onready var _decoration: TextureRect = $Layout/Decoration
 
 var _tween: Tween
 
 func _ready() -> void:
 	_act_label.text = act_text
 	_chapter_label.text = chapter_text
-	resized.connect(queue_redraw)
+	_act_label.add_theme_color_override("font_color", SETTINGS_SKIN.ACCENT)
+	_chapter_label.add_theme_color_override("font_color", SETTINGS_SKIN.PAPER)
+	_decoration.material.set_shader_parameter("paper_color", SETTINGS_SKIN.PAPER)
 	if auto_play:
 		Play()
 	else:
 		hide()
 
+## 播放当前章节标题，无需参数；重复调用会重新开始淡入淡出。
 func Play() -> void:
 	if _tween and _tween.is_valid():
 		_tween.kill()
@@ -37,6 +42,7 @@ func Play() -> void:
 	_tween.tween_property(self, "modulate:a", 0.0, transition_duration)
 	_tween.tween_callback(_finish)
 
+## 设置并播放章节标题；act 为幕名，heading 为章节名，均传入展示文本。
 func ShowChapter(act: String, heading: String) -> void:
 	act_text = act
 	chapter_text = heading
@@ -45,19 +51,3 @@ func ShowChapter(act: String, heading: String) -> void:
 func _finish() -> void:
 	hide()
 	Finished.emit()
-
-func _draw() -> void:
-	var center := size * 0.5 + Vector2(0, -20)
-	var white := Color(0.92, 0.92, 0.92)
-	for side in [-1.0, 1.0]:
-		for i in range(32):
-			var from_x := 18.0 + float(i) * 2.7
-			var opacity := 0.95 * (1.0 - float(i) / 32.0)
-			var start := center + Vector2(side * from_x, 0)
-			var end := center + Vector2(side * (from_x + 2.7), 0)
-			draw_line(start, end, Color(white, opacity), 1.0, true)
-		draw_line(center + Vector2(side * 15, 0), center + Vector2(side * 24, 2), white, 1.0, true)
-	draw_arc(center, 7, 0, TAU, 32, white, 1.5, true)
-	draw_line(center + Vector2(0, -5), center + Vector2(0, 5), white, 1.0, true)
-	draw_line(center + Vector2(-3, -3), center + Vector2(3, -1), white, 1.0, true)
-	draw_line(center + Vector2(-3, 1), center + Vector2(3, 3), white, 1.0, true)

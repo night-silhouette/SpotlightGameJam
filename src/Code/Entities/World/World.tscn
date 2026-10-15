@@ -124,14 +124,32 @@ dialog_type = "独白"
 text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……
 先带走吧，说不定之后会用得到。"
 
-[sub_resource type="Resource" id="Resource_3t6bi"]
+[sub_resource type="Resource" id="Resource_2ucdk"]
 script = ExtResource("5_acpp2")
-text = "月亮在长夜里留下了无主的诗"
+text = "一阵低沉的震颤穿过大地，林间骤然响起由远及近的纷杂的低语声与兵刃相击的响声。
+低语声骤然拔高，尖锐得近乎凄厉
+平静的绿洲泛起涟漪，原本温和的微风变成了狂乱的乱流"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="Resource_be8n8"]
+[sub_resource type="Resource" id="Resource_bone_form"]
 script = ExtResource("5_acpp2")
-text = "昏暗的石廊向深处延伸，高耸的书架一列列延伸至深处，散落的书卷覆着尘土，羽毛笔与残页横七竖八地留在书案上。屋顶破开一道缺口，月光从那里倾落下来。"
+text = "无数光点在半空中纠缠，逐渐凝成庞大的身躯。残缺的甲胄与扭曲的兵刃交叠其间，两种不同的纹饰在它身上明灭不定。偶尔有光点从躯壳间逸出，映出一张模糊的面容，又立刻被另一道影子吞没。它没有完整的面孔，只有无数重叠的身影，在沉默中彼此撕扯。"
+
+[sub_resource type="Resource" id="Resource_bone_dissolve"]
+script = ExtResource("5_acpp2")
+text = "它的身躯轰然崩解，分裂成两股颜色迥异的光流。它们彼此排斥，又不断向对方靠近，在空中数度交汇、分离。渐渐地，两股光流不再泾渭分明，而是彼此穿过、交融，化作无数细碎的光点，缓缓飘向四周。"
+
+[sub_resource type="Resource" id="Resource_a4q47"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "怎么回事？！
+风……风变大了！有什么东西醒过来了！
+得赶紧跑！原路返回！快！"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_7tc0m"]
+script = ExtResource("5_acpp2")
+text = "月亮在长夜里留下了无主的诗"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_1p2nt"]
@@ -333,35 +351,6 @@ script = ExtResource("5_acpp2")
 text = "无论怎么看，这具枯骨都不太对劲。把它拔出来……真的好吗？……算了，既然已经走到这里，就没有回头的理由。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="C4_10_11"]
-script = ExtResource("5_acpp2")
-text = "一阵低沉的震颤穿过大地，林间骤然响起由远及近的纷杂低语与兵刃相击声。平静的绿洲泛起涟漪，温和的微风变成了狂乱的乱流。"
-
-[sub_resource type="Resource" id="C4_11"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "怎么回事？！风……风变大了！有什么东西醒过来了！得赶紧跑！原路返回！快！"
-
-[sub_resource type="Resource" id="C4_13"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "那些声音……越来越近了！必须赶快离开！"
-
-[sub_resource type="Resource" id="C4_14"]
-script = ExtResource("5_acpp2")
-text = "无数光点在半空中纠缠，逐渐凝成庞大的身躯。残缺的甲胄与扭曲的兵刃交叠其间，两种不同的纹饰在它身上明灭不定。它没有完整的面孔，只有无数重叠的身影，在沉默中彼此撕扯。"
-
-[sub_resource type="Resource" id="Resource_grrsb"]
-script = ExtResource("5_acpp2")
-text = "它的身躯轰然崩解，分裂成两股颜色迥异的光流。它们彼此排斥，又不断靠近，最终彼此穿过、交融，化作无数细碎的光点，缓缓飘向四周。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Resource_dx5wn"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "那些光点……是曾经在这里陷入鏖战的日族与月族的战士们。哪怕身躯早已腐朽，这股战意也依然在这片废墟中盲目地盘旋。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
 [sub_resource type="Resource" id="C4_17"]
 script = ExtResource("5_acpp2")
 text = "光点或浮游在风中，或沉入水面，或没入泥土，或停留在草木初生的叶稍。随着光点跳跃，细小的根须缓缓伸展，水流悄然汇聚。"
@@ -444,6 +433,11 @@ position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
+
+[node name="InteractableComponent" parent="OasisBattlefield/OutwardPhase" parent_id_path=PackedInt32Array(958829481, 135291713) index="11" unique_id=1366914613]
+disable_movement_during_dialog = true
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_2ucdk"), SubResource("Resource_bone_form"), SubResource("Resource_bone_dissolve"), SubResource("Resource_a4q47")])
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
@@ -532,11 +526,11 @@ chapter_text = "绿洲悲歌"
 [node name="c2" type="Node2D" parent="story" unique_id=420887994]
 
 [node name="进入的场合描述" parent="story/c2" unique_id=1000769939 instance=ExtResource("12_terh4")]
-position = Vector2(62, 422)
-scale = Vector2(1.66195, 1.689001)
+position = Vector2(596, 2708.0002)
+scale = Vector2(5.047486, 1.4619936)
 enable_interaction = false
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_3t6bi"), SubResource("Resource_be8n8")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7tc0m")])
 enter_dialog_once = true
 
 [node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]
@@ -622,7 +616,7 @@ position = Vector2(875, 2406.0002)
 scale = Vector2(2.2155194, 0.55301255)
 content = "                                     《水的法则》
                                          作者佚名
-水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
+水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高 贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
 display_duration = 9.9
 
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
@@ -745,48 +739,30 @@ region_rect = Rect2(128, 0, 128, 128)
 metadata/_editor_description_ = "仅视觉提示，不新增拾取或骨头逻辑。"
 
 [node name="刻痕枯骨前置观察_4_8至4_9" parent="story/c4" unique_id=1906082788 instance=ExtResource("12_terh4")]
-position = Vector2(-18147, -420)
-scale = Vector2(2.5396585, 1.7421645)
+position = Vector2(-18658, -518)
+scale = Vector2(3.9478683, 4.6546264)
+disable_movement_during_dialog = true
+show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_qpp1c"), SubResource("Resource_o0b1u")])
+enter_dialog_once = true
 metadata/_editor_description_ = "靠近原有骨头前置观察/对白；不新增可拾取骨头，也不触发拔骨机制，请在编辑器核对原有骨头位置。"
 
-[node name="拔出枯骨后的异变_4_10至4_11" parent="story/c4" unique_id=1628457466 instance=ExtResource("12_terh4")]
-position = Vector2(-18596, -417)
-enable_interaction = false
-show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_10_11"), SubResource("C4_11")])
-enter_dialog_once = true
-metadata/_editor_description_ = "一次性叙事区域；不接入拔骨、震颤、追逐或风场机制，需核对是否可接入而不破坏 OasisBattlefield。"
-
-[node name="战意追近_4_13" parent="story/c4" unique_id=936348233 instance=ExtResource("12_terh4")]
-position = Vector2(-9800, -210)
-enable_interaction = false
-show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_13")])
-enter_dialog_once = true
-metadata/_editor_description_ = "一次性叙事区域；仅对白，不控制追逐。"
-
-[node name="战意聚合体_4_14" parent="story/c4" unique_id=652514433 instance=ExtResource("12_terh4")]
-position = Vector2(-18977, -523)
-scale = Vector2(4.708992, 4.613823)
-enable_interaction = false
-show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_14"), SubResource("Resource_grrsb"), SubResource("Resource_dx5wn")])
-enter_dialog_once = true
-metadata/_editor_description_ = "一次性叙事区域；不声称已有战意聚合体/Boss机制，请核对战斗接入方案。"
-
 [node name="绿洲生长_4_17至4_18" parent="story/c4" unique_id=692998647 instance=ExtResource("12_terh4")]
-position = Vector2(-7800, -210)
+position = Vector2(-2070, -402)
+scale = Vector2(2.3579326, 2.7803662)
 enable_interaction = false
 show_enter_dialog = true
+enter_dialog_requires_scarred_bones = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_17"), SubResource("C4_18")])
 enter_dialog_once = true
 metadata/_editor_description_ = "一次性叙事区域；不控制光点、根须或水流生成，请核对演出接入。"
 
 [node name="走出绿洲_4_19" parent="story/c4" unique_id=1199339892 instance=ExtResource("12_terh4")]
-position = Vector2(-7000, -210)
+position = Vector2(-725.00006, -377)
+scale = Vector2(7.0708966, -7.010785)
 enable_interaction = false
 show_enter_dialog = true
+enter_dialog_requires_scarred_bones = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_19")])
 enter_dialog_once = true
 metadata/_editor_description_ = "一次性离场对白；不改变 OasisBattlefield 的出口逻辑。"
@@ -797,6 +773,7 @@ content = "《敌人的定义》
 作者佚名
 这场战争有两种开端。一种发生在战争之前，由边界、生命、恐惧和那些不会被兑现的承诺构成。另一种发生在战争之后，由演说家、祭祀和历史学家共同撰写。我看到了，对面有我的朋友。我说，我们曾相依为命，长官说，他们注定会背叛。原来敌人可以是一个与你素不相识的人，也可以是那个被要求忘记的人。"
 display_duration = 12.0
+trigger_relic = &"bones"
 metadata/_editor_description_ = "第四章尾声；使用 GradualTextTrigger，位置与离场路径需在编辑器确认。"
 
 [editable path="PlayerWithCamera"]

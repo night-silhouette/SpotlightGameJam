@@ -1,6 +1,8 @@
 extends Control
 class_name TouchActionButton
 
+signal pressed_once
+
 ## =============================================================================
 ## TouchActionButton.gd - 移动端虚拟触控动作按钮
 ## 专为移动端触屏设计的半透明圆形动作按钮，支持按下、抬起并向 Godot Input 发送指定 action 事件
@@ -26,7 +28,7 @@ var touch_index: int = -1
 
 ## 设置按钮半径大小并自动更新尺寸与重绘
 func SetButtonRadius(radius: float) -> void:
-	button_radius = max(10.0, radius)
+	button_radius = maxf(0.0, radius)
 	custom_minimum_size = Vector2(button_radius * 2, button_radius * 2)
 	size = custom_minimum_size
 	queue_redraw()
@@ -42,6 +44,7 @@ func _gui_input(event: InputEvent) -> void:
 			if not is_pressed and _is_point_inside(touch.position):
 				touch_index = touch.index
 				_set_pressed_state(true)
+				pressed_once.emit()
 		else:
 			if touch.index == touch_index:
 				touch_index = -1
@@ -62,6 +65,7 @@ func _gui_input(event: InputEvent) -> void:
 				if not is_pressed and _is_point_inside(mouse.position):
 					touch_index = -99
 					_set_pressed_state(true)
+					pressed_once.emit()
 			else:
 				if touch_index == -99:
 					touch_index = -1

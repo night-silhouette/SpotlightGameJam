@@ -130,7 +130,7 @@ func _ready() -> void:
 	line_2d.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not player or player.now_HP <= 0.0 or not player.enable_rope or not player.gameInputControl.is_physics_processing():
+	if not player or player.now_HP <= 0.0 or not player.gameInputControl.is_physics_processing():
 		return
 
 	# 移动端触屏事件拦截与处理
@@ -139,6 +139,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		if touch.pressed:
 			# 检查触控点是否落在了 UI 控件上（如果是则不触发钩索）
 			if _is_pos_over_ui(touch.position):
+				return
+			var player_ui := player.get_node("PlayerUI") as PlayerUI
+			if player_ui.touch_interaction_mode:
+				var world_pos: Vector2 = get_canvas_transform().affine_inverse() * touch.position
+				for target in get_tree().get_nodes_in_group("touch_interactables"):
+					if target.TryTouchInteract(world_pos, player):
+						break
+				get_viewport().set_input_as_handled()
+				return
+			if not player.enable_rope:
 				return
 			# 记录主触控点
 			if active_touch_index == -1:
@@ -163,6 +173,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 		return
 
+	if not player.enable_rope:
+		return
+	# 触屏模拟的鼠标事件不能再次发射绳索；真实鼠标仍按原有路径处理。
+	if event is InputEventMouseButton and event.device == InputEvent.DEVICE_ID_EMULATION:
+		return
 	if event.is_action_pressed("rope_shoot"):
 		var mouse_event = event as InputEventMouseButton
 		if mouse_event and _is_pos_over_ui(mouse_event.position):
@@ -181,7 +196,7 @@ func _is_pos_over_ui(screen_pos: Vector2) -> bool:
 	if not viewport:
 		return false
 	var control = viewport.gui_get_hovered_control()
-	if control and control.is_visible_in_tree() and control.mouse_filter != Control.MOUSE_FILTER_IGNORE:
+	if control and control.is_visible_in_tree() and control.mouse_filter != Control.MOUSE_FILTER_IGNORE and control.get_global_rect().has_point(screen_pos):
 		return true
 	return false
 

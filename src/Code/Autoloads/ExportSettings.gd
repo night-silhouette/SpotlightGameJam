@@ -613,10 +613,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var mobile_debug_force_touch_controls: bool = false
 ## 触屏长按判定时间 (秒)
 @export var mobile_touch_hold_threshold: float = 0.2
-## 虚拟摇杆基础尺寸 (像素直径，默认 240)
-@export var mobile_joystick_size: float = 240.0
-## 虚拟摇杆中心手柄尺寸 (像素，默认 90)
-@export var mobile_joystick_tip_size: float = 90.0
+## 虚拟摇杆基础尺寸 (像素直径，默认 190)
+@export var mobile_joystick_size: float = 190.0
+## 虚拟摇杆中心手柄尺寸 (像素，默认 72)
+@export var mobile_joystick_tip_size: float = 72.0
 ## 跳跃按钮半径 (像素，默认 52)
 @export var mobile_jump_button_radius: float = 52.0
 ## 冲刺按钮半径 (像素，默认 44)
@@ -658,6 +658,18 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
 ## 设置界面背景透明度
 @export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
+## 设置和读档共用面板的设计尺寸；小屏等比缩小，内容最小尺寸优先。
+@export var setting_panel_design_size: Vector2 = Vector2(900, 620)
+## 共用面板与屏幕边缘的安全距离，屏幕像素。
+@export_range(0.0, 64.0, 1.0) var setting_panel_screen_margin: float = 12.0
+## 共用面板内容留白，依次为左、上、右、下，避免覆盖顶部原画纹样。
+@export var setting_panel_content_margins: Vector4 = Vector4(44, 82, 44, 54)
+## 补绘边缘的线宽，设计坐标像素。
+@export_range(0.5, 4.0, 0.1) var setting_panel_edge_width: float = 1.6
+
+@export_group("Dialog", "dialog_")
+## 独白与旁白继续箭头的悬停颜色；正常状态为白色。
+@export var dialog_arrow_hover_color: Color = Color(1.0, 0.95, 0.70, 1.0)
 
 @export_group("Start Menu", "start_menu_")
 ## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)

@@ -7,6 +7,8 @@ extends Control
 ## 包含存档选择弹窗：支持选择已有存档载入或点击空白槽位创建新存档进入 World 主场景
 ## =============================================================================
 
+const SettingsSkin = preload("res://Code/Entities/Setting/SettingsSkin.gd")
+const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
 
@@ -27,10 +29,19 @@ const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
 var _setting_instance: SettingUI = null
 
 func _ready() -> void:
+	saves_modal.theme = SettingsSkin.CreateTheme()
+	SettingsSkin.ApplyToTree(saves_modal)
+	var save_panel: PanelContainer = $SavesModal/PanelContainer
+	SettingsFrame.Mount(save_panel, btn_close_saves)
 	_setup_signals()
 	_instantiate_setting()
+	saves_modal.visibility_changed.connect(_sync_setting_shortcut)
+	credits_modal.visibility_changed.connect(_sync_setting_shortcut)
 	saves_modal.visible = false
 	credits_modal.visible = false
+
+func _sync_setting_shortcut() -> void:
+	_setting_instance.set_process_input(not saves_modal.visible and not credits_modal.visible)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
@@ -71,8 +82,7 @@ func _on_start_pressed() -> void:
 	saves_modal.visible = true
 
 func _on_setting_pressed() -> void:
-	if _setting_instance:
-		_setting_instance.ShowSetting()
+	SignalBus.SettingVisibilityRequested.emit(true)
 
 func _on_credits_pressed() -> void:
 	credits_modal.visible = true
@@ -107,16 +117,8 @@ func _refresh_saves_ui() -> void:
 					_on_slot_new_game_pressed(slot_idx)
 			)
 
-		var card_style = StyleBoxFlat.new()
-		if exists:
-			card_style.bg_color = Color(0.12, 0.18, 0.26, 0.95)
-			card_style.border_color = Color(0.35, 0.65, 0.9, 0.9)
-		else:
-			card_style.bg_color = Color(0.08, 0.12, 0.16, 0.8)
-			card_style.border_color = Color(0.25, 0.35, 0.45, 0.5)
-		card_style.set_border_width_all(1)
-		card_style.set_corner_radius_all(6)
-		card.add_theme_stylebox_override("panel", card_style)
+		card.add_theme_stylebox_override("panel", SettingsSkin.SaveStyle())
+		card.theme = SettingsSkin.CardTheme()
 
 		var margin = MarginContainer.new()
 		margin.add_theme_constant_override("margin_left", 16)
@@ -139,10 +141,7 @@ func _refresh_saves_ui() -> void:
 		title_label.text = "存档槽位 %d" % slot_idx
 		title_label.add_theme_font_size_override("font_size", 16)
 		title_label.mouse_filter = Control.MOUSE_FILTER_PASS
-		if exists:
-			title_label.add_theme_color_override("font_color", Color(0.4, 0.85, 1.0))
-		else:
-			title_label.add_theme_color_override("font_color", Color(0.7, 0.75, 0.8))
+		title_label.add_theme_color_override("font_color", SettingsSkin.INK)
 		info_vbox.add_child(title_label)
 
 		var detail_label = Label.new()
@@ -150,15 +149,16 @@ func _refresh_saves_ui() -> void:
 		detail_label.mouse_filter = Control.MOUSE_FILTER_PASS
 		if exists:
 			detail_label.text = "记录时间: %s  |  生命值: %d/%d" % [slot["timestamp"], int(player_hp), int(player_max_hp)]
-			detail_label.add_theme_color_override("font_color", Color(0.85, 0.9, 0.95))
+			detail_label.add_theme_color_override("font_color", SettingsSkin.INK)
 		else:
 			detail_label.text = "【空白槽位】点击开启新游戏探索"
-			detail_label.add_theme_color_override("font_color", Color(0.5, 0.55, 0.6))
+			detail_label.add_theme_color_override("font_color", Color("555347"))
 		info_vbox.add_child(detail_label)
 
 		# 操作按钮
 		var btn_action = Button.new()
 		btn_action.custom_minimum_size = Vector2(110, 38)
+		btn_action.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		btn_action.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		btn_action.focus_mode = Control.FOCUS_NONE
 
@@ -175,6 +175,7 @@ func _refresh_saves_ui() -> void:
 			var btn_restart = Button.new()
 			btn_restart.text = "覆写新开"
 			btn_restart.custom_minimum_size = Vector2(80, 38)
+			btn_restart.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			btn_restart.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			btn_restart.focus_mode = Control.FOCUS_NONE
 			btn_restart.pressed.connect(_on_slot_new_game_pressed.bind(slot_idx))

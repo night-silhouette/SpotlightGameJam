@@ -7,6 +7,7 @@ var _level: Node2D
 @onready var _visual: Polygon2D = $Visual
 
 func _ready() -> void:
+	add_to_group("touch_interactables")
 	_level = get_parent() as Node2D
 	while _level != null and not _level.is_in_group("level2_map"):
 		_level = _level.get_parent() as Node2D
@@ -35,6 +36,16 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	_request()
 	get_viewport().set_input_as_handled()
+
+func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
+	if not available or not _prompt.visible or interactor != _player:
+		return false
+	if not Geometry2D.is_point_in_polygon(_visual.to_local(world_pos), _visual.polygon):
+		return false
+	if global_position.distance_to(interactor.global_position) > ExportSettings.level2_interact_radius:
+		return false
+	_request()
+	return true
 
 func _request() -> void:
 	if available and is_instance_valid(_player) and global_position.distance_to(_player.global_position) <= ExportSettings.level2_interact_radius:
