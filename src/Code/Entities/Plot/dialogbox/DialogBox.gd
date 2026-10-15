@@ -5,6 +5,9 @@ signal Finished
 
 const NARRATION: StringName = &"旁白"
 const MONOLOGUE: StringName = &"独白"
+const SETTINGS_ART = preload("res://Art/New/ui/设置底图.PNG")
+# 设置底图右上角的镂空箭头，保留原画轮廓及抗锯齿。
+const ARROW_REGION := Rect2i(816, 127, 62, 38)
 
 @onready var _box: AspectRatioContainer = $Root/Box
 @onready var _title: Label = $Root/Box/Margin/Content/Title
@@ -24,6 +27,22 @@ func _ready() -> void:
 	_close_button.pressed.connect(_on_close_pressed)
 	_narration_close.pressed.connect(_on_close_pressed)
 	_auto_close_timer.timeout.connect(_on_close_pressed)
+	_setup_continue_arrows()
+
+func _setup_continue_arrows() -> void:
+	var image: Image = SETTINGS_ART.get_image().get_region(ARROW_REGION)
+	image.convert(Image.FORMAT_RGBA8)
+	for y in range(image.get_height()):
+		for x in range(image.get_width()):
+			image.set_pixel(x, y, Color(1, 1, 1, 1.0 - image.get_pixel(x, y).a))
+	image.flip_x()
+	var texture := ImageTexture.create_from_image(image)
+	for button: TextureButton in [_close_button, _narration_close]:
+		var arrow: TextureRect = button.get_node("Hint")
+		arrow.texture = texture
+		button.mouse_entered.connect(func(): arrow.modulate = ExportSettings.dialog_arrow_hover_color)
+		button.mouse_exited.connect(func(): arrow.modulate = Color.WHITE)
+		button.visibility_changed.connect(func(): arrow.modulate = Color.WHITE)
 
 func _input(event: InputEvent) -> void:
 	if IsOpen() and event.is_action_pressed("skip_story") and not event.is_echo():

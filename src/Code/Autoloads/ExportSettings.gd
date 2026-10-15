@@ -663,6 +663,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 补绘边缘的线宽，设计坐标像素。
 @export_range(0.5, 4.0, 0.1) var setting_panel_edge_width: float = 1.6
 
+@export_group("Dialog", "dialog_")
+## 独白与旁白继续箭头的悬停颜色；正常状态为白色。
+@export var dialog_arrow_hover_color: Color = Color(1.0, 0.95, 0.70, 1.0)
+
 @export_group("Start Menu", "start_menu_")
 ## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)
 @export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
