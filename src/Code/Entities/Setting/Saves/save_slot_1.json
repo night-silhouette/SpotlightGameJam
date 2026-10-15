@@ -634,5 +634,9 @@
 	},
 	"scene_path": "res://Code/Entities/World/World.tscn",
 	"slot_index": 1,
+<<<<<<< HEAD
 	"timestamp": "2026-10-16 03:32:01"
+=======
+	"timestamp": "2026-10-16 00:37:35"
+>>>>>>> 41733c28a414c77cf63f975fd963ff5e9a578dcc
 }
