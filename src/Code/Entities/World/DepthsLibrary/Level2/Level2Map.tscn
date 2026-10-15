@@ -1,24 +1,42 @@
 [gd_scene format=4 uid="uid://bopjvl4pbi3mj"]
 
+[ext_resource type="Texture2D" uid="uid://gbrajb8nr0so" path="res://Art/New/component/extracted/prop_paper_scroll_rolled_2.png" id="7_kfeio"]
+[ext_resource type="Texture2D" uid="uid://mgp4x7ogvb08" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_1.png" id="13_ewexw"]
+[ext_resource type="Texture2D" uid="uid://dhgh6yt0eh63b" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_2.png" id="13_j2bs3"]
+[ext_resource type="Texture2D" uid="uid://bfqju7lfo4uc7" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_3.png" id="15_kfeio"]
 [ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="16_aevo3"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/DeathBoundary/DeathBoundary.tscn" id="DeathBoundary"]
+[ext_resource type="PackedScene" uid="uid://dfoa06wbpiqx8" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EastPassage.tscn" id="EastPassage"]
 [ext_resource type="PackedScene" uid="uid://dsvfjlmmaraxx" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EntryCollapse.tscn" id="EntryCollapse"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/FountainShaft.tscn" id="FountainShaft"]
 [ext_resource type="PackedScene" uid="uid://b3qlxyesas670" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/Hub.tscn" id="Hub"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/LowerStairwell.tscn" id="LowerStairwell"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/MoonAqueduct.tscn" id="MoonAqueduct"]
+[ext_resource type="PackedScene" uid="uid://dmwjf4h10bugq" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/MoonAqueduct.tscn" id="MoonAqueduct"]
 [ext_resource type="PackedScene" uid="uid://e4qpeg065gqq" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/RestArchive.tscn" id="RestArchive"]
 [ext_resource type="PackedScene" uid="uid://cjeny2skwyccl" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/Level2Scenery.tscn" id="scenery"]
 [ext_resource type="Script" uid="uid://c32ips41gf5p6" path="res://Code/Entities/World/DepthsLibrary/Level2/Level2Map.gd" id="script"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/SunStacks.tscn" id="SunStacks"]
+[ext_resource type="PackedScene" uid="uid://2jmwtg4iq0ly" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/SunStacks.tscn" id="SunStacks"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/SurfaceExit.tscn" id="SurfaceExit"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/TerrainArt.tscn" id="TerrainArt"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WeaveArchive.tscn" id="WeaveArchive"]
+[ext_resource type="PackedScene" uid="uid://cgt7cprco1uq3" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WeaveArchive.tscn" id="WeaveArchive"]
 [ext_resource type="PackedScene" uid="uid://b2ahpf27jgsmf" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WestPassage.tscn" id="WestPassage"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oniul"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kfeio"]
+resource_local_to_scene = true
+size = Vector2(1395, 650)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_yjgml"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_r2lkc"]
+blend_mode = 1
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8botp"]
+blend_mode = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pairm"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -30,7 +48,7 @@ shader_parameter/foreground = false
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ewexw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mohfu"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -42,7 +60,7 @@ shader_parameter/foreground = false
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2lkc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ek66h"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -54,7 +72,7 @@ shader_parameter/foreground = false
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_j2bs3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_24a00"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -66,7 +84,7 @@ shader_parameter/foreground = true
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kfeio"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h48a5"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -94,19 +112,13 @@ tile_map_data = PackedByteArray("AAAAAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAA
 [node name="DescentShaft" parent="Rooms" unique_id=1095934903 instance=ExtResource("DescentShaft")]
 position = Vector2(560, -2940)
 
-[node name="RoomTitle" parent="Rooms/DescentShaft" index="0"]
-offset_left = 20.0
-offset_top = 0.0
-offset_right = 260.0
-offset_bottom = 80.0
-
-[node name="RoomHint" parent="Rooms/DescentShaft" index="1"]
-offset_left = 0.0
-offset_top = 50.0
-offset_right = 280.0
-offset_bottom = 130.0
-
 [node name="Hub" parent="Rooms" unique_id=1370715799 instance=ExtResource("Hub")]
+
+[node name="Sprite2D" parent="Rooms/Hub" index="7" unique_id=1616484494]
+position = Vector2(-2897, 463)
+
+[node name="Sprite2D2" parent="Rooms/Hub" index="8" unique_id=729371312]
+position = Vector2(-2769, 507)
 
 [node name="WestPassage" parent="Rooms" unique_id=1965790281 instance=ExtResource("WestPassage")]
 position = Vector2(-500, 0)
@@ -117,17 +129,33 @@ tile_map_data = PackedByteArray("AAD+//3/AAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAA
 [node name="SunStacks" parent="Rooms" unique_id=1116939039 instance=ExtResource("SunStacks")]
 position = Vector2(-2700, 0)
 
-[node name="RoomTitle" parent="Rooms/SunStacks" index="0"]
-offset_left = 45.0
-offset_top = 10.0
-offset_right = 2155.0
-offset_bottom = 90.0
+[node name="CrackLine" parent="Rooms/SunStacks/Crumble2/VisualRoot" index="1"]
+self_modulate = Color(1, 1, 1, 0)
 
-[node name="RoomHint" parent="Rooms/SunStacks" index="1"]
-offset_left = 45.0
-offset_top = 58.0
-offset_right = 2155.0
-offset_bottom = 138.0
+[node name="Sprite2D" parent="Rooms/SunStacks/Crumble2/VisualRoot" index="2" unique_id=1323339006]
+scale = Vector2(0.15, 0.15)
+
+[node name="VisualRect" parent="Rooms/SunStacks/Crumble4/VisualRoot" index="0"]
+visible = false
+
+[node name="CrackLine" parent="Rooms/SunStacks/Crumble4/VisualRoot" index="1"]
+self_modulate = Color(1, 1, 1, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="Rooms/SunStacks/Crumble4/VisualRoot" index="2" unique_id=271108179]
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("7_kfeio")
+
+[node name="Caption" parent="Rooms/SunStacks/SunKey" parent_id_path=PackedInt32Array(1116939039, 1465730816) index="1"]
+offset_left = -113.0
+offset_top = 14.0
+offset_right = 117.0
+offset_bottom = 42.0
+
+[node name="PromptContainer" parent="Rooms/SunStacks/SunKey" parent_id_path=PackedInt32Array(1116939039, 1465730816) index="2"]
+offset_left = -91.0
+offset_top = -112.0
+offset_right = 109.0
+offset_bottom = -80.0
 
 [node name="ArchivePassage" parent="Rooms" unique_id=1670027 instance=ExtResource("ArchivePassage")]
 position = Vector2(-2900, 0)
@@ -150,8 +178,22 @@ position = Vector2(-4300, 0)
 [node name="ObservatoryScroll" parent="Rooms/RestArchive" index="2" unique_id=887468177]
 visible = false
 
+[node name="ArchiveHint" parent="Rooms/RestArchive" index="3" unique_id=652263396]
+text = "补给站
+靠近圣杯按 F 或点击提示"
+
 [node name="Terrain" parent="Rooms/RestArchive" index="4" unique_id=967301047]
 tile_map_data = PackedByteArray("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AAATABEAAAAAAAAAAAAUABEAAAAAAAAAAAAVABEAAAAAAAAAAAAWABEAAAAAAAAAAAAXABEAAAAAAAAAAAAYABEAAAAAAAAAAAAZABEAAAAAAAAAAAAaABEAAAAAAAAAAAAbABEAAAAAAAAAAAAcABEAAAAAAAAAAAAdABEAAAAAAAAAAAAeABEAAAAAAAAAAAAfABEAAAAAAAAAAAAgABEAAAAAAAAAAAAhABEAAAAAAAAAAAAiABEAAAAAAAAAAAAjABEAAAAAAAAAAAAkABEAAAAAAAAAAAAlABEAAAAAAAAAAAAmABEAAAAAAAAAAAAnABEAAAAAAAAAAAAoABEAAAAAAAAAAAApABEAAAAAAAAAAAAqABEAAAAAAAAAAAD//xIAAAAAAAAAAAAAABIAAAAAAAAAAAABABIAAAAAAAAAAAACABIAAAAAAAAAAAADABIAAAAAAAAAAAAEABIAAAAAAAAAAAAFABIAAAAAAAAAAAAGABIAAAAAAAAAAAAHABIAAAAAAAAAAAAIABIAAAAAAAAAAAAJABIAAAAAAAAAAAAKABIAAAAAAAAAAAALABIAAAAAAAAAAAAMABIAAAAAAAAAAAANABIAAAAAAAAAAAAOABIAAAAAAAAAAAAPABIAAAAAAAAAAAAQABIAAAAAAAAAAAARABIAAAAAAAAAAAASABIAAAAAAAAAAAATABIAAAAAAAAAAAAUABIAAAAAAAAAAAAVABIAAAAAAAAAAAAWABIAAAAAAAAAAAAXABIAAAAAAAAAAAAYABIAAAAAAAAAAAAZABIAAAAAAAAAAAAaABIAAAAAAAAAAAAbABIAAAAAAAAAAAAcABIAAAAAAAAAAAAdABIAAAAAAAAAAAAeABIAAAAAAAAAAAAfABIAAAAAAAAAAAAgABIAAAAAAAAAAAAhABIAAAAAAAAAAAAiABIAAAAAAAAAAAAjABIAAAAAAAAAAAAkABIAAAAAAAAAAAAlABIAAAAAAAAAAAAmABIAAAAAAAAAAAAnABIAAAAAAAAAAAAoABIAAAAAAAAAAAApABIAAAAAAAAAAAAqABIAAAAAAAAAAAA=")
+
+[node name="TriggerShape" parent="Rooms/RestArchive/RoomCameraZone" index="0"]
+position = Vector2(697.5, 275)
+shape = SubResource("RectangleShape2D_kfeio")
+
+[node name="ViewTopLeft" parent="Rooms/RestArchive/RoomCameraZone" index="1"]
+position = Vector2(-20, -30)
+
+[node name="ViewBottomRight" parent="Rooms/RestArchive/RoomCameraZone" index="2"]
+position = Vector2(1395, 626)
 
 [node name="EastPassage" parent="Rooms" unique_id=257843476 instance=ExtResource("EastPassage")]
 position = Vector2(1400, 0)
@@ -171,19 +213,21 @@ offset_bottom = 138.0
 [node name="MoonAqueduct" parent="Rooms" unique_id=903562269 instance=ExtResource("MoonAqueduct")]
 position = Vector2(1900, 0)
 
-[node name="RoomTitle" parent="Rooms/MoonAqueduct" index="0"]
-offset_left = 45.0
-offset_top = 10.0
-offset_right = 2155.0
-offset_bottom = 90.0
+[node name="Caption" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="1"]
+offset_top = 0.0
+offset_bottom = 28.0
 
-[node name="RoomHint" parent="Rooms/MoonAqueduct" index="1"]
-offset_left = 45.0
-offset_top = 58.0
-offset_right = 2155.0
-offset_bottom = 138.0
+[node name="PromptContainer" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="2"]
+visible = true
+offset_left = -89.0
+offset_top = -133.0
+offset_right = 111.0
+offset_bottom = -101.0
 
-[node name="Terrain" parent="Rooms/MoonAqueduct" index="9"]
+[node name="Sprite2D" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="3" unique_id=47013298]
+position = Vector2(4, -51)
+
+[node name="Terrain" parent="Rooms/MoonAqueduct" index="5" unique_id=2090966061]
 tile_map_data = PackedByteArray("AAD+//3/AAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAHAP3/AAAAAAAAAAAIAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAAQAP3/AAAAAAAAAAARAP3/AAAAAAAAAAASAP3/AAAAAAAAAAATAP3/AAAAAAAAAAAUAP3/AAAAAAAAAAAVAP3/AAAAAAAAAAAWAP3/AAAAAAAAAAAXAP3/AAAAAAAAAAAYAP3/AAAAAAAAAAAZAP3/AAAAAAAAAAAaAP3/AAAAAAAAAAAbAP3/AAAAAAAAAAAcAP3/AAAAAAAAAAAdAP3/AAAAAAAAAAAeAP3/AAAAAAAAAAAfAP3/AAAAAAAAAAAgAP3/AAAAAAAAAAAhAP3/AAAAAAAAAAAiAP3/AAAAAAAAAAAjAP3/AAAAAAAAAAAkAP3/AAAAAAAAAAAlAP3/AAAAAAAAAAAmAP3/AAAAAAAAAAAnAP3/AAAAAAAAAAAoAP3/AAAAAAAAAAApAP3/AAAAAAAAAAAqAP3/AAAAAAAAAAArAP3/AAAAAAAAAAAsAP3/AAAAAAAAAAAtAP3/AAAAAAAAAAAuAP3/AAAAAAAAAAAvAP3/AAAAAAAAAAAwAP3/AAAAAAAAAAAxAP3/AAAAAAAAAAAyAP3/AAAAAAAAAAAzAP3/AAAAAAAAAAA0AP3/AAAAAAAAAAA1AP3/AAAAAAAAAAA2AP3/AAAAAAAAAAA3AP3/AAAAAAAAAAA4AP3/AAAAAAAAAAA5AP3/AAAAAAAAAAA6AP3/AAAAAAAAAAA7AP3/AAAAAAAAAAA8AP3/AAAAAAAAAAA9AP3/AAAAAAAAAAA+AP3/AAAAAAAAAAA/AP3/AAAAAAAAAABAAP3/AAAAAAAAAABBAP3/AAAAAAAAAABCAP3/AAAAAAAAAABDAP3/AAAAAAAAAABEAP3/AAAAAAAAAAD+//7/AAAAAAAAAABEAP7/AAAAAAAAAAD+////AAAAAAAAAABEAP//AAAAAAAAAAD+/wAAAAAAAAAAAABEAAAAAAAAAAAAAAD+/wEAAAAAAAAAAABEAAEAAAAAAAAAAAD+/wIAAAAAAAAAAABEAAIAAAAAAAAAAAD+/wMAAAAAAAAAAABEAAMAAAAAAAAAAAD+/wQAAAAAAAAAAABEAAQAAAAAAAAAAAD+/wUAAAAAAAAAAABEAAUAAAAAAAAAAAD+/wYAAAAAAAAAAABEAAYAAAAAAAAAAAD+/wcAAAAAAAAAAABEAAcAAAAAAAAAAAD+/wgAAAAAAAAAAABEAAgAAAAAAAAAAABEAAkAAAAAAAAAAABEAAoAAAAAAAAAAABEAAsAAAAAAAAAAAA0AAwAAAAAAAAAAAA1AAwAAAAAAAAAAAA2AAwAAAAAAAAAAAA3AAwAAAAAAAAAAAA4AAwAAAAAAAAAAAA5AAwAAAAAAAAAAAA6AAwAAAAAAAAAAAA7AAwAAAAAAAAAAAA8AAwAAAAAAAAAAAA9AAwAAAAAAAAAAAA+AAwAAAAAAAAAAAA/AAwAAAAAAAAAAABAAAwAAAAAAAAAAABBAAwAAAAAAAAAAABCAAwAAAAAAAAAAABDAAwAAAAAAAAAAABEAAwAAAAAAAAAAAA0AA0AAAAAAAAAAAA1AA0AAAAAAAAAAAA2AA0AAAAAAAAAAAA3AA0AAAAAAAAAAAA4AA0AAAAAAAAAAAA5AA0AAAAAAAAAAAA6AA0AAAAAAAAAAAA7AA0AAAAAAAAAAAA8AA0AAAAAAAAAAAA9AA0AAAAAAAAAAAA+AA0AAAAAAAAAAAA/AA0AAAAAAAAAAABAAA0AAAAAAAAAAABBAA0AAAAAAAAAAABCAA0AAAAAAAAAAABDAA0AAAAAAAAAAABEAA0AAAAAAAAAAABEAA4AAAAAAAAAAABEAA8AAAAAAAAAAAD//xAAAAAAAAAAAAAAABAAAAAAAAAAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAAAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAAAAAAaABAAAAAAAAAAAAAbABAAAAAAAAAAAAAcABAAAAAAAAAAAAAdABAAAAAAAAAAAAAeABAAAAAAAAAAAAAfABAAAAAAAAAAAAAgABAAAAAAAAAAAABEABAAAAAAAAAAAAD//xEAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAAaABEAAAAAAAAAAAAbABEAAAAAAAAAAAAcABEAAAAAAAAAAAAdABEAAAAAAAAAAAAeABEAAAAAAAAAAAAfABEAAAAAAAAAAAAgABEAAAAAAAAAAABEABEAAAAAAAAAAAD//xIAAAAAAAAAAAAAABIAAAAAAAAAAAABABIAAAAAAAAAAAACABIAAAAAAAAAAAADABIAAAAAAAAAAAAEABIAAAAAAAAAAAAFABIAAAAAAAAAAAAGABIAAAAAAAAAAAAHABIAAAAAAAAAAAAIABIAAAAAAAAAAAAaABIAAAAAAAAAAAAbABIAAAAAAAAAAAAcABIAAAAAAAAAAAAdABIAAAAAAAAAAAAeABIAAAAAAAAAAAAfABIAAAAAAAAAAAAgABIAAAAAAAAAAABEABIAAAAAAAAAAAALABMAAAAAAAAAAAAMABMAAAAAAAAAAAANABMAAAAAAAAAAABEABMAAAAAAAAAAABEABQAAAAAAAAAAABEABUAAAAAAAAAAAAOABMAAAAAAAAAAAAPABMAAAAAAAAAAAAQABMAAAAAAAAAAAARABMAAAAAAAAAAAAYABAAAAAAAAAAAAAZABAAAAAAAAAAAAAXABAAAAAAAAAAAAA=")
 
 [node name="LowerStairwell" parent="Rooms" unique_id=1602145557 instance=ExtResource("LowerStairwell")]
@@ -207,25 +251,79 @@ tile_map_data = PackedByteArray("AAD//wAAAAAAAAAAAAD//wEAAAAAAAAAAAD//wIAAAAAAAA
 [node name="WeaveArchive" parent="Rooms" unique_id=373735795 instance=ExtResource("WeaveArchive")]
 position = Vector2(1650, 1400)
 
-[node name="RoomTitle" parent="Rooms/WeaveArchive" index="0"]
-offset_left = 45.0
-offset_top = 10.0
-offset_right = 2155.0
-offset_bottom = 90.0
+[node name="PromptContainer" parent="Rooms/WeaveArchive/MoonRune" parent_id_path=PackedInt32Array(373735795, 501208198) index="2"]
+offset_left = -101.0
+offset_top = -126.0
+offset_right = 99.0
+offset_bottom = -94.0
 
-[node name="RoomHint" parent="Rooms/WeaveArchive" index="1"]
-offset_left = 45.0
-offset_top = 58.0
-offset_right = 2155.0
-offset_bottom = 138.0
+[node name="ItemArt" type="Sprite2D" parent="Rooms/WeaveArchive/MoonRune" parent_id_path=PackedInt32Array(373735795, 501208198) index="3" unique_id=791309901]
+position = Vector2(0, -30)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("13_j2bs3")
 
-[node name="SequenceStatus" parent="Rooms/WeaveArchive" index="8"]
-offset_left = 1480.0
-offset_top = 220.0
-offset_right = 1880.0
-offset_bottom = 300.0
+[node name="Glow" type="Sprite2D" parent="Rooms/WeaveArchive/MoonRune/ItemArt" unique_id=1451739002]
+visible = false
+self_modulate = Color(0.73929507, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_yjgml")
+texture = ExtResource("13_j2bs3")
 
-[node name="Terrain" parent="Rooms/WeaveArchive" index="10"]
+[node name="Caption" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="1"]
+visible = false
+
+[node name="PromptContainer" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="2"]
+offset_left = -92.0
+offset_top = -121.0
+offset_right = 108.0
+offset_bottom = -89.0
+
+[node name="ItemArt" type="Sprite2D" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="3" unique_id=1363544443]
+position = Vector2(-2, -23)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("13_ewexw")
+
+[node name="Glow" type="Sprite2D" parent="Rooms/WeaveArchive/SunRune/ItemArt" unique_id=1492549634]
+visible = false
+self_modulate = Color(0.73929507, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_r2lkc")
+texture = ExtResource("13_ewexw")
+
+[node name="Caption" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="1"]
+visible = false
+
+[node name="PromptContainer" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="2"]
+offset_left = -101.0
+offset_top = -127.0
+offset_right = 99.0
+offset_bottom = -95.0
+
+[node name="ItemArt" type="Sprite2D" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="3" unique_id=169834623]
+position = Vector2(0, -30)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("15_kfeio")
+
+[node name="Glow" type="Sprite2D" parent="Rooms/WeaveArchive/WeaveRune/ItemArt" unique_id=395685044]
+visible = false
+self_modulate = Color(0.73929507, 1, 1, 1)
+material = SubResource("CanvasItemMaterial_8botp")
+texture = ExtResource("15_kfeio")
+
+[node name="Caption" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="1"]
+offset_left = -107.0
+offset_top = -16.0
+offset_right = 123.0
+offset_bottom = 12.0
+
+[node name="PromptContainer" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="2"]
+offset_left = -96.0
+offset_top = -147.0
+offset_right = 104.0
+offset_bottom = -115.0
+
+[node name="Sprite2D" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="3" unique_id=1810848957]
+position = Vector2(3, -65)
+
+[node name="Terrain" parent="Rooms/WeaveArchive" index="10" unique_id=1287906624]
 tile_map_data = PackedByteArray("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AAAzABAAAAAAAAAAAAA0ABAAAAAAAAAAAAA1ABAAAAAAAAAAAAA2ABAAAAAAAAAAAAA3ABAAAAAAAAAAAAA4ABAAAAAAAAAAAAA5ABAAAAAAAAAAAAA6ABAAAAAAAAAAAAA7ABAAAAAAAAAAAAA8ABAAAAAAAAAAAAA9ABAAAAAAAAAAAAA+ABAAAAAAAAAAAAA/ABAAAAAAAAAAAABAABAAAAAAAAAAAABBABAAAAAAAAAAAABCABAAAAAAAAAAAABDABAAAAAAAAAAAABEABAAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAABEABEAAAAAAAAAAAAAABIAAAAAAAAAAABEABIAAAAAAAAAAABEABMAAAAAAAAAAABEABQAAAAAAAAAAABEABUAAAAAAAAAAAD//wkAAAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAPz/AAAAAAAAAAAAAPv/AAAAAAAAAAAAAPr/AAAAAAAAAAD///r/AAAAAAAAAAD///z/AAAAAAAAAAD///v/AAAAAAAAAAD///n/AAAAAAAAAAD///j/AAAAAAAAAAD///f/AAAAAAAAAAD///b/AAAAAAAAAAD///X/AAAAAAAAAAD///T/AAAAAAAAAAD///P/AAAAAAAAAAD///L/AAAAAAAAAAD///H/AAAAAAAAAAD///D/AAAAAAAAAAD//+//AAAAAAAAAAD//+7/AAAAAAAAAAD//+3/AAAAAAAAAAD//+z/AAAAAAAAAAD//+v/AAAAAAAAAAD//+r/AAAAAAAAAAD//+n/AAAAAAAAAAD//+j/AAAAAAAAAAD//xIAAAAAAAAAAAD//xMAAAAAAAAAAAAAAAoAAAAAAAAAAAD//woAAAAAAAAAAAA=")
 
 [node name="FountainShaft" parent="Rooms" unique_id=1773857183 instance=ExtResource("FountainShaft")]
@@ -261,21 +359,23 @@ tile_map_data = PackedByteArray("AADy/w0AAAAAAAAAAADx/w0AAAAAAAAAAADw/w0AAAAAAAA
 [node name="Scenery" parent="." unique_id=346300600 instance=ExtResource("scenery")]
 
 [node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" index="0"]
-material = SubResource("ShaderMaterial_oniul")
+material = SubResource("ShaderMaterial_pairm")
 
 [node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" index="1"]
-material = SubResource("ShaderMaterial_ewexw")
+material = SubResource("ShaderMaterial_mohfu")
 
 [node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" index="2"]
-material = SubResource("ShaderMaterial_r2lkc")
+material = SubResource("ShaderMaterial_ek66h")
 
 [node name="NearColumn" parent="Scenery/FountainShaft/Foreground" index="0"]
-material = SubResource("ShaderMaterial_j2bs3")
+material = SubResource("ShaderMaterial_24a00")
 
 [node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" index="1"]
-material = SubResource("ShaderMaterial_kfeio")
+material = SubResource("ShaderMaterial_h48a5")
 
 [node name="TerrainArt" parent="." unique_id=1368075065 instance=ExtResource("TerrainArt")]
+
+[node name="DeathBoundary" parent="." unique_id=1387719934 instance=ExtResource("DeathBoundary")]
 
 [node name="HUD" type="CanvasLayer" parent="." unique_id=418277367]
 layer = 5
@@ -346,14 +446,26 @@ autowrap_mode = 3
 [editable path="Rooms/EntryCollapse"]
 [editable path="Rooms/DescentShaft"]
 [editable path="Rooms/Hub"]
+[editable path="Rooms/Hub/Fountain"]
 [editable path="Rooms/WestPassage"]
 [editable path="Rooms/SunStacks"]
+[editable path="Rooms/SunStacks/Crumble2"]
+[editable path="Rooms/SunStacks/Crumble4"]
+[editable path="Rooms/SunStacks/SunKey"]
 [editable path="Rooms/ArchivePassage"]
 [editable path="Rooms/RestArchive"]
+[editable path="Rooms/RestArchive/RoomCameraZone"]
 [editable path="Rooms/EastPassage"]
 [editable path="Rooms/MoonAqueduct"]
+[editable path="Rooms/MoonAqueduct/FerryA"]
+[editable path="Rooms/MoonAqueduct/FerryB"]
+[editable path="Rooms/MoonAqueduct/MoonKey"]
 [editable path="Rooms/LowerStairwell"]
 [editable path="Rooms/WeaveArchive"]
+[editable path="Rooms/WeaveArchive/MoonRune"]
+[editable path="Rooms/WeaveArchive/SunRune"]
+[editable path="Rooms/WeaveArchive/WeaveRune"]
+[editable path="Rooms/WeaveArchive/WeaveKey"]
 [editable path="Rooms/FountainShaft"]
 [editable path="Rooms/SurfaceExit"]
 [editable path="Scenery"]

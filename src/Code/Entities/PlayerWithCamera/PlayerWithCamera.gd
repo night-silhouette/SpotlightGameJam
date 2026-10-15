@@ -294,7 +294,7 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 			next.follow_damping_value = ExportSettings.camera_boat_damping
 			axis_lock = PhantomCamera2D.FollowLockAxis.Y
 		&"fixed":
-			zoom_value = ExportSettings.camera_fixed_zoom
+			zoom_value = float(_options.get("zoom", ExportSettings.camera_fixed_zoom))
 			_set_fixed_target(next, (_options.anchor as Node2D).global_position)
 		&"ritual":
 			next.follow_damping = false
@@ -312,6 +312,9 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 		_camera_bounds[next] = Vector4i(floori(bounds.position.x), floori(bounds.position.y), ceili(bounds.end.x), ceili(bounds.end.y)) if bounds.has_area() else base_bounds
 	_apply_gate_limits()
 	next.set_tween_duration(0.0 if instant else maxf(0.01, ExportSettings.camera_ritual_pan_duration if _phase == &"wide" else ExportSettings.camera_transition_duration))
+	# 房间区域可单独指定过渡速度；其他镜头沿用原参数。
+	if mode == &"fixed" and not instant and _options.has("transition_duration"):
+		next.set_tween_duration(maxf(0.01, float(_options.transition_duration)))
 	if next == _active:
 		_pending = true
 		_on_arrived(next)

@@ -1,5 +1,10 @@
 [gd_scene format=4 uid="uid://b3qlxyesas670"]
 
+[ext_resource type="Texture2D" uid="uid://b1sl654210usc" path="res://Art/New/component/extracted/architecture_fountain_cascade_pedestal.png" id="2_4klen"]
+[ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="3_m8ogb"]
+[ext_resource type="Texture2D" uid="uid://bqpaaixh5soex" path="res://Art/New/component/extracted/fx_water_stream_column_long.png" id="3_xobwn"]
+[ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="4_031cx"]
+[ext_resource type="Texture2D" uid="uid://c0tfqwsessboo" path="res://Art/New/component/extracted/fx_water_splash_crown.png" id="4_n0vls"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 
@@ -29,6 +34,38 @@ position = Vector2(990, 495)
 metadata/kind = "fountain"
 metadata/label = "中央喷泉 · 提交钥匙"
 
+[node name="Visual" parent="Fountain" index="0"]
+visible = false
+
+[node name="Caption" parent="Fountain" index="1"]
+visible = false
+offset_left = -109.0
+offset_top = 19.0
+offset_right = 121.0
+offset_bottom = 47.0
+
+[node name="PromptContainer" parent="Fountain" index="2"]
+offset_left = -95.0
+offset_top = -390.0
+offset_right = 105.0
+offset_bottom = -358.0
+
+[node name="Node2D" type="Node2D" parent="Fountain" unique_id=2064272013]
+position = Vector2(6, -14)
+scale = Vector2(0.13, 0.13)
+
+[node name="FxWaterStreamColumnLong" type="Sprite2D" parent="Fountain/Node2D" unique_id=2114123778]
+position = Vector2(-3, -1017)
+texture = ExtResource("3_xobwn")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Fountain/Node2D" unique_id=1752842519]
+position = Vector2(12, -2020)
+texture = ExtResource("4_n0vls")
+
+[node name="Sprite2D" type="Sprite2D" parent="Fountain/Node2D" unique_id=367722753]
+position = Vector2(-48, -2.0002441)
+texture = ExtResource("2_4klen")
+
 [node name="FountainStream" type="Polygon2D" parent="." unique_id=1624418422]
 visible = false
 position = Vector2(925, -80)
@@ -57,3 +94,15 @@ position = Vector2(0, 24)
 tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAHAP3/AAAAAAAAAAAIAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAAQAP3/AAAAAAAAAAARAP3/AAAAAAAAAAAaAP3/AAAAAAAAAAAbAP3/AAAAAAAAAAAiAP3/AAAAAAAAAAAjAP3/AAAAAAAAAAAkAP3/AAAAAAAAAAAlAP3/AAAAAAAAAAAmAP3/AAAAAAAAAAAnAP3/AAAAAAAAAAAoAP3/AAAAAAAAAAApAP3/AAAAAAAAAAAqAP3/AAAAAAAAAAArAP3/AAAAAAAAAAAsAP3/AAAAAAAAAAD///7/AAAAAAAAAAAsAP7/AAAAAAAAAAD/////AAAAAAAAAAAsAP//AAAAAAAAAAD//wAAAAAAAAAAAAAsAAAAAAAAAAAAAAD//wEAAAAAAAAAAAAsAAEAAAAAAAAAAAD//wIAAAAAAAAAAAAsAAIAAAAAAAAAAAD//wMAAAAAAAAAAAAsAAMAAAAAAAAAAAD//wQAAAAAAAAAAAAsAAQAAAAAAAAAAAD//wUAAAAAAAAAAAAsAAUAAAAAAAAAAAD//wYAAAAAAAAAAAAsAAYAAAAAAAAAAAD//wcAAAAAAAAAAAAsAAcAAAAAAAAAAAD//wgAAAAAAAAAAAAsAAgAAAAAAAAAAAAAABAAAAAAAAAAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAAAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAAAAAAJABAAAAAAAAAAAAAKABAAAAAAAAAAAAALABAAAAAAAAAAAAAMABAAAAAAAAAAAAANABAAAAAAAAAAAAAOABAAAAAAAAAAAAAPABAAAAAAAAAAAAAQABAAAAAAAAAAAAARABAAAAAAAAAAAAASABAAAAAAAAAAAAATABAAAAAAAAAAAAAUABAAAAAAAAAAAAAVABAAAAAAAAAAAAAWABAAAAAAAAAAAAAXABAAAAAAAAAAAAAYABAAAAAAAAAAAAAZABAAAAAAAAAAAAAaABAAAAAAAAAAAAAbABAAAAAAAAAAAAAcABAAAAAAAAAAAAAdABAAAAAAAAAAAAAeABAAAAAAAAAAAAAfABAAAAAAAAAAAAAgABAAAAAAAAAAAAAhABAAAAAAAAAAAAAoABAAAAAAAAAAAAApABAAAAAAAAAAAAAqABAAAAAAAAAAAAArABAAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAALABEAAAAAAAAAAAAMABEAAAAAAAAAAAANABEAAAAAAAAAAAAOABEAAAAAAAAAAAAPABEAAAAAAAAAAAAQABEAAAAAAAAAAAARABEAAAAAAAAAAAASABEAAAAAAAAAAAATABEAAAAAAAAAAAAUABEAAAAAAAAAAAAVABEAAAAAAAAAAAAWABEAAAAAAAAAAAAXABEAAAAAAAAAAAAYABEAAAAAAAAAAAAZABEAAAAAAAAAAAAaABEAAAAAAAAAAAAbABEAAAAAAAAAAAAcABEAAAAAAAAAAAAdABEAAAAAAAAAAAAeABEAAAAAAAAAAAAfABEAAAAAAAAAAAAgABEAAAAAAAAAAAAhABEAAAAAAAAAAAAoABEAAAAAAAAAAAApABEAAAAAAAAAAAAqABEAAAAAAAAAAAArABEAAAAAAAAAAAA=")
 tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1616484494]
+position = Vector2(455.00003, 459)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("3_m8ogb")
+
+[node name="Sprite2D2" type="Sprite2D" parent="." unique_id=729371312]
+position = Vector2(329, 506)
+scale = Vector2(0.15, 0.15)
+texture = ExtResource("4_031cx")
+
+[editable path="Fountain"]

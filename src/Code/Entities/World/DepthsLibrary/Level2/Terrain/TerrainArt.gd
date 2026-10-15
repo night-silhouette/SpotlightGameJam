@@ -14,6 +14,7 @@ var _glass_max_rows: int = 2
 var _border_ratio: float = 0.44
 var _stairwell_left_extra_columns: int = 1
 var _sources: Dictionary = {}
+var _shaft_exterior: Array[Rect2] = []
 var _poll_left: float = 0.0
 
 func _ready() -> void:
@@ -156,6 +157,9 @@ func _is_thin_cell(cell: Vector2i, occupied: Dictionary, glass_cells: Dictionary
 func _draw() -> void:
 	if not _art_enabled():
 		return
+	_shaft_exterior = _build_shaft_exterior()
+	for rect in _shaft_exterior:
+		draw_texture_rect_region(ATLAS, rect, DARK_CORE)
 	# 房间各自保存 Terrain，但相接的墙必须按整张地图判断外轮廓。
 	# 用实际位置合并占用，避免两间房的并排井壁在柱子中间重复画蓝边。
 	var map_occupied: Dictionary = {}
@@ -240,13 +244,83 @@ func _cell_key(terrain: TileMapLayer, cell: Vector2i) -> Vector2i:
 	var center := to_local(terrain.to_global(terrain.map_to_local(cell)))
 	return Vector2i((center * 100.0).round())
 
+func _terrain_bounds(terrain: TileMapLayer) -> Rect2:
+	var cells := terrain.get_used_rect()
+	var tile_size := Vector2(terrain.tile_set.tile_size)
+	var rect := Rect2(terrain.map_to_local(cells.position) - tile_size * 0.5, Vector2(cells.size) * tile_size)
+	return (global_transform.affine_inverse() * terrain.global_transform) * rect
+
+func _build_shaft_exterior() -> Array[Rect2]:
+	var result: Array[Rect2] = []
+	if not bool(_setting(&"level2_terrain_art_shaft_exterior_enabled")):
+		return result
+	var rooms := get_parent().get_node_or_null("Rooms")
+	if rooms == null:
+		return result
+	var descent := rooms.get_node_or_null("DescentShaft/Terrain") as TileMapLayer
+	var fountain := rooms.get_node_or_null("FountainShaft/Terrain") as TileMapLayer
+	if descent == null or fountain == null or not _sources.has(descent) or not _sources.has(fountain):
+		return result
+	if not descent.is_visible_in_tree() or not fountain.is_visible_in_tree():
+		return result
+	var fall_bounds := _terrain_bounds(descent)
+	var fountain_bounds := _terrain_bounds(fountain)
+	var width := maxf(0.0, float(_setting(&"level2_terrain_art_shaft_exterior_width")))
+	if width <= 0.0:
+		return result
+	# 只延伸外侧灰区，不往下落井或喷泉井内部添加任何美术或碰撞。
+	result.append(Rect2(fall_bounds.position - Vector2(width, 0), Vector2(width, fall_bounds.size.y)))
+	var top := maxf(fall_bounds.position.y, fountain_bounds.position.y)
+	var bottom := minf(fall_bounds.end.y, fountain_bounds.end.y)
+	var gap := fountain_bounds.position.x - fall_bounds.end.x
+	if gap > 0.0 and bottom > top:
+		result.append(Rect2(fall_bounds.end.x, top, gap, bottom - top))
+	result.append(Rect2(fountain_bounds.end.x, top, width, bottom - top))
+	# 切除其他房间的范围，特别是上方入口房间和下方大厅，避免盖住可游玩区域。
+	for room in rooms.get_children():
+		if room == descent.get_parent() or room == fountain.get_parent():
+			continue
+		var bounds: Rect2 = room.get_meta("scenery_bounds", Rect2(Vector2.ZERO, Vector2(float(room.get_meta("width", 0.0)), float(room.get_meta("height", 0.0)))))
+		bounds = (global_transform.affine_inverse() * room.global_transform) * bounds
+		var cuts: Array[Rect2] = []
+		if bounds.has_area():
+			cuts.append(bounds)
+		var terrain := room.get_node_or_null("Terrain") as TileMapLayer
+		if terrain != null and terrain.tile_set != null and not terrain.get_used_cells().is_empty():
+			cuts.append(_terrain_bounds(terrain))
+		# 房间主体与偏远的附属平台分开避让，不能把两者之间的灰区也挖空。
+		for cut in cuts:
+			var clipped: Array[Rect2] = []
+			for rect in result:
+				clipped.append_array(_subtract_rect(rect, cut))
+			result = clipped
+	return result
+
+func _subtract_rect(rect: Rect2, cut: Rect2) -> Array[Rect2]:
+	var pieces: Array[Rect2] = []
+	var overlap := rect.intersection(cut)
+	if not overlap.has_area():
+		pieces.append(rect)
+		return pieces
+	for piece in [Rect2(rect.position.x, rect.position.y, rect.size.x, overlap.position.y - rect.position.y),
+		Rect2(rect.position.x, overlap.end.y, rect.size.x, rect.end.y - overlap.end.y),
+		Rect2(rect.position.x, overlap.position.y, overlap.position.x - rect.position.x, overlap.size.y),
+		Rect2(overlap.end.x, overlap.position.y, rect.end.x - overlap.end.x, overlap.size.y)]:
+		if piece.has_area():
+			pieces.append(piece)
+	return pieces
+
+func _stone_neighbor_exists(terrain: TileMapLayer, cell: Vector2i, occupied: Dictionary) -> bool:
+	var key := _cell_key(terrain, cell)
+	return occupied.has(key) or _inside_glass_strip(Vector2(key) / 100.0, _shaft_exterior)
+
 func _draw_stone(rect: Rect2, cell: Vector2i, terrain: TileMapLayer, occupied: Dictionary) -> void:
 	# 黑芯只填实际存在的地形格，绝不填房间空白或封住井口。
 	draw_texture_rect_region(ATLAS, rect, DARK_CORE)
-	var top := not occupied.has(_cell_key(terrain, cell + Vector2i.UP))
-	var bottom := not occupied.has(_cell_key(terrain, cell + Vector2i.DOWN))
-	var left := not occupied.has(_cell_key(terrain, cell + Vector2i.LEFT))
-	var right := not occupied.has(_cell_key(terrain, cell + Vector2i.RIGHT))
+	var top := not _stone_neighbor_exists(terrain, cell + Vector2i.UP, occupied)
+	var bottom := not _stone_neighbor_exists(terrain, cell + Vector2i.DOWN, occupied)
+	var left := not _stone_neighbor_exists(terrain, cell + Vector2i.LEFT, occupied)
+	var right := not _stone_neighbor_exists(terrain, cell + Vector2i.RIGHT, occupied)
 	var border := minf(rect.size.x, rect.size.y) * _border_ratio
 	var map_position := to_local(terrain.to_global(rect.position))
 	if top:
@@ -304,6 +378,7 @@ func _stone_edge_pieces(destination: Rect2, sample: Rect2, horizontal: bool, pha
 	return pieces
 
 func _draw_glass(rect: Rect2) -> void:
+	var death_join := _death_join_rect()
 	var region := GLASS_WIDE if rect.size.x > rect.size.y * 1.2 else GLASS_SQUARE
 	var cap := minf(10.0, minf(rect.size.x, rect.size.y) * 0.3)
 	var source_cap := 300.0
@@ -316,4 +391,37 @@ func _draw_glass(rect: Rect2) -> void:
 		for x in range(3):
 			var destination := Rect2(dx[x], dy[y], dx[x + 1] - dx[x], dy[y + 1] - dy[y])
 			var sample := Rect2(sx[x], sy[y], sx[x + 1] - sx[x], sy[y + 1] - sy[y])
-			draw_texture_rect_region(ATLAS, destination, sample)
+			_draw_glass_sample(destination, sample, death_join)
+
+func _death_join_rect() -> Rect2:
+	# 读取同地图的布局，仅裁掉重复外观，不修改任何机关或碰撞状态。
+	if not bool(_setting(&"level2_death_boundary_enabled")):
+		return Rect2()
+	var boundary := get_parent().get_node_or_null("DeathBoundary") as CanvasItem
+	if boundary == null or not boundary.is_visible_in_tree():
+		return Rect2()
+	var collider := boundary.get_node_or_null("MoonAqueductDeathWater") as CollisionShape2D
+	if collider == null or collider.disabled or not collider.shape is RectangleShape2D:
+		return Rect2()
+	var depth := maxf(0.0, float(_setting(&"level2_death_boundary_moon_join_depth")))
+	var shape := collider.shape as RectangleShape2D
+	var extension := Rect2(Vector2(-shape.size.x * 0.5, shape.size.y * 0.5), Vector2(shape.size.x, depth))
+	return global_transform.affine_inverse() * collider.global_transform * extension
+
+func _draw_glass_sample(destination: Rect2, sample: Rect2, exclusion: Rect2) -> void:
+	var overlap := destination.intersection(exclusion)
+	if not overlap.has_area():
+		draw_texture_rect_region(ATLAS, destination, sample)
+		return
+	# 衔接部分由 DeathBoundary 一次绘制，避免双重透明叠加及两条接缝描边。
+	var pieces: Array[Rect2] = [
+		Rect2(destination.position, Vector2(destination.size.x, overlap.position.y - destination.position.y)),
+		Rect2(Vector2(destination.position.x, overlap.end.y), Vector2(destination.size.x, destination.end.y - overlap.end.y)),
+		Rect2(Vector2(destination.position.x, overlap.position.y), Vector2(overlap.position.x - destination.position.x, overlap.size.y)),
+		Rect2(Vector2(overlap.end.x, overlap.position.y), Vector2(destination.end.x - overlap.end.x, overlap.size.y)),
+	]
+	for piece in pieces:
+		if not piece.has_area():
+			continue
+		var source := Rect2(sample.position + (piece.position - destination.position) / destination.size * sample.size, piece.size / destination.size * sample.size)
+		draw_texture_rect_region(ATLAS, piece, source)
