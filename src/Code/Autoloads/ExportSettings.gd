@@ -64,18 +64,24 @@ extends Node
 @export_group("Level 2 - Terrain Art", "level2_terrain_art_")
 ## 第二关石砖外观总开关；关闭后恢复原有灰盒显示，碰撞不变。
 @export var level2_terrain_art_enabled: bool = true
-## 薄平台优先使用原图自带半透明的蓝色款；关闭后统一使用石边黑芯。
-@export var level2_terrain_art_glass_platforms: bool = true
-## 可使用半透明款的独立矩形平台最大厚度，单位为地形格数。
+## 兼容旧场景的透明平台参数；新版地形统一使用蓝边黑芯，此项不再参与绘制。
+@export var level2_terrain_art_glass_platforms: bool = false
+## 兼容旧场景保留；新版统一砖块不再按厚度切换透明材质。
 @export_range(1, 4, 1) var level2_terrain_art_glass_max_rows: int = 2
 ## 石墙边缘宽度占一格的比例；包含蓝色石边与向黑色内层过渡的碎石。
 @export_range(0.15, 0.48, 0.01) var level2_terrain_art_border_ratio: float = 0.44
 ## 折返阶梯竖井左墙向外增加的美术厚度（格）；0 恢复原宽，不改变碰撞。
 @export_range(0, 3, 1) var level2_terrain_art_stairwell_left_extra_columns: int = 1
+## 入口右墙向左补齐到下落井右墙，让上下两段美术边缘保持一条直线。
+@export var level2_terrain_art_entry_wall_aligned: bool = true
 ## 高落差竖井外侧填成厚实墙体，同时填两条竖井之间的灰缝；仅影响外观。
 @export var level2_terrain_art_shaft_exterior_enabled: bool = true
 ## 竖井组合最外侧向外延伸的墙面宽度（像素），保留两条管道内部空间。
 @export_range(0.0, 4096.0, 32.0) var level2_terrain_art_shaft_exterior_width: float = 2048.0
+## 地图底部空白向下填充蓝黑墙体的深度（像素）；0 关闭额外填充，不改变死亡范围。
+@export_range(0.0, 8192.0, 32.0) var level2_terrain_art_bottom_fill_depth: float = 2048.0
+## 主层房间上方与两端外侧填墙的高度；0 关闭这部分外观，不改变通道碰撞。
+@export_range(0.0, 4096.0, 32.0) var level2_terrain_art_room_exterior_height: float = 1024.0
 
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。
@@ -701,7 +707,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Level 2 - Death Boundary", "level2_death_boundary_")
 ## 第二关可见蓝色边界与接触死亡总开关。
 @export var level2_death_boundary_enabled: bool = true
-## 蓝色死亡砖块边缘的外观尺寸；96 对应 10 像素边缘，不改变碰撞范围。
+## 兼容旧场景保留；新版死亡砖边框统一使用 level2_terrain_art_border_ratio。
 @export_range(32.0, 256.0, 8.0) var level2_death_boundary_texture_size: float = 96.0
 ## 月影水道死亡砖块向下衔接天花板的美术高度；仅合并外观，不扩大死亡碰撞。
 @export_range(0.0, 64.0, 1.0) var level2_death_boundary_moon_join_depth: float = 32.0
@@ -710,7 +716,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 
 @export_group("Room Camera Zone", "room_camera_zone_")
 ## 房间固定镜头区域总开关；关闭后恢复普通跟随。
-@export var room_camera_zone_enabled: bool = true
+@export var room_camera_zone_enabled: bool = false
 ## 进入房间时的镜头过渡时间（秒）。
 @export_range(0.05, 3.0, 0.05) var room_camera_zone_transition_time: float = 0.7
 ## 离开区域需要额外走出的距离，避免门口来回微动反复切镜。

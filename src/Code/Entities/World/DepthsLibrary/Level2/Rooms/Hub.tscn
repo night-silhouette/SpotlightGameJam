@@ -51,7 +51,7 @@ offset_right = 105.0
 offset_bottom = -358.0
 
 [node name="Node2D" type="Node2D" parent="Fountain" unique_id=2064272013]
-position = Vector2(6, -14)
+position = Vector2(7, -31)
 scale = Vector2(0.13, 0.13)
 
 [node name="FxWaterStreamColumnLong" type="Sprite2D" parent="Fountain/Node2D" unique_id=2114123778]
