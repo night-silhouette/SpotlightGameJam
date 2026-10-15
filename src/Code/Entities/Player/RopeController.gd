@@ -142,7 +142,7 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 			var player_ui := player.get_node("PlayerUI") as PlayerUI
 			if player_ui.touch_interaction_mode:
-				var world_pos := get_canvas_transform().affine_inverse() * touch.position
+				var world_pos: Vector2 = get_canvas_transform().affine_inverse() * touch.position
 				for target in get_tree().get_nodes_in_group("touch_interactables"):
 					if target.TryTouchInteract(world_pos, player):
 						break

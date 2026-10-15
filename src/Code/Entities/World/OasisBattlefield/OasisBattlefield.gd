@@ -66,8 +66,13 @@ func SwitchToReturnPhase() -> void:
 	_chase_finished = false
 
 
-## 骨头收集完成后的关卡入口；调用后切换到返程/追逐阶段。
+## 骨头收集完成后的关卡入口；对话结束后切换到返程/追逐阶段。
 func OnBoneCollected() -> void:
+	var dialog_box: Node = _bone_interactable.get("_dialog_box")
+	if is_instance_valid(dialog_box) and dialog_box.call(&"IsOpen"):
+		await dialog_box.Finished
+		if not _chase_activation_pending:
+			return
 	_chase_activation_pending = false
 	if _in_return_phase or _bone_claimed or _bone_offered:
 		return
