@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b82hsxmaxlust"]
 
 [ext_resource type="Texture2D" path="res://Code/Entities/Plot/dialogbox/Art9766/NarrationFrame.png" id="1_background"]
+[ext_resource type="Script" path="res://Code/Entities/Plot/dialogbox/DialogFrameEdge.gd" id="2_edge"]
 
 [node name="NarrationPanel" type="AspectRatioContainer" unique_id=1414271297]
 anchors_preset = -1
@@ -19,6 +20,16 @@ mouse_filter = 2
 texture = ExtResource("1_background")
 expand_mode = 1
 stretch_mode = 5
+
+[node name="FrameEdge" type="Control" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("2_edge")
 
 [node name="Margin" type="Control" parent="." unique_id=868000688]
 layout_mode = 2
