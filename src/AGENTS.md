@@ -116,9 +116,9 @@ Code/
 
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
-| 包装器与相机装配 | `PlayerWithCamera.gd:5-166`；`PlayerWithCamera.tscn:3-56` | Player、PhantomCameraHost、基础镜头、双 Shot；`_enter_tree` 配镜头，父 ready 再同步玩家参数，会覆盖玩家已读取的 ExportSettings 值。 |
-| 模式请求、限位与切镜 | `PlayerWithCamera.gd:183-462` | 六模式和旧 `CameraShotRequested` 兼容；按玩家过滤，双 Shot 交替；ritual/fixed 要有效 anchor。门限位与原边界合并，重生复位，失败/被抢占会清理并解锁。 |
-| CG、字幕与输入锁 | `PlayerWithCamera.gd:469-501`；`CameraPresentation.gd:1-64`；`CameraNarration.gd:1-50` | ritual 近景转远景，generation 防旧回调，最终到位发 `CameraShotReady`；只禁玩家子树处理，不暂停全世界；文字横/竖逐字显示，不解析 BBCode。 |
+| 包装器与相机装配 | `PlayerWithCamera.gd:5-164`；`PlayerWithCamera.tscn:3-56` | Player、PhantomCameraHost、基础镜头、双 Shot；`_enter_tree` 配镜头，父 ready 再同步玩家参数，会覆盖玩家已读取的 ExportSettings 值。 |
+| 模式请求、限位与切镜 | `PlayerWithCamera.gd:182-487` | 六模式和旧 `CameraShotRequested` 兼容；按玩家过滤，双 Shot 交替；ritual/fixed 要有效 anchor。`_process` 每帧重算门限位，`_gate_overlaps_view` 按真实 Camera2D 中心/zoom 计算视野，与门有效碰撞形状的世界范围只比较正交轴（左右门比较 y，上下门比较 x）；不重叠时跳过稳定及过渡限位但保留登记，重新重叠可恢复，禁用形状不参与。门限位仍与原边界合并，重生复位，失败/被抢占会清理并解锁。 |
+| CG、字幕与输入锁 | `PlayerWithCamera.gd:494-526`；`CameraPresentation.gd:1-64`；`CameraNarration.gd:1-50` | ritual 近景转远景，generation 防旧回调，最终到位发 `CameraShotReady`；只禁玩家子树处理，不暂停全世界；文字横/竖逐字显示，不解析 BBCode。 |
 | 镜头门与固定镜头区 | `IC/CameraGate/CameraGate.gd:14-86`；`IC/CameraFocusArea/CameraFocusArea.gd:1-26` | 门发 `CameraGateChanged` 或 `CameraGateSideChanged/Removed`；FocusArea 进入发 `CameraFixedRequested`、退出发 `CameraNormalRequested`。门存档仅一次性 unlocked。 |
 | 第二关导演与井遮挡 | `L2/Level2CameraDirector.gd:19-119`；`L2/Level2ShaftOcclusion.gd:1-39`；`L2/Level2PlayerWithCamera.gd:1-90` | 按地图局部坐标选区、配置 bounds/follow_target，让位于慢降/回落；遮挡只绘制、不增加碰撞。专用包装器不覆盖玩家物理参数，`SnapToPlayer` 用于出生/复活。 |
 
@@ -158,7 +158,7 @@ Code/
 | 设置主题、外框与音量 | `E/Setting/SettingsSkin.gd:3-140`；`E/Setting/SettingsFrame.gd:14-75`；`A/Util.gd:25-80` | 主题缓存使用 `Art/New/ui/Settings9761/` 长/短条九宫格，固定装饰端头；默认 HSlider 为通用滑块，Setting 的五通道声音控件使用 AudioSlider 音乐旋钮变体。外框 `Mount` 重挂关闭按钮并适配窗口；音量请求→`SetAudioVolume`→反馈，独立存 `user://audio_settings.cfg`。 |
 | 退出与返回主菜单自动保存 | `A/SignalBus.gd:351-413` | `GameQuitRequested`/窗口关闭统一 `_quit_with_auto_save`；`ReturnToMainMenuRequested` 延迟调用 `_return_to_main_menu` 并防重入。两者仅正式 World 且活跃槽存在才自动保存；返回菜单保存/加载失败则留在当前场景并发 `ReturnToMainMenuFailed`，成功切到 StartMenu 后清暂停、释放输入动作并显示鼠标，不退出程序。 |
 | 剧情资源、推进与恢复 | `E/Plot/PlotDialogLine.gd:1-7`；`E/Plot/Chapter1.gd:8-100` | 开场等待四帧，按直接子节点索引推进；发 `DialogBox` 或 `ShowStoryDialogLine`，等待 `../../DialogBox.Closed`。保存 next_event/line_index，加载更新 generation，依赖节点层级与顺序。 |
-| 对话队列与结束信号 | `E/Plot/dialogbox/DialogBox.gd:23-92`；`E/Plot/dialogbox/DialogBox.tscn:21-102`；`E/Plot/dialogbox/NarrationPanel.tscn:1-73`；`E/Plot/dialogbox/DialogFrameEdge.gd:11-58`；`A/ExportSettings.gd:666-668` | 旁白/独白排队，按钮/skip_story/默认3秒计时关闭；每句发 `Closed`，队列空先发 `Finished`，交互组件借此解锁；`Dismiss` 不发 Closed，不能替代普通推进。底框使用同目录 `Art9766/` 裁图，AspectRatioContainer 保持原比例与顶部对齐；Close 位于 Margin 下，无纹理按钮的 Hint 为等比铺满的 TextureRect。`_setup_continue_arrows` 从设置底图提取镂空 alpha 并翻向右侧生成白色箭头，悬停色取 `dialog_arrow_hover_color`；独白左侧28%预留。两个 Background 下预置 FrameEdge，复用设置 PAPER 色与 setting_panel_edge_width，双道手绘描边按底图墨面定位、透明处断笔，resize 重绘且忽略鼠标，不改变正文及关闭逻辑。 |
+| 对话队列与结束信号 | `E/Plot/dialogbox/DialogBox.gd:23-92`；`E/Plot/dialogbox/DialogBox.tscn:21-102`；`E/Plot/dialogbox/NarrationPanel.tscn:1-73`；`E/Plot/dialogbox/DialogFrameEdge.gd:11-58`；`A/ExportSettings.gd:666-668` | 旁白/独白排队，按钮/skip_story/默认3秒计时关闭；每句发 `Closed`，队列空先发 `Finished`，交互组件借此解锁；`Dismiss` 不发 Closed，不能替代普通推进。底框使用同目录 `Art9766/` 裁图，装饰镂空已在派生 PNG 内按参考色 `#4D4D4D` 填为不透明，外部透明轮廓保留；AspectRatioContainer 保持原比例与顶部对齐；Close 位于 Margin 下，无纹理按钮的 Hint 为等比铺满的 TextureRect。`_setup_continue_arrows` 从设置底图提取镂空 alpha 并翻向右侧生成白色箭头，悬停色取 `dialog_arrow_hover_color`；独白左侧28%预留。两个 Background 下预置 FrameEdge，复用设置 PAPER 色与 setting_panel_edge_width，双道手绘描边按底图墨面定位、透明处断笔，resize 重绘且忽略鼠标，不改变正文及关闭逻辑。 |
 | 章节卡与渐显文字触发 | `E/Plot/chapter/ChapterTrigger.gd:11-18`；`ChapterCard.gd:5-53`；`GradualTextTrigger.gd:11-32`；`GradualTextCard.gd:19-34`（后三者同属 `E/Plot/chapter/`） | 玩家进入/遗物献祭触发一次；章节卡4秒，`ChapterCard.tscn:7-76` 使用章节标题.PNG 的有效透明区域作为等比装饰，Layout 容器排列幕名/装饰/标题，配色复用 SettingsSkin.PAPER/ACCENT；渐显按25%/50%/25%分段；触发器无存档接口。 |
 | 绘本 | `W/PictureBook.gd:27-100` | 父 Interacted 开书、锁输入/禁交互；每页每次打开一次独白，等 `DialogBox.Finished` 显示书页，关闭恢复；不持久化阅读进度。 |
 
