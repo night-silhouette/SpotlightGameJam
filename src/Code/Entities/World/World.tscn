@@ -27,7 +27,6 @@
 [ext_resource type="Texture2D" uid="uid://bpwayo7t0eh0" path="res://Art/AI/council_table.svg" id="25_council_table"]
 [ext_resource type="Texture2D" uid="uid://bbywuxdy8dmt2" path="res://Art/AI/snake_statue.svg" id="26_snake_statue"]
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
-[ext_resource type="Texture2D" uid="uid://c4i7g4r6o6ri8" path="res://Art/AI/cistern.svg" id="28_cistern"]
 [ext_resource type="Texture2D" uid="uid://b3xfwicv6u8iv" path="res://Art/AI/chapter4_props.svg" id="29_c4_props"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
@@ -38,7 +37,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a4q47"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2ucdk"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -72,7 +71,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7tc0m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a4q47"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -392,16 +391,16 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_a4q47")
+material = SubResource("ShaderMaterial_2ucdk")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_a4q47")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_a4q47")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_a4q47")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1470, 2)
@@ -621,15 +620,10 @@ close_monologues = Array[String]([])
 [node name="GradualTextTrigger" parent="story/c2" unique_id=1879339704 instance=ExtResource("20_m8xep")]
 position = Vector2(875, 2406.0002)
 scale = Vector2(2.2155194, 0.55301255)
-content = "水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
+content = "                                     《水的法则》
+                                         作者佚名
+水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
 display_duration = 9.9
-
-[node name="GradualTextTrigger2" parent="story/c2" unique_id=927648948 instance=ExtResource("20_m8xep")]
-position = Vector2(877, 2962)
-scale = Vector2(2.2155194, 0.55301255)
-content = "《水的法则》
-"
-display_duration = 1.2000000000000002
 
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
 
@@ -707,11 +701,6 @@ show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_22"), SubResource("C3_2_23")])
 enter_dialog_once = true
 metadata/_editor_description_ = "参考宫殿高处 WaterFlowArea5 锚点(1672,-2562)；仅叙事，不控制地形崩塌，请确认玩家路径及与冠拾取的先后顺序。"
-
-[node name="蓄水池贴图" type="Sprite2D" parent="story/c3/高处蓄水池_2_22至2_23" unique_id=352781348]
-position = Vector2(0, -48)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("28_cistern")
 
 [node name="献给沉默的神_2_25" parent="story/c3" unique_id=172469242 instance=ExtResource("20_m8xep")]
 position = Vector2(1316, -1778)

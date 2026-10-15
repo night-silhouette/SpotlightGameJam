@@ -20,12 +20,13 @@ func Play() -> void:
 	if _tween and _tween.is_valid():
 		_tween.kill()
 	_label.text = content
-	_label.visible_characters = 0
+	modulate.a = 0.0
 	show()
 	var duration := maxf(display_duration, 0.1)
 	_tween = create_tween()
-	_tween.tween_property(_label, "visible_characters", _label.get_total_character_count(), duration * 0.7)
-	_tween.tween_interval(duration * 0.3)
+	_tween.tween_property(self, "modulate:a", 1.0, duration * 0.25)
+	_tween.tween_interval(duration * 0.5)
+	_tween.tween_property(self, "modulate:a", 0.0, duration * 0.25)
 	_tween.tween_callback(_finish)
 
 func _finish() -> void:
