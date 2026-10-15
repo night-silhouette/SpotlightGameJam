@@ -36,6 +36,7 @@ class_name WaterFlowArea
 var _bodies_in_water: Array[CharacterBody2D] = []
 
 func _ready() -> void:
+	add_to_group("touch_interactables")
 	_sync_from_export_settings()
 	_update_dimensions()
 	_apply_state(is_fluid)
@@ -72,6 +73,14 @@ func _update_dimensions() -> void:
 func ContainsWorldPoint(world_point: Vector2) -> bool:
 	var local_point = to_local(world_point)
 	return abs(local_point.x) <= area_size.x * 0.5 and abs(local_point.y) <= area_size.y * 0.5
+
+## 触屏交互模式下点中区域时，使用玩家原有的水符文冷却与激活流程。
+## world_pos 为触点世界坐标，interactor 为玩家；成功切换时返回 true。
+func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
+	if not ContainsWorldPoint(world_pos) or not is_instance_valid(interactor):
+		return false
+	var water_rune := interactor.get_node_or_null("WaterRuneController") as WaterRuneController
+	return water_rune != null and water_rune.TryActivateTargetArea(self)
 
 ## 将流水区域切换为流体或固态；to_fluid 表示目标是否为流体。
 func SetFluidState(to_fluid: bool) -> void:

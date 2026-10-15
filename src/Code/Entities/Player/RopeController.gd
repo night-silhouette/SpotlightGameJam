@@ -196,7 +196,7 @@ func _is_pos_over_ui(screen_pos: Vector2) -> bool:
 	if not viewport:
 		return false
 	var control = viewport.gui_get_hovered_control()
-	if control and control.is_visible_in_tree() and control.mouse_filter != Control.MOUSE_FILTER_IGNORE:
+	if control and control.is_visible_in_tree() and control.mouse_filter != Control.MOUSE_FILTER_IGNORE and control.get_global_rect().has_point(screen_pos):
 		return true
 	return false
 

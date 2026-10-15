@@ -609,10 +609,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var mobile_debug_force_touch_controls: bool = false
 ## 触屏长按判定时间 (秒)
 @export var mobile_touch_hold_threshold: float = 0.2
-## 虚拟摇杆基础尺寸 (像素直径，默认 240)
-@export var mobile_joystick_size: float = 240.0
-## 虚拟摇杆中心手柄尺寸 (像素，默认 90)
-@export var mobile_joystick_tip_size: float = 90.0
+## 虚拟摇杆基础尺寸 (像素直径，默认 190)
+@export var mobile_joystick_size: float = 190.0
+## 虚拟摇杆中心手柄尺寸 (像素，默认 72)
+@export var mobile_joystick_tip_size: float = 72.0
 ## 跳跃按钮半径 (像素，默认 52)
 @export var mobile_jump_button_radius: float = 52.0
 ## 冲刺按钮半径 (像素，默认 44)
