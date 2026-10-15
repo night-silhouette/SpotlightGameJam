@@ -1,7 +1,23 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/Plot/chapter/ChapterCard.gd" id="1_script"]
 [ext_resource type="FontFile" path="res://Art/Archived/Font/1 汇文明朝体-名称【Huiwen-mincho】.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://Art/New/ui/章节标题.PNG" id="3_decoration"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_decoration"]
+atlas = ExtResource("3_decoration")
+region = Rect2(206, 187, 740, 93)
+
+[sub_resource type="Shader" id="Shader_paper"]
+code = "shader_type canvas_item;
+uniform vec4 paper_color : source_color = vec4(0.894118, 0.847059, 0.72549, 1.0);
+void fragment() {
+	COLOR.rgb = paper_color.rgb;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_paper"]
+shader = SubResource("Shader_paper")
 
 [node name="ChapterCardLayer" type="CanvasLayer"]
 layer = 90
@@ -16,36 +32,43 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_script")
 
-[node name="Act" type="Label" parent="ChapterCard"]
+[node name="Layout" type="VBoxContainer" parent="ChapterCard"]
 layout_mode = 1
-anchor_left = 0.5
+anchor_left = 0.15
 anchor_top = 0.5
-anchor_right = 0.5
+anchor_right = 0.85
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -76.0
-offset_right = 200.0
-offset_bottom = -34.0
+offset_top = -98.0
+offset_bottom = 98.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.94, 0.94, 0.94, 1)
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="Act" type="Label" parent="ChapterCard/Layout"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.847059, 0.717647, 0.47451, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 23
 text = "第一幕"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Title" type="Label" parent="ChapterCard"]
-layout_mode = 1
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -6.0
-offset_right = 250.0
-offset_bottom = 76.0
+[node name="Decoration" type="TextureRect" parent="ChapterCard/Layout"]
+material = SubResource("ShaderMaterial_paper")
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
 mouse_filter = 2
-theme_override_colors/font_color = Color(0.97, 0.97, 0.97, 1)
+texture = SubResource("AtlasTexture_decoration")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="ChapterCard/Layout"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.894118, 0.847059, 0.72549, 1)
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 52
 text = "纺织"

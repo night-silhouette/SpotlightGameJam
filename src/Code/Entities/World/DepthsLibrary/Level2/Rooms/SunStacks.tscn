@@ -1,100 +1,71 @@
-[gd_scene format=3]
-[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
-[sub_resource type="RectangleShape2D" id="shape11"]
-size = Vector2(1640, 24)
+[gd_scene format=4 uid="uid://2jmwtg4iq0ly"]
 
-[sub_resource type="RectangleShape2D" id="fall"]
-size = Vector2(2200, 50)
-[node name="SunStacks" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://gbrajb8nr0so" path="res://Art/New/component/extracted/prop_paper_scroll_rolled_2.png" id="2_jusf6"]
+[ext_resource type="Texture2D" uid="uid://dn4itoy6schja" path="res://Art/New/component/extracted/mechanism_pin_lever_1.png" id="3_qscf3"]
+[ext_resource type="PackedScene" uid="uid://d3v3y4c7t1nar" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+
+[node name="SunStacks" type="Node2D" unique_id=2065925221]
 metadata/width = 2200
 metadata/title = "日纹书库"
 
-[node name="RoomTitle" type="Label" parent="."]
-offset_left = 45
-offset_top = 10
-offset_right = 2155
-offset_bottom = 90
+[node name="RoomTitle" type="Label" parent="." unique_id=1084205387]
+offset_left = 45.0
+offset_top = 10.0
+offset_right = 2155.0
+offset_bottom = 90.0
 theme_override_font_sizes/font_size = 30
-mouse_filter = 2
 text = "日纹书库"
 
-[node name="RoomHint" type="Label" parent="."]
-offset_left = 45
-offset_top = 58
-offset_right = 2155
-offset_bottom = 138
+[node name="RoomHint" type="Label" parent="." unique_id=1591680123]
+offset_left = 45.0
+offset_top = 58.0
+offset_right = 2155.0
+offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-mouse_filter = 2
-text = "从右向左攀上断裂书架。取钥匙后，下层返程栈道开放；左边还有房间。"
+text = "从右向左攀上断裂书架。沿平台返回喷泉，左边还有房间。"
 
-[node name="Crumble2" parent="." instance=ExtResource("crumble")]
+[node name="Crumble2" parent="." unique_id=1294341684 instance=ExtResource("crumble")]
 position = Vector2(1330, 430)
 platform_size = Vector2(140, 20)
 
-[node name="Crumble4" parent="." instance=ExtResource("crumble")]
+[node name="VisualRect" parent="Crumble2/VisualRoot" index="0"]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Crumble2/VisualRoot" index="2" unique_id=1323339006]
+z_index = -1
+position = Vector2(-2, -6)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("2_jusf6")
+
+[node name="Crumble4" parent="." unique_id=1220798388 instance=ExtResource("crumble")]
 position = Vector2(870, 420)
 platform_size = Vector2(140, 20)
 
-[node name="ReturnCatwalk" type="StaticBody2D" parent="."]
-position = Vector2(280, 700)
-collision_layer = 1
-collision_mask = 2
-metadata/shortcut = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnCatwalk"]
-position = Vector2(820, 12)
-shape = SubResource("shape11")
-
-[node name="Stone" type="Polygon2D" parent="ReturnCatwalk"]
-position = Vector2(0, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 1640, 0, 1640, 24, 0, 24)
-color = Color(0.14, 0.23, 0.28, 1)
-
-[node name="Edge" type="Polygon2D" parent="ReturnCatwalk"]
-position = Vector2(0, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 1640, 0, 1640, 4, 0, 4)
-color = Color(0.50, 0.72, 0.73, 1)
-
-[node name="Flow" type="Polygon2D" parent="."]
-position = Vector2(280, 678)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 1640, 0, 1640, 20, 0, 20)
-color = Color(0.1,0.65,0.7,0.5)
-
-[node name="SunKey" parent="." instance=ExtResource("device")]
+[node name="SunKey" parent="." unique_id=1465730816 instance=ExtResource("device")]
 position = Vector2(180, 495)
 metadata/kind = "key"
 metadata/label = "日族铜钥匙"
 metadata/key_id = "sun"
 
+[node name="Visual" parent="SunKey" index="0"]
+visible = false
 
 [node name="Caption" parent="SunKey" index="1"]
 text = "日族铜钥匙"
 
-[node name="FallReset" type="Area2D" parent="."]
-position = Vector2(1100, 850)
-collision_layer = 0
-collision_mask = 2
-metadata/fall_reset = true
+[node name="Sprite2D" type="Sprite2D" parent="SunKey" unique_id=434096216]
+position = Vector2(0, -35)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("3_qscf3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FallReset"]
-shape = SubResource("fall")
-
-[node name="DeepWater" type="Polygon2D" parent="."]
-position = Vector2(0, 820)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 2200, 0, 2200, 55, 0, 55)
-color = Color(0.07, 0.28, 0.35, 0.8)
-
-[node name="Terrain" type="TileMapLayer" parent="."]
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=2074811807]
 position = Vector2(12, 24)
 tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAHAP3/AAAAAAAAAAAIAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAAQAP3/AAAAAAAAAAARAP3/AAAAAAAAAAASAP3/AAAAAAAAAAATAP3/AAAAAAAAAAAUAP3/AAAAAAAAAAAVAP3/AAAAAAAAAAAWAP3/AAAAAAAAAAAXAP3/AAAAAAAAAAAYAP3/AAAAAAAAAAAZAP3/AAAAAAAAAAAaAP3/AAAAAAAAAAAbAP3/AAAAAAAAAAAcAP3/AAAAAAAAAAAdAP3/AAAAAAAAAAAeAP3/AAAAAAAAAAAfAP3/AAAAAAAAAAAgAP3/AAAAAAAAAAAhAP3/AAAAAAAAAAAiAP3/AAAAAAAAAAAjAP3/AAAAAAAAAAAkAP3/AAAAAAAAAAAlAP3/AAAAAAAAAAAmAP3/AAAAAAAAAAAnAP3/AAAAAAAAAAAoAP3/AAAAAAAAAAApAP3/AAAAAAAAAAAqAP3/AAAAAAAAAAArAP3/AAAAAAAAAAAsAP3/AAAAAAAAAAAtAP3/AAAAAAAAAAAuAP3/AAAAAAAAAAAvAP3/AAAAAAAAAAAwAP3/AAAAAAAAAAAxAP3/AAAAAAAAAAAyAP3/AAAAAAAAAAAzAP3/AAAAAAAAAAA0AP3/AAAAAAAAAAA1AP3/AAAAAAAAAAA2AP3/AAAAAAAAAAA3AP3/AAAAAAAAAAA4AP3/AAAAAAAAAAA5AP3/AAAAAAAAAAA6AP3/AAAAAAAAAAA7AP3/AAAAAAAAAAA8AP3/AAAAAAAAAAA9AP3/AAAAAAAAAAA+AP3/AAAAAAAAAAA/AP3/AAAAAAAAAABAAP3/AAAAAAAAAABBAP3/AAAAAAAAAABCAP3/AAAAAAAAAABDAP3/AAAAAAAAAABEAP3/AAAAAAAAAAD///7/AAAAAAAAAABEAP7/AAAAAAAAAAD/////AAAAAAAAAABEAP//AAAAAAAAAAD//wAAAAAAAAAAAABEAAAAAAAAAAAAAAD//wEAAAAAAAAAAABEAAEAAAAAAAAAAAD//wIAAAAAAAAAAABEAAIAAAAAAAAAAAD//wMAAAAAAAAAAABEAAMAAAAAAAAAAAD//wQAAAAAAAAAAABEAAQAAAAAAAAAAAD//wUAAAAAAAAAAABEAAUAAAAAAAAAAAD//wYAAAAAAAAAAABEAAYAAAAAAAAAAAD//wcAAAAAAAAAAABEAAcAAAAAAAAAAAD//wgAAAAAAAAAAABEAAgAAAAAAAAAAAASAAkAAAAAAAAAAAATAAkAAAAAAAAAAAAUAAkAAAAAAAAAAAAVAAkAAAAAAAAAAAAgAAoAAAAAAAAAAAAhAAoAAAAAAAAAAAAiAAoAAAAAAAAAAAAjAAoAAAAAAAAAAAAkAAoAAAAAAAAAAAAuAAoAAAAAAAAAAAAvAAoAAAAAAAAAAAAwAAoAAAAAAAAAAAAxAAoAAAAAAAAAAAALAAsAAAAAAAAAAAAMAAsAAAAAAAAAAAANAAsAAAAAAAAAAAAOAAsAAAAAAAAAAAAPAAsAAAAAAAAAAAA0AA0AAAAAAAAAAAA1AA0AAAAAAAAAAAA2AA0AAAAAAAAAAAA3AA0AAAAAAAAAAAA4AA0AAAAAAAAAAAAAABAAAAAAAAAAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAAAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAAAAAA7ABAAAAAAAAAAAAA8ABAAAAAAAAAAAAA9ABAAAAAAAAAAAAA+ABAAAAAAAAAAAAA/ABAAAAAAAAAAAABAABAAAAAAAAAAAABBABAAAAAAAAAAAABCABAAAAAAAAAAAABDABAAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAA4ABEAAAAAAAAAAAA5ABEAAAAAAAAAAAA6ABEAAAAAAAAAAAA7ABEAAAAAAAAAAAA8ABEAAAAAAAAAAAA9ABEAAAAAAAAAAAA+ABEAAAAAAAAAAAA/ABEAAAAAAAAAAABAABEAAAAAAAAAAABBABEAAAAAAAAAAABCABEAAAAAAAAAAABDABEAAAAAAAAAAAAAABIAAAAAAAAAAAABABIAAAAAAAAAAAACABIAAAAAAAAAAAADABIAAAAAAAAAAAAEABIAAAAAAAAAAAAFABIAAAAAAAAAAAAGABIAAAAAAAAAAAAHABIAAAAAAAAAAAAIABIAAAAAAAAAAAA7ABIAAAAAAAAAAAA8ABIAAAAAAAAAAAA9ABIAAAAAAAAAAAA+ABIAAAAAAAAAAAA/ABIAAAAAAAAAAABAABIAAAAAAAAAAABBABIAAAAAAAAAAABCABIAAAAAAAAAAABDABIAAAAAAAAAAAA2ABMAAAAAAAAAAAA3ABMAAAAAAAAAAAA4ABMAAAAAAAAAAAA=")
 tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
+
+[editable path="Crumble2"]
+[editable path="Crumble4"]
+[editable path="SunKey"]

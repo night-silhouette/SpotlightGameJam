@@ -148,14 +148,9 @@ text = "怎么回事？！
 得赶紧跑！原路返回！快！"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="Resource_3t6bi"]
+[sub_resource type="Resource" id="Resource_7tc0m"]
 script = ExtResource("5_acpp2")
 text = "月亮在长夜里留下了无主的诗"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Resource_be8n8"]
-script = ExtResource("5_acpp2")
-text = "昏暗的石廊向深处延伸，高耸的书架一列列延伸至深处，散落的书卷覆着尘土，羽毛笔与残页横七竖八地留在书案上。屋顶破开一道缺口，月光从那里倾落下来。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_1p2nt"]
@@ -547,11 +542,11 @@ chapter_text = "绿洲悲歌"
 [node name="c2" type="Node2D" parent="story" unique_id=420887994]
 
 [node name="进入的场合描述" parent="story/c2" unique_id=1000769939 instance=ExtResource("12_terh4")]
-position = Vector2(62, 422)
-scale = Vector2(1.66195, 1.689001)
+position = Vector2(596, 2708.0002)
+scale = Vector2(5.047486, 1.4619936)
 enable_interaction = false
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_3t6bi"), SubResource("Resource_be8n8")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7tc0m")])
 enter_dialog_once = true
 
 [node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]

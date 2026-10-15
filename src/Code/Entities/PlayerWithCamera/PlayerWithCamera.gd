@@ -130,8 +130,6 @@ func _physics_process(delta: float) -> void:
 
 
 func _process(delta: float) -> void:
-	if _pending_gate_limits.is_empty():
-		return
 	var host_camera: Camera2D = $Camera2D
 	var half_screen: Vector2 = get_viewport_rect().size / (2.0 * host_camera.zoom.abs())
 	var travel: Vector2 = half_screen * 2.0 * delta / maxf(0.01, ExportSettings.camera_gate_transition_duration)
@@ -294,7 +292,7 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 			next.follow_damping_value = ExportSettings.camera_boat_damping
 			axis_lock = PhantomCamera2D.FollowLockAxis.Y
 		&"fixed":
-			zoom_value = ExportSettings.camera_fixed_zoom
+			zoom_value = float(_options.get("zoom", ExportSettings.camera_fixed_zoom))
 			_set_fixed_target(next, (_options.anchor as Node2D).global_position)
 		&"ritual":
 			next.follow_damping = false
@@ -312,6 +310,9 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 		_camera_bounds[next] = Vector4i(floori(bounds.position.x), floori(bounds.position.y), ceili(bounds.end.x), ceili(bounds.end.y)) if bounds.has_area() else base_bounds
 	_apply_gate_limits()
 	next.set_tween_duration(0.0 if instant else maxf(0.01, ExportSettings.camera_ritual_pan_duration if _phase == &"wide" else ExportSettings.camera_transition_duration))
+	# 房间区域可单独指定过渡速度；其他镜头沿用原参数。
+	if mode == &"fixed" and not instant and _options.has("transition_duration"):
+		next.set_tween_duration(maxf(0.01, float(_options.transition_duration)))
 	if next == _active:
 		_pending = true
 		_on_arrived(next)
@@ -411,7 +412,30 @@ func _on_camera_gate_side_removed(player: Node2D, gate: Area2D) -> void:
 	_apply_gate_limits()
 
 
+func _gate_overlaps_view(gate: Area2D, side: int, view: Rect2) -> bool:
+	if not is_instance_valid(gate):
+		return false
+	# 仅比较正交轴，避免 margin 或限位本身让画面边缘反复进出检测区。
+	for child: Node in gate.get_children():
+		if not child is CollisionShape2D:
+			continue
+		var collision: CollisionShape2D = child as CollisionShape2D
+		if collision.disabled or collision.shape == null:
+			continue
+		var bounds: Rect2 = collision.global_transform * collision.shape.get_rect()
+		if side in [SIDE_LEFT, SIDE_RIGHT]:
+			if view.position.y <= bounds.end.y and view.end.y >= bounds.position.y:
+				return true
+		else:
+			if view.position.x <= bounds.end.x and view.end.x >= bounds.position.x:
+				return true
+	return false
+
+
 func _apply_gate_limits() -> void:
+	var host_camera: Camera2D = $Camera2D
+	var half_screen: Vector2 = get_viewport_rect().size / (2.0 * host_camera.zoom.abs())
+	var view := Rect2(host_camera.get_screen_center_position() - half_screen, half_screen * 2.0)
 	for camera: PhantomCamera2D in [_base, $ShotA, $ShotB]:
 		var bounds: Vector4i = _camera_bounds[camera]
 		var left: int = bounds.x
@@ -420,6 +444,8 @@ func _apply_gate_limits() -> void:
 		var bottom: int = bounds.w
 		for gate: Area2D in _gate_limits:
 			var limit: Vector2 = _gate_limits[gate]
+			if not _gate_overlaps_view(gate, int(limit.x), view):
+				continue
 			match int(limit.x):
 				SIDE_LEFT:
 					left = maxi(left, ceili(limit.y + ExportSettings.camera_gate_margin))
@@ -431,6 +457,8 @@ func _apply_gate_limits() -> void:
 					bottom = mini(bottom, floori(limit.y - ExportSettings.camera_gate_margin))
 		for gate: Area2D in _pending_gate_limits:
 			var moving: Vector3 = _pending_gate_limits[gate]
+			if not _gate_overlaps_view(gate, int(moving.x), view):
+				continue
 			match int(moving.x):
 				SIDE_LEFT:
 					left = maxi(left, ceili(moving.z))

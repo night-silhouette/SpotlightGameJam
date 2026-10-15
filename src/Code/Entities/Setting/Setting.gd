@@ -11,6 +11,8 @@ class_name SettingUI
 ## 提供打开/关闭动画、快捷键 ESC 呼出与关闭，支持鼠标交互。
 ## =============================================================================
 
+const SettingsSkin = preload("res://Code/Entities/Setting/SettingsSkin.gd")
+const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutManager.gd")
@@ -40,6 +42,7 @@ const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutMa
 @onready var sfx_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow/Percent
 @onready var dialogue_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow/Percent
 @onready var ambience_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow/Percent
+@onready var return_menu_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/ReturnMenuButton
 @onready var quit_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/QuitButton
 @onready var status_toast: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/StatusToast
 
@@ -56,6 +59,16 @@ var _rebind_button_ref: Button = null
 var _touch_layout: Dictionary = {}
 
 func _ready() -> void:
+	root_control.theme = SettingsSkin.CreateTheme()
+	SettingsSkin.ApplyToTree(panel_container)
+	for slider in [master_slider, music_slider, sfx_slider, dialogue_slider, ambience_slider]:
+		slider.theme_type_variation = &"AudioSlider"
+	SettingsFrame.Mount(panel_container, close_button)
+	for tab in [tab_btn_keybinds, tab_btn_saves, tab_btn_audio, tab_btn_touch]:
+		tab.toggle_mode = true
+		tab.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	status_toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	status_toast.custom_minimum_size.x = 100.0
 	# 启动时自动读取并应用持久化的独立按键绑定
 	KeybindManagerRef.LoadAndApplyKeybinds()
 	
@@ -66,7 +79,7 @@ func _ready() -> void:
 	_build_keybind_rows()
 	_refresh_touch_rows()
 	_refresh_save_slots_ui()
-	_switch_tab(0)
+	_switch_tab(2)
 	
 	# 默认隐藏，通过按 ESC 或 UI 齿轮打开
 	HideSetting()
@@ -121,6 +134,8 @@ func _connect_signals() -> void:
 	dialogue_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"dialogue", value / 100.0))
 	ambience_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"ambience", value / 100.0))
 	SignalBus.AudioVolumeChanged.connect(_on_audio_volume_changed)
+	return_menu_button.pressed.connect(func(): SignalBus.ReturnToMainMenuRequested.emit())
+	SignalBus.ReturnToMainMenuFailed.connect(_on_return_to_main_menu_failed)
 	if quit_button:
 		quit_button.pressed.connect(_on_quit_button_pressed)
 	if quit_confirm_dialog:
@@ -135,6 +150,13 @@ func _connect_signals() -> void:
 
 ## 显示设置面板
 func ShowSetting() -> void:
+	var scene = get_tree().current_scene
+	return_menu_button.visible = (
+		scene != null
+		and scene.scene_file_path != SignalBus.START_MENU_SCENE_PATH
+		and (scene.scene_file_path == ExportSettings.start_menu_world_scene_path
+			or get_tree().get_first_node_in_group(&"player") != null)
+	)
 	root_control.visible = true
 	_refresh_save_slots_ui()
 	_refresh_keybind_labels()
@@ -158,10 +180,10 @@ func _switch_tab(tab_idx: int) -> void:
 	saves_container.visible = tab_idx == 1
 	audio_container.visible = tab_idx == 2
 	touch_container.visible = tab_idx == 3
-	tab_btn_keybinds.disabled = tab_idx == 0
-	tab_btn_saves.disabled = tab_idx == 1
-	tab_btn_audio.disabled = tab_idx == 2
-	tab_btn_touch.disabled = tab_idx == 3
+	tab_btn_keybinds.set_pressed_no_signal(tab_idx == 0)
+	tab_btn_saves.set_pressed_no_signal(tab_idx == 1)
+	tab_btn_audio.set_pressed_no_signal(tab_idx == 2)
+	tab_btn_touch.set_pressed_no_signal(tab_idx == 3)
 	if tab_idx == 3:
 		_refresh_touch_rows()
 	if tab_idx == 1:
@@ -236,7 +258,7 @@ func _build_keybind_rows() -> void:
 		action_label.text = KeybindManagerRef.GetActionDisplayName(action)
 		action_label.custom_minimum_size = Vector2(160, 36)
 		action_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		action_label.add_theme_color_override("font_color", Color(0.9, 0.95, 1.0))
+		action_label.add_theme_color_override("font_color", SettingsSkin.PAPER)
 		row.add_child(action_label)
 
 
@@ -306,22 +328,8 @@ func _refresh_save_slots_ui() -> void:
 
 		var row_panel = PanelContainer.new()
 		row_panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		var style = StyleBoxFlat.new()
-		style.bg_color = Color(0.12, 0.16, 0.22, 0.8)
-		style.border_width_left = 1
-		style.border_width_top = 1
-		style.border_width_right = 1
-		style.border_width_bottom = 1
-		style.border_color = Color(0.3, 0.5, 0.7, 0.6)
-		style.corner_radius_top_left = 4
-		style.corner_radius_top_right = 4
-		style.corner_radius_bottom_right = 4
-		style.corner_radius_bottom_left = 4
-		style.content_margin_left = 14.0
-		style.content_margin_right = 14.0
-		style.content_margin_top = 10.0
-		style.content_margin_bottom = 10.0
-		row_panel.add_theme_stylebox_override("panel", style)
+		row_panel.add_theme_stylebox_override("panel", SettingsSkin.SaveStyle())
+		row_panel.theme = SettingsSkin.CardTheme()
 
 		var hbox = HBoxContainer.new()
 		hbox.add_theme_constant_override("separation", 12)
@@ -333,17 +341,17 @@ func _refresh_save_slots_ui() -> void:
 
 		var title_label = Label.new()
 		title_label.text = "存档槽位 %d" % slot_idx
-		title_label.add_theme_color_override("font_color", Color(0.4, 0.85, 1.0))
+		title_label.add_theme_color_override("font_color", SettingsSkin.INK)
 		title_label.add_theme_font_size_override("font_size", 14)
 		info_vbox.add_child(title_label)
 
 		var detail_label = Label.new()
 		if exists:
 			detail_label.text = "时间: %s | 生命: %d/%d" % [slot["timestamp"], int(player_hp), int(player_max_hp)]
-			detail_label.add_theme_color_override("font_color", Color(0.85, 0.9, 0.95))
+			detail_label.add_theme_color_override("font_color", SettingsSkin.INK)
 		else:
 			detail_label.text = "【空存档位】点击新建存档进行保存"
-			detail_label.add_theme_color_override("font_color", Color(0.55, 0.6, 0.65))
+			detail_label.add_theme_color_override("font_color", Color("555347"))
 		detail_label.add_theme_font_size_override("font_size", 12)
 		info_vbox.add_child(detail_label)
 
@@ -381,6 +389,9 @@ func _refresh_save_slots_ui() -> void:
 		btn_del.pressed.connect(_on_delete_slot_pressed.bind(slot_idx))
 		btn_box.add_child(btn_del)
 
+		btn_save.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		btn_load.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		btn_del.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		saves_list.add_child(row_panel)
 
 func _on_save_slot_pressed(slot_idx: int) -> void:
@@ -412,6 +423,10 @@ func _on_delete_slot_pressed(slot_idx: int) -> void:
 
 #region 退出游戏与反馈提示
 
+func _on_return_to_main_menu_failed(message: String) -> void:
+	ShowSetting()
+	_show_status(message, true)
+
 func _on_quit_button_pressed() -> void:
 	if quit_confirm_dialog:
 		quit_confirm_dialog.popup_centered()
@@ -423,7 +438,7 @@ func _show_status(text: String, is_error: bool = false) -> void:
 	if not status_toast:
 		return
 	status_toast.text = text
-	status_toast.add_theme_color_override("font_color", Color(1.0, 0.4, 0.4) if is_error else Color(0.4, 0.9, 0.6))
+	status_toast.add_theme_color_override("font_color", Color("dc927a") if is_error else SettingsSkin.ACCENT)
 	if text != "":
 
 		var t = get_tree().create_timer(3.0)

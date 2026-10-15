@@ -2,5 +2,9 @@
 	"entities": {},
 	"scene_path": "res://Code/Entities/World/World.tscn",
 	"slot_index": 1,
+<<<<<<< HEAD
 	"timestamp": "2026-10-16 00:06:07"
+=======
+	"timestamp": "2026-10-15 23:42:14"
+>>>>>>> 5355196cc93822effb2322ab26e0c86dd993ff36
 }
