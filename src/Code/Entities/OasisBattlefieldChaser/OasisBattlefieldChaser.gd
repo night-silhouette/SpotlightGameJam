@@ -6,16 +6,51 @@ class_name OasisBattlefieldChaser
 @export_category("Oasis Battlefield Chaser")
 ## 玩家节点路径；留空时由内部组件自动查找 player 分组。
 @export var target_path: NodePath
+## 是否在Y轴平滑对齐玩家。
+@export var follow_player_y: bool = true
+## Y轴跟随插值平滑速度。
+@export var y_follow_speed: float = 6.0
 
 @onready var _movement_component: DirectionalChaseMover = $DirectionalChaseMover
+@onready var _chase_backdrop: ColorRect = get_node_or_null("ChaseBackdrop")
 
+var _target: Node2D = null
 var _chase_finished: bool = false
 var _initial_global_position: Vector2
+var _chase_origin_x: float = 0.0
 
 func _ready() -> void:
 	_initial_global_position = global_position
+	_chase_origin_x = global_position.x
 	if not target_path.is_empty():
-		_movement_component.SetTarget(get_node_or_null(target_path) as Node2D)
+		_target = get_node_or_null(target_path) as Node2D
+	if _target == null:
+		_target = get_tree().get_first_node_in_group("player") as Node2D
+	if is_instance_valid(_target):
+		_movement_component.SetTarget(_target)
+	_update_chase_backdrop()
+
+func _physics_process(delta: float) -> void:
+	if not is_instance_valid(_target):
+		_target = get_tree().get_first_node_in_group("player") as Node2D
+		if is_instance_valid(_target):
+			_movement_component.SetTarget(_target)
+	if follow_player_y and is_instance_valid(_target) and _movement_component.IsActive():
+		global_position.y = lerpf(global_position.y, _target.global_position.y, y_follow_speed * delta)
+	_update_chase_backdrop()
+
+func _update_chase_backdrop() -> void:
+	if not is_instance_valid(_chase_backdrop):
+		return
+	if not visible or not _movement_component.IsActive():
+		_chase_backdrop.visible = false
+		return
+	_chase_backdrop.visible = true
+	var current_lead_x := _movement_component.global_position.x
+	var left_bound := minf(_chase_origin_x - 3000.0, current_lead_x - 3000.0)
+	var width := maxf(100.0, (current_lead_x - left_bound) + 200.0)
+	_chase_backdrop.global_position = Vector2(left_bound, -5000.0)
+	_chase_backdrop.size = Vector2(width, 10000.0)
 
 ## 启动或继续第三关追逐实体。
 func StartChase() -> void:
@@ -55,6 +90,8 @@ func EndChase() -> void:
 		kill_area.set_deferred("monitorable", false)
 	_movement_component.visible = false
 	_movement_component.process_mode = Node.PROCESS_MODE_DISABLED
+	if is_instance_valid(_chase_backdrop):
+		_chase_backdrop.visible = false
 
 ## 导出追逐实体的移动状态。
 ## 返回值为内部定向移动组件生成的存档字典。

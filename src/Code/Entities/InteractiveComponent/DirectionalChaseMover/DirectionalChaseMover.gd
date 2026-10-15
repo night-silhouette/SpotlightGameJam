@@ -123,6 +123,10 @@ func StopChase() -> void:
 	_active = false
 	SignalBus.ChaseMoverActiveChanged.emit(self, false)
 
+## 查询移动组件当前是否正在追逐。
+func IsActive() -> bool:
+	return _active
+
 ## 设置距离调节所跟随的目标。
 ## @param target 新目标节点；传 null 时仅按阶段速度移动。
 func SetTarget(target: Node2D) -> void:

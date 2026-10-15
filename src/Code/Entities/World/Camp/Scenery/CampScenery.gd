@@ -70,8 +70,15 @@ func _refresh() -> void:
 			speed = float(_setting(&"camp_scenery_middle_speed"))
 		elif layer.name == &"Foreground":
 			speed = float(_setting(&"camp_scenery_foreground_speed"))
-		var travel := clampf(camera_x - (left + width * 0.5), -width * 0.5, width * 0.5) if use_parallax else 0.0
-		layer.position = origin + Vector2(travel * (1.0 - speed), 0.0)
+		if layer is Parallax2D:
+			# Parallax2D 架构模式：通过 scroll_scale 控制视差，repeat_size 保持本地尺寸 (1152, 4036)
+			# 不可额外乘以 factor，因为 layer.scale 会自动作用于本地 repeat_size！
+			layer.scroll_scale = Vector2(speed, 1.0) if use_parallax else Vector2.ONE
+			layer.repeat_size = Vector2(1152.0, 4036.0)
+			layer.position = origin
+		else:
+			var travel := clampf(camera_x - (left + width * 0.5), -width * 0.5, width * 0.5) if use_parallax else 0.0
+			layer.position = origin + Vector2(travel * (1.0 - speed), 0.0)
 		layer.scale = Vector2.ONE * factor
 		var material: ShaderMaterial = _materials[layer]
 		material.set_shader_parameter("enabled", 1.0 if bool(_setting(&"camp_scenery_enabled")) else 0.0)

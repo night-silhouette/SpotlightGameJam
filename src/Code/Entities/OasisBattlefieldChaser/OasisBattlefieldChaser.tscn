@@ -64,6 +64,14 @@ animations = [{
 [node name="OasisBattlefieldChaser" type="Node2D" unique_id=359283040 groups=["oasis_battlefield_chaser"]]
 script = ExtResource("1_script")
 
+[node name="ChaseBackdrop" type="ColorRect" parent="." unique_id=1168009894]
+visible = false
+offset_left = -3000.0
+offset_top = -5000.0
+offset_right = 0.0
+offset_bottom = 5000.0
+color = Color(0.13725491, 0.12941177, 0.12941177, 1)
+
 [node name="DirectionalChaseMover" parent="." unique_id=1025271247 instance=ExtResource("1_mover")]
 
 [node name="WarningWall" parent="DirectionalChaseMover" index="2"]

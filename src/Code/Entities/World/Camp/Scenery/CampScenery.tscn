@@ -1,19 +1,153 @@
 [gd_scene format=3 uid="uid://cmpisbh3nkxan"]
 
 [ext_resource type="Script" uid="uid://c7de6nrehw02k" path="res://Code/Entities/World/Camp/Scenery/CampScenery.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/Camp/Scenery/Layers/Sky/Sky.tscn" id="2_sky"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/Camp/Scenery/Layers/FarBackground/FarBackground.tscn" id="3_far"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/Camp/Scenery/Layers/MiddleBackground/MiddleBackground.tscn" id="4_middle"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/Camp/Scenery/Layers/Foreground/Foreground.tscn" id="5_foreground"]
+[ext_resource type="Shader" uid="uid://70fl2r1h5vno" path="res://Code/Entities/World/Camp/Scenery/CampCoverage.gdshader" id="2_shader"]
+[ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="3_sky"]
+[ext_resource type="Texture2D" uid="uid://cm2gxoq50ioys" path="res://Art/Archived/Camp/13.png" id="4_middle_rocks"]
+[ext_resource type="Texture2D" uid="uid://xl8duvp41ucs" path="res://Art/Archived/Camp/08.png" id="5_back_rocks"]
+[ext_resource type="Texture2D" uid="uid://b1m5s3c5qgcqj" path="res://Art/Archived/Camp/03.png" id="6_far_rocks"]
+[ext_resource type="Texture2D" uid="uid://xfi77i3dwqtp" path="res://Art/Archived/Camp/14.png" id="7_ground"]
+[ext_resource type="Texture2D" uid="uid://s4sunl06h0ta" path="res://Art/Archived/Camp/12.png" id="8_path"]
+[ext_resource type="Texture2D" uid="uid://sw7i576dui5b" path="res://Art/Archived/Camp/10.png" id="9_grass"]
+[ext_resource type="Texture2D" uid="uid://cj54wsd4q2c8u" path="res://Art/Archived/Camp/01.png" id="10_lights"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5p8f1"]
+shader = ExtResource("2_shader")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0yie6"]
+shader = ExtResource("2_shader")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ic58v"]
+shader = ExtResource("2_shader")
+shader_parameter/foreground = false
+shader_parameter/opacity = 1.0
+shader_parameter/enabled = 1.0
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
 
 [node name="CampScenery" type="Node2D" unique_id=1923568835]
 script = ExtResource("1_script")
-metadata/_editor_description_ = "Camp 分层视觉总成。各层拆为独立场景，保持 Sky/FarBackground/MiddleBackground/Foreground 原节点路径和统一构图。"
 
-[node name="Sky" parent="." unique_id=1588897703 instance=ExtResource("2_sky")]
+[node name="Sky" type="Parallax2D" parent="." unique_id=1588897703]
+z_index = -60
+scale = Vector2(1.75, 1.75)
+repeat_size = Vector2(1152, 4036)
+repeat_times = 2
 
-[node name="FarBackground" parent="." unique_id=980766610 instance=ExtResource("3_far")]
+[node name="SkySprite" type="Sprite2D" parent="Sky" unique_id=1023035701]
+material = SubResource("ShaderMaterial_5p8f1")
+texture = ExtResource("3_sky")
+centered = false
 
-[node name="MiddleBackground" parent="." unique_id=264031973 instance=ExtResource("4_middle")]
+[node name="SkySprite_Mirrored" type="Sprite2D" parent="Sky" unique_id=1806697697]
+material = SubResource("ShaderMaterial_5p8f1")
+position = Vector2(0, 2018)
+texture = ExtResource("3_sky")
+centered = false
+flip_v = true
 
-[node name="Foreground" parent="." unique_id=608532223 instance=ExtResource("5_foreground")]
+[node name="FarBackground" type="Parallax2D" parent="." unique_id=980766610]
+z_index = -45
+scale = Vector2(1.75, 1.75)
+repeat_size = Vector2(1152, 4036)
+repeat_times = 2
+
+[node name="DarkRocks" type="Sprite2D" parent="FarBackground" unique_id=620868266]
+material = SubResource("ShaderMaterial_0yie6")
+texture = ExtResource("4_middle_rocks")
+centered = false
+
+[node name="DarkRocks_Mirrored" type="Sprite2D" parent="FarBackground" unique_id=481962196]
+material = SubResource("ShaderMaterial_0yie6")
+position = Vector2(0, 2018)
+texture = ExtResource("4_middle_rocks")
+centered = false
+flip_v = true
+
+[node name="MiddleBackground" type="Parallax2D" parent="." unique_id=264031973]
+z_index = -20
+scale = Vector2(1.75, 1.75)
+repeat_size = Vector2(1152, 4036)
+repeat_times = 2
+
+[node name="LightRocks" type="Sprite2D" parent="MiddleBackground" unique_id=2048515623]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("5_back_rocks")
+centered = false
+
+[node name="LightRocks_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=178960154]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("5_back_rocks")
+centered = false
+flip_v = true
+
+[node name="RockSilhouettes" type="Sprite2D" parent="MiddleBackground" unique_id=1472086091]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("6_far_rocks")
+centered = false
+
+[node name="RockSilhouettes_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=1582640876]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("6_far_rocks")
+centered = false
+flip_v = true
+
+[node name="Ground" type="Sprite2D" parent="MiddleBackground" unique_id=2043552465]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("7_ground")
+centered = false
+
+[node name="Ground_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=1013773207]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("7_ground")
+centered = false
+flip_v = true
+
+[node name="StonePath" type="Sprite2D" parent="MiddleBackground" unique_id=1880048156]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("8_path")
+centered = false
+
+[node name="StonePath_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=943864205]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("8_path")
+centered = false
+flip_v = true
+
+[node name="Grass" type="Sprite2D" parent="MiddleBackground" unique_id=870628354]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("9_grass")
+centered = false
+
+[node name="Grass_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=1411802684]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("9_grass")
+centered = false
+flip_v = true
+
+[node name="Lights" type="Sprite2D" parent="MiddleBackground" unique_id=983238082]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("10_lights")
+centered = false
+
+[node name="Lights_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=558148553]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("10_lights")
+centered = false
+flip_v = true
