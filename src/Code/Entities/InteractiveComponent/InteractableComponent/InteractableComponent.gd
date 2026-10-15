@@ -26,6 +26,8 @@ signal MonologueRequested(lines: Array[String])
 @export_group("进入区域对话")
 ## 玩家每次进入交互区域时，是否立即显示进入区域对话；不受 [member enable_interaction] 影响。
 @export var show_enter_dialog: bool = false
+## 进入区域对话是否要求玩家当前持有刻痕枯骨。
+@export var enter_dialog_requires_scarred_bones: bool = false
 ## 进入区域时按顺序显示的对话；仅在 [member show_enter_dialog] 开启时使用。
 @export var enter_dialog_lines: Array[PlotDialogLine] = []
 ## 进入区域对话是否仅触发一次；开启后首次进入时显示并存档标记，之后（含读档后）不再显示。仅在 [member show_enter_dialog] 开启时生效。
@@ -151,7 +153,7 @@ func LoadSaveData(data: Dictionary) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if (body.is_in_group("player") or body is CharacterBody2D) and body not in _players:
 		_players.append(body)
-		if show_enter_dialog and (not enter_dialog_once or not _enter_dialog_triggered):
+		if show_enter_dialog and (not enter_dialog_once or not _enter_dialog_triggered) and (not enter_dialog_requires_scarred_bones or (body is Player and body.has_scarred_bones)):
 			_enter_dialog_triggered = true
 			_show_dialog_lines(enter_dialog_lines)
 

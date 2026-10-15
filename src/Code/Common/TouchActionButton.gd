@@ -28,7 +28,7 @@ var touch_index: int = -1
 
 ## 设置按钮半径大小并自动更新尺寸与重绘
 func SetButtonRadius(radius: float) -> void:
-	button_radius = max(10.0, radius)
+	button_radius = maxf(0.0, radius)
 	custom_minimum_size = Vector2(button_radius * 2, button_radius * 2)
 	size = custom_minimum_size
 	queue_redraw()

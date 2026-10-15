@@ -384,21 +384,6 @@ is_hp_draining = true
 position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
-[node name="RopeController" parent="PlayerWithCamera/Player" index="17" unique_id=-1513063840]
-rope_hp_cost = null
-max_rope_length = null
-rope_speed = null
-window_duration = null
-pull_speed = null
-pull_arrive_distance = null
-swing_gravity_scale = null
-swing_input_accel = null
-swing_damping = null
-collision_mask = null
-sfx_shoot_hook_volume_db = null
-sfx_pulling_hook_volume_db = null
-sfx_rope_bus = null
-
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
 material = SubResource("ShaderMaterial_2ucdk")
 
@@ -762,7 +747,9 @@ metadata/_editor_description_ = "仅视觉提示，不新增拾取或骨头逻�
 position = Vector2(-18658, -518)
 scale = Vector2(3.9478683, 4.6546264)
 disable_movement_during_dialog = true
+show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_qpp1c"), SubResource("Resource_o0b1u")])
+enter_dialog_once = true
 metadata/_editor_description_ = "靠近原有骨头前置观察/对白；不新增可拾取骨头，也不触发拔骨机制，请在编辑器核对原有骨头位置。"
 
 [node name="绿洲生长_4_17至4_18" parent="story/c4" unique_id=692998647 instance=ExtResource("12_terh4")]
@@ -770,6 +757,7 @@ position = Vector2(-2070, -402)
 scale = Vector2(2.3579326, 2.7803662)
 enable_interaction = false
 show_enter_dialog = true
+enter_dialog_requires_scarred_bones = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_17"), SubResource("C4_18")])
 enter_dialog_once = true
 metadata/_editor_description_ = "一次性叙事区域；不控制光点、根须或水流生成，请核对演出接入。"
@@ -779,12 +767,14 @@ position = Vector2(-725.00006, -377)
 scale = Vector2(7.0708966, -7.010785)
 enable_interaction = false
 show_enter_dialog = true
+enter_dialog_requires_scarred_bones = true
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_19")])
 enter_dialog_once = true
 metadata/_editor_description_ = "一次性离场对白；不改变 OasisBattlefield 的出口逻辑。"
 
 [node name="敌人的定义_4_20" parent="story/c4" unique_id=861258208 instance=ExtResource("20_m8xep")]
 position = Vector2(-6500, -210)
+trigger_relic = &"bones"
 content = "《敌人的定义》
 作者佚名
 这场战争有两种开端。一种发生在战争之前，由边界、生命、恐惧和那些不会被兑现的承诺构成。另一种发生在战争之后，由演说家、祭祀和历史学家共同撰写。我看到了，对面有我的朋友。我说，我们曾相依为命，长官说，他们注定会背叛。原来敌人可以是一个与你素不相识的人，也可以是那个被要求忘记的人。"

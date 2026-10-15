@@ -126,11 +126,18 @@ mouse_default_cursor_shape = 2
 text = "存档管理 (5槽位)"
 
 [node name="TabBtnAudio" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox"]
-custom_minimum_size = Vector2(140, 36)
+custom_minimum_size = Vector2(100, 36)
 layout_mode = 2
 focus_mode = 0
 mouse_default_cursor_shape = 2
 text = "声音设置"
+
+[node name="TabBtnTouch" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/TabHBox"]
+custom_minimum_size = Vector2(130, 36)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "手机虚拟按键排版"
 
 [node name="ContentPanel" type="Panel" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248114]
 custom_minimum_size = Vector2(0, 280)
@@ -328,6 +335,235 @@ theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
 text = "100%"
 horizontal_alignment = 2
 vertical_alignment = 1
+
+[node name="TouchScroll" type="ScrollContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TouchList" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="Jump" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList"]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "跳跃"
+
+[node name="XRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/XRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "横向位置"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/XRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/XRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="YRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/YRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "纵向位置"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/YRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/YRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="ScaleRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/ScaleRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "按钮大小"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/ScaleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 50.0
+max_value = 150.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Jump/ScaleRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="Dash" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList"]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "冲刺"
+
+[node name="XRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/XRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "横向位置"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/XRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/XRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="YRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/YRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "纵向位置"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/YRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/YRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="ScaleRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/ScaleRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "按钮大小"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/ScaleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 50.0
+max_value = 150.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Dash/ScaleRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="Interact" type="VBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList"]
+layout_mode = 2
+
+[node name="Heading" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
+text = "交互"
+
+[node name="XRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/XRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "横向位置"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/XRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/XRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="YRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/YRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "纵向位置"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/YRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 100.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/YRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="ScaleRow" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/ScaleRow"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+text = "按钮大小"
+
+[node name="Slider" type="HSlider" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/ScaleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 50.0
+max_value = 150.0
+step = 1.0
+
+[node name="Percent" type="Label" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/Interact/ScaleRow"]
+custom_minimum_size = Vector2(48, 30)
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="ResetButton" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList"]
+layout_mode = 2
+text = "恢复默认排版"
 
 [node name="BottomHBox" type="HBoxContainer" parent="RootControl/PanelContainer/MarginContainer/MainVBox" unique_id=981248119]
 layout_mode = 2

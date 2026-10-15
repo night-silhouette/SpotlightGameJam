@@ -6,6 +6,8 @@ class_name PlayerUI
 ## 负责显示生命值进度条、文本及状态提示，响应 SignalBus 全局生命值与状态事件
 ## =============================================================================
 
+const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutManager.gd")
+
 @onready var health_bar: ProgressBar = $Control/MarginContainer/VBoxContainer/HealthBar
 @onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthBar/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
@@ -34,6 +36,9 @@ var _max_hp: float = 200.0
 
 func _ready() -> void:
 	_sync_mobile_ui_sizes()
+	_apply_touch_layout()
+	$Control.resized.connect(_apply_touch_layout)
+	SignalBus.TouchLayoutChanged.connect(_apply_touch_layout)
 	_check_mobile_controls()
 	btn_interact.pressed_once.connect(_toggle_touch_interaction_mode)
 	if SignalBus:
@@ -119,6 +124,31 @@ func _sync_mobile_ui_sizes() -> void:
 
 	if btn_dash and "mobile_dash_button_radius" in ExportSettings:
 		btn_dash.SetButtonRadius(ExportSettings.mobile_dash_button_radius)
+
+func _apply_touch_layout() -> void:
+	var viewport_size: Vector2 = $Control.size
+	if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+		return
+	var half_width: float = viewport_size.x * 0.5
+	var layout: Dictionary = TouchLayoutManagerRef.GetLayout(viewport_size)
+	var buttons: Dictionary = {"jump": btn_jump, "dash": btn_dash, "interact": btn_interact}
+	var base_radii: Dictionary = {
+		"jump": ExportSettings.mobile_jump_button_radius,
+		"dash": ExportSettings.mobile_dash_button_radius,
+		"interact": 44.0,
+	}
+	for action in TouchLayoutManagerRef.ACTIONS:
+		var button: TouchActionButton = buttons[action]
+		var entry: Dictionary = layout[action]
+		# 触控圆比绘制圆大 25%；先收紧半径，再约束中心，保证触控和 Control 均留在右半屏。
+		var radius: float = minf(base_radii[action] * entry["scale"], minf(half_width, viewport_size.y) / 2.5)
+		button.SetButtonRadius(radius)
+		var hit_radius: float = button.button_radius * 1.25
+		var center := Vector2(
+			clampf(half_width * entry["x"], hit_radius, half_width - hit_radius),
+			clampf(viewport_size.y * entry["y"], hit_radius, viewport_size.y - hit_radius)
+		)
+		button.position = center + Vector2(half_width, 0.0) - right_action_buttons.position - button.size * 0.5
 
 func _check_mobile_controls() -> void:
 	var is_android = (OS.get_name() == "Android")

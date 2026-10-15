@@ -11,15 +11,15 @@
 		},
 		"Camp/Chapter1": {
 			"line_index": 0,
-			"next_event": 1
+			"next_event": 5
 		},
 		"Camp/Chapter1/LeaveStory_1_15": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		},
 		"Camp/Chapter1/Reflection_1_7_to_1_8": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		},
 		"Camp/Chapter1/SteleStory_1_12_to_1_14": {
 			"description_requested": false,
@@ -27,10 +27,10 @@
 		},
 		"Camp/Chapter1/WaterApproach_1_3_to_1_6": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		},
 		"Camp/Lake": {
-			"fill_stage": 0,
+			"fill_stage": 1,
 			"position_x": 1196.0,
 			"position_y": 96.0
 		},
@@ -64,18 +64,18 @@
 			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.592763157894737,
-			"position_x": 2370.83325195313,
+			"path_progress": 0.853728070175442,
+			"position_x": 2470.0,
 			"position_y": 3755.0,
 			"wait_remaining": 0.0
 		},
 		"DepthsLibrary/Level2Map/Rooms/MoonAqueduct/FerryB": {
-			"direction": 1,
+			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.53374380284158,
-			"position_x": 3139.45849609375,
-			"position_y": 3656.96142578125,
+			"path_progress": 0.452828680105794,
+			"position_x": 3109.0361328125,
+			"position_y": 3664.38134765625,
 			"wait_remaining": 0.0
 		},
 		"DepthsLibrary/Level2Map/Rooms/SunStacks/Crumble2": {
@@ -103,8 +103,8 @@
 			"rotation": 0.0
 		},
 		"OasisBattlefield": {
-			"bone_claimed": false,
-			"bone_offered": false,
+			"bone_claimed": true,
+			"bone_offered": true,
 			"checkpoint_reached": true,
 			"respawn_x": -18681.0,
 			"respawn_y": -446.0
@@ -149,15 +149,15 @@
 			"remaining_respawn_time": 0.0
 		},
 		"OasisBattlefield/OutwardPhase/InteractableComponent": {
-			"description_requested": false,
+			"description_requested": true,
 			"enter_dialog_triggered": false
 		},
 		"OasisBattlefield/OutwardPhase/MovingPlatform": {
-			"direction": 1,
+			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.530000000000001,
-			"position_x": -16940.333984375,
+			"path_progress": 0.540000000000005,
+			"position_x": -16923.666015625,
 			"position_y": -588.0,
 			"wait_remaining": 0.0
 		},
@@ -165,11 +165,6 @@
 			"position_x": -12214.0,
 			"position_y": -124.0,
 			"rotation": 0.0
-		},
-		"OasisBattlefield/OutwardPhase/VanishingBlockerComponent": {
-			"modulate_a": 1.0,
-			"vanishing": false,
-			"visible": true
 		},
 		"OasisBattlefield/ReturnPhase/CrumblingPlatform12": {
 			"current_state": 0,
@@ -181,8 +176,8 @@
 			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.0,
-			"position_x": -15940.0,
+			"path_progress": 0.533333333333333,
+			"position_x": -15570.0,
 			"position_y": -4.0,
 			"wait_remaining": 0.0
 		},
@@ -190,35 +185,35 @@
 			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.0,
-			"position_x": -11457.0,
+			"path_progress": 1.0,
+			"position_x": -10957.0,
 			"position_y": -392.0,
-			"wait_remaining": 0.0
+			"wait_remaining": 0.416666666666667
 		},
 		"OasisBattlefield/ReturnPhase/MovingPlatform3": {
 			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.0,
-			"position_x": -6733.0,
-			"position_y": 31.0,
+			"path_progress": 0.480832590577767,
+			"position_x": -6496.119140625,
+			"position_y": -205.880737304688,
 			"wait_remaining": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/OasisBattlefieldChaser": {
-			"active": true,
-			"elapsed_time": 0.0,
-			"position_x": -19502.0,
+			"active": false,
+			"elapsed_time": 35.5833333333326,
+			"position_x": -11515.30078125,
 			"position_y": -1040.0,
-			"speed": 0.0,
-			"stage": 0
+			"speed": 266.8,
+			"stage": 1
 		},
 		"OasisBattlefield/ReturnPhase/OasisBattlefieldChaser/DirectionalChaseMover": {
-			"active": true,
-			"elapsed_time": 0.0,
-			"position_x": -19502.0,
+			"active": false,
+			"elapsed_time": 35.5833333333326,
+			"position_x": -11515.30078125,
 			"position_y": -1040.0,
-			"speed": 0.0,
-			"stage": 0
+			"speed": 266.8,
+			"stage": 1
 		},
 		"OasisBattlefield/ReturnPhase/Spikes": {
 			"position_x": -12121.0,
@@ -239,19 +234,19 @@
 			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.0,
+			"path_progress": 0.685714285714286,
 			"position_x": -9948.0,
-			"position_y": -613.0,
+			"position_y": -159.666625976563,
 			"wait_remaining": 0.0
 		},
 		"OasisBattlefield/ReturnPhase/block2": {
 			"direction": 1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.0,
+			"path_progress": 1.0,
 			"position_x": -13222.0,
-			"position_y": -976.0,
-			"wait_remaining": 0.0
+			"position_y": 24.0,
+			"wait_remaining": 0.416666666666667
 		},
 		"OasisBattlefield/ReturnPhase/risestike/RisingSpikes5": {
 			"is_extended": false,
@@ -276,66 +271,6 @@
 			"position_x": -8713.0,
 			"position_y": -16.0,
 			"rotation": 0.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite": {
-			"current_state": 0,
-			"position_x": -13332.0,
-			"position_y": -270.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite10": {
-			"current_state": 0,
-			"position_x": -12253.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite11": {
-			"current_state": 0,
-			"position_x": -12274.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite12": {
-			"current_state": 0,
-			"position_x": -12295.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite2": {
-			"current_state": 0,
-			"position_x": -13018.0,
-			"position_y": -460.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite3": {
-			"current_state": 0,
-			"position_x": -12532.0,
-			"position_y": -499.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite4": {
-			"current_state": 0,
-			"position_x": -12400.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite5": {
-			"current_state": 0,
-			"position_x": -12317.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite6": {
-			"current_state": 0,
-			"position_x": -12337.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite7": {
-			"current_state": 0,
-			"position_x": -12358.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite8": {
-			"current_state": 0,
-			"position_x": -12379.0,
-			"position_y": -359.0
-		},
-		"OasisBattlefield/ReturnPhase/stalactite/Stalactite9": {
-			"current_state": 0,
-			"position_x": -12233.0,
-			"position_y": -359.0
 		},
 		"OasisBattlefield/ReturnPhase/temppalent/CrumblingPlatform": {
 			"current_state": 0,
@@ -440,8 +375,8 @@
 			"remaining_respawn_time": 0.0
 		},
 		"PlayerWithCamera/Player": {
-			"enable_double_jump": false,
-			"enable_rope": false,
+			"enable_double_jump": true,
+			"enable_rope": true,
 			"footstep_bus": "SFX_Footstep_Wet",
 			"footstep_surface": "Sand",
 			"has_scarred_bones": false,
@@ -449,11 +384,11 @@
 			"has_sunken_crown": false,
 			"max_hp": 200.0,
 			"move_bus": "SFX_Move_Wet",
-			"now_hp": 198.226544888889,
-			"position_x": 1594.09143066406,
+			"now_hp": 196.345221333341,
+			"position_x": 1685.61755371094,
 			"position_y": 13.2753505706787,
-			"respawn_x": 1471.59265136719,
-			"respawn_y": 9.96377849578857,
+			"respawn_x": -18681.0,
+			"respawn_y": -446.0,
 			"spawn_x": 1471.59265136719,
 			"spawn_y": 9.96377849578857
 		},
@@ -510,11 +445,11 @@
 			"wait_remaining": 0.0
 		},
 		"SunkenPalace/collisionlayer/MovePl/MovingPlatform2": {
-			"direction": 1,
+			"direction": -1,
 			"is_activated": true,
 			"movement_finished": false,
-			"path_progress": 0.361363636363635,
-			"position_x": 3697.0,
+			"path_progress": 0.643181818181812,
+			"position_x": 4012.0,
 			"position_y": -1704.0,
 			"wait_remaining": 0.0
 		},
@@ -603,7 +538,7 @@
 		},
 		"story/c4/刻痕枯骨前置观察_4_8至4_9": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		},
 		"story/c4/枯骨与发光植物_4_6至4_7": {
 			"description_requested": false,
@@ -615,18 +550,18 @@
 		},
 		"story/c4/绿洲生长_4_17至4_18": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		},
 		"story/c4/走出绿洲_4_19": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		},
 		"story/c4/进入绿洲_4_1至4_2": {
 			"description_requested": false,
-			"enter_dialog_triggered": false
+			"enter_dialog_triggered": true
 		}
 	},
 	"scene_path": "res://Code/Entities/World/World.tscn",
 	"slot_index": 1,
-	"timestamp": "2026-10-15 16:28:06"
+	"timestamp": "2026-10-15 17:11:21"
 }

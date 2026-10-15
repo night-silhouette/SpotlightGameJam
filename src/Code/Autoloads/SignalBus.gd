@@ -323,6 +323,9 @@ signal KeybindChanged(action_name: StringName, event_desc: String)
 ## @param is_open 是否打开
 signal SettingVisibilityRequested(is_open: bool)
 
+## 手机动作按钮排版保存或恢复默认后触发，HUD 据此立即重排。
+signal TouchLayoutChanged
+
 ## 设置界面请求调整音量时触发。
 ## @param channel 音量类别：master 总音量、music 音乐、sfx 音效、dialogue 对白、ambience 环境。
 ## @param volume 线性音量比例，范围 0.0-1.0，0 为静音。
