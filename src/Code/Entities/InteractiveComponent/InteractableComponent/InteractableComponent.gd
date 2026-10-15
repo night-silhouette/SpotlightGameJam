@@ -57,6 +57,7 @@ var _dialog_box: Node
 var _locked_players: Dictionary = {}
 
 func _ready() -> void:
+	add_to_group("touch_interactables")
 	var ancestor: Node = self
 	while ancestor != null and _dialog_box == null:
 		_dialog_box = ancestor.get_node_or_null("DialogBox")
@@ -94,6 +95,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if player != null and _is_in_reach(player) and Interact(player):
 			get_viewport().set_input_as_handled()
 			return
+
+func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
+	var shape := _collision_shape.shape as RectangleShape2D
+	if shape == null or not Rect2(-shape.size * 0.5, shape.size).has_point(_collision_shape.to_local(world_pos)):
+		return false
+	return Interact(interactor)
 
 func _is_in_reach(player: Node2D) -> bool:
 	var shape := _collision_shape.shape as RectangleShape2D

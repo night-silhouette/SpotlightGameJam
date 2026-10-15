@@ -33,6 +33,7 @@ var _player_in_range: bool = false
 var _cached_player: Node2D = null
 
 func _ready() -> void:
+	add_to_group("touch_interactables")
 	_sync_from_export_settings()
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
@@ -73,6 +74,15 @@ func _unhandled_input(event: InputEvent) -> void:
 				return
 		_drink_chalice(_cached_player)
 		get_viewport().set_input_as_handled()
+
+func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
+	if not _player_in_range or not is_available or interactor != _cached_player:
+		return false
+	var shape := collision_shape.shape as RectangleShape2D
+	if shape == null or not Rect2(-shape.size * 0.5, shape.size).has_point(collision_shape.to_local(world_pos)):
+		return false
+	_on_prompt_pressed()
+	return true
 
 func _on_prompt_pressed() -> void:
 	if _player_in_range and is_available and is_instance_valid(_cached_player):

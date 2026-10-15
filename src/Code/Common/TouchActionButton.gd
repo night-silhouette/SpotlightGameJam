@@ -1,6 +1,8 @@
 extends Control
 class_name TouchActionButton
 
+signal pressed_once
+
 ## =============================================================================
 ## TouchActionButton.gd - 移动端虚拟触控动作按钮
 ## 专为移动端触屏设计的半透明圆形动作按钮，支持按下、抬起并向 Godot Input 发送指定 action 事件
@@ -42,6 +44,7 @@ func _gui_input(event: InputEvent) -> void:
 			if not is_pressed and _is_point_inside(touch.position):
 				touch_index = touch.index
 				_set_pressed_state(true)
+				pressed_once.emit()
 		else:
 			if touch.index == touch_index:
 				touch_index = -1
@@ -62,6 +65,7 @@ func _gui_input(event: InputEvent) -> void:
 				if not is_pressed and _is_point_inside(mouse.position):
 					touch_index = -99
 					_set_pressed_state(true)
+					pressed_once.emit()
 			else:
 				if touch_index == -99:
 					touch_index = -1

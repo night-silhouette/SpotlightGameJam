@@ -124,6 +124,17 @@ dialog_type = "独白"
 text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……
 先带走吧，说不定之后会用得到。"
 
+[sub_resource type="Resource" id="Resource_2ucdk"]
+script = ExtResource("5_acpp2")
+text = "一阵低沉的震颤穿过大地，林间骤然响起由远及近的纷杂低语与兵刃相击声。平静的绿洲泛起涟漪，温和的微风变成了狂乱的乱流。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_a4q47"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "怎么回事？！风……风变大了！有什么东西醒过来了！得赶紧跑！原路返回！快！"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
 [sub_resource type="Resource" id="Resource_3t6bi"]
 script = ExtResource("5_acpp2")
 text = "月亮在长夜里留下了无主的诗"
@@ -333,15 +344,6 @@ script = ExtResource("5_acpp2")
 text = "无论怎么看，这具枯骨都不太对劲。把它拔出来……真的好吗？……算了，既然已经走到这里，就没有回头的理由。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="C4_10_11"]
-script = ExtResource("5_acpp2")
-text = "一阵低沉的震颤穿过大地，林间骤然响起由远及近的纷杂低语与兵刃相击声。平静的绿洲泛起涟漪，温和的微风变成了狂乱的乱流。"
-
-[sub_resource type="Resource" id="C4_11"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "怎么回事？！风……风变大了！有什么东西醒过来了！得赶紧跑！原路返回！快！"
-
 [sub_resource type="Resource" id="C4_13"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
@@ -389,6 +391,21 @@ is_hp_draining = true
 [node name="Player" parent="PlayerWithCamera" index="0" unique_id=503209207]
 position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
+
+[node name="RopeController" parent="PlayerWithCamera/Player" index="17" unique_id=-1513063840]
+rope_hp_cost = null
+max_rope_length = null
+rope_speed = null
+window_duration = null
+pull_speed = null
+pull_arrive_distance = null
+swing_gravity_scale = null
+swing_input_accel = null
+swing_damping = null
+collision_mask = null
+sfx_shoot_hook_volume_db = null
+sfx_pulling_hook_volume_db = null
+sfx_rope_bus = null
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
 material = SubResource("ShaderMaterial_2ucdk")
@@ -444,6 +461,10 @@ position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
+
+[node name="InteractableComponent" parent="OasisBattlefield/OutwardPhase" parent_id_path=PackedInt32Array(958829481, 135291713) index="11" unique_id=1366914613]
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_2ucdk"), SubResource("Resource_a4q47")])
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
@@ -622,7 +643,7 @@ position = Vector2(875, 2406.0002)
 scale = Vector2(2.2155194, 0.55301255)
 content = "                                     《水的法则》
                                          作者佚名
-水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
+水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高 贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
 display_duration = 9.9
 
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
@@ -749,14 +770,6 @@ position = Vector2(-18147, -420)
 scale = Vector2(2.5396585, 1.7421645)
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_qpp1c"), SubResource("Resource_o0b1u")])
 metadata/_editor_description_ = "靠近原有骨头前置观察/对白；不新增可拾取骨头，也不触发拔骨机制，请在编辑器核对原有骨头位置。"
-
-[node name="拔出枯骨后的异变_4_10至4_11" parent="story/c4" unique_id=1628457466 instance=ExtResource("12_terh4")]
-position = Vector2(-18596, -417)
-enable_interaction = false
-show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_10_11"), SubResource("C4_11")])
-enter_dialog_once = true
-metadata/_editor_description_ = "一次性叙事区域；不接入拔骨、震颤、追逐或风场机制，需核对是否可接入而不破坏 OasisBattlefield。"
 
 [node name="战意追近_4_13" parent="story/c4" unique_id=936348233 instance=ExtResource("12_terh4")]
 position = Vector2(-9800, -210)

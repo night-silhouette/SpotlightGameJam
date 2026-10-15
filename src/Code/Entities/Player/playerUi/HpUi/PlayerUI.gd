@@ -24,6 +24,9 @@ class_name PlayerUI
 @onready var right_action_buttons: Control = $Control/RightActionButtons
 @onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
 @onready var btn_dash: TouchActionButton = $Control/RightActionButtons/BtnDash
+@onready var btn_interact: TouchActionButton = $Control/RightActionButtons/BtnInteract
+
+var touch_interaction_mode: bool = false
 
 ## 目标血量，用于平滑过渡动画（可选效果）
 var _target_hp: float = 200.0
@@ -32,6 +35,7 @@ var _max_hp: float = 200.0
 func _ready() -> void:
 	_sync_mobile_ui_sizes()
 	_check_mobile_controls()
+	btn_interact.pressed_once.connect(_toggle_touch_interaction_mode)
 	if SignalBus:
 		SignalBus.PlayerHealthChanged.connect(_on_player_health_changed)
 		SignalBus.StartPlayerHpDrain.connect(_on_start_player_hp_drain)
@@ -94,6 +98,11 @@ func _on_setting_button_pressed() -> void:
 	if SignalBus:
 		SignalBus.SettingVisibilityRequested.emit(true)
 
+
+func _toggle_touch_interaction_mode() -> void:
+	touch_interaction_mode = not touch_interaction_mode
+	btn_interact.button_text = "钩" if touch_interaction_mode else "交"
+	btn_interact.queue_redraw()
 
 func _sync_mobile_ui_sizes() -> void:
 	if not ExportSettings:

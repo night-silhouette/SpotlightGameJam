@@ -269,3 +269,20 @@ script = ExtResource("4_touch_btn")
 action_name = "dash"
 button_text = "冲"
 button_radius = 44.0
+
+[node name="BtnInteract" type="Control" parent="Control/RightActionButtons"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 25.0
+offset_top = -112.0
+offset_right = 113.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("4_touch_btn")
+button_text = "交"
+button_radius = 44.0
