@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="5_acpp2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" uid="uid://bekfm826b2gww" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
 [ext_resource type="Texture2D" uid="uid://cr8v8th45p3ul" path="res://Art/New/component/extracted/stargazing_desk.svg" id="13_stargazing_desk"]
@@ -450,8 +450,16 @@ one_shot = false
 
 [node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
 position = Vector2(-115.999985, -362.99997)
-scale = Vector2(0.4082091, 2.459945)
+scale = Vector2(0.408, 20)
 blocked_side = 0
+player_path = NodePath("../../PlayerWithCamera/Player")
+one_shot = false
+
+[node name="CameraGate4" parent="CameraNode" unique_id=256393181 instance=ExtResource("7_hfiwn")]
+position = Vector2(1082.9999, 3803.0002)
+rotation = -1.5707964
+scale = Vector2(0.452, 100)
+blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
