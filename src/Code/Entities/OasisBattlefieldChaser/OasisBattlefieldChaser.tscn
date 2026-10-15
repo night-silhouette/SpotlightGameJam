@@ -2,13 +2,64 @@
 
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/DirectionalChaseMover/DirectionalChaseMover.tscn" id="1_mover"]
 [ext_resource type="Script" uid="uid://b7oitni6r78l8" path="res://Code/Entities/OasisBattlefieldChaser/OasisBattlefieldChaser.gd" id="1_script"]
-[ext_resource type="SpriteFrames" path="res://Art/New/boss/processed/boss_sprite_frames.tres" id="2_boss_frames"]
-[ext_resource type="Shader" path="res://Art/New/boss/processed/boss_infection_blur.gdshader" id="3_boss_shader"]
-[ext_resource type="PackedScene" path="res://Code/Entities/OasisBattlefieldChaser/CameraEdgeInfectionVisual/CameraEdgeInfectionVisual.tscn" id="4_camera_edge_visual"]
+[ext_resource type="Texture2D" uid="uid://dy66lpd2f3gnj" path="res://Art/New/boss/boss.png" id="3_vksdr"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_boss_infection"]
-resource_local_to_scene = true
-shader = ExtResource("3_boss_shader")
+[sub_resource type="AtlasTexture" id="AtlasTexture_6mnh7"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(0, 0, 582, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4muku"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(582, 0, 582, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gfqsh"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(1164, 0, 582, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sowgf"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(1746, 0, 582, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cm2he"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(2328, 0, 582, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yh127"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(2910, 0, 582, 336)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ladgq"]
+atlas = ExtResource("3_vksdr")
+region = Rect2(3492, 0, 582, 336)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lvx6x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6mnh7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4muku")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gfqsh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sowgf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cm2he")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yh127")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ladgq")
+}],
+"loop": 2,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="OasisBattlefieldChaser" type="Node2D" unique_id=359283040 groups=["oasis_battlefield_chaser"]]
 script = ExtResource("1_script")
@@ -21,17 +72,53 @@ visible = false
 [node name="LeadingEdge" parent="DirectionalChaseMover" index="3"]
 visible = false
 
-[node name="BossAnimation" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1717793824]
-process_mode = 4
-visible = false
-material = SubResource("ShaderMaterial_boss_infection")
-position = Vector2(-685.97534, -99.57471)
-scale = Vector2(4.7448745, 4.7448745)
-sprite_frames = ExtResource("2_boss_frames")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1992068783]
+position = Vector2(136.05711, -412.3118)
+rotation = 1.5707964
+scale = Vector2(0.7612028, 0.7612028)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
-frame = 4
-frame_progress = 0.59746355
+frame_progress = 0.8482763
 
-[node name="CameraEdgeInfectionVisual" parent="." instance=ExtResource("4_camera_edge_visual")]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=2099503861]
+position = Vector2(140.63103, 392.78598)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.02038338
+
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1329412585]
+position = Vector2(101.97661, 120.24017)
+rotation = 1.5707964
+scale = Vector2(-0.55012846, 0.50824267)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.06305047
+
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1880946854]
+position = Vector2(67.024185, -117.51436)
+rotation = 1.8325958
+scale = Vector2(-0.55012846, 0.50824267)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.9754087
+
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1933442660]
+position = Vector2(11.0242, -77.09236)
+rotation = 0.7853982
+scale = Vector2(-0.55012846, 0.50824267)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.7039686
+flip_h = true
+
+[node name="ColorRect" type="ColorRect" parent="DirectionalChaseMover" unique_id=1168009893]
+offset_left = -361.53995
+offset_top = -584.0
+offset_right = -321.53995
+offset_bottom = -544.0
+scale = Vector2(10.022507, 29.97351)
+color = Color(0.13725491, 0.12941177, 0.12941177, 1)
 
 [editable path="DirectionalChaseMover"]

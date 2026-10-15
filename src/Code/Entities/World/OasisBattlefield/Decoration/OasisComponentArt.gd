@@ -103,8 +103,11 @@ func _draw_spikes() -> void:
 	var visible_height: float = size.y
 	var top: float = -size.y
 	if _kind == "rising":
-		top = 0.0
-		if not Engine.is_editor_hint():
+		if Engine.is_editor_hint():
+			top = -size.y
+			visible_height = size.y
+		else:
+			top = 0.0
 			visible_height = clampf(-get_parent().position.y, 0.0, size.y)
 	if visible_height <= 0.01:
 		return

@@ -15,9 +15,11 @@
 [ext_resource type="PackedScene" uid="uid://blpltt0tkgjce" path="res://Code/Entities/InteractiveComponent/SlowWaterArea/SlowWaterArea.tscn" id="12_ueiw8"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="13_ufgvw"]
 [ext_resource type="PackedScene" uid="uid://cff62entx013e" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisWaterFlowArea.tscn" id="14_efes3"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.tscn" id="15_bmeg8"]
+[ext_resource type="PackedScene" uid="uid://dkw1ajux37wt4" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.tscn" id="15_bmeg8"]
 [ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="16_02f1c"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/LayeredOutwardScenery/LayeredOutwardScenery.tscn" id="17_02f1c"]
+[ext_resource type="Shader" uid="uid://cxke4sshjkdxe" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="18_ueiw8"]
+[ext_resource type="Texture2D" uid="uid://5fj0oxvvmm0a" path="res://Art/Archived/Oldhuntt/OutPath/05.png" id="21_vwl1e"]
+[ext_resource type="Texture2D" uid="uid://dubum4rsamhhc" path="res://Art/Archived/Oldhuntt/OutPath/04.png" id="25_bmeg8"]
 
 [sub_resource type="Curve2D" id="Curve2D_1ev11"]
 _data = {
@@ -32,6 +34,13 @@ height = 32.59961
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ggdgi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lvx6x"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ueiw8"]
+resource_local_to_scene = true
+shader = ExtResource("18_ueiw8")
+shader_parameter/repeat_width = 4831.0
+shader_parameter/blend_width = 128.0
+shader_parameter/seam_y_offset = 14.0
 
 [node name="OutwardPhase" type="Node2D" unique_id=135291713]
 metadata/_edit_lock_ = true
@@ -59,7 +68,8 @@ tile_set = ExtResource("3_gc2m3")
 metadata/_edit_lock_ = true
 
 [node name="WaterSurface" parent="." unique_id=963105429 instance=ExtResource("4_02f1c")]
-position = Vector2(720, 1304.8407)
+z_index = 1
+position = Vector2(720, 1286.8082)
 scale = Vector2(0.16377953, 0.16377953)
 scroll_speed = -200.0
 width = 110001.0
@@ -72,48 +82,50 @@ metadata/_edit_lock_ = true
 position = Vector2(6905, 1318)
 scale = Vector2(4.291459, 7.029553)
 target_area = NodePath("../VanishingArea")
-metadata/_edit_lock_ = true
 
 [node name="BeforeVisual" parent="VanishingBlockerComponent" index="0"]
 position = Vector2(6905, 1318)
 scale = Vector2(0.048, 0.048)
 tile_map_data = PackedByteArray("AAD7//n/AgAAAAAAAAD7//r/AgAAAAIAAAD7//v/AgAAAAEAAAD7//z/AgAAAAIAAAD7//3/AgAAAAMAAAD7//7/AgAAAAQAAAD7////AgAAAAEAAAD7/wAAAgAAAAIAAAADAPn/AgAAAAAAABADAPr/AgAAAAIAABADAPv/AgAAAAEAABADAPz/AgAAAAIAABADAP3/AgAAAAMAABADAP7/AgAAAAQAABADAP//AgAAAAEAABADAAAAAgAAAAIAABD8//n/AgAAAAQAAFD9//n/AgAAAAMAAFD+//n/AgAAAAIAAFD///n/AgAAAAQAAFAAAPn/AgAAAAMAAFABAPn/AgAAAAIAAFACAPn/AgAAAAEAAFD8//r/AwAEAAMAAAD9//v/AwAEAAMAAAD+//z/AwAEAAMAAAD///3/AwAEAAMAAAD///7/AwAEAAMAAAAAAP7/AwAEAAMAAAAAAP//AwAEAAMAAAD8//v/AwAEAAMAAAD8//z/AwAEAAMAAAD8//3/AwAEAAMAAAD8//7/AwAEAAMAAAD8////AwAEAAMAAAD8/wAAAwAEAAMAAAD9//r/AwAEAAMAAAD9//z/AwAEAAMAAAD9//3/AwAEAAMAAAD9//7/AwAEAAMAAAD9////AwAEAAMAAAD9/wAAAwAEAAMAAAD+//r/AwAEAAMAAAD+//v/AwAEAAMAAAD+//3/AwAEAAMAAAD+//7/AwAEAAMAAAD+////AwAEAAMAAAD+/wAAAwAEAAMAAAD///r/AwAEAAMAAAD///v/AwAEAAMAAAD///z/AwAEAAMAAAD/////AwAEAAMAAAD//wAAAwAEAAMAAAAAAPr/AwAEAAMAAAAAAPv/AwAEAAMAAAAAAPz/AwAEAAMAAAAAAP3/AwAEAAMAAAAAAAAAAwAEAAMAAAABAPr/AwAEAAMAAAABAPv/AwAEAAMAAAABAPz/AwAEAAMAAAABAP3/AwAEAAMAAAABAP7/AwAEAAMAAAABAP//AwAEAAMAAAABAAAAAwAEAAMAAAACAPr/AwAEAAMAAAACAPv/AwAEAAMAAAACAPz/AwAEAAMAAAACAP3/AwAEAAMAAAACAP7/AwAEAAMAAAACAP//AwAEAAMAAAACAAAAAwAEAAMAAAA=")
 tile_set = ExtResource("3_gc2m3")
-
-[node name="Vs_spike" type="Node2D" parent="." unique_id=558502419]
 metadata/_edit_lock_ = true
 
-[node name="HazardStalactiteGroupLayered6" type="Sprite2D" parent="Vs_spike" unique_id=2039076505]
+[node name="Vs_spike" type="Node2D" parent="VanishingBlockerComponent/BeforeVisual" index="0" unique_id=558502419]
+z_index = -1
+position = Vector2(-144232.95, -27306.816)
+scale = Vector2(20.833334, 20.833334)
+
+[node name="HazardStalactiteGroupLayered6" type="Sprite2D" parent="VanishingBlockerComponent/BeforeVisual/Vs_spike" unique_id=2039076505]
 position = Vector2(6972.057, 1074.1545)
 rotation = 3.1415927
 scale = Vector2(0.050278887, 0.04253817)
 texture = ExtResource("6_v0dy6")
 
-[node name="HazardStalactiteGroupLayered11" type="Sprite2D" parent="Vs_spike" unique_id=458316031]
+[node name="HazardStalactiteGroupLayered11" type="Sprite2D" parent="VanishingBlockerComponent/BeforeVisual/Vs_spike" unique_id=458316031]
 position = Vector2(7012.114, 1074.1545)
 rotation = 3.1415927
 scale = Vector2(0.050278887, 0.04253817)
 texture = ExtResource("6_v0dy6")
 
-[node name="HazardStalactiteGroupLayered7" type="Sprite2D" parent="Vs_spike" unique_id=1629068718]
+[node name="HazardStalactiteGroupLayered7" type="Sprite2D" parent="VanishingBlockerComponent/BeforeVisual/Vs_spike" unique_id=1629068718]
 position = Vector2(6939.8555, 1074.1545)
 rotation = 3.1415927
 scale = Vector2(0.050278887, 0.04253817)
 texture = ExtResource("6_v0dy6")
 
-[node name="HazardStalactiteGroupLayered8" type="Sprite2D" parent="Vs_spike" unique_id=366454198]
+[node name="HazardStalactiteGroupLayered8" type="Sprite2D" parent="VanishingBlockerComponent/BeforeVisual/Vs_spike" unique_id=366454198]
 position = Vector2(6885.3833, 1074.1545)
 rotation = 3.1415927
 scale = Vector2(0.050278887, 0.04253817)
 texture = ExtResource("6_v0dy6")
 
-[node name="HazardStalactiteGroupLayered9" type="Sprite2D" parent="Vs_spike" unique_id=649414607]
+[node name="HazardStalactiteGroupLayered9" type="Sprite2D" parent="VanishingBlockerComponent/BeforeVisual/Vs_spike" unique_id=649414607]
 position = Vector2(6837.3813, 1074.1545)
 rotation = 3.1415927
 scale = Vector2(0.050278887, 0.04253817)
 texture = ExtResource("6_v0dy6")
 
-[node name="HazardStalactiteGroupLayered10" type="Sprite2D" parent="Vs_spike" unique_id=591543626]
+[node name="HazardStalactiteGroupLayered10" type="Sprite2D" parent="VanishingBlockerComponent/BeforeVisual/Vs_spike" unique_id=591543626]
 position = Vector2(6798.107, 1074.1545)
 rotation = 3.1415927
 scale = Vector2(0.050278887, 0.04253817)
@@ -205,11 +217,11 @@ scale = Vector2(59.535408, 63.50667)
 shape = SubResource("CircleShape2D_lvx6x")
 
 [node name="CameraGate" parent="." unique_id=1141271304 instance=ExtResource("13_ufgvw")]
-position = Vector2(13685.991, 1394.8789)
-scale = Vector2(73.39413, 0.1563437)
-blocked_side = 1
+position = Vector2(7643.8643, 1336.2325)
+scale = Vector2(346.38565, 0.7378685)
+blocked_side = 3
 player_path = NodePath("../../../PlayerWithCamera/Player")
-metadata/_edit_lock_ = true
+one_shot = false
 
 [node name="WaterFlowArea6" parent="." unique_id=854148023 instance=ExtResource("14_efes3")]
 position = Vector2(8600, 826)
@@ -220,7 +232,7 @@ metadata/_edit_lock_ = true
 visible = true
 position = Vector2(8600, 826)
 scale = Vector2(0.048, 0.048)
-tile_map_data = PackedByteArray("AAD7//P/AgAAAAAAAAD7//T/AgAAAAEAAAD7//X/AgAAAAIAAAD7//b/AgAAAAMAAAD7//f/AgAAAAEAAAD7//j/AgAAAAIAAAAEAPP/AgAAAAAAABAEAPT/AgAAAAEAABAEAPX/AgAAAAIAABAEAPb/AgAAAAMAABAEAPf/AgAAAAUAADAEAPj/AgAAAAQAADD7//n/AgAAAAMAAAD7//r/AgAAAAQAAAD7//v/AgAAAAUAAAD7//z/AgAAAAEAAAD7//3/AgAAAAIAAAD7//7/AgAAAAMAAAD7////AgAAAAQAAAD7/wAAAgAAAAUAAAD7/wEAAgAAAAEAAAD7/wIAAgAAAAIAAAD7/wMAAgAAAAMAAAD7/wQAAgAAAAQAAAD7/wUAAgAAAAEAAAD7/wYAAgAAAAIAAAD7/wcAAgAAAAMAAAD7/wgAAgAAAAQAAAD7/wkAAgAAAAEAAAD7/woAAgAAAAIAAAD7/wsAAgAAAAMAAAD7/wwAAgAAAAQAAAAEAPn/AgAAAAMAADAEAPr/AgAAAAIAADAEAPv/AgAAAAEAADAEAPz/AgAAAAUAADAEAP3/AgAAAAQAADAEAP7/AgAAAAMAADAEAP//AgAAAAIAADAEAAAAAgAAAAEAADAEAAEAAgAAAAUAADAEAAIAAgAAAAQAADAEAAMAAgAAAAMAADAEAAQAAgAAAAIAADAEAAUAAgAAAAUAADAEAAYAAgAAAAQAADAEAAcAAgAAAAMAADAEAAgAAgAAAAUAADAEAAkAAgAAAAQAADAEAAoAAgAAAAMAADAEAAsAAgAAAAIAADAEAAwAAgAAAAEAADD8//T/AwAEAAMAAAD9//T/AwAEAAMAAAD9//X/AwAEAAMAAAD+//b/AwAEAAMAAAD+//f/AwAEAAMAAAD///j/AwAEAAMAAAD///n/AwAEAAMAAAD///r/AwAEAAMAAAD///v/AwAEAAMAAAAAAPz/AwAEAAMAAAAAAP3/AwAEAAMAAAAAAP7/AwAEAAMAAAABAP//AwAEAAMAAAABAAAAAwAEAAMAAAABAAEAAwAEAAMAAAACAAIAAwAEAAMAAAACAAMAAwAEAAMAAAD8//X/AwAEAAMAAAD8//b/AwAEAAMAAAD8//f/AwAEAAMAAAD8//j/AwAEAAMAAAD8//n/AwAEAAMAAAD8//r/AwAEAAMAAAD8//v/AwAEAAMAAAD8//z/AwAEAAMAAAD8//3/AwAEAAMAAAD8//7/AwAEAAMAAAD8////AwAEAAMAAAD8/wAAAwAEAAMAAAD8/wEAAwAEAAMAAAD8/wIAAwAEAAMAAAD8/wMAAwAEAAMAAAD8/wQAAwAEAAMAAAD8/wUAAwAEAAMAAAD8/wYAAwAEAAMAAAD8/wcAAwAEAAMAAAD8/wgAAwAEAAMAAAD8/wkAAwAEAAMAAAD8/woAAwAEAAMAAAD8/wsAAwAEAAMAAAD8/wwAAwAEAAMAAAD9//b/AwAEAAMAAAD9//f/AwAEAAMAAAD9//j/AwAEAAMAAAD9//n/AwAEAAMAAAD9//r/AwAEAAMAAAD9//v/AwAEAAMAAAD9//z/AwAEAAMAAAD9//3/AwAEAAMAAAD9//7/AwAEAAMAAAD9////AwAEAAMAAAD9/wAAAwAEAAMAAAD9/wEAAwAEAAMAAAD9/wIAAwAEAAMAAAD9/wMAAwAEAAMAAAD9/wQAAwAEAAMAAAD9/wUAAwAEAAMAAAD9/wYAAwAEAAMAAAD9/wcAAwAEAAMAAAD9/wgAAwAEAAMAAAD9/wkAAwAEAAMAAAD9/woAAwAEAAMAAAD9/wsAAwAEAAMAAAD9/wwAAwAEAAMAAAD+//T/AwAEAAMAAAD+//X/AwAEAAMAAAD+//j/AwAEAAMAAAD+//n/AwAEAAMAAAD+//r/AwAEAAMAAAD+//v/AwAEAAMAAAD+//z/AwAEAAMAAAD+//3/AwAEAAMAAAD+//7/AwAEAAMAAAD+////AwAEAAMAAAD+/wAAAwAEAAMAAAD+/wEAAwAEAAMAAAD+/wIAAwAEAAMAAAD+/wMAAwAEAAMAAAD+/wQAAwAEAAMAAAD+/wUAAwAEAAMAAAD+/wYAAwAEAAMAAAD+/wcAAwAEAAMAAAD+/wgAAwAEAAMAAAD+/wkAAwAEAAMAAAD+/woAAwAEAAMAAAD+/wsAAwAEAAMAAAD+/wwAAwAEAAMAAAD///T/AwAEAAMAAAD///X/AwAEAAMAAAD///b/AwAEAAMAAAD///f/AwAEAAMAAAD///z/AwAEAAMAAAD///3/AwAEAAMAAAD///7/AwAEAAMAAAD/////AwAEAAMAAAD//wAAAwAEAAMAAAD//wEAAwAEAAMAAAD//wIAAwAEAAMAAAD//wMAAwAEAAMAAAD//wQAAwAEAAMAAAD//wUAAwAEAAMAAAD//wYAAwAEAAMAAAD//wcAAwAEAAMAAAD//wgAAwAEAAMAAAD//wkAAwAEAAMAAAD//woAAwAEAAMAAAD//wsAAwAEAAMAAAD//wwAAwAEAAMAAAAAAPT/AwAEAAMAAAAAAPX/AwAEAAMAAAAAAPb/AwAEAAMAAAAAAPf/AwAEAAMAAAAAAPj/AwAEAAMAAAAAAPn/AwAEAAMAAAAAAPr/AwAEAAMAAAAAAPv/AwAEAAMAAAAAAP//AwAEAAMAAAAAAAAAAwAEAAMAAAAAAAEAAwAEAAMAAAAAAAIAAwAEAAMAAAAAAAMAAwAEAAMAAAAAAAQAAwAEAAMAAAAAAAUAAwAEAAMAAAAAAAYAAwAEAAMAAAAAAAcAAwAEAAMAAAAAAAgAAwAEAAMAAAAAAAkAAwAEAAMAAAAAAAoAAwAEAAMAAAAAAAsAAwAEAAMAAAAAAAwAAwAEAAMAAAABAPT/AwAEAAMAAAABAPX/AwAEAAMAAAABAPb/AwAEAAMAAAABAPf/AwAEAAMAAAABAPj/AwAEAAMAAAABAPn/AwAEAAMAAAABAPr/AwAEAAMAAAABAPv/AwAEAAMAAAABAPz/AwAEAAMAAAABAP3/AwAEAAMAAAABAP7/AwAEAAMAAAABAAIAAwAEAAMAAAABAAMAAwAEAAMAAAABAAQAAwAEAAMAAAABAAUAAwAEAAMAAAABAAYAAwAEAAMAAAABAAcAAwAEAAMAAAABAAgAAwAEAAMAAAABAAkAAwAEAAMAAAABAAoAAwAEAAMAAAABAAsAAwAEAAMAAAABAAwAAwAEAAMAAAACAPT/AwAEAAMAAAACAPX/AwAEAAMAAAACAPb/AwAEAAMAAAACAPf/AwAEAAMAAAACAPj/AwAEAAMAAAACAPn/AwAEAAMAAAACAPr/AwAEAAMAAAACAPv/AwAEAAMAAAACAPz/AwAEAAMAAAACAP3/AwAEAAMAAAACAP7/AwAEAAMAAAACAP//AwAEAAMAAAACAAAAAwAEAAMAAAACAAEAAwAEAAMAAAACAAQAAwAEAAMAAAACAAUAAwAEAAMAAAACAAYAAwAEAAMAAAACAAcAAwAEAAMAAAACAAgAAwAEAAMAAAACAAkAAwAEAAMAAAACAAoAAwAEAAMAAAACAAsAAwAEAAMAAAACAAwAAwAEAAMAAAADAPT/AwAEAAMAAAADAPX/AwAEAAMAAAADAPb/AwAEAAMAAAADAPf/AwAEAAMAAAADAPj/AwAEAAMAAAADAPn/AwAEAAMAAAADAPr/AwAEAAMAAAADAPv/AwAEAAMAAAADAPz/AwAEAAMAAAADAP3/AwAEAAMAAAADAP7/AwAEAAMAAAADAP//AwAEAAMAAAADAAAAAwAEAAMAAAADAAEAAwAEAAMAAAADAAIAAwAEAAMAAAADAAMAAwAEAAMAAAADAAQAAwAEAAMAAAADAAUAAwAEAAMAAAADAAYAAwAEAAMAAAADAAcAAwAEAAMAAAADAAgAAwAEAAMAAAADAAkAAwAEAAMAAAADAAoAAwAEAAMAAAADAAsAAwAEAAMAAAADAAwAAwAEAAMAAAADAPP/AgAAAAEAAFACAPP/AgAAAAIAAFABAPP/AgAAAAMAAFAAAPP/AgAAAAEAAFD///P/AgAAAAIAAFD+//P/AgAAAAMAAFD9//P/AgAAAAQAAFD8//P/AgAAAAUAAFA=")
+tile_map_data = PackedByteArray("AAD7//P/AgAAAAAAAAD7//T/AgAAAAEAAAD7//X/AgAAAAIAAAD7//b/AgAAAAMAAAD7//f/AgAAAAEAAAD7//j/AgAAAAIAAAAEAPP/AgAAAAAAABAEAPT/AgAAAAEAABAEAPX/AgAAAAIAABAEAPb/AgAAAAMAABAEAPf/AgAAAAUAADAEAPj/AgAAAAQAADD7//n/AgAAAAMAAAD7//r/AgAAAAQAAAD7//v/AgAAAAUAAAD7//z/AgAAAAEAAAD7//3/AgAAAAIAAAD7//7/AgAAAAMAAAD7////AgAAAAQAAAD7/wAAAgAAAAUAAAD7/wEAAgAAAAEAAAD7/wIAAgAAAAIAAAD7/wMAAgAAAAMAAAD7/wQAAgAAAAQAAAD7/wUAAgAAAAEAAAD7/wYAAgAAAAIAAAD7/wcAAgAAAAMAAAD7/wgAAgAAAAQAAAD7/wkAAgAAAAEAAAD7/woAAgAAAAIAAAD7/wsAAgAAAAMAAAD7/wwAAgAAAAAAACAEAPn/AgAAAAMAADAEAPr/AgAAAAIAADAEAPv/AgAAAAEAADAEAPz/AgAAAAUAADAEAP3/AgAAAAQAADAEAP7/AgAAAAMAADAEAP//AgAAAAIAADAEAAAAAgAAAAEAADAEAAEAAgAAAAUAADAEAAIAAgAAAAQAADAEAAMAAgAAAAMAADAEAAQAAgAAAAIAADAEAAUAAgAAAAUAADAEAAYAAgAAAAQAADAEAAcAAgAAAAMAADAEAAgAAgAAAAUAADAEAAkAAgAAAAQAADAEAAoAAgAAAAMAADAEAAsAAgAAAAIAADAEAAwAAgAAAAAAADD8//T/AwAEAAMAAAD9//T/AwAEAAMAAAD9//X/AwAEAAMAAAD+//b/AwAEAAMAAAD+//f/AwAEAAMAAAD///j/AwAEAAMAAAD///n/AwAEAAMAAAD///r/AwAEAAMAAAD///v/AwAEAAMAAAAAAPz/AwAEAAMAAAAAAP3/AwAEAAMAAAAAAP7/AwAEAAMAAAABAP//AwAEAAMAAAABAAAAAwAEAAMAAAABAAEAAwAEAAMAAAACAAIAAwAEAAMAAAACAAMAAwAEAAMAAAD8//X/AwAEAAMAAAD8//b/AwAEAAMAAAD8//f/AwAEAAMAAAD8//j/AwAEAAMAAAD8//n/AwAEAAMAAAD8//r/AwAEAAMAAAD8//v/AwAEAAMAAAD8//z/AwAEAAMAAAD8//3/AwAEAAMAAAD8//7/AwAEAAMAAAD8////AwAEAAMAAAD8/wAAAwAEAAMAAAD8/wEAAwAEAAMAAAD8/wIAAwAEAAMAAAD8/wMAAwAEAAMAAAD8/wQAAwAEAAMAAAD8/wUAAwAEAAMAAAD8/wYAAwAEAAMAAAD8/wcAAwAEAAMAAAD8/wgAAwAEAAMAAAD8/wkAAwAEAAMAAAD8/woAAwAEAAMAAAD8/wsAAwAEAAMAAAD8/wwAAgAAAAEAAGD9//b/AwAEAAMAAAD9//f/AwAEAAMAAAD9//j/AwAEAAMAAAD9//n/AwAEAAMAAAD9//r/AwAEAAMAAAD9//v/AwAEAAMAAAD9//z/AwAEAAMAAAD9//3/AwAEAAMAAAD9//7/AwAEAAMAAAD9////AwAEAAMAAAD9/wAAAwAEAAMAAAD9/wEAAwAEAAMAAAD9/wIAAwAEAAMAAAD9/wMAAwAEAAMAAAD9/wQAAwAEAAMAAAD9/wUAAwAEAAMAAAD9/wYAAwAEAAMAAAD9/wcAAwAEAAMAAAD9/wgAAwAEAAMAAAD9/wkAAwAEAAMAAAD9/woAAwAEAAMAAAD9/wsAAwAEAAMAAAD9/wwAAgAAAAIAAGD+//T/AwAEAAMAAAD+//X/AwAEAAMAAAD+//j/AwAEAAMAAAD+//n/AwAEAAMAAAD+//r/AwAEAAMAAAD+//v/AwAEAAMAAAD+//z/AwAEAAMAAAD+//3/AwAEAAMAAAD+//7/AwAEAAMAAAD+////AwAEAAMAAAD+/wAAAwAEAAMAAAD+/wEAAwAEAAMAAAD+/wIAAwAEAAMAAAD+/wMAAwAEAAMAAAD+/wQAAwAEAAMAAAD+/wUAAwAEAAMAAAD+/wYAAwAEAAMAAAD+/wcAAwAEAAMAAAD+/wgAAwAEAAMAAAD+/wkAAwAEAAMAAAD+/woAAwAEAAMAAAD+/wsAAwAEAAMAAAD+/wwAAgAAAAEAAGD///T/AwAEAAMAAAD///X/AwAEAAMAAAD///b/AwAEAAMAAAD///f/AwAEAAMAAAD///z/AwAEAAMAAAD///3/AwAEAAMAAAD///7/AwAEAAMAAAD/////AwAEAAMAAAD//wAAAwAEAAMAAAD//wEAAwAEAAMAAAD//wIAAwAEAAMAAAD//wMAAwAEAAMAAAD//wQAAwAEAAMAAAD//wUAAwAEAAMAAAD//wYAAwAEAAMAAAD//wcAAwAEAAMAAAD//wgAAwAEAAMAAAD//wkAAwAEAAMAAAD//woAAwAEAAMAAAD//wsAAwAEAAMAAAD//wwAAgAAAAIAAGAAAPT/AwAEAAMAAAAAAPX/AwAEAAMAAAAAAPb/AwAEAAMAAAAAAPf/AwAEAAMAAAAAAPj/AwAEAAMAAAAAAPn/AwAEAAMAAAAAAPr/AwAEAAMAAAAAAPv/AwAEAAMAAAAAAP//AwAEAAMAAAAAAAAAAwAEAAMAAAAAAAEAAwAEAAMAAAAAAAIAAwAEAAMAAAAAAAMAAwAEAAMAAAAAAAQAAwAEAAMAAAAAAAUAAwAEAAMAAAAAAAYAAwAEAAMAAAAAAAcAAwAEAAMAAAAAAAgAAwAEAAMAAAAAAAkAAwAEAAMAAAAAAAoAAwAEAAMAAAAAAAsAAwAEAAMAAAAAAAwAAgAAAAEAAGABAPT/AwAEAAMAAAABAPX/AwAEAAMAAAABAPb/AwAEAAMAAAABAPf/AwAEAAMAAAABAPj/AwAEAAMAAAABAPn/AwAEAAMAAAABAPr/AwAEAAMAAAABAPv/AwAEAAMAAAABAPz/AwAEAAMAAAABAP3/AwAEAAMAAAABAP7/AwAEAAMAAAABAAIAAwAEAAMAAAABAAMAAwAEAAMAAAABAAQAAwAEAAMAAAABAAUAAwAEAAMAAAABAAYAAwAEAAMAAAABAAcAAwAEAAMAAAABAAgAAwAEAAMAAAABAAkAAwAEAAMAAAABAAoAAwAEAAMAAAABAAsAAwAEAAMAAAABAAwAAgAAAAIAAGACAPT/AwAEAAMAAAACAPX/AwAEAAMAAAACAPb/AwAEAAMAAAACAPf/AwAEAAMAAAACAPj/AwAEAAMAAAACAPn/AwAEAAMAAAACAPr/AwAEAAMAAAACAPv/AwAEAAMAAAACAPz/AwAEAAMAAAACAP3/AwAEAAMAAAACAP7/AwAEAAMAAAACAP//AwAEAAMAAAACAAAAAwAEAAMAAAACAAEAAwAEAAMAAAACAAQAAwAEAAMAAAACAAUAAwAEAAMAAAACAAYAAwAEAAMAAAACAAcAAwAEAAMAAAACAAgAAwAEAAMAAAACAAkAAwAEAAMAAAACAAoAAwAEAAMAAAACAAsAAwAEAAMAAAACAAwAAgAAAAMAAGADAPT/AwAEAAMAAAADAPX/AwAEAAMAAAADAPb/AwAEAAMAAAADAPf/AwAEAAMAAAADAPj/AwAEAAMAAAADAPn/AwAEAAMAAAADAPr/AwAEAAMAAAADAPv/AwAEAAMAAAADAPz/AwAEAAMAAAADAP3/AwAEAAMAAAADAP7/AwAEAAMAAAADAP//AwAEAAMAAAADAAAAAwAEAAMAAAADAAEAAwAEAAMAAAADAAIAAwAEAAMAAAADAAMAAwAEAAMAAAADAAQAAwAEAAMAAAADAAUAAwAEAAMAAAADAAYAAwAEAAMAAAADAAcAAwAEAAMAAAADAAgAAwAEAAMAAAADAAkAAwAEAAMAAAADAAoAAwAEAAMAAAADAAsAAwAEAAMAAAADAAwAAgAAAAQAAGADAPP/AgAAAAEAAFACAPP/AgAAAAIAAFABAPP/AgAAAAMAAFAAAPP/AgAAAAEAAFD///P/AgAAAAIAAFD+//P/AgAAAAMAAFD9//P/AgAAAAQAAFD8//P/AgAAAAUAAFA=")
 tile_set = ExtResource("3_gc2m3")
 
 [node name="AfterVisual" parent="WaterFlowArea6" index="1"]
@@ -264,20 +276,99 @@ scale = Vector2(0.26248184, 0.26248184)
 texture = ExtResource("16_02f1c")
 
 [node name="OutwardScenery" parent="." unique_id=1852138962 instance=ExtResource("15_bmeg8")]
-visible = false
-position = Vector2(4831, 223)
-metadata/_edit_lock_ = true
+position = Vector2(8146.2695, 461.17313)
+scale = Vector2(0.7141196, 0.7141196)
 
-[node name="LayeredOutwardScenery" parent="." unique_id=1570698418 instance=ExtResource("17_02f1c")]
-position = Vector2(0, 223)
-metadata/_edit_lock_ = true
+[node name="ForegroundLoop" parent="OutwardScenery" index="4" unique_id=1710055464]
+position = Vector2(-1253.1809, -669.5981)
 
-[node name="Oasis" parent="LayeredOutwardScenery/NearBackground" index="3"]
-position = Vector2(15084.701, 985.4655)
+[node name="GreenDecoration" parent="OutwardScenery/ForegroundLoop" index="0" unique_id=625607659]
+material = SubResource("ShaderMaterial_ueiw8")
+position = Vector2(13599.693, 777.1195)
+scale = Vector2(0.60270095, 0.60270095)
 
-[node name="AnimationPlayer" parent="LayeredOutwardScenery" index="4"]
-autoplay = &"CloudDrift"
+[node name="Foreground" parent="OutwardScenery/ForegroundLoop" index="1" unique_id=1006399121]
+position = Vector2(13599.693, 777.1195)
+scale = Vector2(0.60270095, 0.60270095)
+
+[node name="Foreground3" type="Node2D" parent="OutwardScenery/ForegroundLoop" index="2" unique_id=365900725]
+position = Vector2(-3881.387, 1570.136)
+scale = Vector2(0.24388668, 0.24388668)
+
+[node name="ForegroundSprite" type="Sprite2D" parent="OutwardScenery/ForegroundLoop/Foreground3" unique_id=1006888577]
+position = Vector2(44.59841, 497.75903)
+scale = Vector2(0.61720425, 0.61720425)
+texture = ExtResource("21_vwl1e")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="ForegroundSprite2" type="Sprite2D" parent="OutwardScenery/ForegroundLoop/Foreground3" unique_id=1852938130]
+position = Vector2(3035.6958, 6.977127)
+texture = ExtResource("21_vwl1e")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="ForegroundSprite3" type="Sprite2D" parent="OutwardScenery/ForegroundLoop/Foreground3" unique_id=57803971]
+position = Vector2(3035.6958, 6.977127)
+texture = ExtResource("21_vwl1e")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="ForegroundSprite4" type="Sprite2D" parent="OutwardScenery/ForegroundLoop/Foreground3" unique_id=659967273]
+position = Vector2(5159.6787, 6.977127)
+texture = ExtResource("21_vwl1e")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="ForegroundSprite5" type="Sprite2D" parent="OutwardScenery/ForegroundLoop/Foreground3" unique_id=1349385065]
+position = Vector2(9309.412, 6.977127)
+texture = ExtResource("21_vwl1e")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="ForegroundSprite6" type="Sprite2D" parent="OutwardScenery/ForegroundLoop/Foreground3" unique_id=953520843]
+position = Vector2(61045.098, 107.89925)
+texture = ExtResource("21_vwl1e")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="Tree" parent="OutwardScenery/ForegroundLoop" index="3" unique_id=1181086969]
+position = Vector2(-11504.465, -493.05066)
+scale = Vector2(1.7864461, 1.7864461)
+
+[node name="Tree2" type="Sprite2D" parent="OutwardScenery/ForegroundLoop" index="4" unique_id=149855393]
+z_index = 10
+position = Vector2(12669.936, -337.26715)
+scale = Vector2(1.7864461, 1.7864461)
+texture = ExtResource("25_bmeg8")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
+
+[node name="Tree3" type="Sprite2D" parent="OutwardScenery/ForegroundLoop" index="5" unique_id=2146692994]
+z_index = 10
+position = Vector2(-9263.4, -352.5996)
+scale = Vector2(1.7864461, 1.7864461)
+texture = ExtResource("25_bmeg8")
+centered = false
+flip_h = true
+region_enabled = true
+region_rect = Rect2(0, 0, 4831, 1296)
+region_filter_clip_enabled = true
 
 [editable path="VanishingBlockerComponent"]
 [editable path="WaterFlowArea6"]
-[editable path="LayeredOutwardScenery"]
+[editable path="OutwardScenery"]

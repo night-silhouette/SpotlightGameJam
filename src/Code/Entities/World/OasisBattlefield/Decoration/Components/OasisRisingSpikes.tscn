@@ -1,17 +1,26 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://mq6hissr3y35"]
 
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="1"]
-[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://c85h5y2p6x8r1" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="1"]
+[ext_resource type="Script" uid="uid://bc0yvc6afve4j" path="res://Code/Entities/World/OasisBattlefield/Decoration/OasisComponentArt.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://danehu3a2wbhs" path="res://Art/New/component/extracted/hazard_ceiling_spike_huge_b_cracked.png" id="3_ikxxh"]
+[ext_resource type="Texture2D" uid="uid://ca3t3sc3qfh3t" path="res://Art/New/component/extracted/hazard_stalactite_cluster_composite_small.png" id="4_xfuaf"]
+[ext_resource type="Texture2D" uid="uid://byonpw5lc4tle" path="res://Art/New/component/extracted/hazard_stalactite_group_layered.png" id="5_ebu5l"]
 
-[node name="OasisRisingSpikes" instance=ExtResource("1")]
+[node name="OasisRisingSpikes" unique_id=119211753 instance=ExtResource("1")]
 
-[node name="BaseSlot" parent="."]
+[node name="BaseSlot" parent="." index="0"]
 self_modulate = Color(1, 1, 1, 0)
 
-[node name="VisualPolygon" parent="SpikeMovingRoot"]
+[node name="VisualPolygon" parent="SpikeMovingRoot" index="0"]
 self_modulate = Color(1, 1, 1, 0)
 
-[node name="OasisArt" type="Node2D" parent="SpikeMovingRoot"]
+[node name="OasisArt" type="Node2D" parent="SpikeMovingRoot" index="2" unique_id=1555563893]
+position = Vector2(0.26884276, -21.44712)
+rotation = -3.118219
+scale = Vector2(1.182156, 1.0658364)
 script = ExtResource("2")
+stalactite_hanging_texture = ExtResource("3_ikxxh")
+stalactite_falling_texture = ExtResource("4_xfuaf")
+rising_spike_texture = ExtResource("5_ebu5l")
 metadata/kind = "rising"
 metadata/target_path = "../.."

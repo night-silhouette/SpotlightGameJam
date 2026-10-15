@@ -58,7 +58,7 @@ length = 0.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MidGround/DriftingCloud:position")
+tracks/0/path = NodePath("HandPlacedScenery/MidDetails/DriftingCloud:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -75,7 +75,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("MidGround/DriftingCloud:position")
+tracks/0/path = NodePath("HandPlacedScenery/MidDetails/DriftingCloud:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -94,83 +94,97 @@ _data = {
 [node name="LayeredOutwardScenery" type="Node2D"]
 texture_filter = 2
 script = ExtResource("1_script")
-metadata/_editor_description_ = "第三关去程分层拼景。Far/Mid/Near 三层均不自动重复；Sprite2D 可分别改位置、缩放和纹理。TileForeground 是普通世界空间装饰容器。"
+metadata/_editor_description_ = "第三关去程拼景。ContinuousBackground 只循环天空和远山；HandPlacedScenery 中的月亮、云、地面和绿洲均为世界空间手摆内容，不循环。"
 
-[node name="FarBackground" type="Parallax2D" parent="."]
-top_level = true
+[node name="ContinuousBackground" type="Node2D" parent="."]
+metadata/_editor_description_ = "基础连续背景。这里只放允许横向循环的天空和远山。"
+
+[node name="SkyLoop" type="Parallax2D" parent="ContinuousBackground"]
 z_index = -30
 scroll_scale = Vector2(0.12, 1)
-repeat_size = Vector2(0, 0)
+repeat_size = Vector2(11840, 0)
 repeat_times = 1
 autoscroll = Vector2(0, 0)
-metadata/_editor_description_ = "远景：不重复、不自动滚动。直接编辑子 Sprite2D 的 transform/texture。"
+metadata/_editor_description_ = "连续天空：正向+镜像双图拼接无缝循环（单元宽度 11840）。"
 
-[node name="SkyBackdrop" type="Sprite2D" parent="FarBackground"]
+[node name="SkyBackdrop" type="Sprite2D" parent="ContinuousBackground/SkyLoop"]
 position = Vector2(-1100, -500)
 texture = ExtResource("5_sky")
 centered = false
 
-[node name="Moon" type="Sprite2D" parent="FarBackground"]
-position = Vector2(2100, 115)
-scale = Vector2(0.55, 0.55)
-texture = SubResource("AtlasTexture_moon")
+[node name="SkyBackdropMirrored" type="Sprite2D" parent="ContinuousBackground/SkyLoop"]
+position = Vector2(4820, -500)
+texture = ExtResource("5_sky")
+centered = false
+flip_h = true
 
-[node name="MidGround" type="Parallax2D" parent="."]
-top_level = true
+[node name="MountainLoop" type="Parallax2D" parent="ContinuousBackground"]
 z_index = -20
 scroll_scale = Vector2(0.28, 1)
-repeat_size = Vector2(0, 0)
+repeat_size = Vector2(11840, 0)
 repeat_times = 1
 autoscroll = Vector2(0, 0)
-metadata/_editor_description_ = "中景：山脉与两朵独立裁切云；DriftingCloud 由 AnimationPlayer 做轻量往返。"
+metadata/_editor_description_ = "连续远山：正向+镜像双图拼接无缝循环（单元宽度 11840）。"
 
-[node name="DistantMountains" type="Sprite2D" parent="MidGround"]
+[node name="DistantMountains" type="Sprite2D" parent="ContinuousBackground/MountainLoop"]
 position = Vector2(-180, 0)
 texture = ExtResource("4_mountains")
 centered = false
 
-[node name="DistantMountainsRight" type="Sprite2D" parent="MidGround"]
-position = Vector2(5600, 0)
+[node name="DistantMountainsMirrored" type="Sprite2D" parent="ContinuousBackground/MountainLoop"]
+position = Vector2(5740, 0)
 texture = ExtResource("4_mountains")
 centered = false
+flip_h = true
 
-[node name="DriftingCloud" type="Sprite2D" parent="MidGround"]
+[node name="HandPlacedScenery" type="Node2D" parent="."]
+metadata/_editor_description_ = "非循环特色景物。直接在编辑器中按关卡世界坐标摆放。"
+
+[node name="FarDetails" type="Node2D" parent="HandPlacedScenery"]
+z_index = -25
+metadata/_editor_description_ = "远层手摆特色物件，例如月亮。"
+
+[node name="Moon" type="Sprite2D" parent="HandPlacedScenery/FarDetails"]
+position = Vector2(2100, 115)
+scale = Vector2(0.55, 0.55)
+texture = SubResource("AtlasTexture_moon")
+
+[node name="MidDetails" type="Node2D" parent="HandPlacedScenery"]
+z_index = -15
+metadata/_editor_description_ = "中层手摆特色物件，例如云。"
+
+[node name="DriftingCloud" type="Sprite2D" parent="HandPlacedScenery/MidDetails"]
 self_modulate = Color(1, 1, 1, 0.72)
 position = Vector2(1700, 235)
 scale = Vector2(0.52, 0.52)
 texture = SubResource("AtlasTexture_cloud_left")
 
-[node name="StillCloud" type="Sprite2D" parent="MidGround"]
+[node name="StillCloud" type="Sprite2D" parent="HandPlacedScenery/MidDetails"]
 self_modulate = Color(1, 1, 1, 0.62)
 position = Vector2(4300, 285)
 scale = Vector2(0.48, 0.48)
 texture = SubResource("AtlasTexture_cloud_right")
 
-[node name="NearBackground" type="Parallax2D" parent="."]
-top_level = true
+[node name="NearDetails" type="Node2D" parent="HandPlacedScenery"]
 z_index = -10
-scroll_scale = Vector2(0.62, 1)
-repeat_size = Vector2(0, 0)
-repeat_times = 1
-autoscroll = Vector2(0, 0)
-metadata/_editor_description_ = "近背景：两张不同地表层手工衔接并覆盖关卡宽度；无 repeat_size 循环。"
+metadata/_editor_description_ = "近层手摆地面和特色景物；世界空间，不循环。"
 
-[node name="GroundLeft" type="Sprite2D" parent="NearBackground"]
+[node name="GroundLeft" type="Sprite2D" parent="HandPlacedScenery/NearDetails"]
 position = Vector2(-160, 0)
 texture = ExtResource("2_near_ground_a")
 centered = false
 
-[node name="GroundRight" type="Sprite2D" parent="NearBackground"]
+[node name="GroundRight" type="Sprite2D" parent="HandPlacedScenery/NearDetails"]
 position = Vector2(5520, 0)
 texture = ExtResource("3_near_ground_b")
 centered = false
 
-[node name="GroundExit" type="Sprite2D" parent="NearBackground"]
+[node name="GroundExit" type="Sprite2D" parent="HandPlacedScenery/NearDetails"]
 position = Vector2(11000, 0)
 texture = ExtResource("2_near_ground_a")
 centered = false
 
-[node name="Oasis" type="Sprite2D" parent="NearBackground"]
+[node name="Oasis" type="Sprite2D" parent="HandPlacedScenery/NearDetails"]
 position = Vector2(6600, 820)
 scale = Vector2(0.72, 0.72)
 texture = SubResource("AtlasTexture_oasis")

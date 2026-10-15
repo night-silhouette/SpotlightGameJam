@@ -1,30 +1,18 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dkw1ajux37wt4"]
 
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/09.png" id="1_v78iy"]
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/07.png" id="2_u06m4"]
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/10.png" id="4_fqyhx"]
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/05.png" id="5_u06m4"]
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/11.png" id="8_u2n35"]
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/01.png" id="9_green"]
-[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.gd" id="10_config"]
-[ext_resource type="Shader" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="11_seam"]
-
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/06.png" id="out_06"]
-
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/08.png" id="out_08"]
-
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/03.png" id="out_03"]
-
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/02.png" id="out_02"]
-
-[ext_resource type="Texture2D" path="res://Art/Archived/Oldhuntt/OutPath/04.png" id="out_04"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_near_seam"]
-resource_local_to_scene = true
-shader = ExtResource("11_seam")
-shader_parameter/repeat_width = 4831.0
-shader_parameter/blend_width = 256.0
-shader_parameter/seam_y_offset = 40.0
+[ext_resource type="Texture2D" uid="uid://3ljf8r6mlen8" path="res://Art/Archived/Oldhuntt/OutPath/09.png" id="1_v78iy"]
+[ext_resource type="Texture2D" uid="uid://v1yhdolbe1wb" path="res://Art/Archived/Oldhuntt/OutPath/07.png" id="2_u06m4"]
+[ext_resource type="Texture2D" uid="uid://xhe7j0m8d87i" path="res://Art/Archived/Oldhuntt/OutPath/10.png" id="4_fqyhx"]
+[ext_resource type="Texture2D" uid="uid://5fj0oxvvmm0a" path="res://Art/Archived/Oldhuntt/OutPath/05.png" id="5_u06m4"]
+[ext_resource type="Texture2D" uid="uid://dxrhpg2ces5em" path="res://Art/Archived/Oldhuntt/OutPath/11.png" id="8_u2n35"]
+[ext_resource type="Texture2D" uid="uid://hlloclr4l41p" path="res://Art/Archived/Oldhuntt/OutPath/01.png" id="9_green"]
+[ext_resource type="Script" uid="uid://cyqlrnrtog25f" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.gd" id="10_config"]
+[ext_resource type="Shader" uid="uid://cxke4sshjkdxe" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="11_seam"]
+[ext_resource type="Texture2D" uid="uid://cdwsm18s2mvq0" path="res://Art/Archived/Oldhuntt/OutPath/02.png" id="out_02"]
+[ext_resource type="Texture2D" uid="uid://jnfu14p1s0nf" path="res://Art/Archived/Oldhuntt/OutPath/03.png" id="out_03"]
+[ext_resource type="Texture2D" uid="uid://dubum4rsamhhc" path="res://Art/Archived/Oldhuntt/OutPath/04.png" id="out_04"]
+[ext_resource type="Texture2D" uid="uid://ca2lws4ih46yc" path="res://Art/Archived/Oldhuntt/OutPath/06.png" id="out_06"]
+[ext_resource type="Texture2D" uid="uid://dvapcj7qqpb4" path="res://Art/Archived/Oldhuntt/OutPath/08.png" id="out_08"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_green_seam"]
 resource_local_to_scene = true
@@ -33,100 +21,112 @@ shader_parameter/repeat_width = 4831.0
 shader_parameter/blend_width = 128.0
 shader_parameter/seam_y_offset = 14.0
 
-[node name="OutwardScenery" type="Node2D"]
+[node name="OutwardScenery" type="Node2D" unique_id=1928925671]
 script = ExtResource("10_config")
 
-[node name="FarBackground" type="Parallax2D" parent="."]
-z_index = -20
-scroll_scale = Vector2(0.2, 1)
-scroll_offset = Vector2(-76.8, 0)
-repeat_size = Vector2(4831, 0)
-repeat_times = 3
-
-[node name="Sprite2D" type="Sprite2D" parent="FarBackground"]
-texture = ExtResource("1_v78iy")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
-
-
-[node name="FarPlants" type="Sprite2D" parent="FarBackground"]
-texture = ExtResource("out_06")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
-
-[node name="NearBackground" type="Parallax2D" parent="."]
-z_index = -10
-scroll_scale = Vector2(0.35, 1)
-scroll_offset = Vector2(-62.4, 0)
-repeat_size = Vector2(4831, 0)
-repeat_times = 3
-
-[node name="Sprite2D" type="Sprite2D" parent="NearBackground"]
-material = SubResource("ShaderMaterial_near_seam")
-texture = ExtResource("2_u06m4")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
-
-
-[node name="Lake" type="Sprite2D" parent="NearBackground"]
-texture = ExtResource("out_08")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
-
-
-[node name="Cacti" type="Sprite2D" parent="NearBackground"]
-texture = ExtResource("out_03")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
-
-
-[node name="Shrubs" type="Sprite2D" parent="NearBackground"]
-texture = ExtResource("out_02")
-centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
-
-[node name="Sky" type="Parallax2D" parent="."]
+[node name="Sky" type="Parallax2D" parent="." unique_id=723270556]
 z_index = -30
 scroll_scale = Vector2(0.2, 1)
 scroll_offset = Vector2(-76.8, 0)
-repeat_size = Vector2(4831, 0)
+repeat_size = Vector2(11840, 0)
 repeat_times = 3
 
-[node name="SkyBase" type="Sprite2D" parent="Sky"]
+[node name="SkyBase" type="Sprite2D" parent="Sky" unique_id=1528455067]
 position = Vector2(0, -1042)
 scale = Vector2(1, 1.8040123)
 texture = ExtResource("4_fqyhx")
 centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
 
-[node name="Moon" type="Sprite2D" parent="Sky"]
+[node name="SkyBaseMirrored" type="Sprite2D" parent="Sky" unique_id=1528455068]
+position = Vector2(5920, -1042)
+scale = Vector2(1, 1.8040123)
+texture = ExtResource("4_fqyhx")
+centered = false
+flip_h = true
+
+[node name="Moon" type="Sprite2D" parent="." unique_id=1696341529]
+z_index = -25
 texture = ExtResource("8_u2n35")
 centered = false
-region_enabled = true
-region_rect = Rect2(0, 0, 4831, 1296)
-region_filter_clip_enabled = true
 
-[node name="ForegroundLoop" type="Parallax2D" parent="."]
-scroll_scale = Vector2(1.2, 1)
-scroll_offset = Vector2(19.2, 0)
-repeat_size = Vector2(4831, 0)
+[node name="FarBackground" type="Parallax2D" parent="." unique_id=888876417]
+z_index = -20
+scroll_scale = Vector2(0.2, 1)
+scroll_offset = Vector2(-76.8, 0)
+repeat_size = Vector2(11840, 0)
 repeat_times = 3
 
-[node name="GreenDecoration" type="Sprite2D" parent="ForegroundLoop"]
+[node name="Sprite2D" type="Sprite2D" parent="FarBackground" unique_id=831453101]
+texture = ExtResource("1_v78iy")
+centered = false
+
+[node name="Sprite2DMirrored" type="Sprite2D" parent="FarBackground" unique_id=831453102]
+position = Vector2(5920, 0)
+texture = ExtResource("1_v78iy")
+centered = false
+flip_h = true
+
+[node name="FarPlants" type="Sprite2D" parent="FarBackground" unique_id=1190544351]
+texture = ExtResource("out_06")
+centered = false
+
+[node name="FarPlantsMirrored" type="Sprite2D" parent="FarBackground" unique_id=1190544352]
+position = Vector2(5920, 0)
+texture = ExtResource("out_06")
+centered = false
+flip_h = true
+
+[node name="NearBackground" type="Parallax2D" parent="." unique_id=1430440775]
+z_index = -10
+scroll_scale = Vector2(0.35, 1)
+scroll_offset = Vector2(-62.4, 0)
+repeat_size = Vector2(11840, 0)
+repeat_times = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="NearBackground" unique_id=919796566]
+texture = ExtResource("2_u06m4")
+centered = false
+
+[node name="Sprite2DMirrored" type="Sprite2D" parent="NearBackground" unique_id=919796567]
+position = Vector2(5920, 0)
+texture = ExtResource("2_u06m4")
+centered = false
+flip_h = true
+
+[node name="Lake" type="Sprite2D" parent="NearBackground" unique_id=787060705]
+texture = ExtResource("out_08")
+centered = false
+
+[node name="LakeMirrored" type="Sprite2D" parent="NearBackground" unique_id=787060706]
+position = Vector2(5920, 0)
+texture = ExtResource("out_08")
+centered = false
+flip_h = true
+
+[node name="Cacti" type="Sprite2D" parent="NearBackground" unique_id=744605436]
+texture = ExtResource("out_03")
+centered = false
+
+[node name="CactiMirrored" type="Sprite2D" parent="NearBackground" unique_id=744605437]
+position = Vector2(5920, 0)
+texture = ExtResource("out_03")
+centered = false
+flip_h = true
+
+[node name="Shrubs" type="Sprite2D" parent="NearBackground" unique_id=2022947950]
+texture = ExtResource("out_02")
+centered = false
+
+[node name="ShrubsMirrored" type="Sprite2D" parent="NearBackground" unique_id=2022947951]
+position = Vector2(5920, 0)
+texture = ExtResource("out_02")
+centered = false
+flip_h = true
+
+[node name="ForegroundLoop" type="Node2D" parent="." unique_id=1710055464]
+position = Vector2(238.97656, 0)
+
+[node name="GreenDecoration" type="Sprite2D" parent="ForegroundLoop" unique_id=625607659]
 self_modulate = Color(1, 1, 1, 0.6862745)
 z_index = 5
 material = SubResource("ShaderMaterial_green_seam")
@@ -136,17 +136,17 @@ region_enabled = true
 region_rect = Rect2(0, 0, 4831, 1296)
 region_filter_clip_enabled = true
 
-[node name="Foreground" type="Node2D" parent="ForegroundLoop"]
+[node name="Foreground" type="Node2D" parent="ForegroundLoop" unique_id=1006399121]
 z_index = 10
 
-[node name="ForegroundSprite" type="Sprite2D" parent="ForegroundLoop/Foreground"]
+[node name="ForegroundSprite" type="Sprite2D" parent="ForegroundLoop/Foreground" unique_id=1426435693]
 texture = ExtResource("5_u06m4")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 4831, 1296)
 region_filter_clip_enabled = true
 
-[node name="Tree" type="Sprite2D" parent="ForegroundLoop"]
+[node name="Tree" type="Sprite2D" parent="ForegroundLoop" unique_id=1181086969]
 z_index = 10
 texture = ExtResource("out_04")
 centered = false
