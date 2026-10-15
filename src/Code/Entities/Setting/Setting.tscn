@@ -538,6 +538,14 @@ text = "恢复默认排版"
 layout_mode = 2
 theme_override_constants/separation = 12
 
+[node name="ReturnMenuButton" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox"]
+visible = false
+custom_minimum_size = Vector2(120, 36)
+layout_mode = 2
+focus_mode = 0
+mouse_default_cursor_shape = 2
+text = "返回主菜单"
+
 [node name="QuitButton" type="Button" parent="RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox" unique_id=981248120]
 custom_minimum_size = Vector2(120, 36)
 layout_mode = 2

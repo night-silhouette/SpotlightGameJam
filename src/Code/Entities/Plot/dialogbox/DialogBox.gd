@@ -6,13 +6,13 @@ signal Finished
 const NARRATION: StringName = &"旁白"
 const MONOLOGUE: StringName = &"独白"
 
-@onready var _box: PanelContainer = $Root/Box
+@onready var _box: AspectRatioContainer = $Root/Box
 @onready var _title: Label = $Root/Box/Margin/Content/Title
 @onready var _content: Label = $Root/Box/Margin/Content/Text
-@onready var _close_button: Button = $Root/Box/Margin/Content/Close
-@onready var _narration: PanelContainer = $Root/NarrationPanel
+@onready var _close_button: TextureButton = $Root/Box/Margin/Close
+@onready var _narration: AspectRatioContainer = $Root/NarrationPanel
 @onready var _narration_text: Label = $Root/NarrationPanel/Margin/Content/Text
-@onready var _narration_close: Button = $Root/NarrationPanel/Margin/Content/Close
+@onready var _narration_close: TextureButton = $Root/NarrationPanel/Margin/Close
 @onready var _auto_close_timer: Timer = $AutoCloseTimer
 
 var _pending: Array[Dictionary] = []
@@ -24,19 +24,6 @@ func _ready() -> void:
 	_close_button.pressed.connect(_on_close_pressed)
 	_narration_close.pressed.connect(_on_close_pressed)
 	_auto_close_timer.timeout.connect(_on_close_pressed)
-	SignalBus.KeybindChanged.connect(_on_keybind_changed)
-	_update_skip_hint()
-
-func _on_keybind_changed(action_name: StringName, _event_desc: String) -> void:
-	if action_name == &"skip_story":
-		_update_skip_hint()
-
-func _update_skip_hint() -> void:
-	var event := KeybindManager.GetPrimaryEventForAction(&"skip_story")
-	var key_text := KeybindManager.GetActionKeyBadgeText(&"skip_story", "X")
-	var hint := "%s跳过" % (key_text if event is InputEventMouseButton else key_text + "键")
-	_close_button.text = hint
-	_narration_close.text = hint
 
 func _input(event: InputEvent) -> void:
 	if IsOpen() and event.is_action_pressed("skip_story") and not event.is_echo():

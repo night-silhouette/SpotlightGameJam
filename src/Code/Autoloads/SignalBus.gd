@@ -351,13 +351,52 @@ signal SaveSlotDeleted(slot_index: int)
 ## 菜单确认退出游戏时触发；无参数，窗口关闭同样走退出存档流程。
 signal GameQuitRequested
 
+## 游戏内设置请求返回主菜单时触发；无参数，正式世界会先自动保存当前槽位。
+signal ReturnToMainMenuRequested
+
+## 返回主菜单失败、保留当前场景时触发；message 为供设置界面显示的错误提示。
+signal ReturnToMainMenuFailed(message: String)
+
 #endregion
 
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
+const START_MENU_SCENE_PATH = "res://Code/Entities/StartMenu/StartMenu.tscn"
+
+var _returning_to_main_menu: bool = false
 
 func _ready() -> void:
 	get_tree().auto_accept_quit = false
 	GameQuitRequested.connect(_quit_with_auto_save)
+	ReturnToMainMenuRequested.connect(_return_to_main_menu, CONNECT_DEFERRED)
+
+func _return_to_main_menu() -> void:
+	var tree = get_tree()
+	var scene = tree.current_scene
+	if _returning_to_main_menu or not scene or scene.scene_file_path == START_MENU_SCENE_PATH:
+		return
+	_returning_to_main_menu = true
+	var menu = load(START_MENU_SCENE_PATH) as PackedScene
+	if not menu:
+		_returning_to_main_menu = false
+		ReturnToMainMenuFailed.emit("主菜单加载失败，已留在当前游戏。")
+		return
+	if scene.scene_file_path == ExportSettings.start_menu_world_scene_path:
+		var slot = SaveManagerRef.GetActiveSlot()
+		if SaveManagerRef.HasSlot(slot) and not SaveManagerRef.AutoSave(tree):
+			_returning_to_main_menu = false
+			ReturnToMainMenuFailed.emit("自动保存失败，已取消返回主菜单，请重试或手动保存。")
+			return
+	var error = tree.change_scene_to_packed(menu)
+	if error != OK:
+		_returning_to_main_menu = false
+		ReturnToMainMenuFailed.emit("返回主菜单失败，已保留当前游戏（错误码 %d）。" % error)
+		return
+	tree.paused = false
+	for action in InputMap.get_actions():
+		Input.action_release(action)
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	await tree.scene_changed
+	_returning_to_main_menu = false
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:

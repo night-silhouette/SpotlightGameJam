@@ -158,6 +158,7 @@ func _refresh_saves_ui() -> void:
 		# 操作按钮
 		var btn_action = Button.new()
 		btn_action.custom_minimum_size = Vector2(110, 38)
+		btn_action.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		btn_action.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		btn_action.focus_mode = Control.FOCUS_NONE
 
@@ -174,6 +175,7 @@ func _refresh_saves_ui() -> void:
 			var btn_restart = Button.new()
 			btn_restart.text = "覆写新开"
 			btn_restart.custom_minimum_size = Vector2(80, 38)
+			btn_restart.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			btn_restart.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			btn_restart.focus_mode = Control.FOCUS_NONE
 			btn_restart.pressed.connect(_on_slot_new_game_pressed.bind(slot_idx))

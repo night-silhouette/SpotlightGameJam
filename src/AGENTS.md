@@ -85,7 +85,7 @@ Code/
 | 正式世界装配 | `W/World.tscn:368-440` | 同时装配 DialogBox、PlayerWithCamera、Camp、SunkenPalace、DepthsLibrary、OasisBattlefield；不是在此逐关切场景。交互实例有剧情和锁输入覆盖值。 |
 | 玩家、能力及镜头参数 | `A/ExportSettings.gd:128-239,349-411,489-541`；`A/ExportSettings.tscn:5-16` | 移动/生命/钩索/水符文/镜头参数。先读脚本，再查场景覆盖；玩家包装器还会二次写入部分值。 |
 | 移动端、音量与存档配置 | `A/ExportSettings.gd:607-668`；`A/GlobalValue.gd:1-4` | 触屏、音频、存档配置在 ExportSettings；重力在 GlobalValue，实际是可变变量。部分实体仍有本地参数，不可假定已全部集中。 |
-| 全局信号定义 | `A/SignalBus.gd:6-13,29-97,105-209,233-240,275-278,310-374` | 第二关、镜头、玩家能力/生命/遗物/重生、通用机关通道、设置和退出事件。改通信前先搜索信号的发送者和接收者。 |
+| 全局信号定义 | `A/SignalBus.gd:6-13,29-97,105-209,233-240,275-278,310-413` | 第二关、镜头、玩家能力/生命/遗物/重生、通用机关通道、设置、返回主菜单和退出事件。改通信前先搜索信号的发送者和接收者。 |
 | 音量、计时与音效工具 | `A/Util.gd:8-92,206-244` | `SetAudioVolume`、`setTime`/`set_time`、`PlaySFX`/`PlaySFX2D`；音量独立持久化，计时函数返回 SceneTreeTimer，不是可 stop 的 Timer 节点。 |
 | 假死与区域辅助 | `A/Util.gd:96-139,175-204,386-431` | `FakeDeath`/`Revive` 递归改显示、处理和碰撞，复活不是逐项还原旧状态；AreaHoldHelper 构造要求外部参数。 |
 | 通用状态框架 | `C/GameInputControl.gd:1-8`；`C/State.gd:1-57`；`C/StateMachine.gd:18-100` | `init`、`change_state`、`finished`、`state_map`；递归以小写节点名注册。仍有旧 snake_case 公共接口，不可按新命名规范猜调用名。 |
@@ -151,14 +151,14 @@ Code/
 
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
-| 槽位路径、新开与写盘 | `E/Setting/SaveManager.gd:11-49,93-198` | 默认 `res://Code/Entities/Setting/Saves/save_slot_<1..5>.json`，不是 user://；实际槽数固定5，未采用场景配置6。`StartNewGameInSlot` 写空 entities 再切 World，写失败仍可能继续切场景。 |
-| 实体发现与读档匹配 | `E/Setting/SaveManager.gd:154-166,205-356` | 递归当前场景，凭 `ExportSaveData`/`LoadSaveData` 方法发现实体，以相对节点路径存键；切场景后等两帧恢复。路径失败用同名/玩家字段兜底，可能复用已匹配条目；改节点名/层级要核对旧存档。 |
-| 设置面板与改键输入 | `E/Setting/Setting.gd:60-230,274-299,382-416` | ui_cancel 切显隐，改键先捕获键/鼠标，Esc取消；`SettingVisibilityRequested` 控制显示，仅显示UI、不暂停树；默认不自动载入槽1。 |
+| 槽位路径、新开与写盘 | `E/Setting/SaveManager.gd:11-49,93-210` | 默认 `res://Code/Entities/Setting/Saves/save_slot_<1..5>.json`，不是 user://；实际槽数固定5，未采用场景配置6。`SaveToSlot` 先写同目录临时文件并检查 flush 错误，再替换原槽位，失败返回 false；`StartNewGameInSlot` 仍写空 entities 再切 World，写失败仍可能继续切场景。 |
+| 实体发现与读档匹配 | `E/Setting/SaveManager.gd:154-166,217-368` | 递归当前场景，凭 `ExportSaveData`/`LoadSaveData` 方法发现实体，以相对节点路径存键；切场景后等两帧恢复。路径失败用同名/玩家字段兜底，可能复用已匹配条目；改节点名/层级要核对旧存档。 |
+| 设置面板与改键输入 | `E/Setting/Setting.gd:61-240,286-311,397-420,426-444`；`E/Setting/Setting.tscn:537-562` | ui_cancel 切显隐，改键先捕获键/鼠标，Esc取消；`SettingVisibilityRequested` 控制显示，仅显示UI、不暂停树；默认不自动载入槽1。`ShowSetting` 仅在正式 World 或含 player 的非主菜单场景显示预置 ReturnMenuButton；按钮发 `ReturnToMainMenuRequested`，失败由 `ReturnToMainMenuFailed` 显示提示。 |
 | 改键与触屏布局持久化 | `E/Setting/KeybindManager.gd:10-23,40-79,129-203`；`E/Setting/TouchLayoutManager.gd:3-41` | 改键实际写 `res://Code/Entities/Setting/Saves/custom_keybinds.json`，不是旧注释的 user://；每动作保存首事件，重绑清原绑定、无冲突检查。触屏位置/缩放另存 `user://touch_button_layout.cfg`。 |
-| 设置主题、外框与音量 | `E/Setting/SettingsSkin.gd:3-126`；`E/Setting/SettingsFrame.gd:14-75`；`A/Util.gd:25-80` | 主题缓存、外框 `Mount` 重挂关闭按钮并适配窗口；音量请求→`SetAudioVolume`→反馈，独立存 `user://audio_settings.cfg`。 |
-| 退出自动保存 | `A/SignalBus.gd:355-373` | `GameQuitRequested`/窗口关闭统一 `_quit_with_auto_save`；仅正式 World 且活跃槽存在才自动保存，保存失败取消退出。 |
+| 设置主题、外框与音量 | `E/Setting/SettingsSkin.gd:3-140`；`E/Setting/SettingsFrame.gd:14-75`；`A/Util.gd:25-80` | 主题缓存使用 `Art/New/ui/Settings9761/` 长/短条九宫格，固定装饰端头；默认 HSlider 为通用滑块，Setting 的五通道声音控件使用 AudioSlider 音乐旋钮变体。外框 `Mount` 重挂关闭按钮并适配窗口；音量请求→`SetAudioVolume`→反馈，独立存 `user://audio_settings.cfg`。 |
+| 退出与返回主菜单自动保存 | `A/SignalBus.gd:351-413` | `GameQuitRequested`/窗口关闭统一 `_quit_with_auto_save`；`ReturnToMainMenuRequested` 延迟调用 `_return_to_main_menu` 并防重入。两者仅正式 World 且活跃槽存在才自动保存；返回菜单保存/加载失败则留在当前场景并发 `ReturnToMainMenuFailed`，成功切到 StartMenu 后清暂停、释放输入动作并显示鼠标，不退出程序。 |
 | 剧情资源、推进与恢复 | `E/Plot/PlotDialogLine.gd:1-7`；`E/Plot/Chapter1.gd:8-100` | 开场等待四帧，按直接子节点索引推进；发 `DialogBox` 或 `ShowStoryDialogLine`，等待 `../../DialogBox.Closed`。保存 next_event/line_index，加载更新 generation，依赖节点层级与顺序。 |
-| 对话队列与结束信号 | `E/Plot/dialogbox/DialogBox.gd:20-86`；`E/Plot/dialogbox/DialogBox.tscn:68-70` | 旁白/独白排队，按钮/skip_story/默认3秒计时关闭；每句发 `Closed`，队列空先发 `Finished`，交互组件借此解锁；`Dismiss` 不发 Closed，不能替代普通推进。 |
+| 对话队列与结束信号 | `E/Plot/dialogbox/DialogBox.gd:20-73`；`E/Plot/dialogbox/DialogBox.tscn:20-92`；`E/Plot/dialogbox/NarrationPanel.tscn:1-64` | 旁白/独白排队，按钮/skip_story/默认3秒计时关闭；每句发 `Closed`，队列空先发 `Finished`，交互组件借此解锁；`Dismiss` 不发 Closed，不能替代普通推进。底框使用同目录 `Art9766/` 裁图，AspectRatioContainer 保持原比例与顶部对齐；Close 位于 Margin 下，无纹理按钮配继续提示，独白左侧28%预留。 |
 | 章节卡与渐显文字触发 | `E/Plot/chapter/ChapterTrigger.gd:11-18`；`ChapterCard.gd:5-47`；`GradualTextTrigger.gd:11-32`；`GradualTextCard.gd:19-34`（后三者同属 `E/Plot/chapter/`） | 玩家进入/遗物献祭触发一次；章节卡4秒，渐显按25%/50%/25%分段；触发器无存档接口。 |
 | 绘本 | `W/PictureBook.gd:27-100` | 父 Interacted 开书、锁输入/禁交互；每页每次打开一次独白，等 `DialogBox.Finished` 显示书页，关闭恢复；不持久化阅读进度。 |
 

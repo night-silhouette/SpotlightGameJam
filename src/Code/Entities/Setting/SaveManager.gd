@@ -184,15 +184,27 @@ static func SaveToSlot(tree: SceneTree, slot_index: int) -> bool:
 	if not DirAccess.dir_exists_absolute(base_dir):
 		DirAccess.make_dir_recursive_absolute(base_dir)
 
-	var file = FileAccess.open(path, FileAccess.WRITE)
+	# 先完整写入同目录临时文件，避免写入失败时截断已有存档。
+	var temporary_path = path + ".tmp"
+	var file = FileAccess.open(temporary_path, FileAccess.WRITE)
 	if not file:
 		var err = FileAccess.get_open_error()
-		push_error("SaveToSlot 无法写入文件 %s, 错误码: %d" % [path, err])
+		push_error("SaveToSlot 无法写入文件 %s, 错误码: %d" % [temporary_path, err])
 		return false
 
-
 	file.store_string(JSON.stringify(save_dict, "\t"))
+	file.flush()
+	var write_error = file.get_error()
 	file.close()
+	if write_error != OK:
+		DirAccess.remove_absolute(temporary_path)
+		push_error("SaveToSlot 写入失败，原存档已保留，错误码: %d" % write_error)
+		return false
+	var replace_error = DirAccess.rename_absolute(temporary_path, path)
+	if replace_error != OK:
+		DirAccess.remove_absolute(temporary_path)
+		push_error("SaveToSlot 替换失败，原存档已保留，错误码: %d" % replace_error)
+		return false
 	
 	_emit_signal_bus("SaveSlotSaved", [slot_index])
 	return true

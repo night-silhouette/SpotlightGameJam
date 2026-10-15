@@ -42,6 +42,7 @@ const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutMa
 @onready var sfx_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow/Percent
 @onready var dialogue_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow/Percent
 @onready var ambience_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow/Percent
+@onready var return_menu_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/ReturnMenuButton
 @onready var quit_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/QuitButton
 @onready var status_toast: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/StatusToast
 
@@ -60,6 +61,8 @@ var _touch_layout: Dictionary = {}
 func _ready() -> void:
 	root_control.theme = SettingsSkin.CreateTheme()
 	SettingsSkin.ApplyToTree(panel_container)
+	for slider in [master_slider, music_slider, sfx_slider, dialogue_slider, ambience_slider]:
+		slider.theme_type_variation = &"AudioSlider"
 	SettingsFrame.Mount(panel_container, close_button)
 	for tab in [tab_btn_keybinds, tab_btn_saves, tab_btn_audio, tab_btn_touch]:
 		tab.toggle_mode = true
@@ -131,6 +134,8 @@ func _connect_signals() -> void:
 	dialogue_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"dialogue", value / 100.0))
 	ambience_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"ambience", value / 100.0))
 	SignalBus.AudioVolumeChanged.connect(_on_audio_volume_changed)
+	return_menu_button.pressed.connect(func(): SignalBus.ReturnToMainMenuRequested.emit())
+	SignalBus.ReturnToMainMenuFailed.connect(_on_return_to_main_menu_failed)
 	if quit_button:
 		quit_button.pressed.connect(_on_quit_button_pressed)
 	if quit_confirm_dialog:
@@ -145,6 +150,13 @@ func _connect_signals() -> void:
 
 ## 显示设置面板
 func ShowSetting() -> void:
+	var scene = get_tree().current_scene
+	return_menu_button.visible = (
+		scene != null
+		and scene.scene_file_path != SignalBus.START_MENU_SCENE_PATH
+		and (scene.scene_file_path == ExportSettings.start_menu_world_scene_path
+			or get_tree().get_first_node_in_group(&"player") != null)
+	)
 	root_control.visible = true
 	_refresh_save_slots_ui()
 	_refresh_keybind_labels()
@@ -377,6 +389,9 @@ func _refresh_save_slots_ui() -> void:
 		btn_del.pressed.connect(_on_delete_slot_pressed.bind(slot_idx))
 		btn_box.add_child(btn_del)
 
+		btn_save.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		btn_load.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		btn_del.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		saves_list.add_child(row_panel)
 
 func _on_save_slot_pressed(slot_idx: int) -> void:
@@ -407,6 +422,10 @@ func _on_delete_slot_pressed(slot_idx: int) -> void:
 #endregion
 
 #region 退出游戏与反馈提示
+
+func _on_return_to_main_menu_failed(message: String) -> void:
+	ShowSetting()
+	_show_status(message, true)
 
 func _on_quit_button_pressed() -> void:
 	if quit_confirm_dialog:
