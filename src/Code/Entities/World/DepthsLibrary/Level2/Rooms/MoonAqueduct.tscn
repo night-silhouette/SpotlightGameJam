@@ -1,104 +1,95 @@
-[gd_scene format=3]
-[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
-[sub_resource type="RectangleShape2D" id="shape8"]
-size = Vector2(1910, 24)
+[gd_scene format=4 uid="uid://dmwjf4h10bugq"]
 
-[sub_resource type="RectangleShape2D" id="fall"]
-size = Vector2(2200, 50)
-[node name="MoonAqueduct" type="Node2D"]
+[ext_resource type="Texture2D" uid="uid://crlkdreodiv46" path="res://Art/New/component/extracted/prop_book_horizontal_2.png" id="2_k2d0o"]
+[ext_resource type="Texture2D" uid="uid://d2ltlrjv6lkhc" path="res://Art/New/component/extracted/prop_bone_fragment.png" id="3_almxt"]
+[ext_resource type="Texture2D" uid="uid://i5te8jqrrblq" path="res://Art/New/component/extracted/mechanism_pin_lever_2.png" id="3_o56vj"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
+
+[node name="MoonAqueduct" type="Node2D" unique_id=1314162113]
 metadata/width = 2200
 metadata/title = "月影水道"
 
-[node name="RoomTitle" type="Label" parent="."]
-offset_left = 45
-offset_top = 10
-offset_right = 2155
-offset_bottom = 90
+[node name="RoomTitle" type="Label" parent="." unique_id=1472165726]
+offset_left = 45.0
+offset_top = 10.0
+offset_right = 2155.0
+offset_bottom = 90.0
 theme_override_font_sizes/font_size = 30
-mouse_filter = 2
 text = "月影水道"
 
-[node name="RoomHint" type="Label" parent="."]
-offset_left = 45
-offset_top = 58
-offset_right = 2155
-offset_bottom = 138
+[node name="RoomHint" type="Label" parent="." unique_id=1786018300]
+offset_left = 45.0
+offset_top = 58.0
+offset_right = 2155.0
+offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-mouse_filter = 2
-text = "等移动平台靠岸再上去。取得钥匙后下层栈道开放，沿原水道返回。"
+text = "等移动平台靠岸再上去。取得钥匙后沿平台返回，注意下方蓝色死亡边界。"
 
-[node name="FerryA" parent="." instance=ExtResource("moving")]
+[node name="FerryA" parent="." unique_id=1024085281 instance=ExtResource("moving")]
 position = Vector2(365, 505)
 platform_size = Vector2(140, 20)
 movement_offset = Vector2(380, 0)
 movement_speed = 85.0
+show_path_preview = false
 
-[node name="FerryB" parent="." instance=ExtResource("moving")]
+[node name="VisualRect" parent="FerryA" index="1"]
+visible = false
+
+[node name="TopHighlight" parent="FerryA" index="2"]
+visible = false
+
+[node name="ItemArt" type="Sprite2D" parent="FerryA" unique_id=87604469]
+position = Vector2(3.9999998, 3.9999995)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_k2d0o")
+
+[node name="FerryB" parent="." unique_id=1659212721 instance=ExtResource("moving")]
 position = Vector2(1140, 460)
 platform_size = Vector2(150, 20)
 movement_offset = Vector2(410, -100)
 movement_speed = 85.0
+show_path_preview = false
 
-[node name="ReturnCatwalk" type="StaticBody2D" parent="."]
-position = Vector2(280, 700)
-collision_layer = 1
-collision_mask = 2
-metadata/shortcut = true
+[node name="VisualRect" parent="FerryB" index="1"]
+visible = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ReturnCatwalk"]
-position = Vector2(955, 12)
-shape = SubResource("shape8")
+[node name="TopHighlight" parent="FerryB" index="2"]
+visible = false
 
-[node name="Stone" type="Polygon2D" parent="ReturnCatwalk"]
-position = Vector2(0, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 1910, 0, 1910, 24, 0, 24)
-color = Color(0.14, 0.23, 0.28, 1)
+[node name="ItemArt" type="Sprite2D" parent="FerryB" unique_id=2028990964]
+position = Vector2(-6.055832e-05, 4)
+scale = Vector2(0.25464597, 0.2)
+texture = ExtResource("3_almxt")
 
-[node name="Edge" type="Polygon2D" parent="ReturnCatwalk"]
-position = Vector2(0, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 1910, 0, 1910, 4, 0, 4)
-color = Color(0.50, 0.72, 0.73, 1)
-
-[node name="Flow" type="Polygon2D" parent="."]
-position = Vector2(280, 678)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 1910, 0, 1910, 20, 0, 20)
-color = Color(0.1,0.65,0.7,0.5)
-
-[node name="MoonKey" parent="." instance=ExtResource("device")]
+[node name="MoonKey" parent="." unique_id=1522929699 instance=ExtResource("device")]
 position = Vector2(1980, 380)
 metadata/kind = "key"
 metadata/label = "月族银钥匙"
 metadata/key_id = "moon"
 
+[node name="Visual" parent="MoonKey" index="0"]
+visible = false
 
 [node name="Caption" parent="MoonKey" index="1"]
+offset_left = -108.0
+offset_top = -111.0
+offset_right = 122.0
+offset_bottom = -83.0
 text = "月族银钥匙"
 
-[node name="FallReset" type="Area2D" parent="."]
-position = Vector2(1100, 850)
-collision_layer = 0
-collision_mask = 2
-metadata/fall_reset = true
+[node name="Sprite2D" type="Sprite2D" parent="MoonKey" unique_id=47013298]
+position = Vector2(0, -33)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("3_o56vj")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FallReset"]
-shape = SubResource("fall")
-
-[node name="DeepWater" type="Polygon2D" parent="."]
-position = Vector2(0, 820)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 2200, 0, 2200, 55, 0, 55)
-color = Color(0.07, 0.28, 0.35, 0.8)
-
-[node name="Terrain" type="TileMapLayer" parent="."]
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=2090966061]
 position = Vector2(20, 24)
 tile_map_data = PackedByteArray("AAD+//3/AAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAHAP3/AAAAAAAAAAAIAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAAQAP3/AAAAAAAAAAARAP3/AAAAAAAAAAASAP3/AAAAAAAAAAATAP3/AAAAAAAAAAAUAP3/AAAAAAAAAAAVAP3/AAAAAAAAAAAWAP3/AAAAAAAAAAAXAP3/AAAAAAAAAAAYAP3/AAAAAAAAAAAZAP3/AAAAAAAAAAAaAP3/AAAAAAAAAAAbAP3/AAAAAAAAAAAcAP3/AAAAAAAAAAAdAP3/AAAAAAAAAAAeAP3/AAAAAAAAAAAfAP3/AAAAAAAAAAAgAP3/AAAAAAAAAAAhAP3/AAAAAAAAAAAiAP3/AAAAAAAAAAAjAP3/AAAAAAAAAAAkAP3/AAAAAAAAAAAlAP3/AAAAAAAAAAAmAP3/AAAAAAAAAAAnAP3/AAAAAAAAAAAoAP3/AAAAAAAAAAApAP3/AAAAAAAAAAAqAP3/AAAAAAAAAAArAP3/AAAAAAAAAAAsAP3/AAAAAAAAAAAtAP3/AAAAAAAAAAAuAP3/AAAAAAAAAAAvAP3/AAAAAAAAAAAwAP3/AAAAAAAAAAAxAP3/AAAAAAAAAAAyAP3/AAAAAAAAAAAzAP3/AAAAAAAAAAA0AP3/AAAAAAAAAAA1AP3/AAAAAAAAAAA2AP3/AAAAAAAAAAA3AP3/AAAAAAAAAAA4AP3/AAAAAAAAAAA5AP3/AAAAAAAAAAA6AP3/AAAAAAAAAAA7AP3/AAAAAAAAAAA8AP3/AAAAAAAAAAA9AP3/AAAAAAAAAAA+AP3/AAAAAAAAAAA/AP3/AAAAAAAAAABAAP3/AAAAAAAAAABBAP3/AAAAAAAAAABCAP3/AAAAAAAAAABDAP3/AAAAAAAAAABEAP3/AAAAAAAAAAD+//7/AAAAAAAAAABEAP7/AAAAAAAAAAD+////AAAAAAAAAABEAP//AAAAAAAAAAD+/wAAAAAAAAAAAABEAAAAAAAAAAAAAAD+/wEAAAAAAAAAAABEAAEAAAAAAAAAAAD+/wIAAAAAAAAAAABEAAIAAAAAAAAAAAD+/wMAAAAAAAAAAABEAAMAAAAAAAAAAAD+/wQAAAAAAAAAAABEAAQAAAAAAAAAAAD+/wUAAAAAAAAAAABEAAUAAAAAAAAAAAD+/wYAAAAAAAAAAABEAAYAAAAAAAAAAAD+/wcAAAAAAAAAAABEAAcAAAAAAAAAAAD+/wgAAAAAAAAAAABEAAgAAAAAAAAAAABEAAkAAAAAAAAAAABEAAoAAAAAAAAAAABEAAsAAAAAAAAAAAA0AAwAAAAAAAAAAAA1AAwAAAAAAAAAAAA2AAwAAAAAAAAAAAA3AAwAAAAAAAAAAAA4AAwAAAAAAAAAAAA5AAwAAAAAAAAAAAA6AAwAAAAAAAAAAAA7AAwAAAAAAAAAAAA8AAwAAAAAAAAAAAA9AAwAAAAAAAAAAAA+AAwAAAAAAAAAAAA/AAwAAAAAAAAAAABAAAwAAAAAAAAAAABBAAwAAAAAAAAAAABCAAwAAAAAAAAAAABDAAwAAAAAAAAAAABEAAwAAAAAAAAAAAA0AA0AAAAAAAAAAAA1AA0AAAAAAAAAAAA2AA0AAAAAAAAAAAA3AA0AAAAAAAAAAAA4AA0AAAAAAAAAAAA5AA0AAAAAAAAAAAA6AA0AAAAAAAAAAAA7AA0AAAAAAAAAAAA8AA0AAAAAAAAAAAA9AA0AAAAAAAAAAAA+AA0AAAAAAAAAAAA/AA0AAAAAAAAAAABAAA0AAAAAAAAAAABBAA0AAAAAAAAAAABCAA0AAAAAAAAAAABDAA0AAAAAAAAAAABEAA0AAAAAAAAAAAA0AA4AAAAAAAAAAAA1AA4AAAAAAAAAAAA2AA4AAAAAAAAAAAA3AA4AAAAAAAAAAAA4AA4AAAAAAAAAAAA5AA4AAAAAAAAAAAA6AA4AAAAAAAAAAAA7AA4AAAAAAAAAAAA8AA4AAAAAAAAAAAA9AA4AAAAAAAAAAAA+AA4AAAAAAAAAAAA/AA4AAAAAAAAAAABAAA4AAAAAAAAAAABBAA4AAAAAAAAAAABCAA4AAAAAAAAAAABDAA4AAAAAAAAAAABEAA4AAAAAAAAAAAA0AA8AAAAAAAAAAAA1AA8AAAAAAAAAAAA2AA8AAAAAAAAAAAA3AA8AAAAAAAAAAAA4AA8AAAAAAAAAAAA5AA8AAAAAAAAAAAA6AA8AAAAAAAAAAAA7AA8AAAAAAAAAAAA8AA8AAAAAAAAAAAA9AA8AAAAAAAAAAAA+AA8AAAAAAAAAAAA/AA8AAAAAAAAAAABAAA8AAAAAAAAAAABBAA8AAAAAAAAAAABCAA8AAAAAAAAAAABDAA8AAAAAAAAAAABEAA8AAAAAAAAAAAD//xAAAAAAAAAAAAAAABAAAAAAAAAAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAAAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAAAAAAaABAAAAAAAAAAAAAbABAAAAAAAAAAAAAcABAAAAAAAAAAAAAdABAAAAAAAAAAAAAeABAAAAAAAAAAAAAfABAAAAAAAAAAAAAgABAAAAAAAAAAAABEABAAAAAAAAAAAAD//xEAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAAaABEAAAAAAAAAAAAbABEAAAAAAAAAAAAcABEAAAAAAAAAAAAdABEAAAAAAAAAAAAeABEAAAAAAAAAAAAfABEAAAAAAAAAAAAgABEAAAAAAAAAAABEABEAAAAAAAAAAAD//xIAAAAAAAAAAAAAABIAAAAAAAAAAAABABIAAAAAAAAAAAACABIAAAAAAAAAAAADABIAAAAAAAAAAAAEABIAAAAAAAAAAAAFABIAAAAAAAAAAAAGABIAAAAAAAAAAAAHABIAAAAAAAAAAAAIABIAAAAAAAAAAAAaABIAAAAAAAAAAAAbABIAAAAAAAAAAAAcABIAAAAAAAAAAAAdABIAAAAAAAAAAAAeABIAAAAAAAAAAAAfABIAAAAAAAAAAAAgABIAAAAAAAAAAABEABIAAAAAAAAAAAALABMAAAAAAAAAAAAMABMAAAAAAAAAAAANABMAAAAAAAAAAABEABMAAAAAAAAAAABEABQAAAAAAAAAAABEABUAAAAAAAAAAAA=")
 tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
+
+[editable path="FerryA"]
+[editable path="FerryB"]
+[editable path="MoonKey"]

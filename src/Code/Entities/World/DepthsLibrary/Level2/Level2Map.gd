@@ -181,7 +181,7 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 			if key_id == "weave" and not puzzle_solved:
 				return
 			keys.append(key_id)
-			_toast("取得钥匙，下层返程栈道已开放！带回喷泉按 F 提交后才会永久保留。")
+			_toast("取得钥匙！带回喷泉按 F 提交后才会永久保留。")
 			_refresh()
 		"rune":
 			if puzzle_solved:
@@ -282,11 +282,18 @@ func _refresh() -> void:
 	$Rooms/Hub/FountainStream.visible = fountain_active
 	$Rooms/FountainShaft/Stream.visible = fountain_active
 	$Rooms/SurfaceExit/SprayStream.visible = fountain_active
-	for pair in [[$Rooms/SunStacks, "sun"], [$Rooms/MoonAqueduct, "moon"]]:
-		var open: bool = pair[1] in keys
-		pair[0].get_node("ReturnCatwalk").visible = open
-		pair[0].get_node("Flow").visible = open
-		pair[0].get_node("ReturnCatwalk/CollisionShape2D").set_deferred("disabled", not open)
+	# 已按顺序激活的符文保持发光；输错重置，读档时同步恢复。
+	for rune in $Rooms/WeaveArchive.get_children():
+		if str(rune.get_meta("kind", "")) != "rune":
+			continue
+		var glow := rune.get_node_or_null("ItemArt/Glow") as CanvasItem
+		if glow == null:
+			continue
+		var rune_id := str(rune.get_meta("rune_id", ""))
+		var order_index := _rune_order.find(rune_id)
+		glow.visible = order_index >= 0 and (
+			puzzle_solved or order_index < rune_progress
+		)
 
 ## 导出钥匙、谜题、通关和残卷领取状态；由现有存档系统保存，地图本身不写文件。
 func ExportSaveData() -> Dictionary:
