@@ -35,10 +35,6 @@ void fragment() {
 	float along = vertical_layout ? uv.y : uv.x;
 	vec2 edge_uv = vertical_layout ? vec2(uv.x, 0.001) : vec2(0.001, uv.y);
 	tex = mix(tex, texture(TEXTURE, edge_uv), smoothstep(0.975, 1.0, along));
-	float alpha = opacity;
-	if (foreground) {
-		alpha *= mix(0.12, 1.0, smoothstep(clear_radius * 0.35, clear_radius, distance(local_pixel, player_pixels)));
-	}
 	COLOR = tex * vertex_tint;
-	COLOR.a *= alpha;
+	COLOR.a *= opacity;
 }

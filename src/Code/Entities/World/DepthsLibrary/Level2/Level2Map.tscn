@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://dhgh6yt0eh63b" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_2.png" id="13_j2bs3"]
 [ext_resource type="Texture2D" uid="uid://bfqju7lfo4uc7" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_3.png" id="15_kfeio"]
 [ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="16_aevo3"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/FountainArt.tscn" id="23_pairm"]
+[ext_resource type="Texture2D" path="res://Code/Entities/InteractiveComponent/Level2Device/FountainBase.tres" id="24_mohfu"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/DeathBoundary/DeathBoundary.tscn" id="DeathBoundary"]
 [ext_resource type="PackedScene" uid="uid://dfoa06wbpiqx8" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
@@ -23,7 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://cgt7cprco1uq3" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WeaveArchive.tscn" id="WeaveArchive"]
 [ext_resource type="PackedScene" uid="uid://b2ahpf27jgsmf" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WestPassage.tscn" id="WestPassage"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kfeio"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mohfu"]
 resource_local_to_scene = true
 size = Vector2(1395, 650)
 
@@ -35,30 +37,6 @@ blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8botp"]
 blend_mode = 1
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pairm"]
-resource_local_to_scene = true
-shader = ExtResource("16_aevo3")
-shader_parameter/vertical_layout = true
-shader_parameter/artwork_height = 800.0
-shader_parameter/shaft_width = 180.0
-shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 1.0
-shader_parameter/foreground = false
-shader_parameter/player_pixels = Vector2(-10000, -10000)
-shader_parameter/clear_radius = 100.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mohfu"]
-resource_local_to_scene = true
-shader = ExtResource("16_aevo3")
-shader_parameter/vertical_layout = true
-shader_parameter/artwork_height = 800.0
-shader_parameter/shaft_width = 180.0
-shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 1.0
-shader_parameter/foreground = false
-shader_parameter/player_pixels = Vector2(-10000, -10000)
-shader_parameter/clear_radius = 100.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ek66h"]
 resource_local_to_scene = true
@@ -79,12 +57,36 @@ shader_parameter/vertical_layout = true
 shader_parameter/artwork_height = 800.0
 shader_parameter/shaft_width = 180.0
 shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h48a5"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mfl2"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 0.35
 shader_parameter/foreground = true
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h48a5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqca1"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -230,7 +232,7 @@ tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAA
 
 [node name="TriggerShape" parent="Rooms/RestArchive/RoomCameraZone" index="0"]
 position = Vector2(697.5, 275)
-shape = SubResource("RectangleShape2D_kfeio")
+shape = SubResource("RectangleShape2D_mohfu")
 
 [node name="ViewTopLeft" parent="Rooms/RestArchive/RoomCameraZone" index="1"]
 position = Vector2(-20, -30)
@@ -420,19 +422,19 @@ tile_map_data = PackedByteArray("AADy/w0AAAAAAAAAAADx/w0AAAAAAAAAAADw/w0AAAAAAAA
 [node name="Scenery" parent="." unique_id=346300600 instance=ExtResource("scenery")]
 
 [node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" index="0"]
-material = SubResource("ShaderMaterial_pairm")
-
-[node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" index="1"]
-material = SubResource("ShaderMaterial_mohfu")
-
-[node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" index="2"]
 material = SubResource("ShaderMaterial_ek66h")
 
-[node name="NearColumn" parent="Scenery/FountainShaft/Foreground" index="0"]
+[node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" index="1"]
 material = SubResource("ShaderMaterial_24a00")
 
-[node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" index="1"]
+[node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" index="2"]
 material = SubResource("ShaderMaterial_h48a5")
+
+[node name="NearColumn" parent="Scenery/FountainShaft/Foreground" index="0"]
+material = SubResource("ShaderMaterial_4mfl2")
+
+[node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" index="1"]
+material = SubResource("ShaderMaterial_iqca1")
 
 [node name="TerrainArt" parent="." unique_id=1368075065 instance=ExtResource("TerrainArt")]
 
@@ -506,6 +508,13 @@ offset_bottom = 155.0
 theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
+
+[node name="FountainArt" parent="." unique_id=63722877 instance=ExtResource("23_pairm")]
+position = Vector2(1161, 488)
+
+[node name="FountainBase" type="Sprite2D" parent="." unique_id=1288199904]
+position = Vector2(1639, 356)
+texture = ExtResource("24_mohfu")
 
 [editable path="Rooms/EntryCollapse"]
 [editable path="Rooms/DescentShaft"]

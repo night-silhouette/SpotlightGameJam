@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="4_031cx"]
 [ext_resource type="Texture2D" uid="uid://c0tfqwsessboo" path="res://Art/New/component/extracted/fx_water_splash_crown.png" id="4_n0vls"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Lighting/HubLighting.tscn" id="HubLighting"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 
 [node name="Hub" type="Node2D" unique_id=424866786]
@@ -104,5 +105,7 @@ texture = ExtResource("3_m8ogb")
 position = Vector2(329, 506)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("4_031cx")
+
+[node name="HubLighting" parent="." instance=ExtResource("HubLighting")]
 
 [editable path="Fountain"]

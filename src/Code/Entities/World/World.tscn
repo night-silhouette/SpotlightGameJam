@@ -29,7 +29,7 @@
 [ext_resource type="Texture2D" uid="uid://bbywuxdy8dmt2" path="res://Art/AI/snake_statue.svg" id="26_snake_statue"]
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
 [ext_resource type="Texture2D" uid="uid://b3xfwicv6u8iv" path="res://Art/AI/chapter4_props.svg" id="29_c4_props"]
-[ext_resource type="Script" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
+[ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -39,7 +39,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_a4q47"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7tc0m"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -73,7 +73,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7tc0m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2oj5"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -346,11 +346,11 @@ text = "走吧，该离开这里了，把这片绿洲的故事……带回去。
 
 [node name="World" type="Node2D" unique_id=2146248688]
 
-[node name="OpeningFade" type="CanvasLayer" parent="."]
+[node name="OpeningFade" type="CanvasLayer" parent="." unique_id=2037180482]
 layer = 128
 script = ExtResource("30_opening_fade")
 
-[node name="Black" type="ColorRect" parent="OpeningFade"]
+[node name="Black" type="ColorRect" parent="OpeningFade" unique_id=646791457]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -372,16 +372,16 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_a4q47")
+material = SubResource("ShaderMaterial_7tc0m")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_l2oj5")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_l2oj5")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_l2oj5")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1470, 2)
@@ -451,7 +451,7 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate3" parent="CameraNode" unique_id=2049029743 instance=ExtResource("7_hfiwn")]
-position = Vector2(3001, 218.00003)
+position = Vector2(2995, 156)
 rotation = -1.5707964
 scale = Vector2(2, 50)
 blocked_side = 1
