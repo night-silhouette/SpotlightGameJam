@@ -5,6 +5,8 @@ signal Finished
 
 const NARRATION: StringName = &"旁白"
 const MONOLOGUE: StringName = &"独白"
+const TALK_BEEP = preload("res://Music/SFX/UI/TalkBeep.wav")
+const PUNCTUATION = "，。！？；：、,.!?;:…—（）()“”‘’《》【】「」『』"
 const SETTINGS_ART = preload("res://Art/New/ui/设置底图.PNG")
 # 设置底图右上角的镂空箭头，保留原画轮廓及抗锯齿。
 const ARROW_REGION := Rect2i(816, 127, 62, 38)
@@ -20,6 +22,7 @@ const ARROW_REGION := Rect2i(816, 127, 62, 38)
 
 var _pending: Array[Dictionary] = []
 var _reveal_elapsed: float = 0.0
+var _next_character_delay: float = 0.0
 
 func _ready() -> void:
 	_box.hide()
@@ -33,7 +36,15 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_reveal_elapsed += delta
-	_content.visible_characters = mini(int(_reveal_elapsed * ExportSettings.dialog_monologue_chars_per_second), _content.get_total_character_count())
+	while _reveal_elapsed >= _next_character_delay and _content.visible_characters < _content.get_total_character_count():
+		_reveal_elapsed -= _next_character_delay
+		var character: String = _content.text[_content.visible_characters]
+		_content.visible_characters += 1
+		_next_character_delay = 1.0 / ExportSettings.dialog_monologue_chars_per_second
+		if PUNCTUATION.contains(character):
+			_next_character_delay += ExportSettings.dialog_monologue_punctuation_pause
+		elif not character.strip_edges().is_empty():
+			Util.PlaySFX(TALK_BEEP)
 	if _content.visible_characters >= _content.get_total_character_count():
 		_content.visible_characters = -1
 		set_process(false)
@@ -94,6 +105,7 @@ func _show_dialog(dialog_type: StringName, content: String) -> void:
 		_content.text = content
 		_content.visible_characters = 0
 		_reveal_elapsed = 0.0
+		_next_character_delay = 1.0 / ExportSettings.dialog_monologue_chars_per_second
 		_box.show()
 		if _content.get_total_character_count() == 0:
 			_auto_close_timer.start(1.0)

@@ -688,6 +688,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var dialog_arrow_hover_color: Color = Color(1.0, 0.95, 0.70, 1.0)
 ## 独白每秒显示的字符数。
 @export_range(1.0, 120.0, 1.0) var dialog_monologue_chars_per_second: float = 30.0
+## 独白显示标点后、显示下一个字前额外停顿的秒数。
+@export_range(0.0, 1.0, 0.01) var dialog_monologue_punctuation_pause: float = 0.2
 
 @export_group("Start Menu", "start_menu_")
 ## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)
