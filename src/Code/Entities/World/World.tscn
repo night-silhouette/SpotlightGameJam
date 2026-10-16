@@ -400,7 +400,11 @@ tween_resource = SubResource("Resource_yocbw")
 [node name="Camp" parent="." unique_id=1903763566 instance=ExtResource("1_camp")]
 position = Vector2(-96, -1560)
 
+[node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
+position = Vector2(-5.314046, -37.198395)
+
 [node name="WaterApproach_1_3_to_1_6" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="0" unique_id=593165859]
+position = Vector2(1431, 1586)
 enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
 
 [node name="Reflection_1_7_to_1_8" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="1" unique_id=229158232]
@@ -612,9 +616,9 @@ close_monologues = Array[String]([])
 [node name="GradualTextTrigger" parent="story/c2" unique_id=1879339704 instance=ExtResource("20_m8xep")]
 position = Vector2(875, 2406.0002)
 scale = Vector2(2.2155194, 0.55301255)
-content = "                                     《水的法则》
-                                         作者佚名
-水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高 贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
+content = "《水的法则》
+作者佚名
+水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
 display_duration = 9.9
 
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
@@ -694,15 +698,12 @@ enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_22"), SubR
 enter_dialog_once = true
 metadata/_editor_description_ = "参考宫殿高处 WaterFlowArea5 锚点(1672,-2562)；仅叙事，不控制地形崩塌，请确认玩家路径及与冠拾取的先后顺序。"
 
-[node name="献给沉默的神_2_25" parent="story/c3" unique_id=172469242 instance=ExtResource("20_m8xep")]
-position = Vector2(1316, -1778)
-scale = Vector2(2, 2)
+[node name="献给沉默的神" parent="story/c3" instance=ExtResource("20_m8xep")]
 content = "《献给沉默的神》
 作者佚名
 我曾以为世界的苦难源于缺少，缺少水，缺少土地，缺少足以安眠的夜晚。后来我才知道，苦难也可以诞生于丰饶，当酒水可以灌满所有人的杯盏，人们便开始争论谁的杯子更精美，当每一个夜晚都有灯火可亲，人们就开始计较谁的烛火更明亮。难道我们渴求的本就是痛苦？"
-display_duration = 12.0
+display_duration = 7.0
 trigger_relic = &"crown"
-metadata/_editor_description_ = "王冠提交到湖中时触发渐显文字；不通过进入此区域触发。"
 
 [node name="c4" type="Node2D" parent="story" unique_id=927032881]
 

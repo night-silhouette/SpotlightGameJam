@@ -5,8 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dhgh6yt0eh63b" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_2.png" id="13_j2bs3"]
 [ext_resource type="Texture2D" uid="uid://bfqju7lfo4uc7" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_3.png" id="15_kfeio"]
 [ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="16_aevo3"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/FountainArt.tscn" id="23_pairm"]
-[ext_resource type="Texture2D" path="res://Code/Entities/InteractiveComponent/Level2Device/FountainBase.tres" id="24_mohfu"]
+[ext_resource type="Shader" uid="uid://boiu0pd331y1k" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/HorizontalCoverage.gdshader" id="20_pairm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/DeathBoundary/DeathBoundary.tscn" id="DeathBoundary"]
 [ext_resource type="PackedScene" uid="uid://dfoa06wbpiqx8" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
@@ -37,6 +36,54 @@ blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8botp"]
 blend_mode = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mohfu"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3tyik"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xlvjv"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urly8"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = true
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ek66h"]
 resource_local_to_scene = true
@@ -421,6 +468,112 @@ tile_map_data = PackedByteArray("AADy/w0AAAAAAAAAAADx/w0AAAAAAAAAAADw/w0AAAAAAAA
 
 [node name="Scenery" parent="." unique_id=346300600 instance=ExtResource("scenery")]
 
+[node name="Sky" parent="Scenery/HorizontalMain" parent_id_path=PackedInt32Array(346300600, 1531287300) index="0"]
+scroll_scale = Vector2(0.65, 1)
+repeat_size = Vector2(3200, 0)
+
+[node name="BlueBase" parent="Scenery/HorizontalMain/Sky" index="0"]
+material = SubResource("ShaderMaterial_mohfu")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="BlueBaseRight" parent="Scenery/HorizontalMain/Sky" index="1"]
+material = SubResource("ShaderMaterial_mohfu")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="FarBackground" parent="Scenery/HorizontalMain" parent_id_path=PackedInt32Array(346300600, 1531287300) index="1"]
+scroll_scale = Vector2(0.65, 1)
+repeat_size = Vector2(3200, 0)
+
+[node name="GlassColors" parent="Scenery/HorizontalMain/FarBackground" index="0"]
+material = SubResource("ShaderMaterial_3tyik")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="GlassColorsRight" parent="Scenery/HorizontalMain/FarBackground" index="1"]
+material = SubResource("ShaderMaterial_3tyik")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="WindowGrid" parent="Scenery/HorizontalMain/FarBackground" index="2"]
+material = SubResource("ShaderMaterial_3tyik")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="WindowGridRight" parent="Scenery/HorizontalMain/FarBackground" index="3"]
+material = SubResource("ShaderMaterial_3tyik")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="Arches" parent="Scenery/HorizontalMain/FarBackground" index="4"]
+material = SubResource("ShaderMaterial_3tyik")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="ArchesRight" parent="Scenery/HorizontalMain/FarBackground" index="5"]
+material = SubResource("ShaderMaterial_3tyik")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="NearBackground" parent="Scenery/HorizontalMain" parent_id_path=PackedInt32Array(346300600, 1531287300) index="2"]
+scroll_scale = Vector2(0.65, 1)
+repeat_size = Vector2(3200, 0)
+
+[node name="WindowGlow" parent="Scenery/HorizontalMain/NearBackground" index="0"]
+material = SubResource("ShaderMaterial_xlvjv")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="WindowGlowRight" parent="Scenery/HorizontalMain/NearBackground" index="1"]
+material = SubResource("ShaderMaterial_xlvjv")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="UpperShade" parent="Scenery/HorizontalMain/NearBackground" index="2"]
+material = SubResource("ShaderMaterial_xlvjv")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="UpperShadeRight" parent="Scenery/HorizontalMain/NearBackground" index="3"]
+material = SubResource("ShaderMaterial_xlvjv")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="CeilingRock" parent="Scenery/HorizontalMain/NearBackground" index="4"]
+material = SubResource("ShaderMaterial_xlvjv")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="CeilingRockRight" parent="Scenery/HorizontalMain/NearBackground" index="5"]
+material = SubResource("ShaderMaterial_xlvjv")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="Sparkles" parent="Scenery/HorizontalMain/NearBackground" index="6"]
+material = SubResource("ShaderMaterial_xlvjv")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="SparklesRight" parent="Scenery/HorizontalMain/NearBackground" index="7"]
+material = SubResource("ShaderMaterial_xlvjv")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="DistantBridge" parent="Scenery/HorizontalMain/NearBackground" index="8"]
+material = SubResource("ShaderMaterial_xlvjv")
+scale = Vector2(0.78125, 0.78125)
+
+[node name="DistantBridgeRight" parent="Scenery/HorizontalMain/NearBackground" index="9"]
+material = SubResource("ShaderMaterial_xlvjv")
+position = Vector2(1600, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="ForegroundLoop" parent="Scenery/HorizontalMain" parent_id_path=PackedInt32Array(346300600, 1531287300) index="3"]
+scroll_scale = Vector2(1.08, 1)
+repeat_size = Vector2(3200, 0)
+
+[node name="LeftPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="0"]
+material = SubResource("ShaderMaterial_urly8")
+position = Vector2(-1660.9375, 0)
+scale = Vector2(0.78125, 0.78125)
+
+[node name="RightPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="1"]
+material = SubResource("ShaderMaterial_urly8")
+scale = Vector2(0.78125, 0.78125)
+
 [node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" index="0"]
 material = SubResource("ShaderMaterial_ek66h")
 
@@ -509,13 +662,6 @@ theme_override_constants/outline_size = 8
 theme_override_font_sizes/font_size = 18
 autowrap_mode = 3
 
-[node name="FountainArt" parent="." unique_id=63722877 instance=ExtResource("23_pairm")]
-position = Vector2(1161, 488)
-
-[node name="FountainBase" type="Sprite2D" parent="." unique_id=1288199904]
-position = Vector2(1639, 356)
-texture = ExtResource("24_mohfu")
-
 [editable path="Rooms/EntryCollapse"]
 [editable path="Rooms/DescentShaft"]
 [editable path="Rooms/Hub"]
@@ -542,4 +688,5 @@ texture = ExtResource("24_mohfu")
 [editable path="Rooms/FountainShaft"]
 [editable path="Rooms/SurfaceExit"]
 [editable path="Scenery"]
+[editable path="Scenery/HorizontalMain"]
 [editable path="Scenery/FountainShaft"]
