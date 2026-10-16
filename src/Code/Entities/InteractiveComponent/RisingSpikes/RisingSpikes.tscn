@@ -29,3 +29,16 @@ collision_mask = 2
 position = Vector2(0, 10)
 shape = SubResource("RectangleShape2D_spike")
 disabled = true
+
+[node name="BaseVisualRoot" type="Node2D" parent="."]
+
+[node name="BaseBody" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 2
+
+[node name="BaseCollision" type="CollisionShape2D" parent="BaseBody"]
+disabled = true
+
+[node name="CycleTimer" type="Timer" parent="."]
+one_shot = true
+process_callback = 0
