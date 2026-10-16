@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://751t8dwsf2eq" path="res://Art/New/ui/main_button_quit.png" id="10_menu_quit"]
 [ext_resource type="Texture2D" uid="uid://bqo7kavvguag1" path="res://Art/New/ui/main_settings.png" id="11_menu_settings"]
 
+[ext_resource type="AudioStream" path="res://Music/bgm/MainMenu.wav" id="12_menu_bgm"]
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
@@ -47,6 +49,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
+
+[node name="MenuBgm" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_menu_bgm")
 
 [node name="BackgroundLayers" type="Control" parent="." unique_id=1001002]
 layout_mode = 1
@@ -406,9 +411,9 @@ layout_mode = 2
 [node name="CreditsTitle" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/HeaderHBox" unique_id=1001035]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.5, 0.85, 1, 1)
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 28
 text = "制作人名单"
+horizontal_alignment = 1
 
 [node name="BtnCloseCredits" type="Button" parent="CreditsModal/PanelContainer/Margin/VBox/HeaderHBox" unique_id=1001036]
 unique_name_in_owner = true
@@ -422,52 +427,125 @@ text = "✕"
 [node name="CreditsScroll" type="ScrollContainer" parent="CreditsModal/PanelContainer/Margin/VBox" unique_id=1001037]
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
 [node name="CreditsContent" type="VBoxContainer" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll" unique_id=1001038]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 16
+theme_override_constants/separation = 24
 
-[node name="PlaceholderSection" type="VBoxContainer" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent" unique_id=1001039]
+[node name="TeamGrid" type="GridContainer" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent"]
 layout_mode = 2
-theme_override_constants/separation = 6
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 48
+theme_override_constants/v_separation = 14
+columns = 2
 
-[node name="Sec1" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001040]
+[node name="PlanningRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 15
-text = "【制作人员】"
+theme_override_font_sizes/font_size = 18
+text = "策划"
+horizontal_alignment = 2
 
-[node name="Sec1Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001041]
+[node name="PlanningName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.85)
-theme_override_font_sizes/font_size = 13
-text = "（待填充...）"
+theme_override_font_sizes/font_size = 21
+text = "Napori"
 
-[node name="Sec2" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001042]
+[node name="AudioRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 15
-text = "【美术 & 音乐】"
+theme_override_font_sizes/font_size = 18
+text = "音频音乐"
+horizontal_alignment = 2
 
-[node name="Sec2Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001043]
+[node name="AudioName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.85)
-theme_override_font_sizes/font_size = 13
-text = "（待填充...）"
+theme_override_font_sizes/font_size = 21
+text = "Brydat"
 
-[node name="Sec3" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001044]
+[node name="LeadArtRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.9, 1, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 18
+text = "主美"
+horizontal_alignment = 2
+
+[node name="LeadArtName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "kk"
+
+[node name="ProgrammingRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "程序"
+horizontal_alignment = 2
+
+[node name="ProgrammingName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "n ss!w !"
+
+[node name="ArtRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "美术"
+horizontal_alignment = 2
+
+[node name="ArtName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "Uuaahn"
+
+[node name="ArtSecondRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "美术"
+horizontal_alignment = 2
+
+[node name="ArtSecondName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "cranesuns"
+
+[node name="LeadProgrammingRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "主程"
+horizontal_alignment = 2
+
+[node name="LeadProgrammingName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "Nightsil"
+
+[node name="WritingRole" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "文案"
+horizontal_alignment = 2
+
+[node name="WritingName" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/TeamGrid"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21
+text = "东东"
+
+[node name="ThanksSection" type="VBoxContainer" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Sec3" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/ThanksSection" unique_id=1001044]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
 text = "【特别鸣谢】"
+horizontal_alignment = 1
 
-[node name="Sec3Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/PlaceholderSection" unique_id=1001045]
+[node name="Sec3Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/ThanksSection" unique_id=1001045]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.85)
-theme_override_font_sizes/font_size = 13
+theme_override_font_sizes/font_size = 16
 text = "Spotlight Game Jam 2026
 所有参与体验测试的玩家"
+horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="QuitConfirmDialog" type="ConfirmationDialog" parent="." unique_id=1001046]
 unique_name_in_owner = true

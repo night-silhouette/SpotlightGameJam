@@ -1,10 +1,26 @@
 [gd_scene format=4 uid="uid://2jmwtg4iq0ly"]
 
+[ext_resource type="Shader" uid="uid://dor32xw4durg0" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ScrollDissolve.gdshader" id="2_e487k"]
 [ext_resource type="Texture2D" uid="uid://gbrajb8nr0so" path="res://Art/New/component/extracted/prop_paper_scroll_rolled_2.png" id="2_jusf6"]
 [ext_resource type="Texture2D" uid="uid://dn4itoy6schja" path="res://Art/New/component/extracted/mechanism_pin_lever_1.png" id="3_qscf3"]
 [ext_resource type="PackedScene" uid="uid://d3v3y4c7t1nar" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kdt67"]
+frequency = 0.04
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vvc2w"]
+width = 256
+height = 256
+noise = SubResource("FastNoiseLite_kdt67")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pairm"]
+shader = ExtResource("2_e487k")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_vvc2w")
+shader_parameter/dissolve_progress = 0.0
+shader_parameter/edge_width = 0.04
+shader_parameter/edge_color = Color(0.5, 0.85, 1, 1)
 
 [node name="SunStacks" type="Node2D" unique_id=2065925221]
 metadata/width = 2200
@@ -35,6 +51,7 @@ visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="Crumble2/VisualRoot" index="2" unique_id=1323339006]
 z_index = -1
+material = SubResource("ShaderMaterial_pairm")
 position = Vector2(-2, -6)
 scale = Vector2(0.13, 0.13)
 texture = ExtResource("2_jusf6")

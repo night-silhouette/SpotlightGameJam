@@ -13,6 +13,7 @@ var _running: bool = false
 var _generation: int = 0
 
 func _ready() -> void:
+	SignalBus.PlayerOpeningHoldRequested.emit()
 	for trigger in get_children():
 		if trigger is InteractableComponent:
 			trigger.body_entered.connect(_on_trigger_body_entered.bind(trigger))
@@ -25,6 +26,7 @@ func _ready() -> void:
 	if _next_event == 0:
 		_run_event(0)
 	else:
+		SignalBus.PlayerOpeningReleaseRequested.emit()
 		_try_next_if_overlapping()
 
 func _on_trigger_body_entered(body: Node2D, trigger: InteractableComponent) -> void:
@@ -55,6 +57,7 @@ func _run_event(event_index: int) -> void:
 	_line_index = 0
 	_running = false
 	if event_index == 0:
+		SignalBus.PlayerOpeningStandUpRequested.emit()
 		var card_layer := CHAPTER_CARD.instantiate()
 		var card := card_layer.get_node("ChapterCard")
 		card.set("auto_play", false)
@@ -90,6 +93,10 @@ func LoadSaveData(data: Dictionary) -> void:
 	_generation += 1
 	_next_event = clampi(int(data.get("next_event", 0)), 0, get_child_count() + 1)
 	_line_index = clampi(int(data.get("line_index", 0)), 0, maxi(_event_lines(_next_event).size() - 1, 0))
+	if _next_event == 0:
+		SignalBus.PlayerOpeningHoldRequested.emit()
+	else:
+		SignalBus.PlayerOpeningReleaseRequested.emit()
 	if _running:
 		_dialog_box.Dismiss()
 		_running = false
@@ -97,4 +104,5 @@ func LoadSaveData(data: Dictionary) -> void:
 		if _next_event == 0:
 			_run_event(0)
 		else:
+			SignalBus.PlayerOpeningReleaseRequested.emit()
 			_try_next_if_overlapping()

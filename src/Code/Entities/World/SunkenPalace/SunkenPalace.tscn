@@ -45,8 +45,7 @@ offset_bottom = -1910.0
 scale = Vector2(40.368626, 15.592887)
 
 [node name="DesertScenery" parent="." unique_id=606180320 instance=ExtResource("2_4lyra")]
-position = Vector2(23584.107, -2445.3733)
-scale = Vector2(3.7799447, 3.7513301)
+visible = false
 
 [node name="ColorRect4" type="ColorRect" parent="." unique_id=1341657384]
 visible = false

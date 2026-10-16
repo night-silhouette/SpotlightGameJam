@@ -46,6 +46,12 @@ extends Node
 ## 人物中心越过画面底边的额外屏幕像素，确保身体完全离屏。
 @export_range(0.0, 300.0, 8.0) var level2_fountain_return_fall_screen_margin: float = 96.0
 
+@export_group("Level 2 - Archive Gate", "level2_archive_gate_")
+## 档案库闸门向上升起的距离（像素），应大于门的高度。
+@export_range(1.0, 2000.0, 1.0) var level2_archive_gate_lift_distance: float = 640.0
+## 解谜后闸门升起所需秒数；越大越慢。
+@export_range(0.1, 10.0, 0.1) var level2_archive_gate_open_duration: float = 1.4
+
 @export_group("Level 2 - Slow Descent", "level2_descent_")
 ## 仅左侧高落差竖井启用慢下落、快速背景效果。
 @export var level2_descent_enabled: bool = true
@@ -633,9 +639,13 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 
 @export_group("Audio Settings", "audio_")
 ## 总音量默认值 (0.0-1.0)
-@export_range(0.0, 1.0, 0.01) var audio_master_volume: float = 1.0
+@export_range(0.0, 1.0, 0.01) var audio_master_volume: float = 0.5
 ## 音乐默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_music_volume: float = 1.0
+## 菜单背景音乐渐入时长，单位为秒；0 表示立即播放。
+@export_range(0.0, 10.0, 0.1) var audio_menu_fade_in_duration: float = 2.0
+## 菜单背景音乐的基础音量，单位为分贝；叠加音乐及总音量设置。
+@export_range(-40.0, 6.0, 0.5) var audio_menu_volume_db: float = 0.0
 ## 音效默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_sfx_volume: float = 1.0
 ## 对白默认音量 (0.0-1.0)
@@ -686,6 +696,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
 
+@export_group("World Opening", "world_opening_")
+## 世界就绪后等待的帧数，与开场剧情及读档初始化对齐。
+@export_range(0, 10, 1) var world_opening_fade_ready_frames: int = 4
+## 开场全屏黑幕淡出时长（秒）。
+@export_range(0.0, 2.0, 0.05) var world_opening_fade_duration: float = 0.5
+
 @export_group("Oasis Decoration", "oasis_art_")
 ## 第三关水化外观透明度，不影响水化碰撞或加速。
 @export_range(0.1, 1.0) var oasis_art_water_opacity: float = 0.78
@@ -716,6 +732,25 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 64.0, 1.0) var level2_death_boundary_moon_join_depth: float = 32.0
 ## 调试飞行时不触发边界，方便查看与搭建地图。
 @export var level2_death_boundary_ignore_debug_flight: bool = true
+
+@export_group("Level 2 - Hub Lighting", "level2_hub_light_")
+## 仅中央大厅光影总开关；运行时修改也可即时对比，不改其他关卡底色。
+@export var level2_hub_light_enabled: bool = true
+@export var level2_hub_light_fountain_color: Color = Color(0.52, 0.76, 1.0, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_fountain_idle_energy: float = 0.16
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_fountain_active_energy: float = 0.32
+## 圆形光半径限制在房间内；位置与物件轮廓由 Lighting 场景预置。
+@export_range(32.0, 170.0, 1.0) var level2_hub_light_fountain_radius: float = 165.0
+@export var level2_hub_light_desk_color: Color = Color(1.0, 0.76, 0.47, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_desk_energy: float = 0.20
+@export_range(32.0, 100.0, 1.0) var level2_hub_light_desk_radius: float = 96.0
+@export var level2_hub_light_beam_color: Color = Color(0.70, 0.83, 1.0, 1.0)
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.035
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_glow_opacity: float = 0.055
+@export var level2_hub_light_shadows_enabled: bool = true
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_shadow_opacity: float = 0.35
+@export_range(0.0, 8.0, 0.1) var level2_hub_light_shadow_smooth: float = 2.0
+@export_range(0.0, 3.0, 0.05) var level2_hub_light_transition_time: float = 0.65
 
 @export_group("Room Camera Zone", "room_camera_zone_")
 ## 房间固定镜头区域总开关；关闭后恢复普通跟随。

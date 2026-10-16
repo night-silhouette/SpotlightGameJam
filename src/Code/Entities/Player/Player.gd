@@ -7,6 +7,10 @@ class_name Player
 @onready var sprite: Node2D = $sprite
 @onready var dash_afterimages: Node2D = $DashAfterimages
 @onready var dash_afterimage_material: ShaderMaterial = $DashAfterimages.material as ShaderMaterial
+var _opening_locked: bool = false
+var _opening_playing: bool = false
+var _opening_previous_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
+var _opening_previous_animation_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
 @onready var visual_placeholder: ColorRect = $VisualPlaceholder
 
 
@@ -341,6 +345,9 @@ func _ready() -> void:
 		SignalBus.PlayerDied.connect(_on_player_died)
 		SignalBus.PlayerRelicStateRequested.connect(_emit_relic_state)
 		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consume_requested)
+		SignalBus.PlayerOpeningHoldRequested.connect(_on_opening_hold_requested)
+		SignalBus.PlayerOpeningStandUpRequested.connect(_on_opening_stand_up_requested)
+		SignalBus.PlayerOpeningReleaseRequested.connect(_on_opening_release_requested)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
 		_emit_ability_state()
 		_emit_relic_state()
@@ -412,6 +419,46 @@ func _on_debug_flight_change_requested(enabled: bool) -> void:
 
 func _emit_debug_flight_state() -> void:
 	SignalBus.PlayerDebugFlightChanged.emit(debug_flight_enabled)
+
+func _on_opening_hold_requested() -> void:
+	if _opening_locked:
+		if not _opening_playing:
+			ani_move.play("stand_up")
+			ani_move.advance(0.0)
+			ani_move.pause()
+		return
+	_opening_locked = true
+	_opening_previous_process_mode = process_mode
+	_opening_previous_animation_process_mode = ani_move.process_mode
+	ani_move.process_mode = Node.PROCESS_MODE_PAUSABLE
+	process_mode = Node.PROCESS_MODE_DISABLED
+	ani_move.play("stand_up")
+	ani_move.advance(0.0)
+	ani_move.pause()
+
+func _on_opening_stand_up_requested() -> void:
+	if not _opening_locked or _opening_playing:
+		return
+	_opening_playing = true
+	if not ani_move.animation_finished.is_connected(_on_opening_animation_finished):
+		ani_move.animation_finished.connect(_on_opening_animation_finished)
+	ani_move.play("stand_up")
+
+func _on_opening_animation_finished(animation_name: StringName) -> void:
+	if animation_name != &"stand_up" or not _opening_playing:
+		return
+	_opening_playing = false
+	_on_opening_release_requested()
+
+func _on_opening_release_requested() -> void:
+	if not _opening_locked:
+		return
+	_opening_locked = false
+	_opening_playing = false
+	ani_move.process_mode = _opening_previous_animation_process_mode
+	process_mode = _opening_previous_process_mode
+	move_state_machine.change_state("idle")
+	ani_move.play("idle")
 
 func _process(delta: float) -> void:
 	if is_hp_draining and now_HP > 0.0:

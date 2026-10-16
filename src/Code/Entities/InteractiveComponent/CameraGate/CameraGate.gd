@@ -1,10 +1,10 @@
 extends Area2D
 
-## 禁止镜头越过的边：右边界防止提前看到右侧区域，其他方向同理。
+## 禁止镜头越过的边；左/右使用水平检测，上/下使用垂直检测，由关卡实例指定。
 @export_enum("左:0", "上:1", "右:2", "下:3") var blocked_side: int = SIDE_RIGHT
 ## 仅此路径所指的 Player 能开启本门；关卡实例中显式指定。
 @export var player_path: NodePath
-## 开启时进入后永久解锁；关闭时依玩家所在门侧限制镜头，跨门时平滑切换。
+## 开启时进入后永久解锁；关闭时越过检测区域远端边缘才平滑切换，区域内保持原侧。
 @export var one_shot: bool = true
 
 var _unlocked: bool = false
@@ -33,12 +33,35 @@ func _physics_process(_delta: float) -> void:
 		return
 	var coordinate: float = player.global_position.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else player.global_position.x
 	var boundary: float = global_position.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else global_position.x
-	if coordinate == boundary:
+	var bounds: Rect2 = _get_detection_bounds()
+	if not bounds.has_area():
 		return
-	var side: int = _side_for_player(coordinate, boundary)
+	var minimum: float = bounds.position.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else bounds.position.x
+	var maximum: float = bounds.end.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else bounds.end.x
+	# 两个边缘构成滞回区；人物在区域内往返时不改变镜头所在侧。
+	var side: int = _side
+	if coordinate < minimum:
+		side = SIDE_BOTTOM if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else SIDE_RIGHT
+	elif coordinate > maximum:
+		side = SIDE_TOP if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else SIDE_LEFT
 	if side != _side:
 		_side = side
 		SignalBus.CameraGateSideChanged.emit(player, self, side, boundary, false)
+
+
+func _get_detection_bounds() -> Rect2:
+	var bounds := Rect2()
+	var has_bounds: bool = false
+	for child: Node in get_children():
+		if not child is CollisionShape2D:
+			continue
+		var collision: CollisionShape2D = child as CollisionShape2D
+		if collision.disabled or collision.shape == null:
+			continue
+		var shape_bounds: Rect2 = collision.global_transform * collision.shape.get_rect()
+		bounds = bounds.merge(shape_bounds) if has_bounds else shape_bounds
+		has_bounds = true
+	return bounds
 
 
 func _side_for_player(coordinate: float, boundary: float) -> int:

@@ -81,8 +81,11 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 启动与 Autoload | `project.godot:11-29,50-99` | 主场景为 `E/StartMenu/StartMenu.tscn`；单例为 Util、SignalBus、GlobalValue、PhantomCameraManager、ExportSettings、_mcp_game_helper。此处输入是默认值，会被改键文件覆盖。配置及插件只读。 |
-| 开始菜单与槽位选择 | `E/StartMenu/StartMenu.gd:31-192` | 已有槽载入，空槽/覆写新开走 `StartNewGameInSlot`；存档和制作人弹窗打开时由菜单接管取消键。 |
-| 正式世界装配 | `W/World.tscn:368-440` | 同时装配 DialogBox、PlayerWithCamera、Camp、SunkenPalace、DepthsLibrary、OasisBattlefield；不是在此逐关切场景。交互实例有剧情和锁输入覆盖值。 |
+| 开始菜单与槽位选择 | `E/StartMenu/StartMenu.gd:32-218` | 已有槽载入，空槽/覆写新开走 `StartNewGameInSlot`；存档和制作人弹窗打开时由菜单接管取消键。 |
+| 菜单背景音乐 | `E/StartMenu/StartMenu.gd:49-65`；`E/StartMenu/StartMenu.tscn:15,54-55`；`A/ExportSettings.gd:642-645` | `_start_menu_bgm` 使用 `Music/bgm/MainMenu.wav` 的流副本启用全曲循环，经现有音乐总线播放；每次进入菜单从静音默认2秒渐入，基础分贝与时长可配置。播放器随菜单释放，不带入游戏；不修改原音频或导入设置。编辑器脚本诊断无错误，实际听感及循环衔接待验收。 |
+| 制作人名单 | `E/StartMenu/StartMenu.gd:36-39,50-57,78-79,91-92`；`E/StartMenu/StartMenu.tscn:358-543` | 沿用现有 CreditsModal 入口与关闭/Esc链路，复用 SettingsSkin 和 SettingsFrame 的墨色暖纸配色、手绘边框及三角关闭区域；TeamGrid 两列展示去重后的8人，特别鸣谢原文保留，纵向滚动及外框等比缩放适配小窗口。2026-10-16 Godot 4.7.2 headless 单独装配该弹窗，名单/鸣谢内容、资源加载、关闭按钮及1280×720、800×600、480×320面板边界与等比缩放断言通过；未启动正式 World，未做视觉验收。 |
+| 正式世界装配 | `W/World.tscn:347-427` | 同时装配 DialogBox、PlayerWithCamera、Camp、SunkenPalace、DepthsLibrary、OasisBattlefield；不是在此逐关切场景。交互实例有剧情和锁输入覆盖值。 |
+| 开场全屏黑幕淡出 | `W/World.tscn:349-361`；`W/OpeningFade.gd:1-10`；`A/ExportSettings.gd:686-690` | 预置不透明黑色 ColorRect，CanvasLayer 128 覆盖世界UI、忽略鼠标；默认等待4帧后用0.5秒 Tween 淡出并释放，不参与 Chapter1 独白锁定及起身流程。 |
 | 玩家、能力及镜头参数 | `A/ExportSettings.gd:128-239,349-411,489-541`；`A/ExportSettings.tscn:5-16` | 移动/生命/钩索/水符文/镜头参数。先读脚本，再查场景覆盖；玩家包装器还会二次写入部分值。 |
 | 移动端、音量与存档配置 | `A/ExportSettings.gd:607-668`；`A/GlobalValue.gd:1-4` | 触屏、音频、存档配置在 ExportSettings；重力在 GlobalValue，实际是可变变量。部分实体仍有本地参数，不可假定已全部集中。 |
 | 全局信号定义 | `A/SignalBus.gd:6-13,29-97,105-209,233-240,275-278,310-413` | 第二关、镜头、玩家能力/生命/遗物/重生、通用机关通道、设置、返回主菜单和退出事件。改通信前先搜索信号的发送者和接收者。 |
@@ -95,6 +98,7 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 玩家初始化与节点依赖 | `P/Player.gd:4-36,197-346`；`P/Player.tscn:1464-1696` | `_ready` 同步参数、音效、计时器、状态机和信号；固定路径引用场景内控制器、HUD、粒子与音频节点。状态节点中两个 `fall` 重名，后登记项覆盖前项。 |
+| 人物动画法线 | `P/Player.tscn:11-12,15,23-29,31-34,36`；`P/NormalMaps/*.tres:1-8` | 15个 Texture2D 外部资源改引同名 CanvasTexture，保留资源 id、移除原图 uid，动画轨道及节点引用不变；CanvasTexture 将原图与同尺寸 `*_normal.png` 配对。2026-10-16 使用 Godot 4.7.2 在 TEMP 隔离小项目导入30张图片，15/15 CanvasTexture 加载及原图/法线/资源尺寸一致检查通过，退出码0；未启动正式 World，未验证实际光照渲染。 |
 | 移动输入与冲刺冷却 | `P/PlayerInputControl.gd:13-72` | `InterruptDash`；轮询移动/跳跃/冲刺，冲刺复用要求冷却及落地；下+跳在此仅抑制跳跃，平台穿透由独立组件实现。 |
 | 永久能力与遗物 | `P/Player.gd:348-414` | `SetAbilityEnabled`、遗物事件、调试飞行；永久解锁与临时可用次数分开，禁钩索主动释放，死亡清未献祭遗物。 |
 | 生命、受伤、死亡与重生 | `P/Player.gd:69-89,416-429,860-956`；`P/States/DiedState.gd:1-35` | `now_HP`、`ApplyDamage`、`Heal`、`Respawn`；归零转 died，广播死亡并延迟重生；重生恢复血量、能力次数与 idle。死亡状态未显式停输入控制器。 |
@@ -132,7 +136,8 @@ Code/
 | 第一关王冠与按钮绑定 | `W/SunkenPalace/SunkenPalace.gd:10-70`；`W/SunkenPalace/SunkenPalace.tscn:92-97,179-182` | Crown 的 `ComponentInteracted` 隐藏物件并发 `lock1`；未献祭死亡可恢复。平台绑定按钮1，门绑定按钮2/3/4；不是第二关专用机关事件。 |
 | 第二关设备、钥匙与符文序列 | `IC/Level2Device/Level2Device.gd:9-52`；`L2/Level2Map.gd:26-44,172-224` | `Level2InteractionRequested→_on_requested` 按 kind 处理 key/rune/lore/fountain；符文顺序取配置、错误归零，weave 钥匙需解谜；提交三钥匙激活喷泉，首次激活播放对话；残卷未领取且未献祭、玩家未持有时发 `lock2`，未献祭死亡后可再领取并重发；刷新发 `Level2StateChanged`。 |
 | 第二关升降、回落与完成 | `L2/Level2Map.gd:46-170,258-264` | `PlayerBeforeMotion` 驱动喷泉上升/刷新二跳；慢降发镜头和 `Level2DescentVisualChanged`；回落链为 descent→fixed→`PlayerInstantDeathRequested`；喷泉激活后出口发 `Level2Completed`。 |
-| 第二关回退与存档 | `L2/Level2Map.gd:226-256,270-315` | 死亡清未献祭残卷，复活 keys 回退 submitted_keys；保存符文/钥匙/喷泉/完成状态，加载过滤非法数据并约束提交、激活、通关关系。房间装配见 `L2/Rooms/`。 |
+| 第二关回退与存档 | `L2/Level2Map.gd`：`_on_respawned`、`ExportSaveData`、`LoadSaveData` | 死亡清未献祭残卷，复活 keys 回退 submitted_keys；保存符文/钥匙/喷泉/完成状态，加载过滤非法数据并约束提交、激活、通关关系。房间装配见 `L2/Rooms/`。 |
+| 第二关档案库升门 | `L2/Level2Map.gd:274-305,327-350`；`A/ExportSettings.gd:46-50` | `_refresh → _update_archive_gate` 在符文解谜后用物理帧 Tween 将 `Rooms/WeaveArchive/Gate` 整体向上移动，贴图与碰撞同步且保持启用；重复刷新不重启动画，初始化和读档直接定位。上移距离与时长由 `level2_archive_gate_*` 配置。 |
 | 绿洲取骨与去返程切换 | `W/OasisBattlefield/OasisBattlefield.gd:29-182` | 枯骨交互延迟等对话结束及存活确认，再设重生点、发 `lock3`、`SwitchToReturnPhase→ResetChase→StartChase→AutoSave`；切阶段同时改显示、处理、TileMap及碰撞。读档等待 `SaveSlotLoaded`。 |
 | 绿洲船谜题、死亡与终点 | `W/OasisBattlefield/OasisBattlefield.gd:169-253` | `BlockerVanished`/get_boat 区解船谜题，`ResumeJourney` 续航；TheEnd 延迟 `EndChase`；复活重置去程/追逐/船，献祭 bones 后永久记录。 |
 | 船与停靠资源 | `IC/OasisBoat/OasisBoat.gd:68-182,190-307,327-404`；`IC/OasisBoat/OasisBoatStopPoint.gd:1-32` | 初漂→等待→航行→终点；`SolvePuzzle` 解站点，`ResumeJourney` 强制跳过等待条件。船体 top_level，沿航线限超前、射线防挤压，提供平台速度；无独立存档接口。 |
@@ -157,7 +162,7 @@ Code/
 | 改键与触屏布局持久化 | `E/Setting/KeybindManager.gd:10-23,40-79,129-203`；`E/Setting/TouchLayoutManager.gd:3-41` | 改键实际写 `res://Code/Entities/Setting/Saves/custom_keybinds.json`，不是旧注释的 user://；每动作保存首事件，重绑清原绑定、无冲突检查。触屏位置/缩放另存 `user://touch_button_layout.cfg`。 |
 | 设置主题、外框与音量 | `E/Setting/SettingsSkin.gd:3-140`；`E/Setting/SettingsFrame.gd:14-75`；`A/Util.gd:25-80` | 主题缓存使用 `Art/New/ui/Settings9761/` 长/短条九宫格，固定装饰端头；默认 HSlider 为通用滑块，Setting 的五通道声音控件使用 AudioSlider 音乐旋钮变体。外框 `Mount` 重挂关闭按钮并适配窗口；音量请求→`SetAudioVolume`→反馈，独立存 `user://audio_settings.cfg`。 |
 | 退出与返回主菜单自动保存 | `A/SignalBus.gd:351-413` | `GameQuitRequested`/窗口关闭统一 `_quit_with_auto_save`；`ReturnToMainMenuRequested` 延迟调用 `_return_to_main_menu` 并防重入。两者仅正式 World 且活跃槽存在才自动保存；返回菜单保存/加载失败则留在当前场景并发 `ReturnToMainMenuFailed`，成功切到 StartMenu 后清暂停、释放输入动作并显示鼠标，不退出程序。 |
-| 剧情资源、推进与恢复 | `E/Plot/PlotDialogLine.gd:1-7`；`E/Plot/Chapter1.gd:8-100` | 开场等待四帧，按直接子节点索引推进；发 `DialogBox` 或 `ShowStoryDialogLine`，等待 `../../DialogBox.Closed`。保存 next_event/line_index，加载更新 generation，依赖节点层级与顺序。 |
+| 剧情资源、推进与恢复 | `E/Plot/PlotDialogLine.gd:1-7`；`E/Plot/Chapter1.gd:8-111`；`P/Player.gd:423-461`；`A/SignalBus.gd:15-21` | 开场等待四帧，按直接子节点索引推进；发 `DialogBox` 或 `ShowStoryDialogLine`，等待 `../../DialogBox.Closed`。Chapter1 就绪即发 `PlayerOpeningHoldRequested`：玩家禁用处理，ani_move 独立保留处理并暂停在 stand_up 首帧；初始独白全部结束发 `PlayerOpeningStandUpRequested`，动画结束恢复处理与 idle，不新增状态机状态。保存 next_event/line_index，加载更新 generation；未完成开场重新锁定，已完成发 `PlayerOpeningReleaseRequested`，依赖节点层级与顺序。 |
 | 对话队列与结束信号 | `E/Plot/dialogbox/DialogBox.gd:23-92`；`E/Plot/dialogbox/DialogBox.tscn:21-102`；`E/Plot/dialogbox/NarrationPanel.tscn:1-73`；`E/Plot/dialogbox/DialogFrameEdge.gd:11-58`；`A/ExportSettings.gd:666-668` | 旁白/独白排队，按钮/skip_story/默认3秒计时关闭；每句发 `Closed`，队列空先发 `Finished`，交互组件借此解锁；`Dismiss` 不发 Closed，不能替代普通推进。底框使用同目录 `Art9766/` 裁图，装饰镂空已在派生 PNG 内按参考色 `#4D4D4D` 填为不透明，外部透明轮廓保留；AspectRatioContainer 保持原比例与顶部对齐；Close 位于 Margin 下，无纹理按钮的 Hint 为等比铺满的 TextureRect。`_setup_continue_arrows` 从设置底图提取镂空 alpha 并翻向右侧生成白色箭头，悬停色取 `dialog_arrow_hover_color`；独白左侧28%预留。两个 Background 下预置 FrameEdge，复用设置 PAPER 色与 setting_panel_edge_width，双道手绘描边按底图墨面定位、透明处断笔，resize 重绘且忽略鼠标，不改变正文及关闭逻辑。 |
 | 章节卡与渐显文字触发 | `E/Plot/chapter/ChapterTrigger.gd:11-18`；`ChapterCard.gd:5-53`；`GradualTextTrigger.gd:11-32`；`GradualTextCard.gd:19-34`（后三者同属 `E/Plot/chapter/`） | 玩家进入/遗物献祭触发一次；章节卡4秒，`ChapterCard.tscn:7-76` 使用章节标题.PNG 的有效透明区域作为等比装饰，Layout 容器排列幕名/装饰/标题，配色复用 SettingsSkin.PAPER/ACCENT；渐显按25%/50%/25%分段；触发器无存档接口。 |
 | 绘本 | `W/PictureBook.gd:27-100` | 父 Interacted 开书、锁输入/禁交互；每页每次打开一次独白，等 `DialogBox.Finished` 显示书页，关闭恢复；不持久化阅读进度。 |
@@ -167,9 +172,10 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 通用视差与测试相机 | `E/ParallaxScenery/ParallaxScenery.gd:6-48`；`E/ParallaxScenery/ParallaxTestCamera.gd:1-27` | 各层周期/速度/接缝，复制材质隔离实例；top_level 避免关卡位移叠加，scroll_offset 包含世界位置。预览场景在同目录，测试相机左右移动/R复位。 |
-| 营地、绿洲装饰 | `W/Camp/Scenery/CampScenery.gd:11-80`；`W/OasisBattlefield/Decoration/OutwardScenery.gd:1-14`；`OasisComponentArt.gd:22-143`；`OasisTerrainTile.gd:1-44`（后两者同属绿洲 Decoration） | 营地覆盖/有限视差/前景挖空；绿洲按相机位置控制可见，按组件状态绘美术，TileMap邻接选边；不负责生成碰撞。 |
+| 营地、绿洲装饰 | `W/Camp/Scenery/CampScenery.gd:11-80`；`W/OasisBattlefield/Decoration/OutwardScenery.gd:1-14`；`OasisComponentArt.gd:22-143`；`OasisTerrainTile.gd:1-44`（后两者同属绿洲 Decoration） | 营地覆盖/有限视差；营地及第二关前景均不再按人物位置局部透明，保留整体透明度；绿洲按相机位置控制可见，按组件状态绘美术，TileMap邻接选边；不负责生成碰撞。 |
 | 第二关房间与井内视差 | `L2/Scenery/Level2Scenery.gd:11-105`；`L2/Scenery/HorizontalScenery.gd:20-124`；`L2/Scenery/VerticalScenery.gd:15-122` | 房间范围/视口裁剪、左井慢降只滚指定柱层；横向从原始 PackedScene 取变换防累计缩放，竖向按井高适配、分层漂移/循环。 |
-| 第二关地形美术与黑幕 | `L2/Terrain/TerrainArt.gd:19-259`；`W/视觉装饰组件/BlackCurtain.gd:1-8` | 跨房间汇总真实占用绘石框/玻璃，RenderingServer 隐藏灰盒，不改碰撞；黑幕检测 player 后释放。 |
+| 第二关地形美术与黑幕 | `L2/Terrain/TerrainArt.gd:19-259`；`W/视觉装饰组件/BlackCurtain.gd:1-8`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.gd:1-31`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusionMask.gd:1-31`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.tscn:11-35` | 跨房间汇总真实占用绘石框/玻璃，RenderingServer 隐藏灰盒，不改碰撞；黑幕检测 player 后释放；ShaftOcclusion 使用两个可在编辑器直接调整的 Polygon2D 区域，进入一侧时只遮住另一侧。 |
+| Hub 第一版局部光影 | `L2/Lighting/HubLighting.gd:1-58`；`L2/Lighting/HubLighting.tscn`；`L2/Lighting/HubBeam.gdshader:1-8`；`L2/Rooms/Hub.tscn:109`；`A/ExportSettings.gd:722-740` | 仅 Hub 实例化：冷色喷泉/暖桌边 PointLight2D、两条渐变光束与局部光晕；桌面及喷泉底座遮光轮廓不增加碰撞。光束/光晕 z=11 高于横向前景10；灯只影响世界 Canvas 层0、z=-30..10，不影响HUD。`level2_hub_light_enabled` 支持运行时对比；喷泉从所属地图读取初态，经 `Level2StateChanged(level)` 与 `SaveSlotLoaded(slot)` 同步并淡变，不写机关/存档。阴影独占512遮光掩码；无 CanvasModulate、WIP 或外部美术新增。Godot 4.7.2 headless --check-only 已检查新增脚本及 ExportSettings；未运行正式游戏，场景渲染/阴影视觉仍待人工验收。 |
 | 钩索回归脚本 | `P/GrappleAnimationTest.gd:1-158` | SceneTree `_initialize` 入口，检查同帧动作/发射点/方向/脱钩/伤亡/事件隔离，退出码0/1；需要项目单例。本次未执行。 |
 | 镜头演示与检查 | `E/PlayerWithCamera/CameraShowcase.gd:1-116`；`E/PlayerWithCamera/CameraDirectorChecks.gd:1-86` | 演示用同目录 CameraShowcase.tscn；Checks 是 RefCounted，需对已就绪场景显式调用异步 `Run(scene)`，非独立启动场景。检查锁定/字幕/取消/优先级/过滤。 |
 | 玩家及第二关测试场景 | `E/PlayerWithCamera/PlayerWithCameraTest.gd:1-13`；`L2/Level2Playtest.gd:1-15` | 同目录对应 .tscn；前者默认禁二跳/钩索，另有 PlayerCameraTest.tscn 基础跟随场景；后者对齐 Spawn/城市预览并换灰盒外观，不能当作正式能力配置。 |

@@ -6,7 +6,11 @@
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="4_031cx"]
 [ext_resource type="Texture2D" uid="uid://c0tfqwsessboo" path="res://Art/New/component/extracted/fx_water_splash_crown.png" id="4_n0vls"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Lighting/HubLighting.tscn" id="HubLighting"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor_top"]
+size = Vector2(1088, 16)
 
 [node name="Hub" type="Node2D" unique_id=424866786]
 metadata/width = 1400
@@ -95,6 +99,14 @@ tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAA
 tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
 
+[node name="FloorTopCollision" type="StaticBody2D" parent="."]
+position = Vector2(544, 528)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FloorTopCollision"]
+shape = SubResource("RectangleShape2D_floor_top")
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1616484494]
 position = Vector2(455.00003, 459)
 scale = Vector2(0.15, 0.15)
@@ -104,5 +116,7 @@ texture = ExtResource("3_m8ogb")
 position = Vector2(329, 506)
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("4_031cx")
+
+[node name="HubLighting" parent="." instance=ExtResource("HubLighting")]
 
 [editable path="Fountain"]
