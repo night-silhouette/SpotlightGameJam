@@ -7,6 +7,8 @@ extends Node
 @export_group("Camp - Scenery", "camp_scenery_")
 ## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
 @export var camp_scenery_enabled: bool = true
+## Camp 相机裁剪边界，避免在其他关卡渲染 Camp 背景。
+@export var camp_scenery_camera_bounds: Vector2 = Vector2(-2000.0, 3000.0)
 ## 原画统一缩放；所有图层保持同一构图，不逐张拉伸。
 @export var camp_scenery_scale: float = 1.75
 ## 布景节点内的地面高度，原画的 1900 像素线对齐这里；完整保留线下前景。
@@ -14,11 +16,12 @@ extends Node
 ## Camp 本地横向位置偏移。
 @export var camp_scenery_offset_x: float = 0.0
 ## 默认关闭视差，准确还原原画构图；启用后使用下面三项速度。
-@export var camp_scenery_parallax_enabled: bool = false
-## 远景、中景、前景的横向视差比例；1 为跟地形一致。
-@export var camp_scenery_far_speed: float = 0.85
-@export var camp_scenery_middle_speed: float = 0.96
-@export var camp_scenery_foreground_speed: float = 1.06
+@export var camp_scenery_parallax_enabled: bool = true
+## 天空、远景、中景、前景的横向视差比例；1 为跟地形镜头一致。
+@export var camp_scenery_sky_speed: float = 0.2
+@export var camp_scenery_far_speed: float = 0.5
+@export var camp_scenery_middle_speed: float = 0.8
+@export var camp_scenery_foreground_speed: float = 1.05
 ## 前景透明度及人物周围淡出半径，防止草石挡住玩家。
 @export_range(0.0, 1.0) var camp_scenery_foreground_opacity: float = 1.0
 @export var camp_scenery_player_clear_radius: float = 100.0

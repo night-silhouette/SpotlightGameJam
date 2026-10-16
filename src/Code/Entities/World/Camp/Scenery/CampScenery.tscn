@@ -19,7 +19,7 @@ shader_parameter/enabled = 1.0
 shader_parameter/player_world = Vector2(-100000, -100000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0yie6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7l76g"]
 shader = ExtResource("2_shader")
 shader_parameter/foreground = false
 shader_parameter/opacity = 1.0
@@ -35,119 +35,235 @@ shader_parameter/enabled = 1.0
 shader_parameter/player_world = Vector2(-100000, -100000)
 shader_parameter/clear_radius = 100.0
 
-[node name="CampScenery" type="Node2D" unique_id=1923568835]
+[node name="CampScenery" type="Node2D" unique_id="1130638520"]
 script = ExtResource("1_script")
 
-[node name="Sky" type="Parallax2D" parent="." unique_id=1588897703]
-z_index = -60
-scale = Vector2(1.75, 1.75)
-repeat_size = Vector2(1152, 4036)
-repeat_times = 2
+[node name="Sky" type="Parallax2D" parent="." unique_id="1588897703"]
+scroll_scale = Vector2(0.2, 1)
+repeat_size = Vector2(2304, 4036)
+repeat_times = 3
 
-[node name="SkySprite" type="Sprite2D" parent="Sky" unique_id=1023035701]
+[node name="SkyBase" type="Sprite2D" parent="Sky"]
 material = SubResource("ShaderMaterial_5p8f1")
 texture = ExtResource("3_sky")
 centered = false
 
-[node name="SkySprite_Mirrored" type="Sprite2D" parent="Sky" unique_id=1806697697]
+[node name="SkyBase_HMirror" type="Sprite2D" parent="Sky"]
+material = SubResource("ShaderMaterial_5p8f1")
+position = Vector2(1152, 0)
+texture = ExtResource("3_sky")
+centered = false
+flip_h = true
+
+[node name="SkyBase_VMirror" type="Sprite2D" parent="Sky"]
 material = SubResource("ShaderMaterial_5p8f1")
 position = Vector2(0, 2018)
 texture = ExtResource("3_sky")
 centered = false
 flip_v = true
 
-[node name="FarBackground" type="Parallax2D" parent="." unique_id=980766610]
-z_index = -45
-scale = Vector2(1.75, 1.75)
-repeat_size = Vector2(1152, 4036)
-repeat_times = 2
-
-[node name="DarkRocks" type="Sprite2D" parent="FarBackground" unique_id=620868266]
-material = SubResource("ShaderMaterial_0yie6")
-texture = ExtResource("4_middle_rocks")
+[node name="SkyBase_HVMirror" type="Sprite2D" parent="Sky"]
+material = SubResource("ShaderMaterial_5p8f1")
+position = Vector2(1152, 2018)
+texture = ExtResource("3_sky")
 centered = false
-
-[node name="DarkRocks_Mirrored" type="Sprite2D" parent="FarBackground" unique_id=481962196]
-material = SubResource("ShaderMaterial_0yie6")
-position = Vector2(0, 2018)
-texture = ExtResource("4_middle_rocks")
-centered = false
+flip_h = true
 flip_v = true
 
-[node name="MiddleBackground" type="Parallax2D" parent="." unique_id=264031973]
-z_index = -20
-scale = Vector2(1.75, 1.75)
-repeat_size = Vector2(1152, 4036)
-repeat_times = 2
+[node name="FarBackground" type="Parallax2D" parent="." unique_id="957386762"]
+scroll_scale = Vector2(0.5, 1)
+repeat_size = Vector2(2304, 4036)
+repeat_times = 3
 
-[node name="LightRocks" type="Sprite2D" parent="MiddleBackground" unique_id=2048515623]
-material = SubResource("ShaderMaterial_ic58v")
-texture = ExtResource("5_back_rocks")
-centered = false
-
-[node name="LightRocks_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=178960154]
-material = SubResource("ShaderMaterial_ic58v")
-position = Vector2(0, 2018)
-texture = ExtResource("5_back_rocks")
-centered = false
-flip_v = true
-
-[node name="RockSilhouettes" type="Sprite2D" parent="MiddleBackground" unique_id=1472086091]
-material = SubResource("ShaderMaterial_ic58v")
+[node name="FarRocks" type="Sprite2D" parent="FarBackground"]
+material = SubResource("ShaderMaterial_7l76g")
 texture = ExtResource("6_far_rocks")
 centered = false
 
-[node name="RockSilhouettes_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=1582640876]
-material = SubResource("ShaderMaterial_ic58v")
+[node name="FarRocks_HMirror" type="Sprite2D" parent="FarBackground"]
+material = SubResource("ShaderMaterial_7l76g")
+position = Vector2(1152, 0)
+texture = ExtResource("6_far_rocks")
+centered = false
+flip_h = true
+
+[node name="FarRocks_VMirror" type="Sprite2D" parent="FarBackground"]
+material = SubResource("ShaderMaterial_7l76g")
 position = Vector2(0, 2018)
 texture = ExtResource("6_far_rocks")
 centered = false
 flip_v = true
 
-[node name="Ground" type="Sprite2D" parent="MiddleBackground" unique_id=2043552465]
+[node name="FarRocks_HVMirror" type="Sprite2D" parent="FarBackground"]
+material = SubResource("ShaderMaterial_7l76g")
+position = Vector2(1152, 2018)
+texture = ExtResource("6_far_rocks")
+centered = false
+flip_h = true
+flip_v = true
+
+[node name="MiddleBackground" type="Parallax2D" parent="." unique_id="1130638521"]
+repeat_size = Vector2(2304, 4036)
+repeat_times = 3
+
+[node name="MiddleRocks" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("4_middle_rocks")
+centered = false
+
+[node name="MiddleRocks_HMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 0)
+texture = ExtResource("4_middle_rocks")
+centered = false
+flip_h = true
+
+[node name="MiddleRocks_VMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("4_middle_rocks")
+centered = false
+flip_v = true
+
+[node name="MiddleRocks_HVMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 2018)
+texture = ExtResource("4_middle_rocks")
+centered = false
+flip_h = true
+flip_v = true
+
+[node name="RockSilhouettes" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+texture = ExtResource("5_back_rocks")
+centered = false
+
+[node name="RockSilhouettes_HMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 0)
+texture = ExtResource("5_back_rocks")
+centered = false
+flip_h = true
+
+[node name="RockSilhouettes_VMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(0, 2018)
+texture = ExtResource("5_back_rocks")
+centered = false
+flip_v = true
+
+[node name="RockSilhouettes_HVMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 2018)
+texture = ExtResource("5_back_rocks")
+centered = false
+flip_h = true
+flip_v = true
+
+[node name="Ground" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 texture = ExtResource("7_ground")
 centered = false
 
-[node name="Ground_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=1013773207]
+[node name="Ground_HMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 0)
+texture = ExtResource("7_ground")
+centered = false
+flip_h = true
+
+[node name="Ground_VMirror" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 position = Vector2(0, 2018)
 texture = ExtResource("7_ground")
 centered = false
 flip_v = true
 
-[node name="StonePath" type="Sprite2D" parent="MiddleBackground" unique_id=1880048156]
+[node name="Ground_HVMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 2018)
+texture = ExtResource("7_ground")
+centered = false
+flip_h = true
+flip_v = true
+
+[node name="StonePath" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 texture = ExtResource("8_path")
 centered = false
 
-[node name="StonePath_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=943864205]
+[node name="StonePath_HMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 0)
+texture = ExtResource("8_path")
+centered = false
+flip_h = true
+
+[node name="StonePath_VMirror" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 position = Vector2(0, 2018)
 texture = ExtResource("8_path")
 centered = false
 flip_v = true
 
-[node name="Grass" type="Sprite2D" parent="MiddleBackground" unique_id=870628354]
+[node name="StonePath_HVMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 2018)
+texture = ExtResource("8_path")
+centered = false
+flip_h = true
+flip_v = true
+
+[node name="Grass" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 texture = ExtResource("9_grass")
 centered = false
 
-[node name="Grass_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=1411802684]
+[node name="Grass_HMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 0)
+texture = ExtResource("9_grass")
+centered = false
+flip_h = true
+
+[node name="Grass_VMirror" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 position = Vector2(0, 2018)
 texture = ExtResource("9_grass")
 centered = false
 flip_v = true
 
-[node name="Lights" type="Sprite2D" parent="MiddleBackground" unique_id=983238082]
+[node name="Grass_HVMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 2018)
+texture = ExtResource("9_grass")
+centered = false
+flip_h = true
+flip_v = true
+
+[node name="Lights" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 texture = ExtResource("10_lights")
 centered = false
 
-[node name="Lights_Mirrored" type="Sprite2D" parent="MiddleBackground" unique_id=558148553]
+[node name="Lights_HMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 0)
+texture = ExtResource("10_lights")
+centered = false
+flip_h = true
+
+[node name="Lights_VMirror" type="Sprite2D" parent="MiddleBackground"]
 material = SubResource("ShaderMaterial_ic58v")
 position = Vector2(0, 2018)
 texture = ExtResource("10_lights")
 centered = false
+flip_v = true
+
+[node name="Lights_HVMirror" type="Sprite2D" parent="MiddleBackground"]
+material = SubResource("ShaderMaterial_ic58v")
+position = Vector2(1152, 2018)
+texture = ExtResource("10_lights")
+centered = false
+flip_h = true
 flip_v = true

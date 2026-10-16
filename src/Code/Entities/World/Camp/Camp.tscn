@@ -100,6 +100,7 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
 [node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
+z_index = -3
 position = Vector2(759.00006, 1008)
 scale = Vector2(0.37382057, 0.37382057)
 metadata/_editor_description_ = "Camp 分层视觉总成。各层拆为独立场景，保持 Sky/FarBackground/MiddleBackground/Foreground 原节点路径和统一构图。"

@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dha7r5un5skun"]
+
+[ext_resource type="TileSet" uid="uid://erbpx3namsju" path="res://Art/New/map1/map1.tres" id="1_7nebk"]
+[ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="2_dnfp8"]
+
+[node name="Node2D" type="Node2D" unique_id=504161020]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=945468187]
+position = Vector2(2119.8115, 1742.1451)
+scale = Vector2(0.14, 0.14)
+tile_map_data = PackedByteArray(0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1, 0, 3, 0, 0, 0)
+tile_set = ExtResource("1_7nebk")
+
+[node name="PlayerWithCamera" parent="." unique_id=1904895834 instance=ExtResource("2_dnfp8")]
+position = Vector2(2311.8684, 1730.2871)
+scale = Vector2(1.2, 1.2)
