@@ -1,12 +1,36 @@
 extends Node
 
+const GAME_BGM = preload("res://Music/bgm/MainMenu.wav")
+
 var _audio_initialized: bool = false
 var _audio_volumes: Dictionary = {}
 var _audio_buses: Dictionary = {}
 var _audio_base_db: Dictionary = {}
 
 func _ready() -> void:
-	call_deferred("_initialize_audio_settings")
+	call_deferred("_start_game_audio")
+
+func _start_game_audio() -> void:
+	_initialize_audio_settings()
+	_start_game_bgm()
+
+func _start_game_bgm() -> void:
+	var music := GAME_BGM.duplicate() as AudioStreamWAV
+	music.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	music.loop_begin = 0
+	music.loop_end = int(round(music.get_length() * music.mix_rate))
+	var player := AudioStreamPlayer.new()
+	player.stream = music
+	player.bus = ExportSettings.audio_music_bus
+	player.volume_linear = 0.0
+	add_child(player)
+	player.play()
+	var target_volume := db_to_linear(ExportSettings.audio_bgm_volume_db)
+	var duration: float = ExportSettings.audio_bgm_fade_in_duration
+	if duration <= 0.0:
+		player.volume_linear = target_volume
+	else:
+		create_tween().tween_property(player, "volume_linear", target_volume, duration)
 
 ## 初始化并恢复独立音量设置；无参数，可重复调用且不会重置总线基准音量。
 func InitializeAudioSettings() -> void:

@@ -12,7 +12,6 @@ const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
 
-@onready var menu_bgm: AudioStreamPlayer = $MenuBgm
 @onready var btn_start: Button = %BtnStart
 @onready var btn_setting: Button = %BtnSetting
 @onready var btn_credits: Button = %BtnCredits
@@ -44,25 +43,6 @@ func _ready() -> void:
 	credits_modal.visibility_changed.connect(_sync_setting_shortcut)
 	saves_modal.visible = false
 	credits_modal.visible = false
-	_start_menu_bgm()
-
-func _start_menu_bgm() -> void:
-	Util.InitializeAudioSettings()
-	menu_bgm.bus = ExportSettings.audio_music_bus
-	# 仅修改菜单自己的流副本，不改变原始音频的导入设置。
-	var music := menu_bgm.stream.duplicate() as AudioStreamWAV
-	music.loop_mode = AudioStreamWAV.LOOP_FORWARD
-	music.loop_begin = 0
-	music.loop_end = int(round(music.get_length() * music.mix_rate))
-	menu_bgm.stream = music
-	menu_bgm.volume_linear = 0.0
-	menu_bgm.play()
-	var target_volume := db_to_linear(ExportSettings.audio_menu_volume_db)
-	var duration: float = ExportSettings.audio_menu_fade_in_duration
-	if duration <= 0.0:
-		menu_bgm.volume_linear = target_volume
-	else:
-		create_tween().tween_property(menu_bgm, "volume_linear", target_volume, duration)
 
 func _sync_setting_shortcut() -> void:
 	_setting_instance.set_process_input(not saves_modal.visible and not credits_modal.visible)

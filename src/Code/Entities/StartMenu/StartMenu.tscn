@@ -12,8 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://751t8dwsf2eq" path="res://Art/New/ui/main_button_quit.png" id="10_menu_quit"]
 [ext_resource type="Texture2D" uid="uid://bqo7kavvguag1" path="res://Art/New/ui/main_settings.png" id="11_menu_settings"]
 
-[ext_resource type="AudioStream" path="res://Music/bgm/MainMenu.wav" id="12_menu_bgm"]
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
@@ -49,9 +47,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
-
-[node name="MenuBgm" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("12_menu_bgm")
 
 [node name="BackgroundLayers" type="Control" parent="." unique_id=1001002]
 layout_mode = 1

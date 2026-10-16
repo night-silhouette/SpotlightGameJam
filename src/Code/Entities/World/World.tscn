@@ -126,11 +126,6 @@ dialog_type = "独白"
 text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……
 先带走吧，说不定之后会用得到。"
 
-[sub_resource type="Resource" id="Resource_7tc0m"]
-script = ExtResource("5_acpp2")
-text = "月亮在长夜里留下了无主的诗"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
 [sub_resource type="Resource" id="Resource_1p2nt"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
@@ -515,6 +510,7 @@ position = Vector2(-3634.5337, 101.82608)
 scale = Vector2(10.814299, 0.09030984)
 act_text = "第三幕"
 chapter_text = "月影寻源"
+subtitle_text = "月亮在长夜里留下了无主的诗"
 
 [node name="ChapterTrigger3" parent="chapter" unique_id=1761084445 instance=ExtResource("10_mvgin")]
 position = Vector2(-13424.02, -39.763226)
@@ -526,14 +522,6 @@ chapter_text = "绿洲悲歌"
 [node name="story" type="Node2D" parent="." unique_id=1662514281]
 
 [node name="c2" type="Node2D" parent="story" unique_id=420887994]
-
-[node name="进入的场合描述" parent="story/c2" unique_id=1000769939 instance=ExtResource("12_terh4")]
-position = Vector2(596, 2708.0002)
-scale = Vector2(5.047486, 1.4619936)
-enable_interaction = false
-show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7tc0m")])
-enter_dialog_once = true
 
 [node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]
 position = Vector2(201, 625.00006)
