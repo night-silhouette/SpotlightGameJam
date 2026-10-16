@@ -64,7 +64,9 @@ func _refresh() -> void:
 	var use_parallax := bool(_setting(&"camp_scenery_parallax_enabled"))
 	for layer: Node2D in _materials:
 		var speed := 1.0
-		if layer.name == &"FarBackground":
+		if layer.name == &"Sky":
+			speed = float(_setting(&"camp_scenery_sky_speed"))
+		elif layer.name == &"FarBackground":
 			speed = float(_setting(&"camp_scenery_far_speed"))
 		elif layer.name == &"MiddleBackground":
 			speed = float(_setting(&"camp_scenery_middle_speed"))
@@ -74,7 +76,7 @@ func _refresh() -> void:
 			# Parallax2D 架构模式：通过 scroll_scale 控制视差，repeat_size 保持本地尺寸 (1152, 4036)
 			# 不可额外乘以 factor，因为 layer.scale 会自动作用于本地 repeat_size！
 			layer.scroll_scale = Vector2(speed, 1.0) if use_parallax else Vector2.ONE
-			layer.repeat_size = Vector2(1152.0, 4036.0)
+			layer.repeat_size = Vector2(2304.0, 4036.0)
 			layer.position = origin
 		else:
 			var travel := clampf(camera_x - (left + width * 0.5), -width * 0.5, width * 0.5) if use_parallax else 0.0
@@ -85,3 +87,10 @@ func _refresh() -> void:
 		material.set_shader_parameter("opacity", float(_setting(&"camp_scenery_foreground_opacity")))
 		material.set_shader_parameter("clear_radius", float(_setting(&"camp_scenery_player_clear_radius")))
 		material.set_shader_parameter("player_world", player.global_position if is_instance_valid(player) else Vector2(-100000.0, -100000.0))
+
+	# 视口范围裁剪：仅在主城相机边界内可见，避免溢出覆盖其他关卡
+	var bounds_setting = _setting(&"camp_scenery_camera_bounds")
+	var bounds: Vector2 = bounds_setting if bounds_setting is Vector2 else Vector2(-2000.0, 3000.0)
+	var in_bounds: bool = camera_x >= bounds.x and camera_x <= bounds.y
+	for layer: Node2D in _materials:
+		layer.visible = in_bounds

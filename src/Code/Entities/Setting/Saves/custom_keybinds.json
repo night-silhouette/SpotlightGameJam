@@ -1,7 +1,7 @@
 {
 	"dash": {
-		"keycode": 4194327,
-		"physical_keycode": 4194327,
+		"keycode": 4194325,
+		"physical_keycode": 4194325,
 		"type": "key"
 	},
 	"down": {
