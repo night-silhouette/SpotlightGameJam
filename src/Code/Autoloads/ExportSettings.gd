@@ -639,6 +639,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1.0, 0.01) var audio_master_volume: float = 1.0
 ## 音乐默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_music_volume: float = 1.0
+## 菜单背景音乐渐入时长，单位为秒；0 表示立即播放。
+@export_range(0.0, 10.0, 0.1) var audio_menu_fade_in_duration: float = 2.0
+## 菜单背景音乐的基础音量，单位为分贝；叠加音乐及总音量设置。
+@export_range(-40.0, 6.0, 0.5) var audio_menu_volume_db: float = 0.0
 ## 音效默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_sfx_volume: float = 1.0
 ## 对白默认音量 (0.0-1.0)

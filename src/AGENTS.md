@@ -81,7 +81,9 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 启动与 Autoload | `project.godot:11-29,50-99` | 主场景为 `E/StartMenu/StartMenu.tscn`；单例为 Util、SignalBus、GlobalValue、PhantomCameraManager、ExportSettings、_mcp_game_helper。此处输入是默认值，会被改键文件覆盖。配置及插件只读。 |
-| 开始菜单与槽位选择 | `E/StartMenu/StartMenu.gd:31-192` | 已有槽载入，空槽/覆写新开走 `StartNewGameInSlot`；存档和制作人弹窗打开时由菜单接管取消键。 |
+| 开始菜单与槽位选择 | `E/StartMenu/StartMenu.gd:32-218` | 已有槽载入，空槽/覆写新开走 `StartNewGameInSlot`；存档和制作人弹窗打开时由菜单接管取消键。 |
+| 菜单背景音乐 | `E/StartMenu/StartMenu.gd:49-65`；`E/StartMenu/StartMenu.tscn:15,54-55`；`A/ExportSettings.gd:642-645` | `_start_menu_bgm` 使用 `Music/bgm/MainMenu.wav` 的流副本启用全曲循环，经现有音乐总线播放；每次进入菜单从静音默认2秒渐入，基础分贝与时长可配置。播放器随菜单释放，不带入游戏；不修改原音频或导入设置。编辑器脚本诊断无错误，实际听感及循环衔接待验收。 |
+| 制作人名单 | `E/StartMenu/StartMenu.gd:36-39,50-57,78-79,91-92`；`E/StartMenu/StartMenu.tscn:358-543` | 沿用现有 CreditsModal 入口与关闭/Esc链路，复用 SettingsSkin 和 SettingsFrame 的墨色暖纸配色、手绘边框及三角关闭区域；TeamGrid 两列展示去重后的8人，特别鸣谢原文保留，纵向滚动及外框等比缩放适配小窗口。2026-10-16 Godot 4.7.2 headless 单独装配该弹窗，名单/鸣谢内容、资源加载、关闭按钮及1280×720、800×600、480×320面板边界与等比缩放断言通过；未启动正式 World，未做视觉验收。 |
 | 正式世界装配 | `W/World.tscn:347-427` | 同时装配 DialogBox、PlayerWithCamera、Camp、SunkenPalace、DepthsLibrary、OasisBattlefield；不是在此逐关切场景。交互实例有剧情和锁输入覆盖值。 |
 | 开场全屏黑幕淡出 | `W/World.tscn:349-361`；`W/OpeningFade.gd:1-10`；`A/ExportSettings.gd:686-690` | 预置不透明黑色 ColorRect，CanvasLayer 128 覆盖世界UI、忽略鼠标；默认等待4帧后用0.5秒 Tween 淡出并释放，不参与 Chapter1 独白锁定及起身流程。 |
 | 玩家、能力及镜头参数 | `A/ExportSettings.gd:128-239,349-411,489-541`；`A/ExportSettings.tscn:5-16` | 移动/生命/钩索/水符文/镜头参数。先读脚本，再查场景覆盖；玩家包装器还会二次写入部分值。 |
