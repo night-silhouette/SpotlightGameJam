@@ -1,56 +1,30 @@
 extends Control
-## 在屏幕空间绘制区域及其补集，跟随相机移动与缩放，不遮挡高层 HUD。
+## 根据玩家所在区域，仅绘制另一个区域的黑幕。
 
 @onready var _component: Node2D = $"../.."
+@onready var _visible_region: Polygon2D = $VisibleRegion
 
-func _draw() -> void:
-	var settings = _component.settings
-	if settings == null or not is_instance_valid(_component.player):
-		return
-	var region: Rect2 = settings.shaft_region
-	if not region.has_area():
-		return
-	var screen := Rect2(Vector2.ZERO, get_viewport_rect().size)
-	var transform: Transform2D = get_global_transform_with_canvas().affine_inverse() * _component.get_global_transform_with_canvas()
-	var points := PackedVector2Array([
-		transform * region.position,
-		transform * Vector2(region.end.x, region.position.y),
-		transform * region.end,
-		transform * Vector2(region.position.x, region.end.y)
-	])
-	var inside: bool = region.has_point(_component.to_local(_component.player.global_position))
-	if not inside:
-		draw_colored_polygon(points, settings.mask_color)
-		return
-	# 将视口沿井的四条边依次裁切；每次舍弃的部分恰好组成井外区域。
-	var remaining := PackedVector2Array([
-		screen.position, Vector2(screen.end.x, 0), screen.end, Vector2(0, screen.end.y)
-	])
-	var orientation: float = (points[1] - points[0]).cross(points[2] - points[1])
-	for index in range(4):
-		var start: Vector2 = points[index]
-		var end: Vector2 = points[(index + 1) % 4]
-		var outside := _clip(remaining, start, end, orientation, false)
-		if outside.size() >= 3:
-			draw_colored_polygon(outside, settings.mask_color)
-		remaining = _clip(remaining, start, end, orientation, true)
-		if remaining.is_empty():
-			break
+func _process(_delta: float) -> void:
+	_update_visible_region()
 
-func _clip(polygon: PackedVector2Array, start: Vector2, end: Vector2, orientation: float, keep_inside: bool) -> PackedVector2Array:
-	var result := PackedVector2Array()
-	if polygon.is_empty():
-		return result
-	var previous: Vector2 = polygon[-1]
-	var previous_distance: float = (end - start).cross(previous - start) * signf(orientation)
-	for current in polygon:
-		var distance: float = (end - start).cross(current - start) * signf(orientation)
-		var current_kept: bool = (distance >= 0.0) == keep_inside
-		var previous_kept: bool = (previous_distance >= 0.0) == keep_inside
-		if current_kept != previous_kept:
-			result.append(previous.lerp(current, previous_distance / (previous_distance - distance)))
-		if current_kept:
-			result.append(current)
-		previous = current
-		previous_distance = distance
-	return result
+func _update_visible_region() -> void:
+	_visible_region.hide()
+	if _component.settings == null or not is_instance_valid(_component.player):
+		return
+	var player_position: Vector2 = _component.player.global_position
+	var region_a: Polygon2D = _component.get_node("RegionA")
+	var region_b: Polygon2D = _component.get_node("RegionB")
+	var hidden_region: Polygon2D = null
+	if Geometry2D.is_point_in_polygon(region_a.to_local(player_position) - region_a.offset, region_a.polygon):
+		hidden_region = region_b
+	elif Geometry2D.is_point_in_polygon(region_b.to_local(player_position) - region_b.offset, region_b.polygon):
+		hidden_region = region_a
+	if hidden_region == null:
+		return
+	var transform: Transform2D = _visible_region.get_global_transform_with_canvas().affine_inverse() * hidden_region.get_global_transform_with_canvas()
+	var screen_polygon := PackedVector2Array()
+	for point in hidden_region.polygon:
+		screen_polygon.append(transform * (point + hidden_region.offset))
+	_visible_region.polygon = screen_polygon
+	_visible_region.color = _component.settings.mask_color
+	_visible_region.show()

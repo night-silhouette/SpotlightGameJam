@@ -96,6 +96,7 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 玩家初始化与节点依赖 | `P/Player.gd:4-36,197-346`；`P/Player.tscn:1464-1696` | `_ready` 同步参数、音效、计时器、状态机和信号；固定路径引用场景内控制器、HUD、粒子与音频节点。状态节点中两个 `fall` 重名，后登记项覆盖前项。 |
+| 人物动画法线 | `P/Player.tscn:11-12,15,23-29,31-34,36`；`P/NormalMaps/*.tres:1-8` | 15个 Texture2D 外部资源改引同名 CanvasTexture，保留资源 id、移除原图 uid，动画轨道及节点引用不变；CanvasTexture 将原图与同尺寸 `*_normal.png` 配对。2026-10-16 使用 Godot 4.7.2 在 TEMP 隔离小项目导入30张图片，15/15 CanvasTexture 加载及原图/法线/资源尺寸一致检查通过，退出码0；未启动正式 World，未验证实际光照渲染。 |
 | 移动输入与冲刺冷却 | `P/PlayerInputControl.gd:13-72` | `InterruptDash`；轮询移动/跳跃/冲刺，冲刺复用要求冷却及落地；下+跳在此仅抑制跳跃，平台穿透由独立组件实现。 |
 | 永久能力与遗物 | `P/Player.gd:348-414` | `SetAbilityEnabled`、遗物事件、调试飞行；永久解锁与临时可用次数分开，禁钩索主动释放，死亡清未献祭遗物。 |
 | 生命、受伤、死亡与重生 | `P/Player.gd:69-89,416-429,860-956`；`P/States/DiedState.gd:1-35` | `now_HP`、`ApplyDamage`、`Heal`、`Respawn`；归零转 died，广播死亡并延迟重生；重生恢复血量、能力次数与 idle。死亡状态未显式停输入控制器。 |
@@ -170,7 +171,7 @@ Code/
 | 通用视差与测试相机 | `E/ParallaxScenery/ParallaxScenery.gd:6-48`；`E/ParallaxScenery/ParallaxTestCamera.gd:1-27` | 各层周期/速度/接缝，复制材质隔离实例；top_level 避免关卡位移叠加，scroll_offset 包含世界位置。预览场景在同目录，测试相机左右移动/R复位。 |
 | 营地、绿洲装饰 | `W/Camp/Scenery/CampScenery.gd:11-80`；`W/OasisBattlefield/Decoration/OutwardScenery.gd:1-14`；`OasisComponentArt.gd:22-143`；`OasisTerrainTile.gd:1-44`（后两者同属绿洲 Decoration） | 营地覆盖/有限视差；营地及第二关前景均不再按人物位置局部透明，保留整体透明度；绿洲按相机位置控制可见，按组件状态绘美术，TileMap邻接选边；不负责生成碰撞。 |
 | 第二关房间与井内视差 | `L2/Scenery/Level2Scenery.gd:11-105`；`L2/Scenery/HorizontalScenery.gd:20-124`；`L2/Scenery/VerticalScenery.gd:15-122` | 房间范围/视口裁剪、左井慢降只滚指定柱层；横向从原始 PackedScene 取变换防累计缩放，竖向按井高适配、分层漂移/循环。 |
-| 第二关地形美术与黑幕 | `L2/Terrain/TerrainArt.gd:19-259`；`W/视觉装饰组件/BlackCurtain.gd:1-8` | 跨房间汇总真实占用绘石框/玻璃，RenderingServer 隐藏灰盒，不改碰撞；黑幕检测 player 后释放。 |
+| 第二关地形美术与黑幕 | `L2/Terrain/TerrainArt.gd:19-259`；`W/视觉装饰组件/BlackCurtain.gd:1-8`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.gd:1-31`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusionMask.gd:1-31`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.tscn:11-35` | 跨房间汇总真实占用绘石框/玻璃，RenderingServer 隐藏灰盒，不改碰撞；黑幕检测 player 后释放；ShaftOcclusion 使用两个可在编辑器直接调整的 Polygon2D 区域，进入一侧时只遮住另一侧。 |
 | Hub 第一版局部光影 | `L2/Lighting/HubLighting.gd:1-58`；`L2/Lighting/HubLighting.tscn`；`L2/Lighting/HubBeam.gdshader:1-8`；`L2/Rooms/Hub.tscn:109`；`A/ExportSettings.gd:722-740` | 仅 Hub 实例化：冷色喷泉/暖桌边 PointLight2D、两条渐变光束与局部光晕；桌面及喷泉底座遮光轮廓不增加碰撞。光束/光晕 z=11 高于横向前景10；灯只影响世界 Canvas 层0、z=-30..10，不影响HUD。`level2_hub_light_enabled` 支持运行时对比；喷泉从所属地图读取初态，经 `Level2StateChanged(level)` 与 `SaveSlotLoaded(slot)` 同步并淡变，不写机关/存档。阴影独占512遮光掩码；无 CanvasModulate、WIP 或外部美术新增。Godot 4.7.2 headless --check-only 已检查新增脚本及 ExportSettings；未运行正式游戏，场景渲染/阴影视觉仍待人工验收。 |
 | 钩索回归脚本 | `P/GrappleAnimationTest.gd:1-158` | SceneTree `_initialize` 入口，检查同帧动作/发射点/方向/脱钩/伤亡/事件隔离，退出码0/1；需要项目单例。本次未执行。 |
 | 镜头演示与检查 | `E/PlayerWithCamera/CameraShowcase.gd:1-116`；`E/PlayerWithCamera/CameraDirectorChecks.gd:1-86` | 演示用同目录 CameraShowcase.tscn；Checks 是 RefCounted，需对已就绪场景显式调用异步 `Run(scene)`，非独立启动场景。检查锁定/字幕/取消/优先级/过滤。 |
