@@ -9,6 +9,8 @@ signal Level2DescentVisualChanged(level: Node2D, speed: float)
 signal Level2InteractionRequested(source: Node2D, player: Node2D)
 ## 第二关钥匙、谜题或出口状态改变。level 为对应关卡实例。
 signal Level2StateChanged(level: Node2D)
+## 请求第二关地图重新广播当前钥匙状态，供玩家 HUD 初始化时同步。
+signal Level2StateRequested
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
 

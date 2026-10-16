@@ -642,7 +642,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 全游戏背景音乐启动渐入时长，单位为秒；0 表示立即播放。
 @export_range(0.0, 10.0, 0.1) var audio_bgm_fade_in_duration: float = 2.0
 ## 全游戏背景音乐的基础音量，单位为分贝；叠加音乐及总音量设置。
-@export_range(-40.0, 6.0, 0.5) var audio_bgm_volume_db: float = 0.0
+@export_range(-40.0, 6.0, 0.01) var audio_bgm_volume_db: float = -6.02
 ## 音效默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_sfx_volume: float = 1.0
 ## 对白默认音量 (0.0-1.0)

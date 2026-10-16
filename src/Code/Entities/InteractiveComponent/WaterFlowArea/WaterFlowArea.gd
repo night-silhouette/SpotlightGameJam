@@ -24,11 +24,13 @@ signal FluidStateChanged(is_fluid: bool)
 @export var boost_multiplier: float = 1.6
 ## 玩家进入流体时保证的最低爆发速度
 @export var min_boost_speed: float = 480.0
-## 穿过流水区域划水音效
+## 进入流水区域的音效
 @export var sfx_water_pass: AudioStream = preload("res://Music/SFX/Interactive-SFX_Interactive/HuaShui.wav")
-## 划水音效音量分贝 (dB)
+## 离开流水区域的音效
+@export var sfx_water_exit: AudioStream = preload("res://Music/SFX/Interactive-SFX_Interactive/YouShui.wav")
+## 流水音效音量分贝 (dB)
 @export var sfx_water_pass_volume_db: float = 0.0
-## 划水音效音频总线
+## 流水音效音频总线
 @export var sfx_water_pass_bus: StringName = &"SFX_Interact"
 
 @onready var solid_collision: CollisionShape2D = $SolidCollision
@@ -38,10 +40,12 @@ signal FluidStateChanged(is_fluid: bool)
 @onready var before_visual: TileMapLayer = get_node_or_null("BeforeVisual") as TileMapLayer
 @onready var before_sprite_visuals: Node2D = get_node_or_null("BeforeSpriteVisuals") as Node2D
 @onready var after_visual: NinePatchRect = get_node_or_null("AfterVisual") as NinePatchRect
+@onready var water_curtain: ColorRect = $WaterCurtain
 
 var _bodies_in_water: Array[CharacterBody2D] = []
 var _has_applied_state: bool = false
 var _last_applied_fluid: bool = false
+var _impact_tween: Tween
 
 func _ready() -> void:
 	add_to_group("touch_interactables")
@@ -51,6 +55,12 @@ func _ready() -> void:
 
 	fluid_area.body_entered.connect(_on_fluid_area_body_entered)
 	fluid_area.body_exited.connect(_on_fluid_area_body_exited)
+
+func _process(_delta: float) -> void:
+	if is_fluid and not _bodies_in_water.is_empty():
+		var player_body := _bodies_in_water[0]
+		if is_instance_valid(player_body):
+			_set_water_curtain_impact_position(player_body.global_position)
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
@@ -79,6 +89,10 @@ func _update_dimensions() -> void:
 	if after_visual:
 		after_visual.size = area_size
 		after_visual.position = -area_size * 0.5
+	if water_curtain:
+		water_curtain.size = area_size
+		water_curtain.position = -area_size * 0.5
+		(water_curtain.material as ShaderMaterial).set_shader_parameter("curtain_size", area_size)
 
 ## 判断世界坐标是否落在流水区域可见矩形内；world_point 为鼠标的世界坐标，返回是否命中。
 func ContainsWorldPoint(world_point: Vector2) -> bool:
@@ -119,6 +133,9 @@ func _apply_state(fluid: bool) -> void:
 		fluid_collision.set_deferred("disabled", true)
 		visual_rect.color = Color(0.28, 0.42, 0.55, 1.0)
 		_clear_all_bodies_in_water()
+		if _impact_tween and _impact_tween.is_running():
+			_impact_tween.kill()
+		(water_curtain.material as ShaderMaterial).set_shader_parameter("impact_strength", 0.0)
 
 	if state_changed:
 		FluidStateChanged.emit(fluid)
@@ -127,16 +144,17 @@ func _update_visual_state(fluid: bool) -> void:
 	var has_tile_content := _has_before_visual_content()
 	var has_sprite_content := _has_before_sprite_visual_content()
 	var has_before_content := has_tile_content or has_sprite_content
-	var has_after_content := _has_after_visual_content()
 
 	if before_visual:
 		before_visual.visible = not fluid and has_tile_content
 	if before_sprite_visuals:
 		before_sprite_visuals.visible = not fluid and has_sprite_content
 	if after_visual:
-		after_visual.visible = fluid and has_after_content
+		after_visual.visible = false
+	if water_curtain:
+		water_curtain.visible = fluid
 	if visual_rect:
-		visual_rect.visible = not (has_after_content if fluid else has_before_content)
+		visual_rect.visible = not fluid and not has_before_content
 
 func _has_before_visual_content() -> bool:
 	return before_visual != null and before_visual.tile_set != null and not before_visual.get_used_cells().is_empty()
@@ -155,9 +173,6 @@ func _has_configured_canvas_visual(node: Node) -> bool:
 		if _has_configured_canvas_visual(child):
 			return true
 	return false
-
-func _has_after_visual_content() -> bool:
-	return after_visual != null and after_visual.texture != null
 
 ## 切换符文流水与凝固状态。
 func ToggleRuneFluid() -> void:
@@ -229,14 +244,11 @@ func _on_fluid_area_body_entered(body: Node2D) -> void:
 
 		SignalBus.PlayerEnteredWaterWall.emit()
 
-		# 播放穿过流水区域的划水音效
+		# 播放进入流水区域的音效
 		if sfx_water_pass and Util:
 			Util.PlaySFX2D(sfx_water_pass, global_position, sfx_water_pass_bus, sfx_water_pass_volume_db)
 
-		# 水花波纹微动视觉反馈
-		var tween = create_tween()
-		visual_rect.color = Color(0.4, 0.9, 1.0, 0.8)
-		tween.tween_property(visual_rect, "color", Color(0.15, 0.65, 0.95, 0.45), 0.3)
+		_disturb_water_curtain(player_body.global_position, true)
 
 func _on_fluid_area_body_exited(body: Node2D) -> void:
 	if body is CharacterBody2D and body in _bodies_in_water:
@@ -244,6 +256,29 @@ func _on_fluid_area_body_exited(body: Node2D) -> void:
 		if body.has_method("SetInWaterFlow"):
 			body.SetInWaterFlow(false)
 		SignalBus.PlayerExitedWaterWall.emit(body.velocity)
+		if is_fluid:
+			_disturb_water_curtain(body.global_position)
+			if sfx_water_exit and Util:
+				Util.PlaySFX2D(sfx_water_exit, global_position, sfx_water_pass_bus, sfx_water_pass_volume_db)
+
+func _disturb_water_curtain(world_position: Vector2, entering: bool = false) -> void:
+	var material := water_curtain.material as ShaderMaterial
+	_set_water_curtain_impact_position(world_position)
+	if _impact_tween and _impact_tween.is_running():
+		_impact_tween.kill()
+	material.set_shader_parameter("impact_strength", 1.0)
+	if entering:
+		return
+	_impact_tween = create_tween()
+	_impact_tween.tween_property(material, "shader_parameter/impact_strength", 0.0, 0.8).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+func _set_water_curtain_impact_position(world_position: Vector2) -> void:
+	var local_point: Vector2 = to_local(world_position) - water_curtain.position
+	var impact_position := Vector2(
+		clampf(local_point.x / area_size.x, 0.0, 1.0),
+		clampf(local_point.y / area_size.y, 0.0, 1.0)
+	)
+	(water_curtain.material as ShaderMaterial).set_shader_parameter("impact_position", impact_position)
 
 func _clear_all_bodies_in_water() -> void:
 	for body in _bodies_in_water:

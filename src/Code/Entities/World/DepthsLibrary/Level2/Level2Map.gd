@@ -34,6 +34,7 @@ func _ready() -> void:
 	var names := {"sun": "日", "moon": "月", "weave": "交织"}
 	$Rooms/WeaveArchive/RoomHint.text = "石碑线索：" + str(names[_rune_order[0]]) + " → " + str(names[_rune_order[1]]) + " → " + str(names[_rune_order[2]]) + "。错误会重置顺序。"
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
+	SignalBus.Level2StateRequested.connect(_on_state_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
 	SignalBus.PlayerDied.connect(_on_player_died)
 	SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
@@ -49,6 +50,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_elapsed += delta
+	$Rooms/Hub/Fountain/Node2D/FountainIdle.frame = 8 - int(_elapsed * 9.0) % 9
 	_toast_left = maxf(0.0, _toast_left - delta)
 	$HUD/Root/Toast.visible = _toast_left > 0.0
 	if not is_instance_valid(_player):
@@ -172,6 +174,9 @@ func GetCityConnections() -> Dictionary:
 		"entrance": {"position": entrance.global_position, "width": entrance.get_meta("opening_width")},
 		"exit": {"position": exit_port.global_position, "width": exit_port.get_meta("opening_width")}
 	}
+
+func _on_state_requested() -> void:
+	SignalBus.Level2StateChanged.emit(self)
 
 func _on_requested(source: Node2D, player: Node2D) -> void:
 	if not is_ancestor_of(source) or source.global_position.distance_to(player.global_position) > ExportSettings.level2_interact_radius:
@@ -304,8 +309,6 @@ func _refresh(animate_gate: bool = true) -> void:
 	$Rooms/WeaveArchive/SequenceStatus.text = "闸门开启" if puzzle_solved else "共鸣进度 %d / %d" % [rune_progress, _rune_order.size()]
 	$Rooms/Hub/Fountain/Caption.text = "逆流水柱已开启" if fountain_active else "提交钥匙  %d/3" % submitted_keys.size()
 	$Rooms/Hub/FountainStream.visible = fountain_active
-	$Rooms/FountainShaft/Stream.visible = fountain_active
-	$Rooms/SurfaceExit/SprayStream.visible = fountain_active
 	# 已按顺序激活的符文保持发光；输错重置，读档时同步恢复。
 	for rune in $Rooms/WeaveArchive.get_children():
 		if str(rune.get_meta("kind", "")) != "rune":
@@ -344,3 +347,4 @@ func LoadSaveData(data: Dictionary) -> void:
 	completed = bool(data.get("completed", false)) and fountain_active
 	rune_progress = _rune_order.size() if puzzle_solved else clampi(int(data.get("rune_progress", 0)), 0, maxi(0, _rune_order.size() - 1))
 	_refresh(false)
+	SignalBus.Level2StateChanged.emit(self)

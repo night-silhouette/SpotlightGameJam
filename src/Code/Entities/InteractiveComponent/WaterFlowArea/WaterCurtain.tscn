@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Shader" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="1_curtain"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_curtain"]
+resource_local_to_scene = true
+shader = ExtResource("1_curtain")
+
+[node name="WaterCurtain" type="ColorRect"]
+offset_right = 160.0
+offset_bottom = 240.0
+mouse_filter = 2
+material = SubResource("ShaderMaterial_curtain")
+color = Color(1, 1, 1, 1)
