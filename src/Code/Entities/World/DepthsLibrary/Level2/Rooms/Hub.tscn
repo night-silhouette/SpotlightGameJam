@@ -6,6 +6,7 @@
 [ext_resource type="Shader" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/FountainStream.gdshader" id="fountain_stream_shader"]
 [ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="3_m8ogb"]
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="4_031cx"]
+[ext_resource type="Texture2D" path="res://Art/New/component/extracted/prop_paper_scroll_rolled_1.png" id="codex_art"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Lighting/HubLighting.tscn" id="HubLighting"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
@@ -38,7 +39,7 @@ offset_top = 58.0
 offset_right = 1355.0
 offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-text = "左：书库与休息室；右：水道；向下：档案室。钥匙带回喷泉按 F 提交。"
+text = "左：书库与休息室；右：水道；向下：档案室。点击喷泉提交钥匙，启动后点击左侧残卷。"
 
 [node name="Fountain" parent="." unique_id=77465330 instance=ExtResource("device")]
 position = Vector2(990, 495)
@@ -81,6 +82,19 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Fountain/PedestalBody"]
 shape = SubResource("FountainPedestalShape")
+
+[node name="Codex" parent="." instance=ExtResource("device")]
+position = Vector2(820, 495)
+metadata/kind = "codex"
+metadata/label = "观星者残卷"
+
+[node name="Visual" parent="Codex" index="0"]
+visible = false
+
+[node name="ItemArt" type="Sprite2D" parent="Codex"]
+position = Vector2(0, -21)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("codex_art")
 
 [node name="FountainStream" type="Sprite2D" parent="." unique_id=1624418422]
 visible = false

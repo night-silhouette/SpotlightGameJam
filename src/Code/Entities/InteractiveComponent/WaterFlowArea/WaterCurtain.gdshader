@@ -1,8 +1,8 @@
 shader_type canvas_item;
 render_mode blend_mix, unshaded;
 
-uniform vec4 deep_color : source_color = vec4(0.08, 0.42, 0.62, 0.68);
-uniform vec4 light_color : source_color = vec4(0.32, 0.83, 0.91, 0.72);
+uniform vec4 deep_color : source_color = vec4(0.55, 0.72, 0.77, 0.88);
+uniform vec4 light_color : source_color = vec4(0.75, 0.88, 0.91, 0.9);
 uniform float flow_speed : hint_range(0.1, 5.0) = 1.0;
 uniform float detail_scale : hint_range(0.25, 3.0) = 1.0;
 uniform vec2 curtain_size = vec2(160.0, 240.0);
@@ -52,7 +52,7 @@ void fragment() {
 	float highlight = smoothstep(0.42, 0.92, streaks * 0.47 + fine * 0.17 + waves * 0.16 + turbulence * 0.48);
 	vec3 color = mix(deep_color.rgb, light_color.rgb, clamp(0.2 + highlight * 0.78 + waves * 0.08, 0.0, 1.0));
 	float glint = pow(max(0.0, fine * waves), 7.0) * 0.27;
-	color = mix(color, vec3(0.85, 0.98, 1.0), glint);
+	color = mix(color, vec3(0.88, 0.95, 0.97), glint);
 
 	float edge_wave = sin(pixel.y * 0.055 - t * 2.2) * 2.0 + sin(pixel.y * 0.13 - t * 3.5) * 1.1;
 	float edge_noise = (noise2(vec2(pixel.y * 0.045 - t * 0.45, 3.7)) - 0.5) * 3.0;
@@ -62,7 +62,7 @@ void fragment() {
 	float edge_mask = smoothstep(-1.0, 2.5, from_edge);
 	float rim = exp(-pow((from_edge - 4.0) / 3.5, 2.0));
 	float lip = exp(-pow((abs(impact_delta.x) - impact_width) / 9.0, 2.0)) * spread;
-	color = mix(color, vec3(0.82, 0.97, 1.0), clamp(rim * (0.38 + highlight * 0.25) + lip * 0.7, 0.0, 0.85));
+	color = mix(color, vec3(0.86, 0.94, 0.96), clamp(rim * (0.38 + highlight * 0.25) + lip * 0.7, 0.0, 0.85));
 
 	float top_ripple = (noise2(vec2(pixel.x * 0.045, t * 0.3)) - 0.5) * 4.0 + sin(pixel.x * 0.075 + t * 1.1) * 1.5;
 	float bottom_ripple = (noise2(vec2(pixel.x * 0.035, -t * 0.4 + 9.0)) - 0.5) * 7.0 + sin(pixel.x * 0.09 - t * 1.8) * 2.0;

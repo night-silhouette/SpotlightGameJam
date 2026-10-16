@@ -10,6 +10,7 @@ var fountain_active: bool = false
 # 领取状态死亡后可重置；献湖状态永久保留。
 var codex_claimed: bool = false
 var codex_offered: bool = false
+var codex_story_seen: bool = false
 var _elapsed: float = 0.0
 var _player: CharacterBody2D
 var _owns_player: bool = false
@@ -215,20 +216,19 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 			if submitted_keys.size() < 3:
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
-				var newly_activated := not fountain_active
 				fountain_active = true
-				if newly_activated:
-					SignalBus.DialogBox.emit(&"旁白", "一卷残卷显现，纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。")
-					SignalBus.DialogBox.emit(&"独白", "这股力量，和之前的王冠好像。")
-				if not codex_claimed and not codex_offered:
-					codex_claimed = true
-					if not bool(player.get("has_starseekers_codex")):
-						SignalBus.lock2.emit()
-						_toast("获得观星者残卷！水泵启动，沿喷泉升回地表，将残卷带回主城水池。", 7.0)
-					else:
-						_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
-				else:
-					_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
+				_toast("水泵已启动，点击喷泉左侧的观星者残卷拾取。" if not codex_claimed and not codex_offered else "水泵已启动，沿喷泉升回地表。", 7.0)
+			_refresh()
+		"codex":
+			if not fountain_active or codex_claimed or codex_offered or bool(player.get("has_starseekers_codex")):
+				return
+			codex_claimed = true
+			SignalBus.lock2.emit()
+			if not codex_story_seen:
+				codex_story_seen = true
+				SignalBus.DialogBox.emit(&"旁白", "一卷残卷显现，纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。")
+				SignalBus.DialogBox.emit(&"独白", "这股力量，和之前的王冠好像。")
+			_toast("获得观星者残卷！沿喷泉升回地表，将残卷带回主城水池。", 7.0)
 			_refresh()
 	SignalBus.Level2StateChanged.emit(self)
 
@@ -236,11 +236,15 @@ func _on_player_died(player: Node2D) -> void:
 	if player != get_tree().get_first_node_in_group(&"player") or codex_offered:
 		return
 	codex_claimed = false
+	_refresh()
+	SignalBus.Level2StateChanged.emit(self)
 
 func _on_relic_consumed(relic: StringName) -> void:
 	if relic == &"codex":
 		codex_offered = true
 		codex_claimed = true
+		_refresh()
+		SignalBus.Level2StateChanged.emit(self)
 
 func _on_save_loaded(_slot: int) -> void:
 	var player := get_tree().get_first_node_in_group(&"player")
@@ -249,7 +253,15 @@ func _on_save_loaded(_slot: int) -> void:
 	var carrying := bool(player.get("has_starseekers_codex"))
 	if not _has_explicit_codex_offered and bool(player.get("enable_rope")) and not carrying:
 		codex_offered = true
-	codex_claimed = codex_offered or carrying
+	if carrying or codex_offered:
+		for key_id in ["sun", "moon", "weave"]:
+			if key_id not in keys:
+				keys.append(key_id)
+		submitted_keys.assign(keys)
+		fountain_active = true
+	codex_claimed = carrying or codex_offered
+	_refresh(false)
+	SignalBus.Level2StateChanged.emit(self)
 
 func _on_respawned(_position: Vector2) -> void:
 	var from_fountain_fall := _fountain_fall_death_requested
@@ -301,10 +313,17 @@ func _refresh(animate_gate: bool = true) -> void:
 	if not is_node_ready():
 		return
 	for device in find_children("*", "Node2D", true, false):
-		if device.is_in_group("level2_device") and str(device.get_meta("kind", "")) == "key":
-			var taken: bool = str(device.get_meta("key_id", "")) in keys
-			device.set("available", not taken)
-			device.visible = not taken
+		if not device.is_in_group("level2_device"):
+			continue
+		match str(device.get_meta("kind", "")):
+			"key":
+				var taken: bool = str(device.get_meta("key_id", "")) in keys
+				device.set("available", not taken)
+				device.visible = not taken
+			"codex":
+				var can_claim := fountain_active and not codex_claimed and not codex_offered
+				device.set("available", can_claim)
+				device.visible = can_claim
 	_update_archive_gate(animate_gate)
 	$Rooms/WeaveArchive/SequenceStatus.text = "闸门开启" if puzzle_solved else "共鸣进度 %d / %d" % [rune_progress, _rune_order.size()]
 	$Rooms/Hub/Fountain/Caption.text = "逆流水柱已开启" if fountain_active else "提交钥匙  %d/3" % submitted_keys.size()
@@ -324,7 +343,7 @@ func _refresh(animate_gate: bool = true) -> void:
 
 ## 导出钥匙、谜题、通关和残卷领取状态；由现有存档系统保存，地图本身不写文件。
 func ExportSaveData() -> Dictionary:
-	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed, "codex_offered": codex_offered}
+	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed, "codex_offered": codex_offered, "codex_story_seen": codex_story_seen}
 
 ## 还原关卡状态；data 为 ExportSaveData 返回的字典，未知钥匙会被忽略。
 func LoadSaveData(data: Dictionary) -> void:
@@ -342,7 +361,8 @@ func LoadSaveData(data: Dictionary) -> void:
 	# 玩家数据可能尚未加载；在 SaveSlotLoaded 后统一根据最终持有状态同步。
 	_has_explicit_codex_offered = data.has("codex_offered")
 	codex_offered = bool(data.get("codex_offered", false))
-	codex_claimed = codex_offered or bool(data.get("codex_claimed", false))
+	codex_claimed = fountain_active and (codex_offered or bool(data.get("codex_claimed", false)))
+	codex_story_seen = bool(data.get("codex_story_seen", codex_claimed or codex_offered))
 	puzzle_solved = bool(data.get("puzzle_solved", false))
 	completed = bool(data.get("completed", false)) and fountain_active
 	rune_progress = _rune_order.size() if puzzle_solved else clampi(int(data.get("rune_progress", 0)), 0, maxi(0, _rune_order.size() - 1))

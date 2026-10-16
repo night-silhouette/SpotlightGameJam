@@ -27,6 +27,7 @@ const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
 @onready var quit_confirm_dialog: ConfirmationDialog = %QuitConfirmDialog
 
 var _setting_instance: SettingUI = null
+var _starting_new_game := false
 
 func _ready() -> void:
 	saves_modal.theme = SettingsSkin.CreateTheme()
@@ -50,7 +51,8 @@ func _sync_setting_shortcut() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if saves_modal.visible:
-			saves_modal.visible = false
+			if not _starting_new_game:
+				saves_modal.visible = false
 			get_viewport().set_input_as_handled()
 		elif credits_modal.visible:
 			credits_modal.visible = false
@@ -82,6 +84,7 @@ func _setup_signals() -> void:
 		quit_confirm_dialog.confirmed.connect(func(): SignalBus.GameQuitRequested.emit())
 
 func _on_start_pressed() -> void:
+	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "选择游戏存档"
 	_refresh_saves_ui()
 	saves_modal.visible = true
 
@@ -194,5 +197,16 @@ func _on_slot_load_pressed(slot_idx: int) -> void:
 
 ## 空白处或指定槽位开启新存档并进入 World.tscn
 func _on_slot_new_game_pressed(slot_idx: int) -> void:
-	saves_modal.visible = false
-	SaveManagerRef.StartNewGameInSlot(get_tree(), slot_idx)
+	if _starting_new_game:
+		return
+	_starting_new_game = true
+	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "正在加载世界…"
+	btn_close_saves.disabled = true
+	saves_list.visible = false
+	await get_tree().process_frame
+	var started: bool = await SaveManagerRef.StartNewGameInSlot(get_tree(), slot_idx)
+	if not started and is_instance_valid(self):
+		_starting_new_game = false
+		$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "加载失败，请重试"
+		btn_close_saves.disabled = false
+		saves_list.visible = true

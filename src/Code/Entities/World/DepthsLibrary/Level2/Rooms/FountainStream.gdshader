@@ -1,5 +1,4 @@
 shader_type canvas_item;
-render_mode unshaded;
 
 uniform float upward_tiles_per_second = 0.75;
 varying float local_y;

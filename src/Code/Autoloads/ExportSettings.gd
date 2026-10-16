@@ -686,6 +686,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Dialog", "dialog_")
 ## 独白与旁白继续箭头的悬停颜色；正常状态为白色。
 @export var dialog_arrow_hover_color: Color = Color(1.0, 0.95, 0.70, 1.0)
+## 独白每秒显示的字符数。
+@export_range(1.0, 120.0, 1.0) var dialog_monologue_chars_per_second: float = 30.0
 
 @export_group("Start Menu", "start_menu_")
 ## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)
@@ -731,18 +733,23 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var level2_death_boundary_ignore_debug_flight: bool = true
 
 @export_group("Level 2 - Hub Lighting", "level2_hub_light_")
-## 仅中央大厅光影总开关；运行时修改也可即时对比，不改其他关卡底色。
+## 地下图书馆环境光与大厅局部光影总开关；离开图书馆时恢复其他关卡底色。
 @export var level2_hub_light_enabled: bool = true
-@export var level2_hub_light_fountain_color: Color = Color(0.52, 0.76, 1.0, 1.0)
-@export_range(0.0, 1.0, 0.01) var level2_hub_light_fountain_idle_energy: float = 0.16
-@export_range(0.0, 1.0, 0.01) var level2_hub_light_fountain_active_energy: float = 0.32
-## 圆形光半径限制在房间内；位置与物件轮廓由 Lighting 场景预置。
-@export_range(32.0, 170.0, 1.0) var level2_hub_light_fountain_radius: float = 165.0
+@export var level2_hub_light_ambient_color: Color = Color(0.38, 0.44, 0.55, 1.0)
+@export_range(0.0, 3.0, 0.05) var level2_hub_light_ambient_transition_time: float = 0.8
+@export var level2_hub_light_fountain_color: Color = Color(0.56, 0.76, 1.0, 1.0)
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_idle_energy: float = 0.55
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_active_energy: float = 0.85
+## 圆形月光覆盖喷泉附近；位置与物件轮廓由 Lighting 场景预置。
+@export_range(32.0, 650.0, 1.0) var level2_hub_light_fountain_radius: float = 420.0
+## 喷泉激活时喷泉口局部补光的强度与半径。
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_source_energy: float = 0.45
+@export_range(32.0, 400.0, 1.0) var level2_hub_light_fountain_source_radius: float = 190.0
 @export var level2_hub_light_desk_color: Color = Color(1.0, 0.76, 0.47, 1.0)
-@export_range(0.0, 1.0, 0.01) var level2_hub_light_desk_energy: float = 0.20
-@export_range(32.0, 100.0, 1.0) var level2_hub_light_desk_radius: float = 96.0
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_desk_energy: float = 0.35
+@export_range(32.0, 200.0, 1.0) var level2_hub_light_desk_radius: float = 160.0
 @export var level2_hub_light_beam_color: Color = Color(0.70, 0.83, 1.0, 1.0)
-@export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.035
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.085
 @export_range(0.0, 0.15, 0.005) var level2_hub_light_glow_opacity: float = 0.055
 @export var level2_hub_light_shadows_enabled: bool = true
 @export_range(0.0, 1.0, 0.01) var level2_hub_light_shadow_opacity: float = 0.35
