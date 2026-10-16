@@ -185,7 +185,7 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 			if key_id == "weave" and not puzzle_solved:
 				return
 			keys.append(key_id)
-			_toast("取得钥匙！带回喷泉按 F 提交后才会永久保留。")
+			_toast("取得钥匙！")
 			_refresh()
 		"rune":
 			if puzzle_solved:
@@ -201,7 +201,7 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 					_toast("三枚符文共鸣，档案库闸门已开启。")
 			else:
 				rune_progress = 0
-				_toast("顺序不符，重新从“日”开始。入口石碑给出了顺序。")
+				_toast("顺序不符")
 			_refresh()
 		"lore":
 			_toast("占位叙事：水道曾连接整座图书馆。观星者残卷的正式文本与演出待接入。", 8.0)
