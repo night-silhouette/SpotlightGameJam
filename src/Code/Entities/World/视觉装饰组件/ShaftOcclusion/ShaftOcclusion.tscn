@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.gd" id="1_component"]
+[ext_resource type="Script" path="res://Code/Entities/World/视觉装饰组件/ShaftOcclusion/ExportSettings.gd" id="2_settings"]
+[ext_resource type="Script" path="res://Code/Entities/World/视觉装饰组件/ShaftOcclusion/ShaftOcclusionMask.gd" id="3_mask"]
+
+[sub_resource type="Resource" id="Resource_settings"]
+resource_local_to_scene = true
+script = ExtResource("2_settings")
+
+[node name="ShaftOcclusion" type="Node2D"]
+script = ExtResource("1_component")
+settings = SubResource("Resource_settings")
+
+[node name="Overlay" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="Mask" type="Control" parent="Overlay"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_mask")
