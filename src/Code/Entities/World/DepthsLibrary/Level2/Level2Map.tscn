@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://bopjvl4pbi3mj"]
 
 [ext_resource type="Texture2D" uid="uid://gbrajb8nr0so" path="res://Art/New/component/extracted/prop_paper_scroll_rolled_2.png" id="7_kfeio"]
+[ext_resource type="Shader" uid="uid://dor32xw4durg0" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ScrollDissolve.gdshader" id="7_mohfu"]
 [ext_resource type="Texture2D" uid="uid://mgp4x7ogvb08" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_1.png" id="13_ewexw"]
 [ext_resource type="Texture2D" uid="uid://dhgh6yt0eh63b" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_2.png" id="13_j2bs3"]
 [ext_resource type="Texture2D" uid="uid://bfqju7lfo4uc7" path="res://Art/New/component/extracted/mechanism_stele_dial_slot_3.png" id="15_kfeio"]
@@ -9,7 +10,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/DeathBoundary/DeathBoundary.tscn" id="DeathBoundary"]
 [ext_resource type="PackedScene" uid="uid://dfoa06wbpiqx8" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EastPassage.tscn" id="EastPassage"]
+[ext_resource type="PackedScene" uid="uid://bwxxgarggpqku" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EastPassage.tscn" id="EastPassage"]
 [ext_resource type="PackedScene" uid="uid://dsvfjlmmaraxx" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/EntryCollapse.tscn" id="EntryCollapse"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/FountainShaft.tscn" id="FountainShaft"]
 [ext_resource type="PackedScene" uid="uid://b3qlxyesas670" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/Hub.tscn" id="Hub"]
@@ -24,7 +25,22 @@
 [ext_resource type="PackedScene" uid="uid://cgt7cprco1uq3" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WeaveArchive.tscn" id="WeaveArchive"]
 [ext_resource type="PackedScene" uid="uid://b2ahpf27jgsmf" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/WestPassage.tscn" id="WestPassage"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mohfu"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_kdt67"]
+frequency = 0.04
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_vvc2w"]
+width = 256
+height = 256
+noise = SubResource("FastNoiseLite_kdt67")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ek66h"]
+shader = ExtResource("7_mohfu")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_vvc2w")
+shader_parameter/dissolve_progress = 0.0
+shader_parameter/edge_width = 0.04
+shader_parameter/edge_color = Color(0.5, 0.85, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_24a00"]
 resource_local_to_scene = true
 size = Vector2(1395, 650)
 
@@ -37,7 +53,31 @@ blend_mode = 1
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8botp"]
 blend_mode = 1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mohfu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_h48a5"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mfl2"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqca1"]
 shader = ExtResource("20_pairm")
 shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
@@ -55,37 +95,25 @@ shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = false
+shader_parameter/foreground = true
 shader_parameter/opacity = 0.35
 shader_parameter/player_world = Vector2(-100000, -100000)
 shader_parameter/clear_radius = 100.0
 shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xlvjv"]
-shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
-shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
-shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
-shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
 shader_parameter/foreground = false
-shader_parameter/opacity = 0.35
-shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
-shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_urly8"]
-shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
-shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
-shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
-shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = true
-shader_parameter/opacity = 0.35
-shader_parameter/player_world = Vector2(-100000, -100000)
-shader_parameter/clear_radius = 100.0
-shader_parameter/vertical_loop_fade = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ek66h"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -97,7 +125,7 @@ shader_parameter/foreground = false
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_24a00"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2dul"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -109,19 +137,7 @@ shader_parameter/foreground = false
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_h48a5"]
-resource_local_to_scene = true
-shader = ExtResource("16_aevo3")
-shader_parameter/vertical_layout = true
-shader_parameter/artwork_height = 800.0
-shader_parameter/shaft_width = 180.0
-shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 1.0
-shader_parameter/foreground = false
-shader_parameter/player_pixels = Vector2(-10000, -10000)
-shader_parameter/clear_radius = 100.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mfl2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_10p2q"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -133,7 +149,7 @@ shader_parameter/foreground = true
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqca1"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uhtjq"]
 resource_local_to_scene = true
 shader = ExtResource("16_aevo3")
 shader_parameter/vertical_layout = true
@@ -187,10 +203,10 @@ visible = false
 [node name="EastSign" parent="Rooms/Hub" index="5" unique_id=1841482344]
 visible = false
 
-[node name="Sprite2D" parent="Rooms/Hub" index="7" unique_id=1616484494]
+[node name="Sprite2D" parent="Rooms/Hub" index="8" unique_id=1616484494]
 position = Vector2(-2897, 463)
 
-[node name="Sprite2D2" parent="Rooms/Hub" index="8" unique_id=729371312]
+[node name="Sprite2D2" parent="Rooms/Hub" index="9" unique_id=729371312]
 position = Vector2(-2769, 507)
 
 [node name="WestPassage" parent="Rooms" unique_id=1965790281 instance=ExtResource("WestPassage")]
@@ -227,6 +243,7 @@ visible = false
 self_modulate = Color(1, 1, 1, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="Rooms/SunStacks/Crumble4/VisualRoot" index="2" unique_id=271108179]
+material = SubResource("ShaderMaterial_ek66h")
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("7_kfeio")
 
@@ -279,7 +296,7 @@ tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAA
 
 [node name="TriggerShape" parent="Rooms/RestArchive/RoomCameraZone" index="0"]
 position = Vector2(697.5, 275)
-shape = SubResource("RectangleShape2D_mohfu")
+shape = SubResource("RectangleShape2D_24a00")
 
 [node name="ViewTopLeft" parent="Rooms/RestArchive/RoomCameraZone" index="1"]
 position = Vector2(-20, -30)
@@ -290,19 +307,11 @@ position = Vector2(1395, 626)
 [node name="EastPassage" parent="Rooms" unique_id=257843476 instance=ExtResource("EastPassage")]
 position = Vector2(1400, 0)
 
-[node name="RoomTitle" parent="Rooms/EastPassage" index="0"]
+[node name="RoomTitle" parent="Rooms/EastPassage" index="0" unique_id=1297600648]
 visible = false
-offset_left = 45.0
-offset_top = 10.0
-offset_right = 455.0
-offset_bottom = 90.0
 
-[node name="RoomHint" parent="Rooms/EastPassage" index="1"]
+[node name="RoomHint" parent="Rooms/EastPassage" index="1" unique_id=1899836839]
 visible = false
-offset_left = 45.0
-offset_top = 58.0
-offset_right = 455.0
-offset_bottom = 138.0
 
 [node name="MoonAqueduct" parent="Rooms" unique_id=903562269 instance=ExtResource("MoonAqueduct")]
 position = Vector2(1900, 0)
@@ -416,6 +425,10 @@ self_modulate = Color(0.73929507, 1, 1, 1)
 material = SubResource("CanvasItemMaterial_8botp")
 texture = ExtResource("15_kfeio")
 
+[node name="Sprite2D" parent="Rooms/WeaveArchive/Gate" parent_id_path=PackedInt32Array(373735795, 109426221) index="3" unique_id=29211382]
+position = Vector2(43, 309)
+scale = Vector2(0.44, 0.44)
+
 [node name="Caption" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="1"]
 offset_left = -107.0
 offset_top = -16.0
@@ -432,7 +445,7 @@ offset_bottom = -115.0
 position = Vector2(3, -65)
 
 [node name="Terrain" parent="Rooms/WeaveArchive" index="10" unique_id=1287906624]
-tile_map_data = PackedByteArray("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AAAzABAAAAAAAAAAAAA0ABAAAAAAAAAAAAA1ABAAAAAAAAAAAAA2ABAAAAAAAAAAAAA3ABAAAAAAAAAAAAA4ABAAAAAAAAAAAAA5ABAAAAAAAAAAAAA6ABAAAAAAAAAAAAA7ABAAAAAAAAAAAAA8ABAAAAAAAAAAAAA9ABAAAAAAAAAAAAA+ABAAAAAAAAAAAAA/ABAAAAAAAAAAAABAABAAAAAAAAAAAABBABAAAAAAAAAAAABCABAAAAAAAAAAAABDABAAAAAAAAAAAABEABAAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAABEABEAAAAAAAAAAAAAABIAAAAAAAAAAABEABIAAAAAAAAAAABEABMAAAAAAAAAAABEABQAAAAAAAAAAABEABUAAAAAAAAAAAD//wkAAAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAPz/AAAAAAAAAAAAAPv/AAAAAAAAAAAAAPr/AAAAAAAAAAD///r/AAAAAAAAAAD///z/AAAAAAAAAAD///v/AAAAAAAAAAD///n/AAAAAAAAAAD///j/AAAAAAAAAAD///f/AAAAAAAAAAD///b/AAAAAAAAAAD///X/AAAAAAAAAAD///T/AAAAAAAAAAD///P/AAAAAAAAAAD///L/AAAAAAAAAAD///H/AAAAAAAAAAD///D/AAAAAAAAAAD//+//AAAAAAAAAAD//+7/AAAAAAAAAAD//+3/AAAAAAAAAAD//+z/AAAAAAAAAAD//+v/AAAAAAAAAAD//+r/AAAAAAAAAAD//+n/AAAAAAAAAAD//+j/AAAAAAAAAAD//xIAAAAAAAAAAAD//xMAAAAAAAAAAAAAAAoAAAAAAAAAAAD//woAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("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")
 
 [node name="FountainShaft" parent="Rooms" unique_id=1773857183 instance=ExtResource("FountainShaft")]
 position = Vector2(900, -3080)
@@ -473,11 +486,11 @@ scroll_scale = Vector2(0.65, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="BlueBase" parent="Scenery/HorizontalMain/Sky" index="0"]
-material = SubResource("ShaderMaterial_mohfu")
+material = SubResource("ShaderMaterial_h48a5")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="BlueBaseRight" parent="Scenery/HorizontalMain/Sky" index="1"]
-material = SubResource("ShaderMaterial_mohfu")
+material = SubResource("ShaderMaterial_h48a5")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -486,29 +499,29 @@ scroll_scale = Vector2(0.65, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="GlassColors" parent="Scenery/HorizontalMain/FarBackground" index="0"]
-material = SubResource("ShaderMaterial_3tyik")
+material = SubResource("ShaderMaterial_4mfl2")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="GlassColorsRight" parent="Scenery/HorizontalMain/FarBackground" index="1"]
-material = SubResource("ShaderMaterial_3tyik")
+material = SubResource("ShaderMaterial_4mfl2")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGrid" parent="Scenery/HorizontalMain/FarBackground" index="2"]
-material = SubResource("ShaderMaterial_3tyik")
+material = SubResource("ShaderMaterial_4mfl2")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGridRight" parent="Scenery/HorizontalMain/FarBackground" index="3"]
-material = SubResource("ShaderMaterial_3tyik")
+material = SubResource("ShaderMaterial_4mfl2")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Arches" parent="Scenery/HorizontalMain/FarBackground" index="4"]
-material = SubResource("ShaderMaterial_3tyik")
+material = SubResource("ShaderMaterial_4mfl2")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="ArchesRight" parent="Scenery/HorizontalMain/FarBackground" index="5"]
-material = SubResource("ShaderMaterial_3tyik")
+material = SubResource("ShaderMaterial_4mfl2")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -517,47 +530,47 @@ scroll_scale = Vector2(0.65, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="WindowGlow" parent="Scenery/HorizontalMain/NearBackground" index="0"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGlowRight" parent="Scenery/HorizontalMain/NearBackground" index="1"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShade" parent="Scenery/HorizontalMain/NearBackground" index="2"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShadeRight" parent="Scenery/HorizontalMain/NearBackground" index="3"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRock" parent="Scenery/HorizontalMain/NearBackground" index="4"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRockRight" parent="Scenery/HorizontalMain/NearBackground" index="5"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Sparkles" parent="Scenery/HorizontalMain/NearBackground" index="6"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="SparklesRight" parent="Scenery/HorizontalMain/NearBackground" index="7"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridge" parent="Scenery/HorizontalMain/NearBackground" index="8"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridgeRight" parent="Scenery/HorizontalMain/NearBackground" index="9"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -566,28 +579,28 @@ scroll_scale = Vector2(1.08, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="LeftPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="0"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 position = Vector2(-1660.9375, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="RightPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="1"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" index="0"]
-material = SubResource("ShaderMaterial_ek66h")
+material = SubResource("ShaderMaterial_xlvjv")
 
 [node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" index="1"]
-material = SubResource("ShaderMaterial_24a00")
+material = SubResource("ShaderMaterial_urly8")
 
 [node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" index="2"]
-material = SubResource("ShaderMaterial_h48a5")
+material = SubResource("ShaderMaterial_r2dul")
 
 [node name="NearColumn" parent="Scenery/FountainShaft/Foreground" index="0"]
-material = SubResource("ShaderMaterial_4mfl2")
+material = SubResource("ShaderMaterial_10p2q")
 
 [node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" index="1"]
-material = SubResource("ShaderMaterial_iqca1")
+material = SubResource("ShaderMaterial_uhtjq")
 
 [node name="TerrainArt" parent="." unique_id=1368075065 instance=ExtResource("TerrainArt")]
 
@@ -675,6 +688,7 @@ autowrap_mode = 3
 [editable path="Rooms/RestArchive"]
 [editable path="Rooms/RestArchive/RoomCameraZone"]
 [editable path="Rooms/EastPassage"]
+[editable path="Rooms/EastPassage/CeilingTrap"]
 [editable path="Rooms/MoonAqueduct"]
 [editable path="Rooms/MoonAqueduct/FerryA"]
 [editable path="Rooms/MoonAqueduct/FerryB"]
@@ -684,6 +698,8 @@ autowrap_mode = 3
 [editable path="Rooms/WeaveArchive/MoonRune"]
 [editable path="Rooms/WeaveArchive/SunRune"]
 [editable path="Rooms/WeaveArchive/WeaveRune"]
+[editable path="Rooms/WeaveArchive/TimingSpikesA"]
+[editable path="Rooms/WeaveArchive/TimingSpikesB"]
 [editable path="Rooms/WeaveArchive/WeaveKey"]
 [editable path="Rooms/FountainShaft"]
 [editable path="Rooms/SurfaceExit"]

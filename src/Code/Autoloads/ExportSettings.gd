@@ -43,6 +43,12 @@ extends Node
 ## 人物中心越过画面底边的额外屏幕像素，确保身体完全离屏。
 @export_range(0.0, 300.0, 8.0) var level2_fountain_return_fall_screen_margin: float = 96.0
 
+@export_group("Level 2 - Archive Gate", "level2_archive_gate_")
+## 档案库闸门向上升起的距离（像素），应大于门的高度。
+@export_range(1.0, 2000.0, 1.0) var level2_archive_gate_lift_distance: float = 640.0
+## 解谜后闸门升起所需秒数；越大越慢。
+@export_range(0.1, 10.0, 0.1) var level2_archive_gate_open_duration: float = 1.4
+
 @export_group("Level 2 - Slow Descent", "level2_descent_")
 ## 仅左侧高落差竖井启用慢下落、快速背景效果。
 @export var level2_descent_enabled: bool = true

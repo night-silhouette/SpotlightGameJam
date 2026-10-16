@@ -1,6 +1,8 @@
 [gd_scene format=4 uid="uid://cgt7cprco1uq3"]
 
 [ext_resource type="Texture2D" uid="uid://mjgqp4qduuy6" path="res://Art/New/component/extracted/mechanism_pin_lever_3.png" id="3_7iu47"]
+[ext_resource type="Texture2D" uid="uid://dduh41j41bxpo" path="res://Art/New/component/extracted/mechanism_needle_pin_1.png" id="3_gu7in"]
+[ext_resource type="Texture2D" uid="uid://0c0k3kdvns3u" path="res://Art/New/component/extracted/architecture_door_carved_wood.png" id="4_13w1d"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 [ext_resource type="PackedScene" uid="uid://c85h5y2p6x8r1" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
@@ -49,8 +51,68 @@ metadata/rune_id = "weave"
 [node name="TimingSpikesA" parent="." unique_id=684085317 instance=ExtResource("spikes")]
 position = Vector2(585, 500)
 
+[node name="BaseSlot" parent="TimingSpikesA" index="0"]
+visible = false
+
+[node name="VisualPolygon" parent="TimingSpikesA/SpikeMovingRoot" index="0"]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="2" unique_id=35015235]
+position = Vector2(-14.434998, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
+[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="3" unique_id=1725377885]
+position = Vector2(-4.4349976, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
+[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="4" unique_id=1904993960]
+position = Vector2(5.5650024, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
+[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="5" unique_id=1980561138]
+position = Vector2(15.565002, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
 [node name="TimingSpikesB" parent="." unique_id=326580925 instance=ExtResource("spikes")]
 position = Vector2(1160, 500)
+
+[node name="BaseSlot" parent="TimingSpikesB" index="0"]
+visible = false
+
+[node name="VisualPolygon" parent="TimingSpikesB/SpikeMovingRoot" index="0"]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="2" unique_id=1005740303]
+position = Vector2(-15, -1)
+rotation = -3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
+[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="3" unique_id=1854677921]
+position = Vector2(-5, -1)
+rotation = -3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
+[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="4" unique_id=1262427114]
+position = Vector2(5, -1)
+rotation = -3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+
+[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="5" unique_id=627115476]
+position = Vector2(15, -1)
+rotation = -3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
 
 [node name="Gate" type="StaticBody2D" parent="." unique_id=109426221]
 position = Vector2(1720, -60)
@@ -61,12 +123,19 @@ position = Vector2(20, 290)
 shape = SubResource("shape9")
 
 [node name="Stone" type="Polygon2D" parent="Gate" unique_id=294155169]
+visible = false
 color = Color(0.14, 0.23, 0.28, 1)
 polygon = PackedVector2Array(0, 0, 40, 0, 40, 580, 0, 580)
 
 [node name="Edge" type="Polygon2D" parent="Gate" unique_id=1092831344]
+visible = false
 color = Color(0.5, 0.72, 0.73, 1)
 polygon = PackedVector2Array(0, 0, 40, 0, 40, 4, 0, 4)
+
+[node name="Sprite2D" type="Sprite2D" parent="Gate" unique_id=29211382]
+position = Vector2(20, 307)
+scale = Vector2(0.42, 0.42)
+texture = ExtResource("4_13w1d")
 
 [node name="SequenceStatus" type="Label" parent="." unique_id=1814283100]
 offset_left = 1480.0
@@ -103,4 +172,6 @@ tile_map_data = PackedByteArray("AAD///7/AAAAAAAAAAAAAP7/AAAAAAAAAAABAP7/AAAAAAA
 tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
 
+[editable path="TimingSpikesA"]
+[editable path="TimingSpikesB"]
 [editable path="WeaveKey"]

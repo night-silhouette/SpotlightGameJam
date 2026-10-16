@@ -133,7 +133,8 @@ Code/
 | 第一关王冠与按钮绑定 | `W/SunkenPalace/SunkenPalace.gd:10-70`；`W/SunkenPalace/SunkenPalace.tscn:92-97,179-182` | Crown 的 `ComponentInteracted` 隐藏物件并发 `lock1`；未献祭死亡可恢复。平台绑定按钮1，门绑定按钮2/3/4；不是第二关专用机关事件。 |
 | 第二关设备、钥匙与符文序列 | `IC/Level2Device/Level2Device.gd:9-52`；`L2/Level2Map.gd:26-44,172-224` | `Level2InteractionRequested→_on_requested` 按 kind 处理 key/rune/lore/fountain；符文顺序取配置、错误归零，weave 钥匙需解谜；提交三钥匙激活喷泉，首次激活播放对话；残卷未领取且未献祭、玩家未持有时发 `lock2`，未献祭死亡后可再领取并重发；刷新发 `Level2StateChanged`。 |
 | 第二关升降、回落与完成 | `L2/Level2Map.gd:46-170,258-264` | `PlayerBeforeMotion` 驱动喷泉上升/刷新二跳；慢降发镜头和 `Level2DescentVisualChanged`；回落链为 descent→fixed→`PlayerInstantDeathRequested`；喷泉激活后出口发 `Level2Completed`。 |
-| 第二关回退与存档 | `L2/Level2Map.gd:226-256,270-315` | 死亡清未献祭残卷，复活 keys 回退 submitted_keys；保存符文/钥匙/喷泉/完成状态，加载过滤非法数据并约束提交、激活、通关关系。房间装配见 `L2/Rooms/`。 |
+| 第二关回退与存档 | `L2/Level2Map.gd`：`_on_respawned`、`ExportSaveData`、`LoadSaveData` | 死亡清未献祭残卷，复活 keys 回退 submitted_keys；保存符文/钥匙/喷泉/完成状态，加载过滤非法数据并约束提交、激活、通关关系。房间装配见 `L2/Rooms/`。 |
+| 第二关档案库升门 | `L2/Level2Map.gd:274-305,327-350`；`A/ExportSettings.gd:46-50` | `_refresh → _update_archive_gate` 在符文解谜后用物理帧 Tween 将 `Rooms/WeaveArchive/Gate` 整体向上移动，贴图与碰撞同步且保持启用；重复刷新不重启动画，初始化和读档直接定位。上移距离与时长由 `level2_archive_gate_*` 配置。 |
 | 绿洲取骨与去返程切换 | `W/OasisBattlefield/OasisBattlefield.gd:29-182` | 枯骨交互延迟等对话结束及存活确认，再设重生点、发 `lock3`、`SwitchToReturnPhase→ResetChase→StartChase→AutoSave`；切阶段同时改显示、处理、TileMap及碰撞。读档等待 `SaveSlotLoaded`。 |
 | 绿洲船谜题、死亡与终点 | `W/OasisBattlefield/OasisBattlefield.gd:169-253` | `BlockerVanished`/get_boat 区解船谜题，`ResumeJourney` 续航；TheEnd 延迟 `EndChase`；复活重置去程/追逐/船，献祭 bones 后永久记录。 |
 | 船与停靠资源 | `IC/OasisBoat/OasisBoat.gd:68-182,190-307,327-404`；`IC/OasisBoat/OasisBoatStopPoint.gd:1-32` | 初漂→等待→航行→终点；`SolvePuzzle` 解站点，`ResumeJourney` 强制跳过等待条件。船体 top_level，沿航线限超前、射线防挤压，提供平台速度；无独立存档接口。 |

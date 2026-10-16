@@ -22,6 +22,10 @@ var _previous_fountain_point := Vector2.ZERO
 var _has_previous_fountain_point: bool = false
 var _slow_descent_camera: bool = false
 var _has_explicit_codex_offered: bool = false
+@onready var _archive_gate: StaticBody2D = $Rooms/WeaveArchive/Gate
+@onready var _archive_gate_closed_position: Vector2 = _archive_gate.position
+var _archive_gate_target_open: bool = false
+var _archive_gate_tween: Tween
 
 func _ready() -> void:
 	var configured: PackedStringArray = ExportSettings.level2_rune_order
@@ -41,7 +45,7 @@ func _ready() -> void:
 	for room in $Rooms.get_children():
 		room.get_node("RoomTitle").hide()
 		room.get_node("RoomHint").hide()
-	_refresh()
+	_refresh(false)
 
 func _physics_process(delta: float) -> void:
 	_elapsed += delta
@@ -267,7 +271,28 @@ func _toast(message: String, seconds: float = 4.0) -> void:
 	$HUD/Root/Toast.text = message
 	_toast_left = seconds
 
-func _refresh() -> void:
+func _update_archive_gate(animate: bool) -> void:
+	if animate and _archive_gate_target_open == puzzle_solved:
+		return
+	_archive_gate_target_open = puzzle_solved
+	if _archive_gate_tween != null:
+		_archive_gate_tween.kill()
+		_archive_gate_tween = null
+	var target := _archive_gate_closed_position
+	if puzzle_solved:
+		target.y -= maxf(1.0, ExportSettings.level2_archive_gate_lift_distance)
+	# 移动父节点，让贴图和实体碰撞同步升起；不再隐藏门或提前关闭碰撞。
+	_archive_gate.show()
+	_archive_gate.get_node("CollisionShape2D").set_deferred("disabled", false)
+	if not animate:
+		_archive_gate.position = target
+		return
+	_archive_gate_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	_archive_gate_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_archive_gate_tween.tween_property(_archive_gate, "position", target,
+		maxf(0.1, ExportSettings.level2_archive_gate_open_duration))
+
+func _refresh(animate_gate: bool = true) -> void:
 	if not is_node_ready():
 		return
 	for device in find_children("*", "Node2D", true, false):
@@ -275,8 +300,7 @@ func _refresh() -> void:
 			var taken: bool = str(device.get_meta("key_id", "")) in keys
 			device.set("available", not taken)
 			device.visible = not taken
-	$Rooms/WeaveArchive/Gate.visible = not puzzle_solved
-	$Rooms/WeaveArchive/Gate/CollisionShape2D.set_deferred("disabled", puzzle_solved)
+	_update_archive_gate(animate_gate)
 	$Rooms/WeaveArchive/SequenceStatus.text = "闸门开启" if puzzle_solved else "共鸣进度 %d / %d" % [rune_progress, _rune_order.size()]
 	$Rooms/Hub/Fountain/Caption.text = "逆流水柱已开启" if fountain_active else "提交钥匙  %d/3" % submitted_keys.size()
 	$Rooms/Hub/FountainStream.visible = fountain_active
@@ -319,4 +343,4 @@ func LoadSaveData(data: Dictionary) -> void:
 	puzzle_solved = bool(data.get("puzzle_solved", false))
 	completed = bool(data.get("completed", false)) and fountain_active
 	rune_progress = _rune_order.size() if puzzle_solved else clampi(int(data.get("rune_progress", 0)), 0, maxi(0, _rune_order.size() - 1))
-	_refresh()
+	_refresh(false)

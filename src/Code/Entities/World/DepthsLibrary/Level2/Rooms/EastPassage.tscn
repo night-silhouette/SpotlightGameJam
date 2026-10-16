@@ -1,40 +1,47 @@
-[gd_scene format=3]
-[ext_resource type="TileSet" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CrumblingPlatform/CrumblingPlatform.tscn" id="crumble"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Stalactite/Stalactite.tscn" id="stalactite"]
-[node name="EastPassage" type="Node2D"]
+[gd_scene format=4 uid="uid://bwxxgarggpqku"]
+
+[ext_resource type="Texture2D" uid="uid://dduh41j41bxpo" path="res://Art/New/component/extracted/mechanism_needle_pin_1.png" id="2_f8sav"]
+[ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+[ext_resource type="PackedScene" uid="uid://bv8m4a7j2x1kp" path="res://Code/Entities/InteractiveComponent/Stalactite/Stalactite.tscn" id="stalactite"]
+
+[node name="EastPassage" type="Node2D" unique_id=94235269]
 metadata/width = 500
 metadata/title = "渗水矿道"
 
-[node name="RoomTitle" type="Label" parent="."]
-offset_left = 45
-offset_top = 10
-offset_right = 455
-offset_bottom = 90
+[node name="RoomTitle" type="Label" parent="." unique_id=1297600648]
+offset_left = 45.0
+offset_top = 10.0
+offset_right = 455.0
+offset_bottom = 90.0
 theme_override_font_sizes/font_size = 30
-mouse_filter = 2
 text = "渗水矿道"
 
-[node name="RoomHint" type="Label" parent="."]
-offset_left = 45
-offset_top = 58
-offset_right = 455
-offset_bottom = 138
+[node name="RoomHint" type="Label" parent="." unique_id=1899836839]
+offset_left = 45.0
+offset_top = 58.0
+offset_right = 455.0
+offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-mouse_filter = 2
 text = "钟乳石松动后会掉落，看到晃动及时离开。"
 
-[node name="CeilingTrap" parent="." instance=ExtResource("stalactite")]
+[node name="CeilingTrap" parent="." unique_id=816995944 instance=ExtResource("stalactite")]
 position = Vector2(260, 170)
 
+[node name="VisualPolygon" parent="CeilingTrap/VisualRoot" index="0"]
+visible = false
 
+[node name="HighlightPolygon" parent="CeilingTrap/VisualRoot" index="1"]
+visible = false
 
-[node name="Terrain" type="TileMapLayer" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="CeilingTrap/VisualRoot" index="2" unique_id=927214766]
+position = Vector2(0, 24)
+scale = Vector2(0.18, 0.18)
+texture = ExtResource("2_f8sav")
+
+[node name="Terrain" type="TileMapLayer" parent="." unique_id=636824380]
 position = Vector2(8, 24)
 tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAAAAAACAP3/AAAAAAAAAAADAP3/AAAAAAAAAAAEAP3/AAAAAAAAAAAFAP3/AAAAAAAAAAAGAP3/AAAAAAAAAAAHAP3/AAAAAAAAAAAIAP3/AAAAAAAAAAAJAP3/AAAAAAAAAAAKAP3/AAAAAAAAAAALAP3/AAAAAAAAAAAMAP3/AAAAAAAAAAANAP3/AAAAAAAAAAAOAP3/AAAAAAAAAAAPAP3/AAAAAAAAAAD///7/AAAAAAAAAAAPAP7/AAAAAAAAAAD/////AAAAAAAAAAAPAP//AAAAAAAAAAD//wAAAAAAAAAAAAAPAAAAAAAAAAAAAAD//wEAAAAAAAAAAAAPAAEAAAAAAAAAAAD//wIAAAAAAAAAAAAPAAIAAAAAAAAAAAD//wMAAAAAAAAAAAAPAAMAAAAAAAAAAAD//wQAAAAAAAAAAAAPAAQAAAAAAAAAAAD//wUAAAAAAAAAAAAPAAUAAAAAAAAAAAD//wYAAAAAAAAAAAAPAAYAAAAAAAAAAAD//wcAAAAAAAAAAAAPAAcAAAAAAAAAAAD//wgAAAAAAAAAAAAPAAgAAAAAAAAAAAAAABAAAAAAAAAAAAABABAAAAAAAAAAAAACABAAAAAAAAAAAAADABAAAAAAAAAAAAAEABAAAAAAAAAAAAAFABAAAAAAAAAAAAAGABAAAAAAAAAAAAAHABAAAAAAAAAAAAAIABAAAAAAAAAAAAAJABAAAAAAAAAAAAAKABAAAAAAAAAAAAALABAAAAAAAAAAAAAMABAAAAAAAAAAAAANABAAAAAAAAAAAAAOABAAAAAAAAAAAAAAABEAAAAAAAAAAAABABEAAAAAAAAAAAACABEAAAAAAAAAAAADABEAAAAAAAAAAAAEABEAAAAAAAAAAAAFABEAAAAAAAAAAAAGABEAAAAAAAAAAAAHABEAAAAAAAAAAAAIABEAAAAAAAAAAAAJABEAAAAAAAAAAAAKABEAAAAAAAAAAAALABEAAAAAAAAAAAAMABEAAAAAAAAAAAANABEAAAAAAAAAAAAOABEAAAAAAAAAAAAAABIAAAAAAAAAAAABABIAAAAAAAAAAAACABIAAAAAAAAAAAADABIAAAAAAAAAAAAEABIAAAAAAAAAAAAFABIAAAAAAAAAAAAGABIAAAAAAAAAAAAHABIAAAAAAAAAAAAIABIAAAAAAAAAAAAJABIAAAAAAAAAAAAKABIAAAAAAAAAAAALABIAAAAAAAAAAAAMABIAAAAAAAAAAAANABIAAAAAAAAAAAAOABIAAAAAAAAAAAA=")
 tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
+
+[editable path="CeilingTrap"]
