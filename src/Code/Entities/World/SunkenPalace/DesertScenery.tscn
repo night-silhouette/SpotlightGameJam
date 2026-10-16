@@ -1,0 +1,122 @@
+[gd_scene format=3 uid="uid://c8efujb25b40s"]
+
+[ext_resource type="Script" uid="uid://da5ysmo54bqls" path="res://Code/Entities/World/SunkenPalace/DesertScenery.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dfjqov2p2xhp2" path="res://Art/New/dessert/dessert_back.PNG" id="2_dessert_back"]
+[ext_resource type="Texture2D" uid="uid://b8360tlats5tc" path="res://Art/New/dessert/fx_sun_bokeh.png" id="2_sun_bokeh"]
+[ext_resource type="Texture2D" uid="uid://cwig3hjhtg6q3" path="res://Art/New/dessert/bg_desert_silhouette.png" id="3_desert_silhouette"]
+[ext_resource type="Texture2D" uid="uid://k0y82cpyc1un" path="res://Art/New/dessert/bg_mesa_rocks.png" id="4_mesa_rocks"]
+[ext_resource type="Texture2D" uid="uid://4er5jxt8fp7d" path="res://Art/New/dessert/bg_rock_pillars.png" id="5_rock_pillars"]
+[ext_resource type="Texture2D" uid="uid://cd03wur66avsc" path="res://Art/New/dessert/bg_cactus_far.png" id="6_cactus_far"]
+[ext_resource type="Texture2D" uid="uid://dlj06f35t0tbs" path="res://Art/New/dessert/bg_dunes_mid.png" id="7_dunes_mid"]
+
+[node name="DesertScenery" type="Node2D" unique_id=606180320]
+script = ExtResource("1_script")
+
+[node name="BaseSky" type="Parallax2D" parent="." unique_id=184920152]
+z_index = -35
+scroll_scale = Vector2(0.005, 0.01)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="BaseSky" unique_id=581938210]
+position = Vector2(11.256836, 0)
+texture = ExtResource("2_dessert_back")
+centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="BaseSky" unique_id=918372615]
+position = Vector2(1600, 0)
+texture = ExtResource("2_dessert_back")
+centered = false
+flip_h = true
+
+[node name="SunBokeh" type="Parallax2D" parent="." unique_id=324007481]
+z_index = -30
+scroll_scale = Vector2(0.01, 0.02)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="SunBokeh" unique_id=690523452]
+position = Vector2(-127.602295, 22.987854)
+texture = ExtResource("2_sun_bokeh")
+centered = false
+
+[node name="MesaRocks" type="Parallax2D" parent="." unique_id=225151614]
+z_index = -25
+scroll_scale = Vector2(0.03, 0.03)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="MesaRocks" unique_id=729708152]
+texture = ExtResource("4_mesa_rocks")
+centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="MesaRocks" unique_id=350224912]
+position = Vector2(1600, 0)
+texture = ExtResource("4_mesa_rocks")
+centered = false
+flip_h = true
+
+[node name="RockPillars" type="Parallax2D" parent="." unique_id=26551239]
+z_index = -20
+scroll_scale = Vector2(0.04, 0.04)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="RockPillars" unique_id=1074729834]
+texture = ExtResource("5_rock_pillars")
+centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="RockPillars" unique_id=1900612774]
+position = Vector2(1600, 0)
+texture = ExtResource("5_rock_pillars")
+centered = false
+flip_h = true
+
+[node name="CactusFar" type="Parallax2D" parent="." unique_id=1394888404]
+z_index = -15
+scroll_scale = Vector2(0.05, 0.05)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="CactusFar" unique_id=844295087]
+texture = ExtResource("6_cactus_far")
+centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="CactusFar" unique_id=347726204]
+position = Vector2(1600, 0)
+texture = ExtResource("6_cactus_far")
+centered = false
+flip_h = true
+
+[node name="DunesMid" type="Parallax2D" parent="." unique_id=688781729]
+z_index = -10
+scroll_scale = Vector2(0.06, 0.06)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="DunesMid" unique_id=1478120655]
+position = Vector2(0, -4.22876)
+texture = ExtResource("7_dunes_mid")
+centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="DunesMid" unique_id=1245054528]
+position = Vector2(1600, 0)
+texture = ExtResource("7_dunes_mid")
+centered = false
+flip_h = true
+
+[node name="DesertSilhouette" type="Parallax2D" parent="." unique_id=222718146]
+z_index = 1
+scroll_scale = Vector2(0.1, 0.08)
+repeat_size = Vector2(3200, 0)
+repeat_times = 4
+
+[node name="Sprite" type="Sprite2D" parent="DesertSilhouette" unique_id=1269374407]
+texture = ExtResource("3_desert_silhouette")
+centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="DesertSilhouette" unique_id=688230473]
+position = Vector2(1600, 0)
+texture = ExtResource("3_desert_silhouette")
+centered = false
+flip_h = true
