@@ -12,6 +12,13 @@ signal Level2StateChanged(level: Node2D)
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
 
+## 请求玩家在第一关开场独白期间锁定操作，并将起身动画停在第0帧。
+signal PlayerOpeningHoldRequested
+## 请求玩家从第0帧完整播放第一关开场起身动画。
+signal PlayerOpeningStandUpRequested
+## 请求玩家取消第一关开场锁定并恢复原有处理模式。
+signal PlayerOpeningReleaseRequested
+
 ## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
 signal DialogBox(type: StringName, content: String)
 

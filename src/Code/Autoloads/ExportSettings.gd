@@ -683,6 +683,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
 
+@export_group("World Opening", "world_opening_")
+## 世界就绪后等待的帧数，与开场剧情及读档初始化对齐。
+@export_range(0, 10, 1) var world_opening_fade_ready_frames: int = 4
+## 开场全屏黑幕淡出时长（秒）。
+@export_range(0.0, 2.0, 0.05) var world_opening_fade_duration: float = 0.5
+
 @export_group("Oasis Decoration", "oasis_art_")
 ## 第三关水化外观透明度，不影响水化碰撞或加速。
 @export_range(0.1, 1.0) var oasis_art_water_opacity: float = 0.78
