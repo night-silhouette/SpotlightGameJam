@@ -167,14 +167,6 @@ shader_parameter/clear_radius = 100.0
 resource_local_to_scene = true
 script = ExtResource("theirs_25_24a00")
 
-[sub_resource type="Resource" id="Resource_c5enj"]
-resource_local_to_scene = true
-script = ExtResource("theirs_25_24a00")
-
-[sub_resource type="Resource" id="Resource_abmis"]
-resource_local_to_scene = true
-script = ExtResource("theirs_25_24a00")
-
 [node name="Level2Map" type="Node2D" unique_id=2089776168 groups=["level2_map"]]
 script = ExtResource("script")
 
@@ -708,31 +700,6 @@ position = Vector2(-1051, -86)
 scale = Vector2(1.5417591, 0.1807527)
 polygon = PackedVector2Array(846.4357, 414.93164, 660.2847, 420.46387, 660.2847, 2528.3164, 327.54794, 2528.3164, 327.54794, -127.24609, 846.4357, -132.7793)
 
-[node name="ShaftOcclusion2" parent="." unique_id=1682304827 instance=ExtResource("theirs_24_ek66h")]
-position = Vector2(578, -2938)
-settings = SubResource("Resource_c5enj")
-
-[node name="RegionA" parent="ShaftOcclusion2" index="0" unique_id=442132825]
-polygon = PackedVector2Array(-1, -2, 253, -2, 254, 2896, -3, 2897)
-
-[node name="RegionB" parent="ShaftOcclusion2" index="1" unique_id=2142717562]
-position = Vector2(-1859.1947, 2937.0056)
-scale = Vector2(2.5803695, 0.26112252)
-polygon = PackedVector2Array(1190.1989, -149.37672, 1194.0906, 2998.571, 331.43958, 2954.3115, 327.54794, -127.24609)
-
-[node name="ShaftOcclusion3" parent="." unique_id=1119995043 instance=ExtResource("theirs_24_ek66h")]
-position = Vector2(578, -2938)
-settings = SubResource("Resource_abmis")
-
-[node name="RegionA" parent="ShaftOcclusion3" index="0" unique_id=442132825]
-position = Vector2(303, 2)
-polygon = PackedVector2Array(46, -143, 175, -142, 175, 2897, 47, 2897)
-
-[node name="RegionB" parent="ShaftOcclusion3" index="1" unique_id=2142717562]
-position = Vector2(-1611.17, 2936.2463)
-scale = Vector2(2.3299491, 0.25603983)
-polygon = PackedVector2Array(1190.1989, -149.37672, 1192.1538, 1432.0305, 1194.0906, 2998.571, 331.43958, 2954.3115, 327.54794, -127.24609)
-
 [editable path="Rooms/EntryCollapse"]
 [editable path="Rooms/DescentShaft"]
 [editable path="Rooms/Hub"]
@@ -765,5 +732,3 @@ polygon = PackedVector2Array(1190.1989, -149.37672, 1192.1538, 1432.0305, 1194.0
 [editable path="Scenery/HorizontalMain"]
 [editable path="Scenery/FountainShaft"]
 [editable path="ShaftOcclusion"]
-[editable path="ShaftOcclusion2"]
-[editable path="ShaftOcclusion3"]

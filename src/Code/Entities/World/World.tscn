@@ -90,30 +90,14 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="Resource" id="Resource_bvdhl"]
+[sub_resource type="Resource" id="Resource_tf67n"]
 script = ExtResource("5_acpp2")
-text = "冰凉舒缓的水滑入喉管。"
+text = "随着冰凉舒缓的水滑入喉管，刚刚那种心脏快要干涸的感觉消失了。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="Resource_abrb0"]
+[sub_resource type="Resource" id="Resource_o2hjh"]
 script = ExtResource("5_acpp2")
-text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Resource_wotbi"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Reflection_enter_line"]
-script = ExtResource("5_acpp2")
-text = "水面的涟漪倒映出一张完全陌生的脸。"
-
-[sub_resource type="Resource" id="Resource_qv0jn"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "这，这是我吗……脸上是什么……"
+text = "慢慢找回呼吸的节奏了……虽然不知道为什么，但看来得一直保持身体里的水分才行。一旦缺水，恐怕行动都会成问题。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="C3_2_20"]
@@ -357,7 +341,7 @@ color = Color(0, 0, 0, 1)
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
-position = Vector2(1470, 2)
+position = Vector2(1701, 0)
 scale = Vector2(1.2, 1.2)
 speed = 250.0
 is_hp_draining = true
@@ -379,11 +363,11 @@ material = SubResource("ShaderMaterial_l2oj5")
 material = SubResource("ShaderMaterial_l2oj5")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(1470, 2)
+position = Vector2(1701, 0)
 scale = Vector2(1.2, 1.2)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
-position = Vector2(1471.5927, 9.9637785)
+position = Vector2(1702.5927, 7.9637785)
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]
@@ -396,16 +380,19 @@ tween_resource = SubResource("Resource_yocbw")
 position = Vector2(-96, -1560)
 
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
-position = Vector2(-5.314046, -37.198395)
+position = Vector2(-8.8567505, -56.68327)
+scale = Vector2(1.0168765, 0.68783075)
 
-[node name="WaterApproach_1_3_to_1_6" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="0" unique_id=593165859]
-position = Vector2(1431, 1586)
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
-
-[node name="Reflection_1_7_to_1_8" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="1" unique_id=229158232]
-position = Vector2(1595, 1569)
-scale = Vector2(0.6254726, 1.1105114)
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Reflection_enter_line"), SubResource("Resource_qv0jn")])
+[node name="lake" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="2" unique_id=1000769939]
+position = Vector2(1395, 1558)
+scale = Vector2(5.163129, 1.5740379)
+use_export_settings = false
+enable_interaction = false
+disable_movement_during_dialog = true
+show_enter_dialog = true
+enter_dialog_requires_scarred_bones = true
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_tf67n"), SubResource("Resource_o2hjh")])
+enter_dialog_once = true
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
