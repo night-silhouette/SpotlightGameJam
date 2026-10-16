@@ -462,7 +462,7 @@ blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
-[node name="MiniChaliceStation" parent="CameraNode" unique_id=78567387 instance=ExtResource("11_a4q47")]
+[node name="MiniChaliceStation" parent="." unique_id=78567387 instance=ExtResource("11_a4q47")]
 position = Vector2(-18736, -371)
 
 [node name="MusicNode" type="Node2D" parent="." unique_id=1909380459]
@@ -698,7 +698,7 @@ enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_22"), SubR
 enter_dialog_once = true
 metadata/_editor_description_ = "参考宫殿高处 WaterFlowArea5 锚点(1672,-2562)；仅叙事，不控制地形崩塌，请确认玩家路径及与冠拾取的先后顺序。"
 
-[node name="献给沉默的神" parent="story/c3" instance=ExtResource("20_m8xep")]
+[node name="献给沉默的神" parent="story/c3" unique_id=1282824190 instance=ExtResource("20_m8xep")]
 content = "《献给沉默的神》
 作者佚名
 我曾以为世界的苦难源于缺少，缺少水，缺少土地，缺少足以安眠的夜晚。后来我才知道，苦难也可以诞生于丰饶，当酒水可以灌满所有人的杯盏，人们便开始争论谁的杯子更精美，当每一个夜晚都有灯火可亲，人们就开始计较谁的烛火更明亮。难道我们渴求的本就是痛苦？"

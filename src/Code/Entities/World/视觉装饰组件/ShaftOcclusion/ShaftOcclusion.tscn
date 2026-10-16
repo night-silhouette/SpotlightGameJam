@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://hcgu8cfndstm"]
+
+[ext_resource type="Script" uid="uid://dry4s1ad5gce3" path="res://Code/Entities/World/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.gd" id="1_component"]
+[ext_resource type="Script" uid="uid://b2ke48tqm73u5" path="res://Code/Entities/World/视觉装饰组件/ShaftOcclusion/ExportSettings.gd" id="2_settings"]
+[ext_resource type="Script" uid="uid://b433s3pwnbms4" path="res://Code/Entities/World/视觉装饰组件/ShaftOcclusion/ShaftOcclusionMask.gd" id="3_mask"]
+
+[sub_resource type="Resource" id="Resource_settings"]
+resource_local_to_scene = true
+script = ExtResource("2_settings")
+
+[node name="ShaftOcclusion" type="Node2D" unique_id=1682304827]
+script = ExtResource("1_component")
+settings = SubResource("Resource_settings")
+
+[node name="RegionA" type="Polygon2D" parent="." unique_id=442132825]
+polygon = PackedVector2Array(-16, 0, 264, 0, 264, 2860, -16, 2860)
+
+[node name="RegionB" type="Polygon2D" parent="." unique_id=2142717562]
+polygon = PackedVector2Array(324, -140, 504, -140, 504, 2860, 324, 2860)
+
+[node name="Overlay" type="CanvasLayer" parent="." unique_id=1718762540]
+
+[node name="Mask" type="Control" parent="Overlay" unique_id=844830107]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("3_mask")
+
+[node name="VisibleRegion" type="Polygon2D" parent="Overlay/Mask" unique_id=574290570]
