@@ -13,6 +13,6 @@ void fragment() {
 	// 保留整张分层原画及不透明边缘，不再按地面截断植物和岩壁。
 	COLOR.a *= enabled;
 	if (foreground) {
-		COLOR.a *= opacity * mix(0.1, 1.0, smoothstep(clear_radius * 0.35, max(clear_radius, 0.01), distance(world_pixel, player_world)));
+		COLOR.a *= opacity;
 	}
 }

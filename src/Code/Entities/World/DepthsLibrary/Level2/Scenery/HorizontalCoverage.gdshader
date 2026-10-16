@@ -27,6 +27,6 @@ void fragment() {
  // Apply to all horizontal layers so the bridge/foreground cannot cross a shaft.
  if (inside_bounds(world_pixel, descent_bounds) || inside_bounds(world_pixel, stairwell_bounds) || inside_bounds(world_pixel, fountain_bounds)) { discard; }
  if (foreground) {
-  COLOR.a *= opacity * mix(0.12, 1.0, smoothstep(clear_radius * 0.35, max(clear_radius, 0.01), distance(world_pixel, player_world)));
+  COLOR.a *= opacity;
  }
 }

@@ -168,9 +168,10 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 通用视差与测试相机 | `E/ParallaxScenery/ParallaxScenery.gd:6-48`；`E/ParallaxScenery/ParallaxTestCamera.gd:1-27` | 各层周期/速度/接缝，复制材质隔离实例；top_level 避免关卡位移叠加，scroll_offset 包含世界位置。预览场景在同目录，测试相机左右移动/R复位。 |
-| 营地、绿洲装饰 | `W/Camp/Scenery/CampScenery.gd:11-80`；`W/OasisBattlefield/Decoration/OutwardScenery.gd:1-14`；`OasisComponentArt.gd:22-143`；`OasisTerrainTile.gd:1-44`（后两者同属绿洲 Decoration） | 营地覆盖/有限视差/前景挖空；绿洲按相机位置控制可见，按组件状态绘美术，TileMap邻接选边；不负责生成碰撞。 |
+| 营地、绿洲装饰 | `W/Camp/Scenery/CampScenery.gd:11-80`；`W/OasisBattlefield/Decoration/OutwardScenery.gd:1-14`；`OasisComponentArt.gd:22-143`；`OasisTerrainTile.gd:1-44`（后两者同属绿洲 Decoration） | 营地覆盖/有限视差；营地及第二关前景均不再按人物位置局部透明，保留整体透明度；绿洲按相机位置控制可见，按组件状态绘美术，TileMap邻接选边；不负责生成碰撞。 |
 | 第二关房间与井内视差 | `L2/Scenery/Level2Scenery.gd:11-105`；`L2/Scenery/HorizontalScenery.gd:20-124`；`L2/Scenery/VerticalScenery.gd:15-122` | 房间范围/视口裁剪、左井慢降只滚指定柱层；横向从原始 PackedScene 取变换防累计缩放，竖向按井高适配、分层漂移/循环。 |
 | 第二关地形美术与黑幕 | `L2/Terrain/TerrainArt.gd:19-259`；`W/视觉装饰组件/BlackCurtain.gd:1-8` | 跨房间汇总真实占用绘石框/玻璃，RenderingServer 隐藏灰盒，不改碰撞；黑幕检测 player 后释放。 |
+| Hub 第一版局部光影 | `L2/Lighting/HubLighting.gd:1-58`；`L2/Lighting/HubLighting.tscn`；`L2/Lighting/HubBeam.gdshader:1-8`；`L2/Rooms/Hub.tscn:109`；`A/ExportSettings.gd:722-740` | 仅 Hub 实例化：冷色喷泉/暖桌边 PointLight2D、两条渐变光束与局部光晕；桌面及喷泉底座遮光轮廓不增加碰撞。光束/光晕 z=11 高于横向前景10；灯只影响世界 Canvas 层0、z=-30..10，不影响HUD。`level2_hub_light_enabled` 支持运行时对比；喷泉从所属地图读取初态，经 `Level2StateChanged(level)` 与 `SaveSlotLoaded(slot)` 同步并淡变，不写机关/存档。阴影独占512遮光掩码；无 CanvasModulate、WIP 或外部美术新增。Godot 4.7.2 headless --check-only 已检查新增脚本及 ExportSettings；未运行正式游戏，场景渲染/阴影视觉仍待人工验收。 |
 | 钩索回归脚本 | `P/GrappleAnimationTest.gd:1-158` | SceneTree `_initialize` 入口，检查同帧动作/发射点/方向/脱钩/伤亡/事件隔离，退出码0/1；需要项目单例。本次未执行。 |
 | 镜头演示与检查 | `E/PlayerWithCamera/CameraShowcase.gd:1-116`；`E/PlayerWithCamera/CameraDirectorChecks.gd:1-86` | 演示用同目录 CameraShowcase.tscn；Checks 是 RefCounted，需对已就绪场景显式调用异步 `Run(scene)`，非独立启动场景。检查锁定/字幕/取消/优先级/过滤。 |
 | 玩家及第二关测试场景 | `E/PlayerWithCamera/PlayerWithCameraTest.gd:1-13`；`L2/Level2Playtest.gd:1-15` | 同目录对应 .tscn；前者默认禁二跳/钩索，另有 PlayerCameraTest.tscn 基础跟随场景；后者对齐 Spawn/城市预览并换灰盒外观，不能当作正式能力配置。 |

@@ -720,6 +720,25 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 调试飞行时不触发边界，方便查看与搭建地图。
 @export var level2_death_boundary_ignore_debug_flight: bool = true
 
+@export_group("Level 2 - Hub Lighting", "level2_hub_light_")
+## 仅中央大厅光影总开关；运行时修改也可即时对比，不改其他关卡底色。
+@export var level2_hub_light_enabled: bool = true
+@export var level2_hub_light_fountain_color: Color = Color(0.52, 0.76, 1.0, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_fountain_idle_energy: float = 0.16
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_fountain_active_energy: float = 0.32
+## 圆形光半径限制在房间内；位置与物件轮廓由 Lighting 场景预置。
+@export_range(32.0, 170.0, 1.0) var level2_hub_light_fountain_radius: float = 165.0
+@export var level2_hub_light_desk_color: Color = Color(1.0, 0.76, 0.47, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_desk_energy: float = 0.20
+@export_range(32.0, 100.0, 1.0) var level2_hub_light_desk_radius: float = 96.0
+@export var level2_hub_light_beam_color: Color = Color(0.70, 0.83, 1.0, 1.0)
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.035
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_glow_opacity: float = 0.055
+@export var level2_hub_light_shadows_enabled: bool = true
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_shadow_opacity: float = 0.35
+@export_range(0.0, 8.0, 0.1) var level2_hub_light_shadow_smooth: float = 2.0
+@export_range(0.0, 3.0, 0.05) var level2_hub_light_transition_time: float = 0.65
+
 @export_group("Room Camera Zone", "room_camera_zone_")
 ## 房间固定镜头区域总开关；关闭后恢复普通跟随。
 @export var room_camera_zone_enabled: bool = false
