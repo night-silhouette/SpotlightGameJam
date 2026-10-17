@@ -74,3 +74,13 @@ theme_override_font_sizes/font_size = 52
 text = "纺织"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Subtitle" type="Label" parent="ChapterCard/Layout"]
+visible = false
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.847059, 0.717647, 0.47451, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+vertical_alignment = 1

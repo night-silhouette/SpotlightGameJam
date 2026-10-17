@@ -1,7 +1,6 @@
 extends Node2D
-## 沙漠背景视差滚动（分层拼接）。
-## 素材原尺寸 1600x832，采用与 OutwardScenery 一致的正反镜像（flip_h）无缝循环机制：
-## 基础单图宽 1600，水平镜像拼合宽 3200，repeat_size = Vector2(3200, 0)。
+## 沙漠背景视差滚动：各景深层保留独立速度，天空单独纵向镜像衔接。
+## 天空素材尺寸 1600x832，由原图和上方纵向镜像图组成 1664 高的循环单元。
 
 
 @export var enabled_bounds_check: bool = true
@@ -9,7 +8,7 @@ extends Node2D
 
 
 func _enter_tree() -> void:
-	# 覆写 _enter_tree，避免默认 top_level 与 repeat_size 被意外覆盖
+	# top_level 由场景资源负责；不要在运行时覆盖编辑器里拖动后的坐标。
 	pass
 
 

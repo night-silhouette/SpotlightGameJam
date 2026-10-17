@@ -11,8 +11,8 @@ const SettingsSkin = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
+const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 
-@onready var menu_bgm: AudioStreamPlayer = $MenuBgm
 @onready var btn_start: Button = %BtnStart
 @onready var btn_setting: Button = %BtnSetting
 @onready var btn_credits: Button = %BtnCredits
@@ -28,6 +28,7 @@ const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
 @onready var quit_confirm_dialog: ConfirmationDialog = %QuitConfirmDialog
 
 var _setting_instance: SettingUI = null
+var _starting_new_game := false
 
 func _ready() -> void:
 	saves_modal.theme = SettingsSkin.CreateTheme()
@@ -44,25 +45,6 @@ func _ready() -> void:
 	credits_modal.visibility_changed.connect(_sync_setting_shortcut)
 	saves_modal.visible = false
 	credits_modal.visible = false
-	_start_menu_bgm()
-
-func _start_menu_bgm() -> void:
-	Util.InitializeAudioSettings()
-	menu_bgm.bus = ExportSettings.audio_music_bus
-	# 仅修改菜单自己的流副本，不改变原始音频的导入设置。
-	var music := menu_bgm.stream.duplicate() as AudioStreamWAV
-	music.loop_mode = AudioStreamWAV.LOOP_FORWARD
-	music.loop_begin = 0
-	music.loop_end = int(round(music.get_length() * music.mix_rate))
-	menu_bgm.stream = music
-	menu_bgm.volume_linear = 0.0
-	menu_bgm.play()
-	var target_volume := db_to_linear(ExportSettings.audio_menu_volume_db)
-	var duration: float = ExportSettings.audio_menu_fade_in_duration
-	if duration <= 0.0:
-		menu_bgm.volume_linear = target_volume
-	else:
-		create_tween().tween_property(menu_bgm, "volume_linear", target_volume, duration)
 
 func _sync_setting_shortcut() -> void:
 	_setting_instance.set_process_input(not saves_modal.visible and not credits_modal.visible)
@@ -70,7 +52,8 @@ func _sync_setting_shortcut() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		if saves_modal.visible:
-			saves_modal.visible = false
+			if not _starting_new_game:
+				saves_modal.visible = false
 			get_viewport().set_input_as_handled()
 		elif credits_modal.visible:
 			credits_modal.visible = false
@@ -84,6 +67,8 @@ func _instantiate_setting() -> void:
 		_setting_instance.HideSetting()
 
 func _setup_signals() -> void:
+	for button in [btn_start, btn_credits, btn_quit, btn_close_saves, btn_close_credits]:
+		button.pressed.connect(_play_confirm)
 	if btn_start:
 		btn_start.pressed.connect(_on_start_pressed)
 	if btn_setting:
@@ -101,7 +86,11 @@ func _setup_signals() -> void:
 	if quit_confirm_dialog:
 		quit_confirm_dialog.confirmed.connect(func(): SignalBus.GameQuitRequested.emit())
 
+func _play_confirm() -> void:
+	Util.PlaySFX(CONFIRM_SFX)
+
 func _on_start_pressed() -> void:
+	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "选择游戏存档"
 	_refresh_saves_ui()
 	saves_modal.visible = true
 
@@ -188,9 +177,11 @@ func _refresh_saves_ui() -> void:
 
 		if exists:
 			btn_action.text = "载入进度"
+			btn_action.pressed.connect(_play_confirm)
 			btn_action.pressed.connect(_on_slot_load_pressed.bind(slot_idx))
 		else:
 			btn_action.text = "开启新存档"
+			btn_action.pressed.connect(_play_confirm)
 			btn_action.pressed.connect(_on_slot_new_game_pressed.bind(slot_idx))
 		hbox.add_child(btn_action)
 
@@ -202,6 +193,7 @@ func _refresh_saves_ui() -> void:
 			btn_restart.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			btn_restart.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			btn_restart.focus_mode = Control.FOCUS_NONE
+			btn_restart.pressed.connect(_play_confirm)
 			btn_restart.pressed.connect(_on_slot_new_game_pressed.bind(slot_idx))
 			hbox.add_child(btn_restart)
 
@@ -214,5 +206,16 @@ func _on_slot_load_pressed(slot_idx: int) -> void:
 
 ## 空白处或指定槽位开启新存档并进入 World.tscn
 func _on_slot_new_game_pressed(slot_idx: int) -> void:
-	saves_modal.visible = false
-	SaveManagerRef.StartNewGameInSlot(get_tree(), slot_idx)
+	if _starting_new_game:
+		return
+	_starting_new_game = true
+	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "正在加载世界…"
+	btn_close_saves.disabled = true
+	saves_list.visible = false
+	await get_tree().process_frame
+	var started: bool = await SaveManagerRef.StartNewGameInSlot(get_tree(), slot_idx)
+	if not started and is_instance_valid(self):
+		_starting_new_game = false
+		$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "加载失败，请重试"
+		btn_close_saves.disabled = false
+		saves_list.visible = true

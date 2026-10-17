@@ -1,6 +1,8 @@
 extends StaticBody2D
 class_name CrumblingPlatform
 
+const CRUMBLING_SFX = preload("res://Music/SFX/InteractiveLV3/CrumblingPlatform.wav")
+
 ## =============================================================================
 ## CrumblingPlatform.gd - 易碎平台交互组件
 ## 玩家站立踩踏后触发短暂震颤开裂，达到延迟时间后碎裂下坠/消失（碰撞关闭）
@@ -131,6 +133,7 @@ func _collapse() -> void:
 		return
 	
 	current_state = PlatformState.COLLAPSED
+	Util.PlaySFX2D(CRUMBLING_SFX, global_position, &"SFX_Interact", 6.0)
 	if _shake_tween and _shake_tween.is_valid():
 		_shake_tween.kill()
 	visual_root.position = _original_visual_pos

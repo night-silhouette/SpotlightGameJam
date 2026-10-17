@@ -1,5 +1,7 @@
 extends Node2D
 ## 连续地下地图：房间通过实体通道相连，玩家能力与死亡复活由角色系统管理。
+const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
+const FAILED_SFX = preload("res://Music/SFX/InteractiveLV3/Failed.wav")
 var keys: Array[String] = []
 var rune_progress: int = 0
 var puzzle_solved: bool = false
@@ -10,6 +12,7 @@ var fountain_active: bool = false
 # 领取状态死亡后可重置；献湖状态永久保留。
 var codex_claimed: bool = false
 var codex_offered: bool = false
+var codex_story_seen: bool = false
 var _elapsed: float = 0.0
 var _player: CharacterBody2D
 var _owns_player: bool = false
@@ -34,6 +37,7 @@ func _ready() -> void:
 	var names := {"sun": "日", "moon": "月", "weave": "交织"}
 	$Rooms/WeaveArchive/RoomHint.text = "石碑线索：" + str(names[_rune_order[0]]) + " → " + str(names[_rune_order[1]]) + " → " + str(names[_rune_order[2]]) + "。错误会重置顺序。"
 	SignalBus.Level2InteractionRequested.connect(_on_requested)
+	SignalBus.Level2StateRequested.connect(_on_state_requested)
 	SignalBus.PlayerRespawned.connect(_on_respawned)
 	SignalBus.PlayerDied.connect(_on_player_died)
 	SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
@@ -49,6 +53,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_elapsed += delta
+	$Rooms/Hub/Fountain/Node2D/FountainIdle.frame = 8 - int(_elapsed * 9.0) % 9
 	_toast_left = maxf(0.0, _toast_left - delta)
 	$HUD/Root/Toast.visible = _toast_left > 0.0
 	if not is_instance_valid(_player):
@@ -173,6 +178,9 @@ func GetCityConnections() -> Dictionary:
 		"exit": {"position": exit_port.global_position, "width": exit_port.get_meta("opening_width")}
 	}
 
+func _on_state_requested() -> void:
+	SignalBus.Level2StateChanged.emit(self)
+
 func _on_requested(source: Node2D, player: Node2D) -> void:
 	if not is_ancestor_of(source) or source.global_position.distance_to(player.global_position) > ExportSettings.level2_interact_radius:
 		return
@@ -195,12 +203,14 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 				return
 			if str(source.get_meta("rune_id", "")) == order[rune_progress]:
 				rune_progress += 1
+				Util.PlaySFX2D(CONFIRM_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("符文正确：%d / %d" % [rune_progress, order.size()])
 				if rune_progress == order.size():
 					puzzle_solved = true
 					_toast("三枚符文共鸣，档案库闸门已开启。")
 			else:
 				rune_progress = 0
+				Util.PlaySFX2D(FAILED_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("顺序不符")
 			_refresh()
 		"lore":
@@ -208,22 +218,22 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 		"fountain":
 			submitted_keys.assign(keys)
 			if submitted_keys.size() < 3:
+				Util.PlaySFX2D(FAILED_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
-				var newly_activated := not fountain_active
 				fountain_active = true
-				if newly_activated:
-					SignalBus.DialogBox.emit(&"旁白", "一卷残卷显现，纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。")
-					SignalBus.DialogBox.emit(&"独白", "这股力量，和之前的王冠好像。")
-				if not codex_claimed and not codex_offered:
-					codex_claimed = true
-					if not bool(player.get("has_starseekers_codex")):
-						SignalBus.lock2.emit()
-						_toast("获得观星者残卷！水泵启动，沿喷泉升回地表，将残卷带回主城水池。", 7.0)
-					else:
-						_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
-				else:
-					_toast("水泵已启动，沿喷泉升回地表。观星者残卷已领取。", 7.0)
+				_toast("水泵已启动，沿喷泉升回地表。", 7.0)
+			_refresh()
+		"codex":
+			if codex_claimed or codex_offered or bool(player.get("has_starseekers_codex")):
+				return
+			codex_claimed = true
+			SignalBus.lock2.emit()
+			if not codex_story_seen:
+				codex_story_seen = true
+				SignalBus.DialogBox.emit(&"旁白", "一卷残卷显现，纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。")
+				SignalBus.DialogBox.emit(&"独白", "这股力量，和之前的王冠好像。")
+			_toast("获得观星者残卷！将残卷带回主城水池。", 7.0)
 			_refresh()
 	SignalBus.Level2StateChanged.emit(self)
 
@@ -231,11 +241,15 @@ func _on_player_died(player: Node2D) -> void:
 	if player != get_tree().get_first_node_in_group(&"player") or codex_offered:
 		return
 	codex_claimed = false
+	_refresh()
+	SignalBus.Level2StateChanged.emit(self)
 
 func _on_relic_consumed(relic: StringName) -> void:
 	if relic == &"codex":
 		codex_offered = true
 		codex_claimed = true
+		_refresh()
+		SignalBus.Level2StateChanged.emit(self)
 
 func _on_save_loaded(_slot: int) -> void:
 	var player := get_tree().get_first_node_in_group(&"player")
@@ -244,7 +258,9 @@ func _on_save_loaded(_slot: int) -> void:
 	var carrying := bool(player.get("has_starseekers_codex"))
 	if not _has_explicit_codex_offered and bool(player.get("enable_rope")) and not carrying:
 		codex_offered = true
-	codex_claimed = codex_offered or carrying
+	codex_claimed = carrying or codex_offered
+	_refresh(false)
+	SignalBus.Level2StateChanged.emit(self)
 
 func _on_respawned(_position: Vector2) -> void:
 	var from_fountain_fall := _fountain_fall_death_requested
@@ -296,16 +312,21 @@ func _refresh(animate_gate: bool = true) -> void:
 	if not is_node_ready():
 		return
 	for device in find_children("*", "Node2D", true, false):
-		if device.is_in_group("level2_device") and str(device.get_meta("kind", "")) == "key":
-			var taken: bool = str(device.get_meta("key_id", "")) in keys
-			device.set("available", not taken)
-			device.visible = not taken
+		if not device.is_in_group("level2_device"):
+			continue
+		match str(device.get_meta("kind", "")):
+			"key":
+				var taken: bool = str(device.get_meta("key_id", "")) in keys
+				device.set("available", not taken)
+				device.visible = not taken
+			"codex":
+				var can_claim := not codex_claimed and not codex_offered
+				device.set("available", can_claim)
+				device.visible = can_claim
 	_update_archive_gate(animate_gate)
 	$Rooms/WeaveArchive/SequenceStatus.text = "闸门开启" if puzzle_solved else "共鸣进度 %d / %d" % [rune_progress, _rune_order.size()]
 	$Rooms/Hub/Fountain/Caption.text = "逆流水柱已开启" if fountain_active else "提交钥匙  %d/3" % submitted_keys.size()
 	$Rooms/Hub/FountainStream.visible = fountain_active
-	$Rooms/FountainShaft/Stream.visible = fountain_active
-	$Rooms/SurfaceExit/SprayStream.visible = fountain_active
 	# 已按顺序激活的符文保持发光；输错重置，读档时同步恢复。
 	for rune in $Rooms/WeaveArchive.get_children():
 		if str(rune.get_meta("kind", "")) != "rune":
@@ -321,7 +342,7 @@ func _refresh(animate_gate: bool = true) -> void:
 
 ## 导出钥匙、谜题、通关和残卷领取状态；由现有存档系统保存，地图本身不写文件。
 func ExportSaveData() -> Dictionary:
-	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed, "codex_offered": codex_offered}
+	return {"keys": keys.duplicate(), "rune_progress": rune_progress, "puzzle_solved": puzzle_solved, "completed": completed, "submitted_keys": submitted_keys.duplicate(), "fountain_active": fountain_active, "codex_claimed": codex_claimed, "codex_offered": codex_offered, "codex_story_seen": codex_story_seen}
 
 ## 还原关卡状态；data 为 ExportSaveData 返回的字典，未知钥匙会被忽略。
 func LoadSaveData(data: Dictionary) -> void:
@@ -340,7 +361,9 @@ func LoadSaveData(data: Dictionary) -> void:
 	_has_explicit_codex_offered = data.has("codex_offered")
 	codex_offered = bool(data.get("codex_offered", false))
 	codex_claimed = codex_offered or bool(data.get("codex_claimed", false))
+	codex_story_seen = bool(data.get("codex_story_seen", codex_claimed or codex_offered))
 	puzzle_solved = bool(data.get("puzzle_solved", false))
 	completed = bool(data.get("completed", false)) and fountain_active
 	rune_progress = _rune_order.size() if puzzle_solved else clampi(int(data.get("rune_progress", 0)), 0, maxi(0, _rune_order.size() - 1))
 	_refresh(false)
+	SignalBus.Level2StateChanged.emit(self)

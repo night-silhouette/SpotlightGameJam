@@ -1,12 +1,45 @@
 extends Node
 
+const GAME_BGMS = [
+	preload("res://Music/bgm/MainMenu.wav"),
+	preload("res://Music/bgm/GrowMaintheme.wav"),
+]
+
+var _bgm_player: AudioStreamPlayer
+var _bgm_index: int = 0
+
 var _audio_initialized: bool = false
 var _audio_volumes: Dictionary = {}
 var _audio_buses: Dictionary = {}
 var _audio_base_db: Dictionary = {}
 
 func _ready() -> void:
-	call_deferred("_initialize_audio_settings")
+	call_deferred("_start_game_audio")
+
+func _start_game_audio() -> void:
+	_initialize_audio_settings()
+	_start_game_bgm()
+
+func _start_game_bgm() -> void:
+	_bgm_player = AudioStreamPlayer.new()
+	_bgm_player.bus = ExportSettings.audio_music_bus
+	_bgm_player.volume_linear = 0.0
+	_bgm_player.finished.connect(_play_next_bgm)
+	add_child(_bgm_player)
+	_play_next_bgm()
+	var target_volume := db_to_linear(ExportSettings.audio_bgm_volume_db)
+	var duration: float = ExportSettings.audio_bgm_fade_in_duration
+	if duration <= 0.0:
+		_bgm_player.volume_linear = target_volume
+	else:
+		create_tween().tween_property(_bgm_player, "volume_linear", target_volume, duration)
+
+func _play_next_bgm() -> void:
+	var music := GAME_BGMS[_bgm_index].duplicate() as AudioStreamWAV
+	music.loop_mode = AudioStreamWAV.LOOP_DISABLED
+	_bgm_player.stream = music
+	_bgm_index = (_bgm_index + 1) % GAME_BGMS.size()
+	_bgm_player.play()
 
 ## 初始化并恢复独立音量设置；无参数，可重复调用且不会重置总线基准音量。
 func InitializeAudioSettings() -> void:

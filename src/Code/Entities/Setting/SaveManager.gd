@@ -105,8 +105,6 @@ static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_pa
 	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
 		return false
 
-	SetActiveSlot(slot_index)
-	
 	var world_path = target_scene_path
 	if world_path == "":
 		world_path = "res://Code/Entities/World/World.tscn"
@@ -115,6 +113,19 @@ static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_pa
 	
 	if not ResourceLoader.exists(world_path):
 		push_error("StartNewGameInSlot 目标场景不存在: %s" % world_path)
+		return false
+
+	var request_error = ResourceLoader.load_threaded_request(world_path, "PackedScene")
+	if request_error != OK:
+		push_error("StartNewGameInSlot 无法加载目标场景: %s (%d)" % [world_path, request_error])
+		return false
+	while ResourceLoader.load_threaded_get_status(world_path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		await tree.process_frame
+	if ResourceLoader.load_threaded_get_status(world_path) != ResourceLoader.THREAD_LOAD_LOADED:
+		push_error("StartNewGameInSlot 加载目标场景失败: %s" % world_path)
+		return false
+	var world_scene = ResourceLoader.load_threaded_get(world_path) as PackedScene
+	if not world_scene:
 		return false
 
 	var current_datetime = Time.get_datetime_dict_from_system()
@@ -136,13 +147,23 @@ static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_pa
 		DirAccess.make_dir_recursive_absolute(base_dir)
 
 	var file = FileAccess.open(path, FileAccess.WRITE)
-	if file:
-		file.store_string(JSON.stringify(save_dict, "\t"))
-		file.close()
-		_emit_signal_bus("SaveSlotSaved", [slot_index])
+	if not file:
+		push_error("StartNewGameInSlot 无法写入存档: %s" % path)
+		return false
+	file.store_string(JSON.stringify(save_dict, "\t"))
+	file.flush()
+	var write_error = file.get_error()
+	file.close()
+	if write_error != OK:
+		push_error("StartNewGameInSlot 写入存档失败: %s (%d)" % [path, write_error])
+		return false
+	SetActiveSlot(slot_index)
+	_emit_signal_bus("SaveSlotSaved", [slot_index])
 
-	var err = tree.change_scene_to_file(world_path)
+	var err = tree.change_scene_to_packed(world_scene)
 	if err == OK:
+		await tree.process_frame
+		await tree.process_frame
 		_emit_signal_bus("SaveSlotLoaded", [slot_index])
 		return true
 	return false

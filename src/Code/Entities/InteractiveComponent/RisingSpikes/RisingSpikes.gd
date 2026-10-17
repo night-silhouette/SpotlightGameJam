@@ -1,6 +1,8 @@
 extends Node2D
 class_name RisingSpikes
 
+const RISING_SPIKES_SFX = preload("res://Music/SFX/InteractiveLV3/RisingSpikes.wav")
+
 ## =============================================================================
 ## RisingSpikes.gd - 时序突刺交互组件
 ## 按可配置的时间周期在【石缝安全态】与【伸出危险态】之间切换
@@ -191,6 +193,7 @@ func _extend_spikes() -> void:
 	_active_tween.tween_property(spike_moving_root, "position:y", -_travel_height, transition_time)
 	_active_tween.finished.connect(func():
 		_is_extended = true
+		Util.PlaySFX2D(RISING_SPIKES_SFX, global_position, &"SFX_Interact", 6.0)
 		if SignalBus:
 			SignalBus.SpikesExtended.emit(self)
 		# 伸出保持时长后缩回

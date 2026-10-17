@@ -8,8 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://ug5w2x0ysuo6" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="5_acpp2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
+[ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_m5q0i"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" uid="uid://bekfm826b2gww" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
@@ -39,7 +40,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7tc0m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2oj5"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -73,7 +74,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2oj5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -90,31 +91,60 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="Resource" id="Resource_bvdhl"]
-script = ExtResource("5_acpp2")
-text = "冰凉舒缓的水滑入喉管。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
+resource_local_to_scene = true
+shader = ExtResource("7_m5q0i")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
-[sub_resource type="Resource" id="Resource_abrb0"]
-script = ExtResource("5_acpp2")
-text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
+resource_local_to_scene = true
+shader = ExtResource("7_m5q0i")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
-[sub_resource type="Resource" id="Resource_wotbi"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
+resource_local_to_scene = true
+shader = ExtResource("7_m5q0i")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
-[sub_resource type="Resource" id="Reflection_enter_line"]
-script = ExtResource("5_acpp2")
-text = "水面的涟漪倒映出一张完全陌生的脸。"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
+resource_local_to_scene = true
+shader = ExtResource("7_m5q0i")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
-[sub_resource type="Resource" id="Resource_qv0jn"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "这，这是我吗……脸上是什么……"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
+resource_local_to_scene = true
+shader = ExtResource("7_m5q0i")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
 [sub_resource type="Resource" id="C3_2_20"]
 script = ExtResource("5_acpp2")
@@ -125,11 +155,6 @@ script = ExtResource("5_acpp2")
 dialog_type = "独白"
 text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……
 先带走吧，说不定之后会用得到。"
-
-[sub_resource type="Resource" id="Resource_7tc0m"]
-script = ExtResource("5_acpp2")
-text = "月亮在长夜里留下了无主的诗"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_1p2nt"]
 script = ExtResource("5_acpp2")
@@ -362,7 +387,7 @@ color = Color(0, 0, 0, 1)
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
-position = Vector2(1470, 2)
+position = Vector2(1701, 0)
 scale = Vector2(1.2, 1.2)
 speed = 250.0
 is_hp_draining = true
@@ -372,23 +397,23 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_7tc0m")
+material = SubResource("ShaderMaterial_l2oj5")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_l2oj5")
+material = SubResource("ShaderMaterial_m5q0i")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_l2oj5")
+material = SubResource("ShaderMaterial_m5q0i")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_l2oj5")
+material = SubResource("ShaderMaterial_m5q0i")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-position = Vector2(1470, 2)
+position = Vector2(1701, 0)
 scale = Vector2(1.2, 1.2)
 
 [node name="PhantomCamera2D" parent="PlayerWithCamera" index="2" unique_id=319013053]
-position = Vector2(1471.5927, 9.9637785)
+position = Vector2(1702.5927, 7.9637785)
 tween_resource = SubResource("Resource_hfiwn")
 
 [node name="ShotA" parent="PlayerWithCamera" index="3" unique_id=521438351]
@@ -401,24 +426,71 @@ tween_resource = SubResource("Resource_yocbw")
 z_index = -1
 position = Vector2(-96, -1560)
 
-[node name="CampScenery" parent="Camp" index="0" unique_id=305596168]
+[node name="ColorRect" parent="Camp" index="0" unique_id=791088076]
+offset_left = 16.0
+offset_top = -1036.0
+offset_right = 22.280294
+offset_bottom = -996.0
+scale = Vector2(375.14157, 66.18482)
+
+[node name="CampScenery" parent="Camp" index="2" unique_id=305596168]
 z_index = -30
 
+[node name="06" parent="Camp" index="3" unique_id=646416155]
+visible = true
+
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
-position = Vector2(-5.314046, -37.198395)
-
-[node name="WaterApproach_1_3_to_1_6" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="0" unique_id=593165859]
-position = Vector2(1431, 1586)
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_bvdhl"), SubResource("Resource_abrb0"), SubResource("Resource_wotbi")])
-
-[node name="Reflection_1_7_to_1_8" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="1" unique_id=229158232]
-position = Vector2(1595, 1569)
-scale = Vector2(0.6254726, 1.1105114)
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Reflection_enter_line"), SubResource("Resource_qv0jn")])
+position = Vector2(-8.8567505, -56.68327)
+scale = Vector2(1.0168765, 0.68783075)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0" unique_id=758292571]
+position = Vector2(5310, -65)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
+position = Vector2(5310, -65)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0" unique_id=758292571]
+position = Vector2(4164.031, -1232.1624)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
+position = Vector2(4164.031, -1232.1624)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0" unique_id=758292571]
+position = Vector2(4310.6597, -2677)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
+position = Vector2(4310.6597, -2677)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0" unique_id=758292571]
+position = Vector2(3389, -3375.9998)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
+position = Vector2(3389, -3375.9998)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0" unique_id=758292571]
+position = Vector2(1675.5127, -2562.0002)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
+position = Vector2(1675.5127, -2562.0002)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
+material = SubResource("ShaderMaterial_o2yww")
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
+material = SubResource("ShaderMaterial_s2vhm")
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
+material = SubResource("ShaderMaterial_hehhy")
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
+material = SubResource("ShaderMaterial_vqyf3")
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
+material = SubResource("ShaderMaterial_2flee")
 
 [node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="4" unique_id=208978342]
 position = Vector2(-1081, -1401)
@@ -433,6 +505,9 @@ position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
+
+[node name="ReturnPhase" parent="OasisBattlefield" index="2" unique_id=1083308710]
+visible = true
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
@@ -519,6 +594,7 @@ position = Vector2(-3634.5337, 101.82608)
 scale = Vector2(10.814299, 0.09030984)
 act_text = "第三幕"
 chapter_text = "月影寻源"
+subtitle_text = "月亮在长夜里留下了无主的诗"
 
 [node name="ChapterTrigger3" parent="chapter" unique_id=1761084445 instance=ExtResource("10_mvgin")]
 position = Vector2(-13424.02, -39.763226)
@@ -530,14 +606,6 @@ chapter_text = "绿洲悲歌"
 [node name="story" type="Node2D" parent="." unique_id=1662514281]
 
 [node name="c2" type="Node2D" parent="story" unique_id=420887994]
-
-[node name="进入的场合描述" parent="story/c2" unique_id=1000769939 instance=ExtResource("12_terh4")]
-position = Vector2(596, 2708.0002)
-scale = Vector2(5.047486, 1.4619936)
-enable_interaction = false
-show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7tc0m")])
-enter_dialog_once = true
 
 [node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]
 position = Vector2(201, 625.00006)
@@ -785,6 +853,11 @@ metadata/_editor_description_ = "第四章尾声；使用 GradualTextTrigger，�
 [editable path="Camp/Lake"]
 [editable path="Camp/Chapter1"]
 [editable path="SunkenPalace"]
+[editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea"]
+[editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2"]
+[editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3"]
+[editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4"]
+[editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5"]
 [editable path="SunkenPalace/collisionlayer/InterRa/Crown"]
 [editable path="DepthsLibrary"]
 [editable path="OasisBattlefield"]

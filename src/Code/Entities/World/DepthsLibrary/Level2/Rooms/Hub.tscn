@@ -1,13 +1,21 @@
 [gd_scene format=4 uid="uid://b3qlxyesas670"]
 
 [ext_resource type="Texture2D" uid="uid://b1sl654210usc" path="res://Art/New/component/extracted/architecture_fountain_cascade_pedestal.png" id="2_4klen"]
+[ext_resource type="Texture2D" path="res://Art/New/component/fountain/喷泉常态.png" id="fountain_idle"]
+[ext_resource type="Texture2D" path="res://Art/New/component/fountain/fountain_column_short.png" id="fountain_column"]
+[ext_resource type="Shader" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/FountainStream.gdshader" id="fountain_stream_shader"]
 [ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="3_m8ogb"]
-[ext_resource type="Texture2D" uid="uid://bqpaaixh5soex" path="res://Art/New/component/extracted/fx_water_stream_column_long.png" id="3_xobwn"]
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="4_031cx"]
-[ext_resource type="Texture2D" uid="uid://c0tfqwsessboo" path="res://Art/New/component/extracted/fx_water_splash_crown.png" id="4_n0vls"]
+[ext_resource type="Texture2D" uid="uid://c15itlawrngws" path="res://Art/New/component/extracted/rune_circle_emblem.png" id="codex_art"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Lighting/HubLighting.tscn" id="HubLighting"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
+
+[sub_resource type="ShaderMaterial" id="FountainStreamMaterial"]
+shader = ExtResource("fountain_stream_shader")
+
+[sub_resource type="RectangleShape2D" id="FountainPedestalShape"]
+size = Vector2(94, 56)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor_top"]
 size = Vector2(1088, 16)
@@ -31,7 +39,7 @@ offset_top = 58.0
 offset_right = 1355.0
 offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
-text = "左：书库与休息室；右：水道；向下：档案室。钥匙带回喷泉按 F 提交。"
+text = "左：书库与休息室；右：水道；向下：档案室。点击左侧残卷拾取，点击喷泉提交钥匙。"
 
 [node name="Fountain" parent="." unique_id=77465330 instance=ExtResource("device")]
 position = Vector2(990, 495)
@@ -58,23 +66,46 @@ offset_bottom = -358.0
 position = Vector2(7, -31)
 scale = Vector2(0.13, 0.13)
 
-[node name="FxWaterStreamColumnLong" type="Sprite2D" parent="Fountain/Node2D" unique_id=2114123778]
-position = Vector2(-3, -1017)
-texture = ExtResource("3_xobwn")
-
-[node name="Sprite2D3" type="Sprite2D" parent="Fountain/Node2D" unique_id=1752842519]
-position = Vector2(12, -2020)
-texture = ExtResource("4_n0vls")
-
 [node name="Sprite2D" type="Sprite2D" parent="Fountain/Node2D" unique_id=367722753]
 position = Vector2(-48, -2.0002441)
 texture = ExtResource("2_4klen")
 
-[node name="FountainStream" type="Polygon2D" parent="." unique_id=1624418422]
+[node name="FountainIdle" type="Sprite2D" parent="Fountain/Node2D"]
+position = Vector2(-48, -2)
+texture = ExtResource("fountain_idle")
+hframes = 9
+
+[node name="PedestalBody" type="StaticBody2D" parent="Fountain"]
+position = Vector2(0, -12)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fountain/PedestalBody"]
+shape = SubResource("FountainPedestalShape")
+
+[node name="Codex" parent="." instance=ExtResource("device")]
+position = Vector2(820, 495)
+metadata/kind = "codex"
+metadata/label = "观星者残卷"
+
+[node name="Visual" parent="Codex" index="0"]
 visible = false
-position = Vector2(925, -80)
-color = Color(0.12, 0.7, 0.85, 0.35)
-polygon = PackedVector2Array(0, 0, 130, 0, 130, 600, 0, 600)
+
+[node name="ItemArt" type="Sprite2D" parent="Codex"]
+position = Vector2(0, -21)
+scale = Vector2(0.13, 0.13)
+texture = ExtResource("codex_art")
+
+[node name="FountainStream" type="Sprite2D" parent="." unique_id=1624418422]
+visible = false
+z_index = 1
+position = Vector2(990, -1357.5)
+texture_repeat = 2
+material = SubResource("FountainStreamMaterial")
+texture = ExtResource("fountain_column")
+region_enabled = true
+region_rect = Rect2(0, 0, 333, 8862.5)
+scale = Vector2(0.4, 0.4)
 
 [node name="WestSign" type="Label" parent="." unique_id=790934189]
 offset_left = 120.0

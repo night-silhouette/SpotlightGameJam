@@ -15,33 +15,6 @@ script = ExtResource("3_line")
 dialog_type = "独白"
 text = "好痛……身体像被火烧过一样……水，我需要水！"
 
-[sub_resource type="Resource" id="Line_1_3"]
-script = ExtResource("3_line")
-text = "【靠近水源可快速补充水分】"
-
-[sub_resource type="Resource" id="Line_1_4"]
-script = ExtResource("3_line")
-text = "冰凉舒缓的水滑入喉管。"
-
-[sub_resource type="Resource" id="Line_1_5"]
-script = ExtResource("3_line")
-dialog_type = "独白"
-text = "慢慢找回呼吸的节奏了，刚刚那种心脏快要干涸的感觉消失了……"
-
-[sub_resource type="Resource" id="Line_1_6"]
-script = ExtResource("3_line")
-dialog_type = "独白"
-text = "虽然不知道为什么，但看来得一直保持身体里的水分才行，一旦缺水，恐怕行动都会成问题。"
-
-[sub_resource type="Resource" id="Line_1_7"]
-script = ExtResource("3_line")
-text = "水面的涟漪倒映出一张完全陌生的脸。"
-
-[sub_resource type="Resource" id="Line_1_8"]
-script = ExtResource("3_line")
-dialog_type = "独白"
-text = "这，这是我吗……脸上是什么……"
-
 [sub_resource type="Resource" id="Line_1_12"]
 script = ExtResource("3_line")
 text = "残破的石碑，上方一行字，下方有刻痕形成的图案，经历了风吹日晒，还附着着很多沙土，均已有些模糊不清。图案是几个火柴人影，看起来像是高举手臂，整个身体向上延伸（其实是幻化成云的过程）；天上的云；短而粗劣的竖向线条（其实是雨）。"
@@ -65,18 +38,6 @@ text = "不管怎样，看来我只能沿着这些线索继续走下去了。那
 [node name="Chapter1" type="Node2D" unique_id=1252895089]
 script = ExtResource("1_chapter")
 opening_lines = Array[ExtResource("3_line")]([SubResource("Line_1_1"), SubResource("Line_1_2")])
-
-[node name="WaterApproach_1_3_to_1_6" parent="." unique_id=593165859 instance=ExtResource("2_trigger")]
-position = Vector2(1292, 1580)
-use_export_settings = false
-enable_interaction = false
-story_lines = Array[ExtResource("3_line")]([SubResource("Line_1_3"), SubResource("Line_1_4"), SubResource("Line_1_5"), SubResource("Line_1_6")])
-
-[node name="Reflection_1_7_to_1_8" parent="." unique_id=229158232 instance=ExtResource("2_trigger")]
-position = Vector2(1410, 1600)
-use_export_settings = false
-enable_interaction = false
-story_lines = Array[ExtResource("3_line")]([SubResource("Line_1_7"), SubResource("Line_1_8")])
 
 [node name="SteleStory_1_12_to_1_14" parent="." unique_id=28622851 instance=ExtResource("2_trigger")]
 position = Vector2(1680, 1500)

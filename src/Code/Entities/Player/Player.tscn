@@ -1504,6 +1504,14 @@ uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform float outline_strength : hint_range(0.0, 1.0) = 0.0;
 uniform float outline_width : hint_range(1.0, 8.0) = 3.0;
 uniform float edge_damage : hint_range(0.0, 0.5) = 0.16;
+uniform float tail_fade : hint_range(0.0, 1.2) = 0.0;
+uniform float powder_dissolve : hint_range(0.0, 1.1) = 0.0;
+
+varying vec2 character_pixel;
+
+void vertex() {
+	character_pixel = VERTEX;
+}
 
 float pixel_noise(vec2 pixel_position) {
 	return fract(sin(dot(pixel_position, vec2(12.9898, 78.233))) * 43758.5453);
@@ -1522,6 +1530,16 @@ void fragment() {
 	float chip = edge * step(1.0 - edge_damage, noise);
 	base_color.rgb = mix(base_color.rgb, outline_color.rgb, rough_edge * outline_color.a);
 	base_color.a *= 1.0 - chip * 0.85;
+	if (tail_fade > 0.0) {
+		float from_tail = clamp((character_pixel.x + 84.0) / 84.0, 0.0, 1.0);
+		base_color.a *= 1.0 - 0.3 * smoothstep(from_tail - 0.08, from_tail + 0.08, tail_fade);
+	}
+	if (powder_dissolve > 0.0) {
+		float grain = pixel_noise(floor(character_pixel));
+		float powder_edge = 1.0 - smoothstep(0.0, 0.13, abs(grain - powder_dissolve));
+		base_color.rgb = mix(base_color.rgb, vec3(1.0, 0.91, 0.64), powder_edge * powder_dissolve);
+		base_color.a *= 1.0 - smoothstep(grain - 0.06, grain + 0.06, powder_dissolve);
+	}
 	COLOR = base_color;
 }
 "
@@ -1533,12 +1551,63 @@ shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_strength = 0.0
 shader_parameter/outline_width = 3.0
 shader_parameter/edge_damage = 0.16
+shader_parameter/tail_fade = 0.0
+shader_parameter/powder_dissolve = 0.0
 
 [sub_resource type="Gradient" id="Gradient_sand_fall"]
 colors = PackedColorArray(0.972549, 0.956863, 0.929412, 0.95, 0.78, 0.7, 0.55, 0)
 
 [sub_resource type="Gradient" id="Gradient_water_droplet"]
 colors = PackedColorArray(0.18, 0.72, 1, 0.9, 0.18, 0.72, 1, 0)
+
+[sub_resource type="Gradient" id="Gradient_chapter5_powder"]
+offsets = PackedFloat32Array(0, 0.45, 1)
+colors = PackedColorArray(1, 0.97, 0.78, 1, 1, 0.82, 0.43, 0.82, 1, 0.98, 0.88, 0)
+
+[sub_resource type="Animation" id="Animation_vfx_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:material:shader_parameter/tail_fade")
+tracks/0/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 0, "values": [0.0]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:material:shader_parameter/powder_dissolve")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 0, "values": [0.0]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Chapter5Powder:emitting")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_vfx_tail_fade"]
+resource_name = "tail_fade"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:material:shader_parameter/tail_fade")
+tracks/0/keys = {"times": PackedFloat32Array(0, 2), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [0.0, 1.2]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:material:shader_parameter/powder_dissolve")
+tracks/1/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 0, "values": [0.0]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Chapter5Powder:emitting")
+tracks/2/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 1, "values": [false]}
+
+[sub_resource type="Animation" id="Animation_vfx_powder"]
+resource_name = "powder_dissolve"
+length = 2.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("sprite:material:shader_parameter/tail_fade")
+tracks/0/keys = {"times": PackedFloat32Array(0), "transitions": PackedFloat32Array(1), "update": 0, "values": [0.0]}
+tracks/1/type = "value"
+tracks/1/path = NodePath("sprite:material:shader_parameter/powder_dissolve")
+tracks/1/keys = {"times": PackedFloat32Array(0, 1.9), "transitions": PackedFloat32Array(1, 1), "update": 0, "values": [0.0, 1.1]}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Chapter5Powder:emitting")
+tracks/2/keys = {"times": PackedFloat32Array(0, 1.9), "transitions": PackedFloat32Array(1, 1), "update": 1, "values": [true, false]}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_chapter5_vfx"]
+_data = {
+&"RESET": SubResource("Animation_vfx_reset"),
+&"tail_fade": SubResource("Animation_vfx_tail_fade"),
+&"powder_dissolve": SubResource("Animation_vfx_powder")
+}
 
 [node name="Player" type="CharacterBody2D" unique_id=386519068 groups=["player"]]
 collision_layer = 2
@@ -1683,10 +1752,11 @@ z_index = -1
 material = SubResource("ShaderMaterial_dash_afterimage")
 
 [node name="sprite" type="Node2D" parent="." unique_id=1048294822]
+material = SubResource("ShaderMaterial_low_water_outline")
 
 [node name="Standbytime" type="Sprite2D" parent="sprite" unique_id=1632125495]
 visible = false
-material = SubResource("ShaderMaterial_low_water_outline")
+use_parent_material = true
 position = Vector2(24.999998, -8)
 scale = Vector2(0.33861846, 0.33861846)
 texture = ExtResource("17_kpm6d")
@@ -1695,7 +1765,7 @@ vframes = 2
 
 [node name="Walk" type="Sprite2D" parent="sprite" unique_id=1352150479]
 visible = false
-material = SubResource("ShaderMaterial_low_water_outline")
+use_parent_material = true
 position = Vector2(-18.092413, -7)
 scale = Vector2(0.34822845, 0.34725052)
 texture = ExtResource("30_drwpo")
@@ -1703,7 +1773,7 @@ hframes = 5
 
 [node name="Action" type="Sprite2D" parent="sprite" unique_id=1352150480]
 visible = false
-material = SubResource("ShaderMaterial_low_water_outline")
+use_parent_material = true
 position = Vector2(-7, 0)
 scale = Vector2(0.36287013, 0.36287013)
 texture = ExtResource("32_rope_send")
@@ -1714,6 +1784,7 @@ position = Vector2(-5.5555553, -33.333336)
 
 [node name="Trun" type="Sprite2D" parent="sprite" unique_id=1375248159]
 visible = false
+use_parent_material = true
 position = Vector2(-1, -6.0000005)
 scale = Vector2(0.35044938, 0.3391769)
 texture = ExtResource("32_oexbj")
@@ -1773,3 +1844,26 @@ bus = &"SFX_Move_Wet"
 
 [node name="FallAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742822]
 bus = &"SFX_Move_Wet"
+
+[node name="VFX" type="AnimationPlayer" parent="." unique_id=2142577178]
+libraries/ = SubResource("AnimationLibrary_chapter5_vfx")
+
+[node name="Chapter5Powder" type="CPUParticles2D" parent="."]
+position = Vector2(0, -8)
+emitting = false
+amount = 65
+lifetime = 1.55
+randomness = 0.55
+local_coords = false
+emission_shape = 3
+emission_rect_extents = Vector2(15, 20)
+direction = Vector2(0, -1)
+spread = 100.0
+gravity = Vector2(0, -12)
+initial_velocity_min = 7.0
+initial_velocity_max = 34.0
+angular_velocity_min = -90.0
+angular_velocity_max = 90.0
+scale_amount_min = 0.35
+scale_amount_max = 1.0
+color_ramp = SubResource("Gradient_chapter5_powder")

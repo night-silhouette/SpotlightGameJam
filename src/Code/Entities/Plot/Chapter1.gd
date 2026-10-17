@@ -6,6 +6,8 @@ extends Node2D
 const CHAPTER_CARD = preload("res://Code/Entities/Plot/chapter/ChapterCard.tscn")
 
 @onready var _dialog_box = get_node("../../DialogBox")
+@onready var _stele: InteractableComponent = $SteleStory_1_12_to_1_14
+@onready var _leave: InteractableComponent = $LeaveStory_1_15
 
 var _next_event: int = 0
 var _line_index: int = 0
@@ -14,9 +16,8 @@ var _generation: int = 0
 
 func _ready() -> void:
 	SignalBus.PlayerOpeningHoldRequested.emit()
-	for trigger in get_children():
-		if trigger is InteractableComponent:
-			trigger.body_entered.connect(_on_trigger_body_entered.bind(trigger))
+	SignalBus.ComponentInteracted.connect(_on_component_interacted)
+	_leave.body_entered.connect(_on_leave_body_entered)
 	await get_tree().process_frame
 	await get_tree().process_frame
 	await get_tree().process_frame
@@ -24,75 +25,66 @@ func _ready() -> void:
 	if not is_inside_tree():
 		return
 	if _next_event == 0:
-		_run_event(0)
+		_run_opening()
 	else:
 		SignalBus.PlayerOpeningReleaseRequested.emit()
-		_try_next_if_overlapping()
+		_try_leave_if_overlapping()
 
-func _on_trigger_body_entered(body: Node2D, trigger: InteractableComponent) -> void:
-	if not body.is_in_group("player") or _running:
+func _on_component_interacted(component: Node2D, interactor: Node2D) -> void:
+	if component != _stele or not interactor.is_in_group("player") or _next_event != 1:
 		return
-	var event_index := trigger.get_index() + 1
-	if event_index == _next_event:
-		_run_event(event_index)
+	_next_event = 2
+	_try_leave_if_overlapping()
 
-func _run_event(event_index: int) -> void:
+func _on_leave_body_entered(body: Node2D) -> void:
+	if not body.is_in_group("player") or _next_event != 2:
+		return
+	_next_event = 3
+	for line in _leave.enter_dialog_lines:
+		_leave.ShowStoryDialogLine(line)
+
+func _run_opening() -> void:
 	if _running:
 		return
 	_running = true
 	var generation := _generation
-	var lines: Array[PlotDialogLine] = _event_lines(event_index)
-	while _line_index < lines.size():
-		var line := lines[_line_index]
-		var trigger := get_child(event_index - 1) as InteractableComponent if event_index > 0 else null
-		if trigger != null:
-			trigger.ShowStoryDialogLine(line)
-		else:
-			SignalBus.DialogBox.emit(StringName(line.dialog_type), line.text)
+	while _line_index < opening_lines.size():
+		var line := opening_lines[_line_index]
+		SignalBus.DialogBox.emit(StringName(line.dialog_type), line.text)
 		await _dialog_box.Closed
 		if generation != _generation or not is_inside_tree():
 			return
 		_line_index += 1
-	_next_event = event_index + 1
+	_next_event = 1
 	_line_index = 0
 	_running = false
-	if event_index == 0:
-		SignalBus.PlayerOpeningStandUpRequested.emit()
-		var card_layer := CHAPTER_CARD.instantiate()
-		var card := card_layer.get_node("ChapterCard")
-		card.set("auto_play", false)
-		get_parent().add_child(card_layer)
-		card.connect("Finished", card_layer.queue_free)
-		card.call("ShowChapter", "第一章", "沙海初醒")
-	_try_next_if_overlapping()
+	SignalBus.PlayerOpeningStandUpRequested.emit()
+	var card_layer := CHAPTER_CARD.instantiate()
+	var card := card_layer.get_node("ChapterCard")
+	card.set("auto_play", false)
+	get_parent().add_child(card_layer)
+	card.connect("Finished", card_layer.queue_free)
+	card.call("ShowChapter", "第一章", "沙海初醒")
 
-func _try_next_if_overlapping() -> void:
-	if _running or _next_event < 1 or _next_event > get_child_count():
+func _try_leave_if_overlapping() -> void:
+	if _next_event != 2:
 		return
-	var trigger := get_child(_next_event - 1) as InteractableComponent
-	if trigger == null:
-		return
-	for body in trigger.get_overlapping_bodies():
+	for body in _leave.get_overlapping_bodies():
 		if body.is_in_group("player"):
-			_run_event(_next_event)
+			_on_leave_body_entered(body)
 			return
 
-func _event_lines(event_index: int) -> Array[PlotDialogLine]:
-	if event_index == 0:
-		return opening_lines
-	if event_index > 0 and event_index <= get_child_count():
-		var trigger := get_child(event_index - 1) as InteractableComponent
-		if trigger != null:
-			return trigger.story_lines
-	return []
-
+## 导出开场和石碑、离开剧情的推进位置及开场当前句索引。
+## 返回包含 next_event 与 line_index 的字典。
 func ExportSaveData() -> Dictionary:
 	return {"next_event": _next_event, "line_index": _line_index}
 
+## 恢复开场和石碑、离开剧情的推进位置。
+## data 为 ExportSaveData 返回的字典。
 func LoadSaveData(data: Dictionary) -> void:
 	_generation += 1
-	_next_event = clampi(int(data.get("next_event", 0)), 0, get_child_count() + 1)
-	_line_index = clampi(int(data.get("line_index", 0)), 0, maxi(_event_lines(_next_event).size() - 1, 0))
+	_next_event = clampi(int(data.get("next_event", 0)), 0, 3)
+	_line_index = clampi(int(data.get("line_index", 0)), 0, maxi(opening_lines.size() - 1, 0))
 	if _next_event == 0:
 		SignalBus.PlayerOpeningHoldRequested.emit()
 	else:
@@ -102,7 +94,6 @@ func LoadSaveData(data: Dictionary) -> void:
 		_running = false
 	if is_node_ready():
 		if _next_event == 0:
-			_run_event(0)
+			_run_opening()
 		else:
-			SignalBus.PlayerOpeningReleaseRequested.emit()
-			_try_next_if_overlapping()
+			_try_leave_if_overlapping()

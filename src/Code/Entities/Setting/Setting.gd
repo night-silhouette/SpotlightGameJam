@@ -16,6 +16,8 @@ const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const KeybindManagerRef = preload("res://Code/Entities/Setting/KeybindManager.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutManager.gd")
+const OPEN_SETTING_SFX = preload("res://Music/SFX/UI/OpenSetting.wav")
+const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 
 @onready var root_control: Control = $RootControl
 @onready var background_dim: ColorRect = $RootControl/BackgroundDim
@@ -115,6 +117,8 @@ func _input(event: InputEvent) -> void:
 		ToggleSetting()
 
 func _connect_signals() -> void:
+	for button in [close_button, tab_btn_keybinds, tab_btn_saves, tab_btn_audio, tab_btn_touch, return_menu_button, quit_button, $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/ResetButton]:
+		button.pressed.connect(_play_confirm)
 	if close_button:
 		close_button.pressed.connect(HideSetting)
 	if tab_btn_keybinds:
@@ -150,6 +154,8 @@ func _connect_signals() -> void:
 
 ## 显示设置面板
 func ShowSetting() -> void:
+	if not root_control.visible:
+		Util.PlaySFX(OPEN_SETTING_SFX)
 	var scene = get_tree().current_scene
 	return_menu_button.visible = (
 		scene != null
@@ -188,6 +194,9 @@ func _switch_tab(tab_idx: int) -> void:
 		_refresh_touch_rows()
 	if tab_idx == 1:
 		_refresh_save_slots_ui()
+
+func _play_confirm() -> void:
+	Util.PlaySFX(CONFIRM_SFX)
 
 func _on_audio_volume_changed(channel: StringName, volume: float) -> void:
 	var slider: HSlider
@@ -270,6 +279,7 @@ func _build_keybind_rows() -> void:
 		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		btn.focus_mode = Control.FOCUS_NONE
 		btn.set_meta("action_name", action)
+		btn.pressed.connect(_play_confirm)
 		btn.pressed.connect(_on_keybind_button_pressed.bind(action, btn))
 		row.add_child(btn)
 
@@ -366,6 +376,7 @@ func _refresh_save_slots_ui() -> void:
 		btn_save.custom_minimum_size = Vector2(88, 34)
 		btn_save.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 		btn_save.focus_mode = Control.FOCUS_NONE
+		btn_save.pressed.connect(_play_confirm)
 		btn_save.pressed.connect(_on_save_slot_pressed.bind(slot_idx))
 		btn_box.add_child(btn_save)
 
@@ -376,6 +387,7 @@ func _refresh_save_slots_ui() -> void:
 		btn_load.disabled = not exists
 		btn_load.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if exists else Control.CURSOR_ARROW
 		btn_load.focus_mode = Control.FOCUS_NONE
+		btn_load.pressed.connect(_play_confirm)
 		btn_load.pressed.connect(_on_load_slot_pressed.bind(slot_idx))
 		btn_box.add_child(btn_load)
 
@@ -386,6 +398,7 @@ func _refresh_save_slots_ui() -> void:
 		btn_del.disabled = not exists
 		btn_del.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND if exists else Control.CURSOR_ARROW
 		btn_del.focus_mode = Control.FOCUS_NONE
+		btn_del.pressed.connect(_play_confirm)
 		btn_del.pressed.connect(_on_delete_slot_pressed.bind(slot_idx))
 		btn_box.add_child(btn_del)
 

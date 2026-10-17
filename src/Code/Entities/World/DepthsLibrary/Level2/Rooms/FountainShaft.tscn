@@ -6,22 +6,15 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/RisingSpikes/RisingSpikes.tscn" id="spikes"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="chalice"]
 [sub_resource type="RectangleShape2D" id="area3"]
-size = Vector2(140, 3760)
+size = Vector2(140, 3580)
 [node name="FountainShaft" type="Node2D"]
 metadata/scenery_bounds = Rect2(0, 0, 180, 3000)
 metadata/width = 180
 metadata/title = "逆流水井"
 metadata/height = 3580
 
-[node name="Stream" type="Polygon2D" parent="."]
-visible = false
-position = Vector2(20, 0)
-z_index = 0
-polygon = PackedVector2Array(0, 0, 140, 0, 140, 3000, 0, 3000)
-color = Color(0.1,0.7,0.85,0.4)
-
 [node name="Updraft" type="Area2D" parent="."]
-position = Vector2(90, 1700)
+position = Vector2(90, 1790)
 collision_layer = 0
 collision_mask = 2
 

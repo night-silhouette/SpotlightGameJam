@@ -7,11 +7,13 @@ const SETTINGS_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export var act_text: String = "第一幕"
 @export var chapter_text: String = "纺织"
+@export var subtitle_text: String = ""
 @export var auto_play: bool = true
 @export var fade_duration: float = 0.7
 
 @onready var _act_label: Label = $Layout/Act
 @onready var _chapter_label: Label = $Layout/Title
+@onready var _subtitle_label: Label = $Layout/Subtitle
 @onready var _decoration: TextureRect = $Layout/Decoration
 
 var _tween: Tween
@@ -19,8 +21,11 @@ var _tween: Tween
 func _ready() -> void:
 	_act_label.text = act_text
 	_chapter_label.text = chapter_text
+	_subtitle_label.text = subtitle_text
+	_subtitle_label.visible = not subtitle_text.is_empty()
 	_act_label.add_theme_color_override("font_color", SETTINGS_SKIN.ACCENT)
 	_chapter_label.add_theme_color_override("font_color", SETTINGS_SKIN.PAPER)
+	_subtitle_label.add_theme_color_override("font_color", SETTINGS_SKIN.ACCENT)
 	_decoration.material.set_shader_parameter("paper_color", SETTINGS_SKIN.PAPER)
 	if auto_play:
 		Play()
@@ -33,6 +38,8 @@ func Play() -> void:
 		_tween.kill()
 	_act_label.text = act_text
 	_chapter_label.text = chapter_text
+	_subtitle_label.text = subtitle_text
+	_subtitle_label.visible = not subtitle_text.is_empty()
 	show()
 	modulate.a = 0.0
 	var transition_duration: float = minf(maxf(fade_duration, 0.0), DISPLAY_DURATION / 2.0)
