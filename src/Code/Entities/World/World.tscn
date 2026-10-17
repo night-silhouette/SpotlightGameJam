@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://ug5w2x0ysuo6" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="5_acpp2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
-[ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_m5q0i"]
+[ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_l2oj5"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
 [ext_resource type="PackedScene" uid="uid://bekfm826b2gww" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
@@ -93,7 +93,7 @@ script = ExtResource("2_mkscu")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
 resource_local_to_scene = true
-shader = ExtResource("7_m5q0i")
+shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
 shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
 shader_parameter/flow_speed = 1.0
@@ -104,7 +104,7 @@ shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
 resource_local_to_scene = true
-shader = ExtResource("7_m5q0i")
+shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
 shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
 shader_parameter/flow_speed = 1.0
@@ -115,7 +115,7 @@ shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
 resource_local_to_scene = true
-shader = ExtResource("7_m5q0i")
+shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
 shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
 shader_parameter/flow_speed = 1.0
@@ -126,7 +126,7 @@ shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
 resource_local_to_scene = true
-shader = ExtResource("7_m5q0i")
+shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
 shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
 shader_parameter/flow_speed = 1.0
@@ -137,7 +137,7 @@ shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
 resource_local_to_scene = true
-shader = ExtResource("7_m5q0i")
+shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
 shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
 shader_parameter/flow_speed = 1.0
@@ -447,32 +447,49 @@ scale = Vector2(1.0168765, 0.68783075)
 position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0" unique_id=758292571]
+[node name="DesertScenery" parent="SunkenPalace" index="11" unique_id=606180320]
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0"]
 position = Vector2(5310, -65)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
+material = SubResource("ShaderMaterial_o2yww")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
 position = Vector2(5310, -65)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0" unique_id=758292571]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
 position = Vector2(4164.031, -1232.1624)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
 position = Vector2(4164.031, -1232.1624)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0" unique_id=758292571]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0"]
 position = Vector2(4310.6597, -2677)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
+material = SubResource("ShaderMaterial_hehhy")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
 position = Vector2(4310.6597, -2677)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0" unique_id=758292571]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0"]
 position = Vector2(3389, -3375.9998)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
+material = SubResource("ShaderMaterial_vqyf3")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
 position = Vector2(3389, -3375.9998)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0" unique_id=758292571]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0"]
 position = Vector2(1675.5127, -2562.0002)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
+material = SubResource("ShaderMaterial_2flee")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
 position = Vector2(1675.5127, -2562.0002)

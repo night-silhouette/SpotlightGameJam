@@ -782,3 +782,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.05, 3.0, 0.05) var room_camera_zone_transition_time: float = 0.7
 ## 离开区域需要额外走出的距离，避免门口来回微动反复切镜。
 @export_range(0.0, 100.0, 1.0) var room_camera_zone_exit_margin: float = 24.0
+
+@export_group("Sunken Palace - Scenery", "sunken_scenery_")
+## 沉没宫殿本地坐标的背景显示范围，避免第一关背景覆盖其他关卡。
+@export var sunken_scenery_camera_bounds: Vector2 = Vector2(-2000.0, 4500.0)

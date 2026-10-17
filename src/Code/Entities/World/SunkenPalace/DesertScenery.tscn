@@ -11,75 +11,118 @@
 
 [node name="DesertScenery" type="Node2D" unique_id=606180320]
 top_level = true
+position = Vector2(0, -320)
 script = ExtResource("1_script")
+metadata/_editor_description_ = "直接拖动本节点即可同步调整整套沙漠背景；所有层锁定屏幕 Y，不随角色或相机升降。"
 
-[node name="BaseSky" type="Parallax2D" parent="." unique_id=184920152]
+[node name="CoverageBounds" type="Control" parent="." unique_id=113828477]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 4.5261054
+offset_top = 550.82874
+offset_right = 1581.489
+offset_bottom = 1105.7225
+mouse_filter = 2
+metadata/_editor_description_ = "仅作为分层容器，不裁剪、不限制背景绘制范围。"
+
+[node name="BaseSky" type="Parallax2D" parent="CoverageBounds" unique_id=184920152]
+top_level = true
 z_index = -35
-scroll_scale = Vector2(0.005, 0.01)
-repeat_size = Vector2(0, 1664)
-repeat_times = 4
+scroll_scale = Vector2(0.01, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
+metadata/_editor_description_ = "最远天空层；仅产生极轻微横向视差，纵向锁定。"
 
-[node name="Sprite" type="Sprite2D" parent="BaseSky" unique_id=581938210]
-position = Vector2(0, 320)
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=581938210]
+position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("2_dessert_back")
 centered = false
 
-[node name="SkyVerticalJoin" type="Sprite2D" parent="BaseSky" unique_id=1483598055]
-position = Vector2(0, -512)
+[node name="SkyVerticalJoin" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=237455499]
+position = Vector2(-4.5261054, -1062.8287)
 texture = ExtResource("2_dessert_back")
 centered = false
 flip_v = true
 
-[node name="SunBokeh" type="Parallax2D" parent="." unique_id=324007481]
+[node name="SunBokeh" type="Parallax2D" parent="CoverageBounds" unique_id=324007481]
+top_level = true
 z_index = -30
-scroll_scale = Vector2(0.01, 0.02)
+scroll_scale = Vector2(0.025, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
-[node name="Sprite" type="Sprite2D" parent="SunBokeh" unique_id=690523452]
-position = Vector2(-359.96484, 494.74036)
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/SunBokeh" unique_id=690523452]
+position = Vector2(-311.9769, -249.43541)
 texture = ExtResource("2_sun_bokeh")
 centered = false
 
-[node name="MesaRocks" type="Parallax2D" parent="." unique_id=225151614]
+[node name="MesaRocks" type="Parallax2D" parent="CoverageBounds" unique_id=225151614]
+top_level = true
 z_index = -25
-scroll_scale = Vector2(0.03, 0.03)
+scroll_scale = Vector2(0.05, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
-[node name="Sprite" type="Sprite2D" parent="MesaRocks" unique_id=729708152]
-position = Vector2(0, 320)
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/MesaRocks" unique_id=729708152]
+position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("4_mesa_rocks")
 centered = false
 
-[node name="RockPillars" type="Parallax2D" parent="." unique_id=26551239]
+[node name="RockPillars" type="Parallax2D" parent="CoverageBounds" unique_id=26551239]
+top_level = true
 z_index = -20
-scroll_scale = Vector2(0.04, 0.04)
+scroll_scale = Vector2(0.08, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
-[node name="Sprite" type="Sprite2D" parent="RockPillars" unique_id=1074729834]
-position = Vector2(0, 320)
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/RockPillars" unique_id=1074729834]
+position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("5_rock_pillars")
 centered = false
 
-[node name="CactusFar" type="Parallax2D" parent="." unique_id=1394888404]
+[node name="CactusFar" type="Parallax2D" parent="CoverageBounds" unique_id=1394888404]
+top_level = true
 z_index = -15
-scroll_scale = Vector2(0.05, 0.05)
+scroll_scale = Vector2(0.12, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
-[node name="Sprite" type="Sprite2D" parent="CactusFar" unique_id=844295087]
-position = Vector2(0, 320)
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/CactusFar" unique_id=844295087]
+position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("6_cactus_far")
 centered = false
 
-[node name="DunesMid" type="Parallax2D" parent="." unique_id=688781729]
+[node name="DunesMid" type="Parallax2D" parent="CoverageBounds" unique_id=688781729]
+top_level = true
 z_index = -10
-scroll_scale = Vector2(0.06, 0.06)
+scroll_scale = Vector2(0.18, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
+repeat_size = Vector2(3200, 0)
+repeat_times = 3
+metadata/_editor_description_ = "中景沙丘以原图和水平镜像图组成 3200 像素无缝循环单元。"
 
-[node name="Sprite" type="Sprite2D" parent="DunesMid" unique_id=1478120655]
-position = Vector2(0, 320)
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=1478120655]
+position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("7_dunes_mid")
 centered = false
 
-[node name="DesertSilhouette" type="Parallax2D" parent="." unique_id=222718146]
-z_index = 1
-scroll_scale = Vector2(0.1, 0.08)
+[node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=95314642]
+position = Vector2(1595.4739, -230.82872)
+texture = ExtResource("7_dunes_mid")
+centered = false
+flip_h = true
 
-[node name="Sprite" type="Sprite2D" parent="DesertSilhouette" unique_id=1269374407]
-position = Vector2(0, 320)
+[node name="DesertSilhouette" type="Parallax2D" parent="CoverageBounds" unique_id=222718146]
+top_level = true
+z_index = 1
+scroll_scale = Vector2(0.28, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
+repeat_size = Vector2(3200, 0)
+repeat_times = 3
+metadata/_editor_description_ = "最近剪影层；原图和水平镜像图无缝衔接，横向移动最快，纵向锁定。"
+
+[node name="Sprite" type="Sprite2D" parent="CoverageBounds/DesertSilhouette" unique_id=1269374407]
+position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("3_desert_silhouette")
 centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DesertSilhouette" unique_id=1517258323]
+position = Vector2(1595.4739, -230.82872)
+texture = ExtResource("3_desert_silhouette")
+centered = false
+flip_h = true

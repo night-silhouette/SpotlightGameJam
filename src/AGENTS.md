@@ -172,6 +172,7 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 通用视差与测试相机 | `E/ParallaxScenery/ParallaxScenery.gd:6-48`；`E/ParallaxScenery/ParallaxTestCamera.gd:1-27` | 各层周期/速度/接缝，复制材质隔离实例；top_level 避免关卡位移叠加，scroll_offset 包含世界位置。预览场景在同目录，测试相机左右移动/R复位。 |
+| 第一关沙漠背景 | `W/SunkenPalace/DesertScenery.gd:1-51`；`W/SunkenPalace/DesertScenery.tscn:12-114`；`A/ExportSettings.gd:770-772` | `DesertScenery` 为 `@tool` 组件，直接在编辑器拖动根节点即可实时同步全部 Parallax2D，场景默认 position.y=-320；运行时沿用同一位置，不再叠加隐藏纵向参数。各层 top_level 避免嵌套 Control 和关卡实例变换把背景推出视口；DunesMid、DesertSilhouette 各用原图+水平镜像组成 3200 像素无缝循环单元。每帧按相机的沉没宫殿本地 X 与 `sunken_scenery_camera_bounds` 切换可见性，避免覆盖第三关。2026-10-17 Godot 4.7.2 headless 正式 World 装配断言通过：根节点上移96像素时图层精确同步上移96像素，两组衔接间距均等于1600像素原图宽度；完整视觉仍待人工验收。 |
 | 营地、绿洲装饰 | `W/Camp/Scenery/CampScenery.gd:11-80`；`W/OasisBattlefield/Decoration/OutwardScenery.gd:1-14`；`OasisComponentArt.gd:22-143`；`OasisTerrainTile.gd:1-44`（后两者同属绿洲 Decoration） | 营地覆盖/有限视差；营地及第二关前景均不再按人物位置局部透明，保留整体透明度；绿洲按相机位置控制可见，按组件状态绘美术，TileMap邻接选边；不负责生成碰撞。 |
 | 第二关房间与井内视差 | `L2/Scenery/Level2Scenery.gd:11-105`；`L2/Scenery/HorizontalScenery.gd:20-124`；`L2/Scenery/VerticalScenery.gd:15-122` | 房间范围/视口裁剪、左井慢降只滚指定柱层；横向从原始 PackedScene 取变换防累计缩放，竖向按井高适配、分层漂移/循环。 |
 | 第二关地形美术与黑幕 | `L2/Terrain/TerrainArt.gd:19-259`；`W/视觉装饰组件/BlackCurtain.gd:1-8`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.gd:1-31`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusionMask.gd:1-31`；`W/视觉装饰组件/ShaftOcclusion/ShaftOcclusion.tscn:11-35` | 跨房间汇总真实占用绘石框/玻璃，RenderingServer 隐藏灰盒，不改碰撞；黑幕检测 player 后释放；ShaftOcclusion 使用两个可在编辑器直接调整的 Polygon2D 区域，进入一侧时只遮住另一侧。 |

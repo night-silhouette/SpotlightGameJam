@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="2_rune"]
+
+[node name="WaterFlowRuneLayout2" instance=ExtResource("1_base")]
+
+[node name="Sprite2D" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-71.31055, 78.39427)
+rotation = 0.64270645
+scale = Vector2(0.16945666, 0.16945666)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(80.6958, -75.68202)
+rotation = 0.64270645
+scale = Vector2(-0.169, -0.169)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(78.76135, 78.18877)
+rotation = -0.549934
+scale = Vector2(0.169, 0.169)
+flip_h = true
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D4" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-68.90149, -72.79463)
+rotation = -3.7680585
+scale = Vector2(0.169, 0.169)
+flip_h = true
+texture = ExtResource("2_rune")
