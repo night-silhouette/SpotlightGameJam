@@ -4,6 +4,7 @@ var available: bool = true
 var _player: Node2D
 var _level: Node2D
 @onready var _visual: Polygon2D = $Visual
+@onready var _interaction_light: PointLight2D = $InteractionLight
 
 func _ready() -> void:
 	add_to_group("touch_interactables")
@@ -13,8 +14,18 @@ func _ready() -> void:
 	$PromptContainer.hide()
 	$PromptContainer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$Caption.hide()
+	var sprite := get_node_or_null("ItemArt") as Sprite2D
+	if sprite == null:
+		sprite = get_node_or_null("Sprite2D") as Sprite2D
+	if sprite == null:
+		sprite = get_node_or_null("Node2D/FountainIdle") as Sprite2D
+	_interaction_light.global_position = sprite.to_global(sprite.get_rect().get_center()) if sprite != null else _visual.to_global(Vector2(0, -28))
 
 func _process(_delta: float) -> void:
+	_interaction_light.enabled = available and ExportSettings.level2_hub_light_enabled and str(get_meta("kind", "")) != "fountain"
+	_interaction_light.color = ExportSettings.level2_hub_light_device_color
+	_interaction_light.energy = ExportSettings.level2_hub_light_device_energy
+	_interaction_light.texture_scale = ExportSettings.level2_hub_light_device_radius / 128.0
 	_player = null
 	if available:
 		for body in get_tree().get_nodes_in_group("player"):

@@ -44,7 +44,7 @@ shader_parameter/dissolve_progress = 0.0
 shader_parameter/edge_width = 0.04
 shader_parameter/edge_color = Color(0.5, 0.85, 1, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_3tyik"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4mfl2"]
 resource_local_to_scene = true
 size = Vector2(1395, 650)
 
@@ -56,6 +56,30 @@ blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8botp"]
 blend_mode = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqca1"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3tyik"]
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xlvjv"]
 shader = ExtResource("20_pairm")
@@ -75,35 +99,35 @@ shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = false
+shader_parameter/foreground = true
 shader_parameter/opacity = 0.35
 shader_parameter/player_world = Vector2(-100000, -100000)
 shader_parameter/clear_radius = 100.0
 shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_r2dul"]
-shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
-shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
-shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
-shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
 shader_parameter/foreground = false
-shader_parameter/opacity = 0.35
-shader_parameter/player_world = Vector2(-100000, -100000)
+shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
-shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_10p2q"]
-shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
-shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
-shader_parameter/stairwell_bounds = Vector4(1056, 536, 1664, 1976)
-shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = true
-shader_parameter/opacity = 0.35
-shader_parameter/player_world = Vector2(-100000, -100000)
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
-shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uhtjq"]
 resource_local_to_scene = true
@@ -124,8 +148,8 @@ shader_parameter/vertical_layout = true
 shader_parameter/artwork_height = 800.0
 shader_parameter/shaft_width = 180.0
 shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 1.0
-shader_parameter/foreground = false
+shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
@@ -136,48 +160,12 @@ shader_parameter/vertical_layout = true
 shader_parameter/artwork_height = 800.0
 shader_parameter/shaft_width = 180.0
 shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 1.0
-shader_parameter/foreground = false
-shader_parameter/player_pixels = Vector2(-10000, -10000)
-shader_parameter/clear_radius = 100.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_abmis"]
-resource_local_to_scene = true
-shader = ExtResource("16_aevo3")
-shader_parameter/vertical_layout = true
-shader_parameter/artwork_height = 800.0
-shader_parameter/shaft_width = 180.0
-shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 0.35
 shader_parameter/foreground = true
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mohoi"]
-resource_local_to_scene = true
-shader = ExtResource("16_aevo3")
-shader_parameter/vertical_layout = true
-shader_parameter/artwork_height = 800.0
-shader_parameter/shaft_width = 180.0
-shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 0.35
-shader_parameter/foreground = true
-shader_parameter/player_pixels = Vector2(-10000, -10000)
-shader_parameter/clear_radius = 100.0
-
-[sub_resource type="Resource" id="Resource_hxuls"]
-resource_local_to_scene = true
-script = ExtResource("theirs_25_24a00")
-
-[sub_resource type="Resource" id="Resource_dmpls"]
-resource_local_to_scene = true
-script = ExtResource("theirs_25_24a00")
-
-[sub_resource type="Resource" id="Resource_dt4rk"]
-resource_local_to_scene = true
-script = ExtResource("theirs_25_24a00")
-
-[sub_resource type="Resource" id="Resource_matvp"]
+[sub_resource type="Resource" id="Resource_abmis"]
 resource_local_to_scene = true
 script = ExtResource("theirs_25_24a00")
 
@@ -217,16 +205,16 @@ visible = false
 [node name="RoomHint" parent="Rooms/Hub" index="1" unique_id=1377237233]
 visible = false
 
-[node name="WestSign" parent="Rooms/Hub" index="4" unique_id=790934189]
+[node name="WestSign" parent="Rooms/Hub" index="5" unique_id=790934189]
 visible = false
 
-[node name="EastSign" parent="Rooms/Hub" index="5" unique_id=1841482344]
+[node name="EastSign" parent="Rooms/Hub" index="6" unique_id=1841482344]
 visible = false
 
-[node name="Sprite2D" parent="Rooms/Hub" index="8" unique_id=1616484494]
+[node name="Sprite2D" parent="Rooms/Hub" index="9" unique_id=1616484494]
 position = Vector2(-2897, 463)
 
-[node name="Sprite2D2" parent="Rooms/Hub" index="9" unique_id=729371312]
+[node name="Sprite2D2" parent="Rooms/Hub" index="10" unique_id=729371312]
 position = Vector2(-2769, 507)
 
 [node name="WestPassage" parent="Rooms" unique_id=1965790281 instance=ExtResource("WestPassage")]
@@ -316,7 +304,7 @@ tile_map_data = PackedByteArray("AAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAABAP3/AAAAAAA
 
 [node name="TriggerShape" parent="Rooms/RestArchive/RoomCameraZone" index="0"]
 position = Vector2(697.5, 275)
-shape = SubResource("RectangleShape2D_3tyik")
+shape = SubResource("RectangleShape2D_4mfl2")
 
 [node name="ViewTopLeft" parent="Rooms/RestArchive/RoomCameraZone" index="1"]
 position = Vector2(-20, -30)
@@ -448,91 +436,6 @@ texture = ExtResource("15_kfeio")
 [node name="TimingSpikesA" parent="Rooms/WeaveArchive" index="5" unique_id=684085317]
 position = Vector2(666, 433)
 
-[node name="TimingSpikesA2" parent="Rooms/WeaveArchive" unique_id=19512470 instance=ExtResource("18_4mfl2")]
-solid_base_enabled = true
-position = Vector2(707, 433)
-
-[node name="BaseSlot" parent="Rooms/WeaveArchive/TimingSpikesA2" index="0"]
-visible = false
-
-[node name="SpikeMovingRoot" parent="Rooms/WeaveArchive/TimingSpikesA2" index="1"]
-position = Vector2(0, -14.21)
-
-[node name="VisualPolygon" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="0"]
-visible = false
-
-[node name="Sprite2D" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="2" unique_id=1216739595]
-position = Vector2(-14.434998, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot"]
-position = Vector2(-14.434998, -1.6650085)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="Sprite2D2" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="3" unique_id=1419575300]
-position = Vector2(-4.4349976, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D2" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot"]
-position = Vector2(-4.4349976, -1.6650085)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="Sprite2D3" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="4" unique_id=449749101]
-position = Vector2(5.5650024, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D3" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot"]
-position = Vector2(5.5650024, -1.6650085)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="Sprite2D4" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="5" unique_id=616581395]
-position = Vector2(15.565002, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D4" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot"]
-position = Vector2(15.565002, -1.6650085)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("19_iqca1")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
 [node name="Sprite2D" parent="Rooms/WeaveArchive/Gate" parent_id_path=PackedInt32Array(373735795, 109426221) index="3" unique_id=29211382]
 position = Vector2(43, 309)
 scale = Vector2(0.44, 0.44)
@@ -552,27 +455,112 @@ offset_bottom = -115.0
 [node name="Sprite2D" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="3" unique_id=1810848957]
 position = Vector2(3, -65)
 
-[node name="Terrain" parent="Rooms/WeaveArchive" index="11" unique_id=1287906624]
+[node name="Terrain" parent="Rooms/WeaveArchive" index="10" unique_id=1287906624]
 tile_map_data = PackedByteArray("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")
+
+[node name="TimingSpikesA2" parent="Rooms/WeaveArchive" unique_id=19512470 instance=ExtResource("18_4mfl2")]
+position = Vector2(707, 433)
+solid_base_enabled = true
+
+[node name="BaseSlot" parent="Rooms/WeaveArchive/TimingSpikesA2" index="0"]
+visible = false
+
+[node name="SpikeMovingRoot" parent="Rooms/WeaveArchive/TimingSpikesA2" index="1"]
+position = Vector2(0, -14.21)
+
+[node name="VisualPolygon" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="0"]
+visible = false
+
+[node name="Sprite2D" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="2" unique_id=1216739595]
+position = Vector2(-14.434998, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="3" unique_id=1419575300]
+position = Vector2(-4.4349976, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D3" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="4" unique_id=449749101]
+position = Vector2(5.5650024, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/SpikeMovingRoot" index="5" unique_id=616581395]
+position = Vector2(15.565002, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot" index="0" unique_id=1943754038]
+position = Vector2(-14.434998, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, -101.5)
+region_enabled = true
+region_rect = Rect2(0, 0, 159, 178)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot" index="1" unique_id=1190359094]
+position = Vector2(-4.4349976, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, -101.5)
+region_enabled = true
+region_rect = Rect2(0, 0, 159, 178)
+
+[node name="Sprite2D3" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot" index="2" unique_id=54606961]
+position = Vector2(5.5650024, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, -101.5)
+region_enabled = true
+region_rect = Rect2(0, 0, 159, 178)
+
+[node name="Sprite2D4" type="Sprite2D" parent="Rooms/WeaveArchive/TimingSpikesA2/BaseVisualRoot" index="3" unique_id=947821428]
+position = Vector2(15.565002, -1.6650085)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("19_iqca1")
+offset = Vector2(0, -101.5)
+region_enabled = true
+region_rect = Rect2(0, 0, 159, 178)
 
 [node name="FountainShaft" parent="Rooms" unique_id=1773857183 instance=ExtResource("FountainShaft")]
 position = Vector2(900, -3080)
 
-[node name="RoomTitle" parent="Rooms/FountainShaft" index="2"]
+[node name="RoomTitle" parent="Rooms/FountainShaft" index="1"]
 visible = false
 offset_left = 0.0
 offset_top = 0.0
 offset_right = 180.0
 offset_bottom = 80.0
 
-[node name="RoomHint" parent="Rooms/FountainShaft" index="3"]
+[node name="RoomHint" parent="Rooms/FountainShaft" index="2"]
 visible = false
 offset_left = 0.0
 offset_top = 30.0
 offset_right = 180.0
 offset_bottom = 110.0
 
-[node name="Terrain" parent="Rooms/FountainShaft" index="5"]
+[node name="Terrain" parent="Rooms/FountainShaft" index="4"]
 tile_map_data = PackedByteArray("AAD//wAAAAAAAAAAAAAEAAAAAAAAAAAAAAD//wEAAAAAAAAAAAAEAAEAAAAAAAAAAAD//wIAAAAAAAAAAAAEAAIAAAAAAAAAAAD//wMAAAAAAAAAAAAEAAMAAAAAAAAAAAD//wQAAAAAAAAAAAAEAAQAAAAAAAAAAAD//wUAAAAAAAAAAAAEAAUAAAAAAAAAAAD//wYAAAAAAAAAAAAEAAYAAAAAAAAAAAD//wcAAAAAAAAAAAAEAAcAAAAAAAAAAAD//wgAAAAAAAAAAAAEAAgAAAAAAAAAAAD//wkAAAAAAAAAAAAEAAkAAAAAAAAAAAD//woAAAAAAAAAAAAEAAoAAAAAAAAAAAD//wsAAAAAAAAAAAAEAAsAAAAAAAAAAAD//wwAAAAAAAAAAAAEAAwAAAAAAAAAAAD//w0AAAAAAAAAAAAEAA0AAAAAAAAAAAD//w4AAAAAAAAAAAAEAA4AAAAAAAAAAAD//w8AAAAAAAAAAAAEAA8AAAAAAAAAAAD//xAAAAAAAAAAAAAEABAAAAAAAAAAAAD//xEAAAAAAAAAAAAEABEAAAAAAAAAAAD//xIAAAAAAAAAAAAEABIAAAAAAAAAAAD//xMAAAAAAAAAAAAEABMAAAAAAAAAAAD//xQAAAAAAAAAAAAEABQAAAAAAAAAAAD//xUAAAAAAAAAAAAEABUAAAAAAAAAAAD//xYAAAAAAAAAAAAEABYAAAAAAAAAAAD//xcAAAAAAAAAAAAEABcAAAAAAAAAAAD//xgAAAAAAAAAAAAEABgAAAAAAAAAAAD//xkAAAAAAAAAAAAEABkAAAAAAAAAAAD//xoAAAAAAAAAAAAEABoAAAAAAAAAAAD//xsAAAAAAAAAAAAEABsAAAAAAAAAAAD//xwAAAAAAAAAAAAEABwAAAAAAAAAAAD//x0AAAAAAAAAAAAEAB0AAAAAAAAAAAD//x4AAAAAAAAAAAAEAB4AAAAAAAAAAAD//x8AAAAAAAAAAAAEAB8AAAAAAAAAAAD//yAAAAAAAAAAAAAEACAAAAAAAAAAAAD//yEAAAAAAAAAAAAEACEAAAAAAAAAAAD//yIAAAAAAAAAAAAEACIAAAAAAAAAAAD//yMAAAAAAAAAAAAEACMAAAAAAAAAAAD//yQAAAAAAAAAAAAEACQAAAAAAAAAAAD//yUAAAAAAAAAAAAEACUAAAAAAAAAAAD//yYAAAAAAAAAAAAEACYAAAAAAAAAAAD//ycAAAAAAAAAAAAEACcAAAAAAAAAAAD//ygAAAAAAAAAAAAEACgAAAAAAAAAAAD//ykAAAAAAAAAAAAEACkAAAAAAAAAAAD//yoAAAAAAAAAAAAEACoAAAAAAAAAAAD//ysAAAAAAAAAAAAEACsAAAAAAAAAAAD//ywAAAAAAAAAAAAEACwAAAAAAAAAAAD//y0AAAAAAAAAAAAEAC0AAAAAAAAAAAD//y4AAAAAAAAAAAAEAC4AAAAAAAAAAAD//y8AAAAAAAAAAAAEAC8AAAAAAAAAAAD//zAAAAAAAAAAAAAEADAAAAAAAAAAAAD//zEAAAAAAAAAAAAEADEAAAAAAAAAAAD//zIAAAAAAAAAAAAEADIAAAAAAAAAAAD//zMAAAAAAAAAAAAEADMAAAAAAAAAAAD//zQAAAAAAAAAAAAEADQAAAAAAAAAAAD//zUAAAAAAAAAAAAEADUAAAAAAAAAAAD//zYAAAAAAAAAAAAEADYAAAAAAAAAAAD//zcAAAAAAAAAAAAEADcAAAAAAAAAAAD//zgAAAAAAAAAAAAEADgAAAAAAAAAAAD//zkAAAAAAAAAAAAEADkAAAAAAAAAAAD//zoAAAAAAAAAAAAEADoAAAAAAAAAAAD//zsAAAAAAAAAAAAEADsAAAAAAAAAAAD//zwAAAAAAAAAAAAEADwAAAAAAAAAAAD//z0AAAAAAAAAAAAEAD0AAAAAAAAAAAD//z4AAAAAAAAAAAAEAD4AAAAAAAAAAAD//z8AAAAAAAAAAAAEAD8AAAAAAAAAAAD//0AAAAAAAAAAAAAEAEAAAAAAAAAAAAD//0EAAAAAAAAAAAAEAEEAAAAAAAAAAAD//0IAAAAAAAAAAAAEAEIAAAAAAAAAAAD//0MAAAAAAAAAAAAEAEMAAAAAAAAAAAD//0QAAAAAAAAAAAAEAEQAAAAAAAAAAAD//0UAAAAAAAAAAAAEAEUAAAAAAAAAAAD//0YAAAAAAAAAAAAEAEYAAAAAAAAAAAD//0cAAAAAAAAAAAAEAEcAAAAAAAAAAAD//0gAAAAAAAAAAAAEAEgAAAAAAAAAAAD//0kAAAAAAAAAAAAEAEkAAAAAAAAAAAD//0oAAAAAAAAAAAAEAEoAAAAAAAAAAAD//0sAAAAAAAAAAAAEAEsAAAAAAAAAAAD//0wAAAAAAAAAAAAEAEwAAAAAAAAAAAD//00AAAAAAAAAAAAEAE0AAAAAAAAAAAD//04AAAAAAAAAAAAEAE4AAAAAAAAAAAD//08AAAAAAAAAAAAEAE8AAAAAAAAAAAD//1AAAAAAAAAAAAAEAFAAAAAAAAAAAAD//1EAAAAAAAAAAAAEAFEAAAAAAAAAAAD//1IAAAAAAAAAAAAEAFIAAAAAAAAAAAD//1MAAAAAAAAAAAAEAFMAAAAAAAAAAAD//1QAAAAAAAAAAAAEAFQAAAAAAAAAAAD//1UAAAAAAAAAAAAEAFUAAAAAAAAAAAD//1YAAAAAAAAAAAAEAFYAAAAAAAAAAAD//1cAAAAAAAAAAAAEAFcAAAAAAAAAAAD//1gAAAAAAAAAAAAEAFgAAAAAAAAAAAD//1kAAAAAAAAAAAAEAFkAAAAAAAAAAAD//1oAAAAAAAAAAAAEAFoAAAAAAAAAAAD//1sAAAAAAAAAAAAEAFsAAAAAAAAAAAD//1wAAAAAAAAAAAAEAFwAAAAAAAAAAAD//10AAAAAAAAAAAAEAF0AAAAAAAAAAAD//14AAAAAAAAAAAAEAF4AAAAAAAAAAAA=")
 
 [node name="SurfaceExit" parent="Rooms" unique_id=405260648 instance=ExtResource("SurfaceExit")]
@@ -584,14 +572,14 @@ visible = false
 [node name="RoomHint" parent="Rooms/SurfaceExit" index="1"]
 visible = false
 
-[node name="ExitSign" parent="Rooms/SurfaceExit" index="5"]
+[node name="ExitSign" parent="Rooms/SurfaceExit" index="4"]
 visible = false
 offset_left = 260.0
 offset_top = -220.0
 offset_right = 260.0
 offset_bottom = -220.0
 
-[node name="Terrain" parent="Rooms/SurfaceExit" index="6"]
+[node name="Terrain" parent="Rooms/SurfaceExit" index="5"]
 tile_map_data = PackedByteArray("AADy/w0AAAAAAAAAAADx/w0AAAAAAAAAAADw/w0AAAAAAAAAAADv/w0AAAAAAAAAAADz/w0AAAAAAAAAAAA=")
 
 [node name="Scenery" parent="." unique_id=346300600 instance=ExtResource("scenery")]
@@ -601,11 +589,11 @@ scroll_scale = Vector2(0.65, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="BlueBase" parent="Scenery/HorizontalMain/Sky" index="0"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="BlueBaseRight" parent="Scenery/HorizontalMain/Sky" index="1"]
-material = SubResource("ShaderMaterial_xlvjv")
+material = SubResource("ShaderMaterial_iqca1")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -614,29 +602,29 @@ scroll_scale = Vector2(0.65, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="GlassColors" parent="Scenery/HorizontalMain/FarBackground" index="0"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="GlassColorsRight" parent="Scenery/HorizontalMain/FarBackground" index="1"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGrid" parent="Scenery/HorizontalMain/FarBackground" index="2"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGridRight" parent="Scenery/HorizontalMain/FarBackground" index="3"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Arches" parent="Scenery/HorizontalMain/FarBackground" index="4"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="ArchesRight" parent="Scenery/HorizontalMain/FarBackground" index="5"]
-material = SubResource("ShaderMaterial_urly8")
+material = SubResource("ShaderMaterial_3tyik")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -645,47 +633,47 @@ scroll_scale = Vector2(0.65, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="WindowGlow" parent="Scenery/HorizontalMain/NearBackground" index="0"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGlowRight" parent="Scenery/HorizontalMain/NearBackground" index="1"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShade" parent="Scenery/HorizontalMain/NearBackground" index="2"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShadeRight" parent="Scenery/HorizontalMain/NearBackground" index="3"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRock" parent="Scenery/HorizontalMain/NearBackground" index="4"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRockRight" parent="Scenery/HorizontalMain/NearBackground" index="5"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Sparkles" parent="Scenery/HorizontalMain/NearBackground" index="6"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="SparklesRight" parent="Scenery/HorizontalMain/NearBackground" index="7"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridge" parent="Scenery/HorizontalMain/NearBackground" index="8"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridgeRight" parent="Scenery/HorizontalMain/NearBackground" index="9"]
-material = SubResource("ShaderMaterial_r2dul")
+material = SubResource("ShaderMaterial_xlvjv")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -694,28 +682,28 @@ scroll_scale = Vector2(1.08, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="LeftPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="0"]
-material = SubResource("ShaderMaterial_10p2q")
+material = SubResource("ShaderMaterial_urly8")
 position = Vector2(-1660.9375, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="RightPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="1"]
-material = SubResource("ShaderMaterial_10p2q")
+material = SubResource("ShaderMaterial_urly8")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" index="0"]
-material = SubResource("ShaderMaterial_uhtjq")
+material = SubResource("ShaderMaterial_r2dul")
 
 [node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" index="1"]
-material = SubResource("ShaderMaterial_ulmcl")
+material = SubResource("ShaderMaterial_10p2q")
 
 [node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" index="2"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_uhtjq")
 
 [node name="NearColumn" parent="Scenery/FountainShaft/Foreground" index="0"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_ulmcl")
 
 [node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" index="1"]
-material = SubResource("ShaderMaterial_mohoi")
+material = SubResource("ShaderMaterial_c5enj")
 
 [node name="TerrainArt" parent="." unique_id=1368075065 instance=ExtResource("TerrainArt")]
 
@@ -792,7 +780,7 @@ autowrap_mode = 3
 
 [node name="ShaftOcclusion" parent="." unique_id=1439753509 instance=ExtResource("theirs_24_ek66h")]
 position = Vector2(578, -2938)
-settings = SubResource("Resource_hxuls")
+settings = SubResource("Resource_abmis")
 
 [node name="RegionA" parent="ShaftOcclusion" index="0" unique_id=442132825]
 polygon = PackedVector2Array(-1, -2, 253, -2, 254, 2896, -3, 2897)
@@ -800,45 +788,7 @@ polygon = PackedVector2Array(-1, -2, 253, -2, 254, 2896, -3, 2897)
 [node name="RegionB" parent="ShaftOcclusion" index="1" unique_id=2142717562]
 position = Vector2(-1051, -86)
 scale = Vector2(1.5417591, 0.1807527)
-polygon = PackedVector2Array(846.4357, 414.93164, 660.2847, 420.46387, 660.2847, 2528.3164, 327.54794, 2528.3164, 327.54794, -127.24609, 846.4357, -132.7793)
-
-[node name="ShaftOcclusion2" parent="." unique_id=1682304827 instance=ExtResource("theirs_24_ek66h")]
-position = Vector2(578, -2938)
-settings = SubResource("Resource_dmpls")
-
-[node name="RegionA" parent="ShaftOcclusion2" index="0" unique_id=442132825]
-polygon = PackedVector2Array(-1, -2, 253, -2, 254, 2896, -3, 2897)
-
-[node name="RegionB" parent="ShaftOcclusion2" index="1" unique_id=2142717562]
-position = Vector2(-1859.1947, 2937.0056)
-scale = Vector2(2.5803695, 0.26112252)
-polygon = PackedVector2Array(1190.1989, -149.37672, 1194.0906, 2998.571, 331.43958, 2954.3115, 327.54794, -127.24609)
-
-[node name="ShaftOcclusion3" parent="." unique_id=1119995043 instance=ExtResource("theirs_24_ek66h")]
-position = Vector2(578, -2938)
-settings = SubResource("Resource_dt4rk")
-
-[node name="RegionA" parent="ShaftOcclusion3" index="0" unique_id=442132825]
-position = Vector2(303, 2)
-polygon = PackedVector2Array(46, -143, 175, -142, 175, 2897, 47, 2897)
-
-[node name="RegionB" parent="ShaftOcclusion3" index="1" unique_id=2142717562]
-position = Vector2(-1611.17, 2936.2463)
-scale = Vector2(2.3299491, 0.25603983)
-polygon = PackedVector2Array(1190.1989, -149.37672, 1192.1538, 1432.0305, 1194.0906, 2998.571, 331.43958, 2954.3115, 327.54794, -127.24609)
-
-[node name="ShaftOcclusion4" parent="." unique_id=1295882201 instance=ExtResource("theirs_24_ek66h")]
-position = Vector2(578, -2938)
-settings = SubResource("Resource_matvp")
-
-[node name="RegionA" parent="ShaftOcclusion4" index="0" unique_id=442132825]
-position = Vector2(303, 2)
-polygon = PackedVector2Array(46, -143, 175, -142, 175, 2897, 47, 2897)
-
-[node name="RegionB" parent="ShaftOcclusion4" index="1" unique_id=2142717562]
-position = Vector2(-827, 60)
-scale = Vector2(1.5417591, 0.1807527)
-polygon = PackedVector2Array(699.8499, -343.01074, 701.14716, 15695.479, 534.45447, 15701.011, 535.103, -337.47852)
+polygon = PackedVector2Array(843.8413, 425.9961, 660.2847, 420.46387, 660.2847, 2528.3164, 327.54794, 2528.3164, 328.84515, -1897.6211, 845.7871, -1930.8145)
 
 [editable path="Rooms/EntryCollapse"]
 [editable path="Rooms/DescentShaft"]
@@ -864,9 +814,9 @@ polygon = PackedVector2Array(699.8499, -343.01074, 701.14716, 15695.479, 534.454
 [editable path="Rooms/WeaveArchive/SunRune"]
 [editable path="Rooms/WeaveArchive/WeaveRune"]
 [editable path="Rooms/WeaveArchive/TimingSpikesA"]
-[editable path="Rooms/WeaveArchive/TimingSpikesA2"]
 [editable path="Rooms/WeaveArchive/TimingSpikesB"]
 [editable path="Rooms/WeaveArchive/WeaveKey"]
+[editable path="Rooms/WeaveArchive/TimingSpikesA2"]
 [editable path="Rooms/FountainShaft"]
 [editable path="Rooms/SurfaceExit"]
 [editable path="Scenery"]

@@ -7,6 +7,18 @@
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
 
+[sub_resource type="Gradient" id="PlatformLightGradient"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.7, 0.7, 0.7, 0.65, 0, 0, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="PlatformLightTexture"]
+gradient = SubResource("PlatformLightGradient")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
 [node name="MoonAqueduct" type="Node2D" unique_id=1314162113]
 metadata/width = 2200
 metadata/title = "月影水道"
@@ -45,6 +57,17 @@ position = Vector2(3.9999998, 3.9999995)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_k2d0o")
 
+[node name="PlatformLight" type="PointLight2D" parent="FerryA"]
+position = Vector2(4, 4)
+color = Color(0.58, 0.8, 1, 1)
+energy = 0.34
+texture = SubResource("PlatformLightTexture")
+texture_scale = 0.8203125
+range_z_min = -30
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
 [node name="FerryB" parent="." unique_id=1659212721 instance=ExtResource("moving")]
 position = Vector2(1140, 460)
 platform_size = Vector2(150, 20)
@@ -62,6 +85,17 @@ visible = false
 position = Vector2(-6.055832e-05, 4)
 scale = Vector2(0.25464597, 0.2)
 texture = ExtResource("3_almxt")
+
+[node name="PlatformLight" type="PointLight2D" parent="FerryB"]
+position = Vector2(0, 4)
+color = Color(0.58, 0.8, 1, 1)
+energy = 0.34
+texture = SubResource("PlatformLightTexture")
+texture_scale = 0.8203125
+range_z_min = -30
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
 
 [node name="MoonKey" parent="." unique_id=1522929699 instance=ExtResource("device")]
 position = Vector2(1980, 380)

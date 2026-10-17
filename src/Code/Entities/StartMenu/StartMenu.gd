@@ -11,6 +11,7 @@ const SettingsSkin = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
+const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 
 @onready var btn_start: Button = %BtnStart
 @onready var btn_setting: Button = %BtnSetting
@@ -66,6 +67,8 @@ func _instantiate_setting() -> void:
 		_setting_instance.HideSetting()
 
 func _setup_signals() -> void:
+	for button in [btn_start, btn_credits, btn_quit, btn_close_saves, btn_close_credits]:
+		button.pressed.connect(_play_confirm)
 	if btn_start:
 		btn_start.pressed.connect(_on_start_pressed)
 	if btn_setting:
@@ -82,6 +85,9 @@ func _setup_signals() -> void:
 
 	if quit_confirm_dialog:
 		quit_confirm_dialog.confirmed.connect(func(): SignalBus.GameQuitRequested.emit())
+
+func _play_confirm() -> void:
+	Util.PlaySFX(CONFIRM_SFX)
 
 func _on_start_pressed() -> void:
 	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "选择游戏存档"
@@ -171,9 +177,11 @@ func _refresh_saves_ui() -> void:
 
 		if exists:
 			btn_action.text = "载入进度"
+			btn_action.pressed.connect(_play_confirm)
 			btn_action.pressed.connect(_on_slot_load_pressed.bind(slot_idx))
 		else:
 			btn_action.text = "开启新存档"
+			btn_action.pressed.connect(_play_confirm)
 			btn_action.pressed.connect(_on_slot_new_game_pressed.bind(slot_idx))
 		hbox.add_child(btn_action)
 
@@ -185,6 +193,7 @@ func _refresh_saves_ui() -> void:
 			btn_restart.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 			btn_restart.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 			btn_restart.focus_mode = Control.FOCUS_NONE
+			btn_restart.pressed.connect(_play_confirm)
 			btn_restart.pressed.connect(_on_slot_new_game_pressed.bind(slot_idx))
 			hbox.add_child(btn_restart)
 

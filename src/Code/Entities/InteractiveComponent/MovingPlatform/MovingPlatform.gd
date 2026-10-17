@@ -47,6 +47,7 @@ class_name MovingPlatform
 @onready var _path_preview: Line2D = $PathPreview
 @onready var _start_marker: Polygon2D = $StartMarker
 @onready var _end_marker: Polygon2D = $EndMarker
+@onready var _platform_light: PointLight2D = get_node_or_null("PlatformLight") as PointLight2D
 
 var _origin_position: Vector2 = Vector2.ZERO
 var _path_progress: float = 0.0
@@ -64,6 +65,13 @@ func _ready() -> void:
 	_update_dimensions()
 	_update_path_preview()
 	_setup_triggers()
+	set_process(_platform_light != null)
+
+func _process(_delta: float) -> void:
+	_platform_light.enabled = ExportSettings.level2_hub_light_enabled
+	_platform_light.color = ExportSettings.level2_hub_light_platform_color
+	_platform_light.energy = ExportSettings.level2_hub_light_platform_energy
+	_platform_light.texture_scale = ExportSettings.level2_hub_light_platform_radius / 128.0
 
 func _setup_triggers() -> void:
 	if not requires_activation:
