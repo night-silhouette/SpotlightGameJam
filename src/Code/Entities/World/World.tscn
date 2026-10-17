@@ -426,8 +426,18 @@ tween_resource = SubResource("Resource_yocbw")
 z_index = -1
 position = Vector2(-96, -1560)
 
-[node name="CampScenery" parent="Camp" index="0" unique_id=305596168]
+[node name="ColorRect" parent="Camp" index="0" unique_id=791088076]
+offset_left = 16.0
+offset_top = -1036.0
+offset_right = 22.280294
+offset_bottom = -996.0
+scale = Vector2(375.14157, 66.18482)
+
+[node name="CampScenery" parent="Camp" index="2" unique_id=305596168]
 z_index = -30
+
+[node name="06" parent="Camp" index="3" unique_id=646416155]
+visible = true
 
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
@@ -436,6 +446,36 @@ scale = Vector2(1.0168765, 0.68783075)
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
 metadata/_edit_lock_ = true
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0" unique_id=758292571]
+position = Vector2(5310, -65)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
+position = Vector2(5310, -65)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0" unique_id=758292571]
+position = Vector2(4164.031, -1232.1624)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
+position = Vector2(4164.031, -1232.1624)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0" unique_id=758292571]
+position = Vector2(4310.6597, -2677)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
+position = Vector2(4310.6597, -2677)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0" unique_id=758292571]
+position = Vector2(3389, -3375.9998)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
+position = Vector2(3389, -3375.9998)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0" unique_id=758292571]
+position = Vector2(1675.5127, -2562.0002)
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
+position = Vector2(1675.5127, -2562.0002)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
 material = SubResource("ShaderMaterial_o2yww")
@@ -465,6 +505,9 @@ position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
+
+[node name="ReturnPhase" parent="OasisBattlefield" index="2" unique_id=1083308710]
+visible = true
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
