@@ -785,4 +785,4 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 
 @export_group("Sunken Palace - Scenery", "sunken_scenery_")
 ## 沉没宫殿本地坐标的背景显示范围，避免第一关背景覆盖其他关卡。
-@export var sunken_scenery_camera_bounds: Vector2 = Vector2(-2000.0, 4500.0)
+@export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)

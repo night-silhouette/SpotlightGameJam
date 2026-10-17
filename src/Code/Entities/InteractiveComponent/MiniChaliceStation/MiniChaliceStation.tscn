@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ddy27q8b8l3ox"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.gd" id="1_chalice"]
+[ext_resource type="Script" uid="uid://w4rnm8c2tph3" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.gd" id="1_chalice"]
+[ext_resource type="Texture2D" uid="uid://ckm8crcqev1ug" path="res://Art/New/component/10_18_slices/10_18_01_stand.png" id="2_8u1x2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chalice"]
 size = Vector2(28, 36)
@@ -10,27 +11,9 @@ colors = PackedColorArray(0.3, 0.8, 1, 1, 0, 0, 0, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_light"]
 gradient = SubResource("Gradient_light")
-width = 64
-height = 64
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_key_badge"]
-bg_color = Color(0.18, 0.28, 0.42, 0.9)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.6, 0.85, 1, 0.9)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-content_margin_left = 5.0
-content_margin_top = 1.0
-content_margin_right = 5.0
-content_margin_bottom = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_normal"]
 bg_color = Color(0.08, 0.12, 0.18, 0.8)
@@ -39,18 +22,6 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0.35, 0.65, 0.95, 0.8)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_hover"]
-bg_color = Color(0.12, 0.22, 0.35, 0.9)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.5, 0.85, 1, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -68,20 +39,49 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="MiniChaliceStation" type="Area2D" groups=["chalice", "interactive"]]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prompt_hover"]
+bg_color = Color(0.12, 0.22, 0.35, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.5, 0.85, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_key_badge"]
+content_margin_left = 5.0
+content_margin_top = 1.0
+content_margin_right = 5.0
+content_margin_bottom = 1.0
+bg_color = Color(0.18, 0.28, 0.42, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.6, 0.85, 1, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="MiniChaliceStation" type="Area2D" unique_id=1318143604 groups=["chalice", "interactive"]]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_chalice")
 
-[node name="ChaliceBase" type="ColorRect" parent="."]
+[node name="ChaliceBase" type="ColorRect" parent="." unique_id=533725492]
+visible = false
 offset_left = -10.0
 offset_top = -6.0
 offset_right = 10.0
-offset_bottom = 0.0
 mouse_filter = 2
 color = Color(0.65, 0.55, 0.35, 1)
 
-[node name="GlowCup" type="ColorRect" parent="."]
+[node name="GlowCup" type="ColorRect" parent="." unique_id=403703370]
+visible = false
 offset_left = -7.0
 offset_top = -24.0
 offset_right = 7.0
@@ -89,11 +89,11 @@ offset_bottom = -6.0
 mouse_filter = 2
 color = Color(0.2, 0.85, 1, 0.9)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2106154650]
 position = Vector2(0, -14)
 shape = SubResource("RectangleShape2D_chalice")
 
-[node name="LightGlow" type="PointLight2D" parent="."]
+[node name="LightGlow" type="PointLight2D" parent="." unique_id=2080165195]
 position = Vector2(0, -15)
 color = Color(0.3, 0.85, 1, 1)
 energy = 1.2
@@ -118,11 +118,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 focus_mode = 0
-mouse_filter = 0
 mouse_default_cursor_shape = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_prompt_normal")
-theme_override_styles/hover = SubResource("StyleBoxFlat_prompt_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_prompt_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_prompt_hover")
 
 [node name="HBox" type="HBoxContainer" parent="PromptContainer" unique_id=402194812]
 layout_mode = 1
@@ -139,7 +138,6 @@ alignment = 1
 
 [node name="KeyBadge" type="Label" parent="PromptContainer/HBox" unique_id=712903482]
 layout_mode = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
 theme_override_font_sizes/font_size = 11
 theme_override_styles/normal = SubResource("StyleBoxFlat_key_badge")
@@ -149,20 +147,18 @@ vertical_alignment = 1
 
 [node name="ActionLabel" type="Label" parent="PromptContainer/HBox" unique_id=892301948]
 layout_mode = 2
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 13
 text = "饮用"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CooldownLabel" type="Label" parent="."]
+[node name="CooldownLabel" type="Label" parent="." unique_id=667433181]
 visible = false
 offset_left = -50.0
 offset_top = -46.0
 offset_right = 50.0
 offset_bottom = -26.0
-mouse_filter = 2
 theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.9)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
@@ -170,3 +166,8 @@ theme_override_font_sizes/font_size = 11
 text = "充能中..."
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=831813807]
+position = Vector2(-0.30973238, -15.986568)
+scale = Vector2(0.11782947, 0.11782947)
+texture = ExtResource("2_8u1x2")
