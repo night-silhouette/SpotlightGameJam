@@ -90,16 +90,6 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="Resource" id="Resource_tf67n"]
-script = ExtResource("5_acpp2")
-text = "随着冰凉舒缓的水滑入喉管，刚刚那种心脏快要干涸的感觉消失了。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Resource_o2hjh"]
-script = ExtResource("5_acpp2")
-text = "慢慢找回呼吸的节奏了……虽然不知道为什么，但看来得一直保持身体里的水分才行。一旦缺水，恐怕行动都会成问题。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
 [sub_resource type="Resource" id="C3_2_20"]
 script = ExtResource("5_acpp2")
 text = "一顶日轮冠。嵌在蛇身雕塑的头顶，仍保留着精巧而庄严的形制，冠体金色，纹饰层层舒展。"
@@ -386,17 +376,6 @@ z_index = -30
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
-
-[node name="lake" parent="Camp/Chapter1" parent_id_path=PackedInt32Array(1903763566, 257404343) index="2" unique_id=1000769939]
-position = Vector2(1395, 1558)
-scale = Vector2(5.163129, 1.5740379)
-use_export_settings = false
-enable_interaction = false
-disable_movement_during_dialog = true
-show_enter_dialog = true
-enter_dialog_requires_scarred_bones = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_tf67n"), SubResource("Resource_o2hjh")])
-enter_dialog_once = true
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2635, -338)
