@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 		if PUNCTUATION.contains(character):
 			_next_character_delay += ExportSettings.dialog_monologue_punctuation_pause
 		elif not character.strip_edges().is_empty():
-			Util.PlaySFX(TALK_BEEP)
+			Util.PlaySFX(TALK_BEEP, &"SFX_Interact", -6.0)
 	if _content.visible_characters >= _content.get_total_character_count():
 		_content.visible_characters = -1
 		set_process(false)
