@@ -99,6 +99,21 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=791088076]
+visible = false
+offset_left = 14.0
+offset_top = -61.999992
+offset_right = 2114.0
+offset_bottom = 1638.0
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=509544559]
+visible = false
+offset_left = 271.0
+offset_top = 646.0
+offset_right = 1871.0
+offset_bottom = 1596.0
+color = Color(0, 0, 0, 1)
+
 [node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
 z_index = -3
 position = Vector2(759.00006, 1008)
