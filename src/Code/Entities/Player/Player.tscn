@@ -1773,3 +1773,5 @@ bus = &"SFX_Move_Wet"
 
 [node name="FallAudio" type="AudioStreamPlayer2D" parent="." unique_id=1983742822]
 bus = &"SFX_Move_Wet"
+
+[node name="VFX" type="AnimationPlayer" parent="." unique_id=2142577178]

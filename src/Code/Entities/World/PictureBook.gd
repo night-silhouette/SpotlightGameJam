@@ -1,5 +1,8 @@
 extends CanvasLayer
 
+const SettingsSkin = preload("res://Code/Entities/Setting/SettingsSkin.gd")
+const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
+
 @export var book_title := "月族图书馆藏书 · 残缺的绘本"
 @export var pages: Array[String] = [
 	"画册前半部分，日族与月族会一起出现。有人在白昼下耕作，有人在长夜中寻找水源；他们交换食物与水，一起商议决策、休闲娱乐。他们的脸上挂着笑容。",
@@ -13,11 +16,12 @@ extends CanvasLayer
 ]
 
 @onready var _root: Control = $Root
-@onready var _page_text: Label = $Root/Book/Pages/PageText
-@onready var _page_number: Label = $Root/Book/Pages/Navigation/PageNumber
-@onready var _previous: Button = $Root/Book/Pages/Navigation/Previous
-@onready var _next: Button = $Root/Book/Pages/Navigation/Next
-@onready var _close: Button = $Root/Book/Pages/Close
+@onready var _book: PanelContainer = $Root/Book
+@onready var _page_text: Label = $Root/Book/Margin/Pages/PageText
+@onready var _page_number: Label = $Root/Book/Margin/Pages/Navigation/PageNumber
+@onready var _previous: Button = $Root/Book/Margin/Pages/Navigation/Previous
+@onready var _next: Button = $Root/Book/Margin/Pages/Navigation/Next
+@onready var _close: Button = $Root/Book/Margin/Pages/Close
 @onready var _interactable: InteractableComponent = get_parent()
 
 var _page_index := 0
@@ -26,7 +30,12 @@ var _waiting_for_dialog := false
 
 func _ready() -> void:
 	_root.hide()
-	$Root/Book/Pages/Title.text = book_title
+	_root.theme = SettingsSkin.CreateTheme()
+	SettingsSkin.ApplyToTree(_book)
+	SettingsFrame.Mount(_book, _close)
+	$Root/Book/Margin/Pages/Title.text = book_title
+	$Root/Book/Margin/Pages/Title.add_theme_color_override("font_color", SettingsSkin.ACCENT)
+	_page_number.add_theme_color_override("font_color", SettingsSkin.ACCENT)
 	_interactable.Interacted.connect(_open)
 	_previous.pressed.connect(_change_page.bind(-1))
 	_next.pressed.connect(_change_page.bind(1))

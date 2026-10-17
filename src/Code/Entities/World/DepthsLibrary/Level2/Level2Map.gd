@@ -1,5 +1,7 @@
 extends Node2D
 ## 连续地下地图：房间通过实体通道相连，玩家能力与死亡复活由角色系统管理。
+const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
+const FAILED_SFX = preload("res://Music/SFX/InteractiveLV3/Failed.wav")
 var keys: Array[String] = []
 var rune_progress: int = 0
 var puzzle_solved: bool = false
@@ -201,12 +203,14 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 				return
 			if str(source.get_meta("rune_id", "")) == order[rune_progress]:
 				rune_progress += 1
+				Util.PlaySFX2D(CONFIRM_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("符文正确：%d / %d" % [rune_progress, order.size()])
 				if rune_progress == order.size():
 					puzzle_solved = true
 					_toast("三枚符文共鸣，档案库闸门已开启。")
 			else:
 				rune_progress = 0
+				Util.PlaySFX2D(FAILED_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("顺序不符")
 			_refresh()
 		"lore":
@@ -214,13 +218,14 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 		"fountain":
 			submitted_keys.assign(keys)
 			if submitted_keys.size() < 3:
+				Util.PlaySFX2D(FAILED_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
 				fountain_active = true
-				_toast("水泵已启动，点击喷泉左侧的观星者残卷拾取。" if not codex_claimed and not codex_offered else "水泵已启动，沿喷泉升回地表。", 7.0)
+				_toast("水泵已启动，沿喷泉升回地表。", 7.0)
 			_refresh()
 		"codex":
-			if not fountain_active or codex_claimed or codex_offered or bool(player.get("has_starseekers_codex")):
+			if codex_claimed or codex_offered or bool(player.get("has_starseekers_codex")):
 				return
 			codex_claimed = true
 			SignalBus.lock2.emit()
@@ -228,7 +233,7 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 				codex_story_seen = true
 				SignalBus.DialogBox.emit(&"旁白", "一卷残卷显现，纸页微微泛黄，却没有沾染半点尘埃。散发着一种难以言明的微光，像月色停留在纸页深处。那些已经模糊的字迹偶尔随光线流动，仿佛并非墨迹，而是某种仍未熄灭的东西。当手指触碰到它的一瞬间，四周的声音仿佛都远去了，只剩下某种若有若无的回响。")
 				SignalBus.DialogBox.emit(&"独白", "这股力量，和之前的王冠好像。")
-			_toast("获得观星者残卷！沿喷泉升回地表，将残卷带回主城水池。", 7.0)
+			_toast("获得观星者残卷！将残卷带回主城水池。", 7.0)
 			_refresh()
 	SignalBus.Level2StateChanged.emit(self)
 
@@ -253,12 +258,6 @@ func _on_save_loaded(_slot: int) -> void:
 	var carrying := bool(player.get("has_starseekers_codex"))
 	if not _has_explicit_codex_offered and bool(player.get("enable_rope")) and not carrying:
 		codex_offered = true
-	if carrying or codex_offered:
-		for key_id in ["sun", "moon", "weave"]:
-			if key_id not in keys:
-				keys.append(key_id)
-		submitted_keys.assign(keys)
-		fountain_active = true
 	codex_claimed = carrying or codex_offered
 	_refresh(false)
 	SignalBus.Level2StateChanged.emit(self)
@@ -321,7 +320,7 @@ func _refresh(animate_gate: bool = true) -> void:
 				device.set("available", not taken)
 				device.visible = not taken
 			"codex":
-				var can_claim := fountain_active and not codex_claimed and not codex_offered
+				var can_claim := not codex_claimed and not codex_offered
 				device.set("available", can_claim)
 				device.visible = can_claim
 	_update_archive_gate(animate_gate)
@@ -361,7 +360,7 @@ func LoadSaveData(data: Dictionary) -> void:
 	# 玩家数据可能尚未加载；在 SaveSlotLoaded 后统一根据最终持有状态同步。
 	_has_explicit_codex_offered = data.has("codex_offered")
 	codex_offered = bool(data.get("codex_offered", false))
-	codex_claimed = fountain_active and (codex_offered or bool(data.get("codex_claimed", false)))
+	codex_claimed = codex_offered or bool(data.get("codex_claimed", false))
 	codex_story_seen = bool(data.get("codex_story_seen", codex_claimed or codex_offered))
 	puzzle_solved = bool(data.get("puzzle_solved", false))
 	completed = bool(data.get("completed", false)) and fountain_active

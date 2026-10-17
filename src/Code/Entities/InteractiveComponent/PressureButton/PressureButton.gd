@@ -1,6 +1,8 @@
 extends AnimatableBody2D
 class_name PressureButton
 
+const PRESSURE_SWITCH_SFX = preload("res://Music/SFX/InteractiveLV3/PressureSwitch.wav")
+
 ## 按钮状态发生改变时发出（按下为 true，抬起为 false）。
 signal pressed_state_changed(is_pressed: bool)
 
@@ -146,6 +148,8 @@ func _can_press(body: Node2D) -> bool:
 func _set_pressed(value: bool) -> void:
 	if stay_pressed and _is_pressed and not value:
 		return
+	if value and not _is_pressed:
+		Util.PlaySFX2D(PRESSURE_SWITCH_SFX, global_position, &"SFX_Interact", 6.0)
 	_apply_pressed_state(value, true)
 
 func _apply_pressed_state(value: bool, animate: bool, force_refresh: bool = false) -> void:

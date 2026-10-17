@@ -645,7 +645,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 全游戏背景音乐启动渐入时长，单位为秒；0 表示立即播放。
 @export_range(0.0, 10.0, 0.1) var audio_bgm_fade_in_duration: float = 2.0
 ## 全游戏背景音乐的基础音量，单位为分贝；叠加音乐及总音量设置。
-@export_range(-40.0, 6.0, 0.01) var audio_bgm_volume_db: float = -6.02
+@export_range(-40.0, 6.0, 0.01) var audio_bgm_volume_db: float = -10.0
 ## 音效默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_sfx_volume: float = 1.0
 ## 对白默认音量 (0.0-1.0)
@@ -743,19 +743,33 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var level2_hub_light_ambient_color: Color = Color(0.38, 0.44, 0.55, 1.0)
 @export_range(0.0, 3.0, 0.05) var level2_hub_light_ambient_transition_time: float = 0.8
 @export var level2_hub_light_fountain_color: Color = Color(0.56, 0.76, 1.0, 1.0)
-@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_idle_energy: float = 0.55
-@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_active_energy: float = 0.85
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_idle_energy: float = 0.72
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_active_energy: float = 1.05
 ## 圆形月光覆盖喷泉附近；位置与物件轮廓由 Lighting 场景预置。
-@export_range(32.0, 650.0, 1.0) var level2_hub_light_fountain_radius: float = 420.0
+@export_range(32.0, 650.0, 1.0) var level2_hub_light_fountain_radius: float = 510.0
+## 喷泉未激活时泉口仍保留微弱冷光；激活后渐亮至下方强度。
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_source_idle_energy: float = 0.18
 ## 喷泉激活时喷泉口局部补光的强度与半径。
-@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_source_energy: float = 0.45
-@export_range(32.0, 400.0, 1.0) var level2_hub_light_fountain_source_radius: float = 190.0
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_fountain_source_energy: float = 0.62
+@export_range(32.0, 400.0, 1.0) var level2_hub_light_fountain_source_radius: float = 245.0
 @export var level2_hub_light_desk_color: Color = Color(1.0, 0.76, 0.47, 1.0)
-@export_range(0.0, 1.0, 0.01) var level2_hub_light_desk_energy: float = 0.35
-@export_range(32.0, 200.0, 1.0) var level2_hub_light_desk_radius: float = 160.0
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_desk_energy: float = 0.46
+@export_range(32.0, 260.0, 1.0) var level2_hub_light_desk_radius: float = 205.0
+## 第二关可交互物的常驻冷色微光（喷泉使用独立光源）。
+@export var level2_hub_light_device_color: Color = Color(0.53, 0.78, 1.0, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_device_energy: float = 0.29
+@export_range(32.0, 260.0, 1.0) var level2_hub_light_device_radius: float = 110.0
+## 月影水道移动平台的随行冷光，比可交互物略亮。
+@export var level2_hub_light_platform_color: Color = Color(0.58, 0.80, 1.0, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_hub_light_platform_energy: float = 0.46
+@export_range(32.0, 260.0, 1.0) var level2_hub_light_platform_radius: float = 145.0
+## 左侧下落竖井从井口洒下的月光：光源照亮井口与人物，光束向井底渐隐。
+@export_range(0.0, 2.0, 0.01) var level2_hub_light_descent_energy: float = 0.9
+@export_range(64.0, 600.0, 1.0) var level2_hub_light_descent_radius: float = 360.0
+@export_range(0.0, 0.5, 0.01) var level2_hub_light_descent_beam_opacity: float = 0.19
 @export var level2_hub_light_beam_color: Color = Color(0.70, 0.83, 1.0, 1.0)
-@export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.085
-@export_range(0.0, 0.15, 0.005) var level2_hub_light_glow_opacity: float = 0.055
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.11
+@export_range(0.0, 0.15, 0.005) var level2_hub_light_glow_opacity: float = 0.075
 @export var level2_hub_light_shadows_enabled: bool = true
 @export_range(0.0, 1.0, 0.01) var level2_hub_light_shadow_opacity: float = 0.35
 @export_range(0.0, 8.0, 0.1) var level2_hub_light_shadow_smooth: float = 2.0
