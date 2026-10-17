@@ -111,6 +111,7 @@ offset_bottom = -28.0
 mouse_filter = 2
 
 [node name="PromptButton" type="Button" parent="PromptContainer" unique_id=381920412]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -124,6 +125,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_prompt_pressed")
 theme_override_styles/hover = SubResource("StyleBoxFlat_prompt_hover")
 
 [node name="HBox" type="HBoxContainer" parent="PromptContainer" unique_id=402194812]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -146,6 +148,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ActionLabel" type="Label" parent="PromptContainer/HBox" unique_id=892301948]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
 theme_override_font_sizes/font_size = 13
