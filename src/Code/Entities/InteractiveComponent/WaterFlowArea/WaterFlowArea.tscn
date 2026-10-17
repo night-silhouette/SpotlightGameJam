@@ -52,3 +52,11 @@ offset_left = -80.0
 offset_top = -50.0
 offset_right = 80.0
 offset_bottom = 50.0
+
+[node name="BeforeSpriteVisuals" type="Node2D" parent="." unique_id=424886505]
+top_level = true
+
+
+[node name="BeforeSpriteVisualsTransform" type="RemoteTransform2D" parent="." unique_id=1195621893]
+remote_path = NodePath("../BeforeSpriteVisuals")
+update_scale = false

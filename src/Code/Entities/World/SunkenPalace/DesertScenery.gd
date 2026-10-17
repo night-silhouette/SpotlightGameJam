@@ -1,31 +1,40 @@
 extends Node2D
-## 沙漠背景视差滚动：各景深层保留独立速度，天空单独纵向镜像衔接。
-## 天空素材尺寸 1600x832，由原图和上方纵向镜像图组成 1664 高的循环单元。
+## 沙漠多景深背景：仅响应相机 X，所有层的屏幕 Y 坐标保持固定，并限制在沉没宫殿范围内显示。
 
 
-@export var enabled_bounds_check: bool = true
-@export var local_camera_bounds: Vector2 = Vector2(-2000.0, 4500.0)
+@onready var _coverage_bounds: Control = $CoverageBounds
+@onready var _parallax_layers: Array[Parallax2D] = [
+	$CoverageBounds/BaseSky,
+	$CoverageBounds/SunBokeh,
+	$CoverageBounds/MesaRocks,
+	$CoverageBounds/RockPillars,
+	$CoverageBounds/CactusFar,
+	$CoverageBounds/DunesMid,
+	$CoverageBounds/DesertSilhouette,
+]
 
 
-func _enter_tree() -> void:
-	# top_level 由场景资源负责；不要在运行时覆盖编辑器里拖动后的坐标。
-	pass
+func _ready() -> void:
+	# Parallax2D 必须直接在全局画布中计算视差。若继承 CoverageBounds 及场景实例的
+	# 位移/缩放，开场时整套背景会被推到屏幕上方，尽管节点仍处于 visible 状态。
+	for layer in _parallax_layers:
+		layer.top_level = true
+		layer.scroll_offset = _coverage_bounds.position + Vector2(0.0, ExportSettings.sunken_scenery_screen_offset_y)
+	_update_layer_visibility()
 
 
 func _process(_delta: float) -> void:
-	if not enabled_bounds_check:
-		for layer in get_children():
-			if layer is Parallax2D:
-				layer.visible = true
-		return
+	_update_layer_visibility()
 
-	# 视口裁剪保护：保持与沉没宫殿本地边界一致，避免覆盖其他区域
-	var camera_world := get_viewport().get_canvas_transform().affine_inverse() * (get_viewport_rect().size * 0.5)
-	var phase := get_parent() as Node2D
-	if not phase:
+
+func _update_layer_visibility() -> void:
+	var palace := get_parent() as Node2D
+	if palace == null:
 		return
-	var camera_x: float = phase.to_local(camera_world).x
-	var in_level := camera_x >= local_camera_bounds.x and camera_x <= local_camera_bounds.y
-	for layer in get_children():
-		if layer is Parallax2D:
-			layer.visible = in_level
+	var viewport_center := get_viewport_rect().size * 0.5
+	var camera_world := get_viewport().get_canvas_transform().affine_inverse() * viewport_center
+	var camera_local_x := palace.to_local(camera_world).x
+	var bounds: Vector2 = ExportSettings.sunken_scenery_camera_bounds
+	var in_palace := camera_local_x >= bounds.x and camera_local_x <= bounds.y
+	for layer in _parallax_layers:
+		layer.visible = in_palace

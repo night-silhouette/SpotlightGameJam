@@ -1,0 +1,102 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="1_base"]
+[ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="2_rune"]
+
+[node name="WaterFlowRuneLayout4" instance=ExtResource("1_base")]
+
+[node name="Sprite2D" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-50.259953, 425.18048)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(22.340023, 365.02618)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-48.185673, 302.10626)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D4" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(29.945736, 246.1004)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D5" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-44.037052, 185.2547)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D6" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(11.968563, 125.79181)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D7" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-43.345768, 28.300354)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D8" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(34.78558, -3.50531)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D9" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-26.060123, -73.33978)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D10" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(30.077694, -199.41962)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D11" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-56.429813, -397.2824)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D12" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(43.881954, -403.72455)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D13" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(40.73773, -316.29706)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D14" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-47.610294, -192.05756)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D15" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(42.31653, 434.14337)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
+
+[node name="Sprite2D16" type="Sprite2D" parent="BeforeSpriteVisuals"]
+position = Vector2(-306.17206, 556.3914)
+rotation = -3.0297391
+scale = Vector2(0.122056335, 0.122056335)
+texture = ExtResource("2_rune")
