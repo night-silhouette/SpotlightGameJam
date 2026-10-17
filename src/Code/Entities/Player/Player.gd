@@ -37,7 +37,7 @@ var _opening_previous_animation_process_mode: Node.ProcessMode = Node.PROCESS_MO
 @onready var sand_fall_particles: CPUParticles2D = $SandFallParticles
 @onready var water_droplet_particles: CPUParticles2D = $WaterDropletParticles
 @onready var water_droplet_timer: Timer = $WaterDropletTimer
-@onready var low_water_outline_material: ShaderMaterial = $sprite/Standbytime.material as ShaderMaterial
+@onready var low_water_outline_material: ShaderMaterial = $sprite.material as ShaderMaterial
 
 @export_category("properties")
 @export_group("physical_prop")
