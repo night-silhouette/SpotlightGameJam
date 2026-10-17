@@ -380,8 +380,8 @@ offset_bottom = -4234.0
 scale = Vector2(91.50448, 19.475124)
 
 [node name="DesertScenery" parent="." unique_id=606180320 instance=ExtResource("2_4lyra")]
-position = Vector2(-578, -2199.0002)
-scale = Vector2(2.3722613, 2.3722613)
+position = Vector2(-757, -723)
+scale = Vector2(1.4310764, 1.4310764)
 
 [node name="collisionlayer" type="Node2D" parent="." unique_id=228707374]
 

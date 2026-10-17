@@ -11,9 +11,9 @@
 
 [node name="DesertScenery" type="Node2D" unique_id=606180320]
 top_level = true
-position = Vector2(-3.494629, -548.6846)
+position = Vector2(0, -320)
 script = ExtResource("1_script")
-metadata/_editor_description_ = "沙漠背景按远近拆分为独立横向视差层；所有层锁定屏幕 Y，不随角色或相机升降。"
+metadata/_editor_description_ = "直接拖动本节点即可同步调整整套沙漠背景；所有层锁定屏幕 Y，不随角色或相机升降。"
 
 [node name="CoverageBounds" type="Control" parent="." unique_id=113828477]
 layout_mode = 3
@@ -26,8 +26,10 @@ mouse_filter = 2
 metadata/_editor_description_ = "仅作为分层容器，不裁剪、不限制背景绘制范围。"
 
 [node name="BaseSky" type="Parallax2D" parent="CoverageBounds" unique_id=184920152]
+top_level = true
 z_index = -35
 scroll_scale = Vector2(0.01, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 metadata/_editor_description_ = "最远天空层；仅产生极轻微横向视差，纵向锁定。"
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=581938210]
@@ -35,24 +37,28 @@ position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("2_dessert_back")
 centered = false
 
-[node name="SkyVerticalJoin" type="Sprite2D" parent="CoverageBounds/BaseSky"]
+[node name="SkyVerticalJoin" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=237455499]
 position = Vector2(-4.5261054, -1062.8287)
 texture = ExtResource("2_dessert_back")
 centered = false
 flip_v = true
 
 [node name="SunBokeh" type="Parallax2D" parent="CoverageBounds" unique_id=324007481]
+top_level = true
 z_index = -30
 scroll_scale = Vector2(0.025, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/SunBokeh" unique_id=690523452]
-position = Vector2(-364.49094, -56.08836)
+position = Vector2(-311.9769, -249.43541)
 texture = ExtResource("2_sun_bokeh")
 centered = false
 
 [node name="MesaRocks" type="Parallax2D" parent="CoverageBounds" unique_id=225151614]
+top_level = true
 z_index = -25
 scroll_scale = Vector2(0.05, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/MesaRocks" unique_id=729708152]
 position = Vector2(-4.5261054, -230.82872)
@@ -60,8 +66,10 @@ texture = ExtResource("4_mesa_rocks")
 centered = false
 
 [node name="RockPillars" type="Parallax2D" parent="CoverageBounds" unique_id=26551239]
+top_level = true
 z_index = -20
 scroll_scale = Vector2(0.08, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/RockPillars" unique_id=1074729834]
 position = Vector2(-4.5261054, -230.82872)
@@ -69,8 +77,10 @@ texture = ExtResource("5_rock_pillars")
 centered = false
 
 [node name="CactusFar" type="Parallax2D" parent="CoverageBounds" unique_id=1394888404]
+top_level = true
 z_index = -15
 scroll_scale = Vector2(0.12, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/CactusFar" unique_id=844295087]
 position = Vector2(-4.5261054, -230.82872)
@@ -78,20 +88,41 @@ texture = ExtResource("6_cactus_far")
 centered = false
 
 [node name="DunesMid" type="Parallax2D" parent="CoverageBounds" unique_id=688781729]
+top_level = true
 z_index = -10
 scroll_scale = Vector2(0.18, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
+repeat_size = Vector2(3200, 0)
+repeat_times = 3
+metadata/_editor_description_ = "中景沙丘以原图和水平镜像图组成 3200 像素无缝循环单元。"
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=1478120655]
 position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("7_dunes_mid")
 centered = false
 
+[node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=95314642]
+position = Vector2(1595.4739, -230.82872)
+texture = ExtResource("7_dunes_mid")
+centered = false
+flip_h = true
+
 [node name="DesertSilhouette" type="Parallax2D" parent="CoverageBounds" unique_id=222718146]
+top_level = true
 z_index = 1
 scroll_scale = Vector2(0.28, 0)
-metadata/_editor_description_ = "最近剪影层；横向移动最快，纵向锁定。"
+scroll_offset = Vector2(4.5261054, 230.82874)
+repeat_size = Vector2(3200, 0)
+repeat_times = 3
+metadata/_editor_description_ = "最近剪影层；原图和水平镜像图无缝衔接，横向移动最快，纵向锁定。"
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/DesertSilhouette" unique_id=1269374407]
 position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("3_desert_silhouette")
 centered = false
+
+[node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DesertSilhouette" unique_id=1517258323]
+position = Vector2(1595.4739, -230.82872)
+texture = ExtResource("3_desert_silhouette")
+centered = false
+flip_h = true

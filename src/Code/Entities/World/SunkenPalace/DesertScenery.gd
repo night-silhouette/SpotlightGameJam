@@ -1,5 +1,6 @@
+@tool
 extends Node2D
-## 沙漠多景深背景：仅响应相机 X，所有层的屏幕 Y 坐标保持固定，并限制在沉没宫殿范围内显示。
+## 沙漠多景深背景：根节点的编辑器位置直接控制整套背景，运行时仅响应相机 X。
 
 
 @onready var _coverage_bounds: Control = $CoverageBounds
@@ -15,19 +16,29 @@ extends Node2D
 
 
 func _ready() -> void:
-	# Parallax2D 必须直接在全局画布中计算视差。若继承 CoverageBounds 及场景实例的
-	# 位移/缩放，开场时整套背景会被推到屏幕上方，尽管节点仍处于 visible 状态。
-	for layer in _parallax_layers:
-		layer.top_level = true
-		layer.scroll_offset = _coverage_bounds.position + Vector2(0.0, ExportSettings.sunken_scenery_screen_offset_y)
+	_sync_layer_offsets()
 	_update_layer_visibility()
 
 
 func _process(_delta: float) -> void:
+	_sync_layer_offsets()
 	_update_layer_visibility()
 
 
+func _sync_layer_offsets() -> void:
+	# Parallax2D 脱离嵌套 Control 的变换，改由根节点 position 直接提供屏幕偏移。
+	# @tool 下拖动 DesertScenery 时，本帧即可在编辑器中看到所有层同步移动。
+	var screen_offset := position + _coverage_bounds.position
+	for layer in _parallax_layers:
+		layer.top_level = true
+		layer.scroll_offset = screen_offset
+
+
 func _update_layer_visibility() -> void:
+	if Engine.is_editor_hint():
+		for layer in _parallax_layers:
+			layer.visible = true
+		return
 	var palace := get_parent() as Node2D
 	if palace == null:
 		return
