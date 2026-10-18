@@ -40,7 +40,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2oj5"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -92,7 +92,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -131,7 +131,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -147,6 +147,28 @@ script = ExtResource("2_mkscu")
 
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
 resource_local_to_scene = true
@@ -171,28 +193,6 @@ shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1og5t"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_15xio"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u3ot4"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -454,19 +454,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_o2yww")
+material = SubResource("ShaderMaterial_l2oj5")
 
 [node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
-material = SubResource("ShaderMaterial_s2vhm")
+material = SubResource("ShaderMaterial_m5q0i")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_hehhy")
+material = SubResource("ShaderMaterial_o2yww")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_hehhy")
+material = SubResource("ShaderMaterial_o2yww")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_hehhy")
+material = SubResource("ShaderMaterial_o2yww")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1701, 0)
@@ -512,7 +512,7 @@ metadata/_edit_lock_ = true
 position = Vector2(5310, -65)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_vqyf3")
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
 position = Vector2(5395, -62)
@@ -522,7 +522,7 @@ scale = Vector2(0.7676052, -0.7676052)
 position = Vector2(4164.031, -1232.1624)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
-material = SubResource("ShaderMaterial_2flee")
+material = SubResource("ShaderMaterial_hehhy")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
 position = Vector2(4207.031, -1255.1624)
@@ -531,7 +531,7 @@ position = Vector2(4207.031, -1255.1624)
 position = Vector2(4310.6597, -2677)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
-material = SubResource("ShaderMaterial_1og5t")
+material = SubResource("ShaderMaterial_vqyf3")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
 position = Vector2(4353.6597, -2700)
@@ -540,7 +540,7 @@ position = Vector2(4353.6597, -2700)
 position = Vector2(3389, -3375.9998)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
-material = SubResource("ShaderMaterial_15xio")
+material = SubResource("ShaderMaterial_2flee")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
 position = Vector2(3432, -3398.9998)
@@ -549,7 +549,7 @@ position = Vector2(3432, -3398.9998)
 position = Vector2(1675.5127, -2562.0002)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
-material = SubResource("ShaderMaterial_u3ot4")
+material = SubResource("ShaderMaterial_1og5t")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
@@ -805,8 +805,8 @@ metadata/_editor_description_ = "靠宫殿交互锚点(4683,-1235)暂放，请�
 texture = ExtResource("24_nameplates")
 
 [node name="议政桌_2_14至2_15" parent="story/c3" unique_id=1963937542 instance=ExtResource("12_terh4")]
-position = Vector2(2267, -1788)
-scale = Vector2(2.9108229, 2.9108229)
+position = Vector2(2191, -1807)
+scale = Vector2(4.9120336, 4.9120336)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_14"), SubResource("C3_2_15")])
 metadata/_editor_description_ = "参考宫殿交互锚点(4683,-1235)暂放，请确认中央石桌位置。"
@@ -816,8 +816,8 @@ scale = Vector2(0.13365571, 0.13365571)
 texture = ExtResource("29_l2oj5")
 
 [node name="蛇身雕塑_2_17至2_19" parent="story/c3" unique_id=2071370340 instance=ExtResource("12_terh4")]
-position = Vector2(1745, -1864.9999)
-scale = Vector2(3.8974733, 3.8974733)
+position = Vector2(1992.0001, -1858)
+scale = Vector2(3.023746, 3.023746)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubResource("C3_2_18"), SubResource("C3_2_19")])
 metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
