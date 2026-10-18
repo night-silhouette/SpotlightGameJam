@@ -10,16 +10,35 @@
 [ext_resource type="Texture2D" path="res://Art/New/component/extracted/key_shadow_eye.png" id="8_moon_key"]
 [ext_resource type="Texture2D" path="res://Art/New/component/extracted/key_all_seeing_eye.png" id="9_weave_key"]
 
+[ext_resource type="Shader" path="res://Code/Entities/Player/playerUi/HpUi/LowHealthSand.gdshader" id="10_low_health_sand"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_low_health_sand"]
+resource_local_to_scene = true
+shader = ExtResource("10_low_health_sand")
+shader_parameter/intensity = 0.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_health"]
 resource_local_to_scene = true
 atlas = ExtResource("6_health")
 region = Rect2(25, 33, 106, 221)
 
 [node name="PlayerUI" type="CanvasLayer" unique_id=741029482]
+process_mode = 1
 script = ExtResource("1_ui")
 
 [node name="Control" type="Control" parent="." unique_id=1849204821]
 layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="LowHealthSand" type="ColorRect" parent="Control"]
+visible = false
+material = SubResource("ShaderMaterial_low_health_sand")
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

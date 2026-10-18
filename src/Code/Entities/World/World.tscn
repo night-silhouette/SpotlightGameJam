@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_l2oj5"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
-[ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" uid="uid://bekfm826b2gww" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
@@ -290,7 +290,7 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="C3_2_2"]
 script = ExtResource("5_acpp2")
-text = "一座破败的宫殿半埋于炙热的黄沙之中。高大的石墙早已倾颓，断裂的石柱仍倔强地撑起残存的穹顶，但仍能看出这里旧日的恢宏。墙边留存着几处规整的蓄水池与水道。"
+text = "一座矗立于茫茫黄沙之间的古老宫殿，逐渐映入眼帘。高耸的石墙历经风沙侵蚀，墙根堆积着厚厚的黄沙，部分墙体已经倾颓，但仍能从中窥见其旧日的恢宏气势。数条干涸的水道像一道道已经结痂的伤疤，安静地等在墙根。 "
 
 [sub_resource type="Resource" id="C3_2_3"]
 script = ExtResource("5_acpp2")
@@ -569,14 +569,14 @@ position = Vector2(-19152, -1263)
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
 [node name="CameraGate2" parent="CameraNode" unique_id=1274666655 instance=ExtResource("7_hfiwn")]
-position = Vector2(2043.9999, -84.99999)
-scale = Vector2(0.4082091, 2.459945)
+position = Vector2(2046.0002, -562)
+scale = Vector2(0.7298663, 10.17604)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
-position = Vector2(-85, -362.00003)
+position = Vector2(-121, -1497)
 scale = Vector2(0.408, 20)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
@@ -591,9 +591,9 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate3" parent="CameraNode" unique_id=2049029743 instance=ExtResource("7_hfiwn")]
-position = Vector2(2995, 156)
+position = Vector2(2995, 135)
 rotation = -1.5707964
-scale = Vector2(2, 50)
+scale = Vector2(0.6035969, 99.60132)
 blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
@@ -758,7 +758,7 @@ display_duration = 9.9
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
 
 [node name="入城_2_1至2_3" parent="story/c3" unique_id=1926561481 instance=ExtResource("12_terh4")]
-position = Vector2(2885, -22)
+position = Vector2(5007, -69)
 scale = Vector2(3, 3)
 enable_interaction = false
 show_enter_dialog = true

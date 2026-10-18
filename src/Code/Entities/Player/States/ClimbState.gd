@@ -11,6 +11,8 @@ func enter() -> void:
 	wall_release_grace_remaining = 0.0
 	wall_dir = obj.face_dir
 	obj.wall_jump_lock_dir = wall_dir
+	# 仅成功扒住允许的墙面时补回二段跳，射线碰墙本身不刷新。
+	obj.ResetDoubleJump()
 	if animation_player:
 		animation_player.play("wall_grab")
 

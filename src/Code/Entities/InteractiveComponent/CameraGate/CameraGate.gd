@@ -86,10 +86,14 @@ func _broadcast_state() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if not one_shot or _unlocked or body != get_node_or_null(player_path):
+	if body != get_node_or_null(player_path):
 		return
-	_unlocked = true
-	_broadcast_state()
+	if one_shot and _unlocked:
+		return
+	SignalBus.CameraGateFadeRequested.emit(body, self)
+	if one_shot:
+		_unlocked = true
+		_broadcast_state()
 
 
 func _on_save_slot_loaded(_slot_index: int) -> void:

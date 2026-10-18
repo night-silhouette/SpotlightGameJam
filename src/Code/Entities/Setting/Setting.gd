@@ -44,6 +44,7 @@ const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 @onready var sfx_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/SFXRow/Percent
 @onready var dialogue_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/DialogueRow/Percent
 @onready var ambience_percent: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/AudioMargin/AudioList/AmbienceRow/Percent
+@onready var quick_save_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/QuickSaveButton
 @onready var return_menu_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/ReturnMenuButton
 @onready var quit_button: Button = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/QuitButton
 @onready var status_toast: Label = $RootControl/PanelContainer/MarginContainer/MainVBox/BottomHBox/StatusToast
@@ -98,7 +99,7 @@ func _check_auto_load_first_slot() -> void:
 		call_deferred("_do_initial_load_slot_1")
 
 func _do_initial_load_slot_1() -> void:
-	SaveManagerRef.LoadFromSlot(get_tree(), 1)
+	await SaveManagerRef.LoadFromSlot(get_tree(), 1)
 
 
 func _input(event: InputEvent) -> void:
@@ -117,7 +118,7 @@ func _input(event: InputEvent) -> void:
 		ToggleSetting()
 
 func _connect_signals() -> void:
-	for button in [close_button, tab_btn_keybinds, tab_btn_saves, tab_btn_audio, tab_btn_touch, return_menu_button, quit_button, $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/ResetButton]:
+	for button in [close_button, tab_btn_keybinds, tab_btn_saves, tab_btn_audio, tab_btn_touch, quick_save_button, return_menu_button, quit_button, $RootControl/PanelContainer/MarginContainer/MainVBox/ContentPanel/TouchScroll/TouchList/ResetButton]:
 		button.pressed.connect(_play_confirm)
 	if close_button:
 		close_button.pressed.connect(HideSetting)
@@ -138,6 +139,7 @@ func _connect_signals() -> void:
 	dialogue_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"dialogue", value / 100.0))
 	ambience_slider.value_changed.connect(func(value: float): SignalBus.AudioVolumeChangeRequested.emit(&"ambience", value / 100.0))
 	SignalBus.AudioVolumeChanged.connect(_on_audio_volume_changed)
+	quick_save_button.pressed.connect(_on_quick_save_pressed)
 	return_menu_button.pressed.connect(func(): SignalBus.ReturnToMainMenuRequested.emit())
 	SignalBus.ReturnToMainMenuFailed.connect(_on_return_to_main_menu_failed)
 	if quit_button:
@@ -152,17 +154,23 @@ func _connect_signals() -> void:
 				HideSetting()
 		)
 
-## 显示设置面板
-func ShowSetting() -> void:
-	if not root_control.visible:
-		Util.PlaySFX(OPEN_SETTING_SFX)
+func _is_game_scene() -> bool:
 	var scene = get_tree().current_scene
-	return_menu_button.visible = (
+	return (
 		scene != null
 		and scene.scene_file_path != SignalBus.START_MENU_SCENE_PATH
 		and (scene.scene_file_path == ExportSettings.start_menu_world_scene_path
 			or get_tree().get_first_node_in_group(&"player") != null)
 	)
+
+## 显示设置面板
+func ShowSetting() -> void:
+	if not root_control.visible:
+		Util.PlaySFX(OPEN_SETTING_SFX)
+	var is_game_scene: bool = _is_game_scene()
+	return_menu_button.visible = is_game_scene
+	quick_save_button.visible = is_game_scene
+	quick_save_button.disabled = not is_game_scene
 	root_control.visible = true
 	_refresh_save_slots_ui()
 	_refresh_keybind_labels()
@@ -407,6 +415,11 @@ func _refresh_save_slots_ui() -> void:
 		btn_del.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 		saves_list.add_child(row_panel)
 
+func _on_quick_save_pressed() -> void:
+	if not _is_game_scene():
+		return
+	_on_save_slot_pressed(SaveManagerRef.GetActiveSlot())
+
 func _on_save_slot_pressed(slot_idx: int) -> void:
 	var success = SaveManagerRef.SaveToSlot(get_tree(), slot_idx)
 	if success:
@@ -416,10 +429,11 @@ func _on_save_slot_pressed(slot_idx: int) -> void:
 		_show_status("保存至 存档槽位 %d 失败！" % slot_idx, true)
 
 func _on_load_slot_pressed(slot_idx: int) -> void:
-	var success = SaveManagerRef.LoadFromSlot(get_tree(), slot_idx)
+	var success: bool = await SaveManagerRef.LoadFromSlot(get_tree(), slot_idx)
+	# 成功切场景会释放旧设置节点；新设置面板默认隐藏，无需再操作旧UI。
+	if not is_instance_valid(self):
+		return
 	if success:
-		_show_status("成功载入 存档槽位 %d" % slot_idx)
-		# 载入成功后关闭设置菜单，返回游戏
 		HideSetting()
 	else:
 		_show_status("载入 存档槽位 %d 失败！" % slot_idx, true)

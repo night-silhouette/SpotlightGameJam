@@ -23,8 +23,6 @@ var _chase_finished: bool = false
 var _chase_activation_pending: bool = false
 var _bone_claimed: bool = false
 var _bone_offered: bool = false
-var _loaded_checkpoint: bool = false
-var _loaded_respawn_position: Vector2 = Vector2.ZERO
 var _reset_chase_on_respawn: bool = false
 var _reset_boat_on_respawn: bool = false
 var _phase_collision_states: Dictionary = {}
@@ -183,32 +181,23 @@ func OnBoneCollected() -> void:
 	SaveManager.AutoSave(get_tree())
 
 
-## 导出第三关关卡与复活点存档数据
+## 导出第三关实际返程进度及骨头状态；玩家当前位置与复活点由 Player 保存。
 func ExportSaveData() -> Dictionary:
-	var respawn_pos := _get_chase_respawn_position()
 	return {
-		"checkpoint_reached": _in_return_phase or is_instance_valid(chase_respawn_point),
-		"respawn_x": respawn_pos.x,
-		"respawn_y": respawn_pos.y,
+		"checkpoint_reached": _in_return_phase,
 		"bone_claimed": _bone_claimed,
 		"bone_offered": _bone_offered,
 	}
 
 
-## 从存档还原第三关状态；若仍持有骨头则恢复返程，否则在拾取点待交互。
+## 从存档还原第三关状态；data 为关卡字典，旧版检查点标记及坐标不再用于恢复玩家位置。
 func LoadSaveData(data: Dictionary) -> void:
 	_cancel_phase_transition()
 	_bone_offered = bool(data.get("bone_offered", false))
 	_bone_claimed = _bone_offered or bool(data.get("bone_claimed", false))
-	_loaded_checkpoint = bool(data.get("checkpoint_reached", false))
-	if _loaded_checkpoint:
-		_loaded_respawn_position = Vector2(
-			float(data.get("respawn_x", _get_chase_respawn_position().x)),
-			float(data.get("respawn_y", _get_chase_respawn_position().y))
-		)
 	_refresh_bone()
 
-	# 先恢复场景，玩家持有状态和存档点位置待所有实体加载后同步。
+	# 先恢复场景，待所有实体加载后按玩家实际持有状态同步返程。
 	if is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):
 		_chaser.call(&"ResetChase")
 	_in_return_phase = false
@@ -228,11 +217,6 @@ func _on_save_loaded(_slot: int) -> void:
 	var carrying := bool(player.get("has_scarred_bones"))
 	_bone_claimed = _bone_offered or carrying
 	_refresh_bone()
-	if _loaded_checkpoint:
-		player.global_position = _loaded_respawn_position
-		if player.has_method(&"SetRespawnPosition"):
-			player.call(&"SetRespawnPosition", _loaded_respawn_position)
-		_loaded_checkpoint = false
 	if carrying and not _bone_offered:
 		SwitchToReturnPhase(false)
 	elif _in_return_phase and not _bone_offered:

@@ -631,10 +631,6 @@ func _physics_process(delta: float) -> void:
 	is_front_has_rigid = _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
 	is_back_has_rigid = _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
 
-	# 扒墙时刷新二段跳（蹬墙跳方向锁定仅在落地或反向蹬墙时解锁）
-	if is_front_has_rigid:
-		ResetDoubleJump()
-
 	_handle_footstep_audio(delta)
 	_handle_continuous_move_audio(delta)
 
