@@ -103,8 +103,8 @@ extends Node
 @export_range(0.0, 1.0) var level2_scenery_middle_speed: float = 0.65
 ## 前景柱移动比例。
 @export_range(1.0, 1.5) var level2_scenery_foreground_speed: float = 1.08
-## 前景透明度，避免遮住跳台和玩家。
-@export_range(0.0, 1.0) var level2_scenery_foreground_opacity: float = 0.35
+## 横向前景实体柱透明度，默认完整显示裁切素材。
+@export_range(0.0, 1.0) var level2_scenery_foreground_opacity: float = 1.0
 ## 玩家附近前景进一步淡出的半径，世界像素。
 @export var level2_scenery_player_clear_radius: float = 100.0
 ## 竖井右侧前景柱透明度，默认保留美术原图的深色。
@@ -766,7 +766,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 左侧下落竖井从井口洒下的月光：光源照亮井口与人物，光束向井底渐隐。
 @export_range(0.0, 2.0, 0.01) var level2_hub_light_descent_energy: float = 0.9
 @export_range(64.0, 600.0, 1.0) var level2_hub_light_descent_radius: float = 360.0
-@export_range(0.0, 0.5, 0.01) var level2_hub_light_descent_beam_opacity: float = 0.19
+@export_range(0.0, 0.8, 0.01) var level2_hub_light_descent_beam_opacity: float = 0.15
 @export var level2_hub_light_beam_color: Color = Color(0.70, 0.83, 1.0, 1.0)
 @export_range(0.0, 0.15, 0.005) var level2_hub_light_beam_opacity: float = 0.11
 @export_range(0.0, 0.15, 0.005) var level2_hub_light_glow_opacity: float = 0.075
@@ -786,3 +786,25 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Sunken Palace - Scenery", "sunken_scenery_")
 ## 沉没宫殿本地坐标的背景显示范围，避免第一关背景覆盖其他关卡。
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
+
+@export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
+## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。
+@export var sunken_lift_rope_left_anchor: Vector2 = Vector2(-81.75574, -920.0)
+## 横绳右端固定点，与左端保持相同高度，固定于右上台阶侧面。
+@export var sunken_lift_rope_right_anchor: Vector2 = Vector2(260.6, -920.0)
+## 吊环相对移动平台原点的偏移，竖绳下端随此点移动。
+@export var sunken_lift_rope_attachment: Vector2 = Vector2(0.0, -84.0)
+## 绳子绘制宽度；纹理按此宽度等比重复，不随长度拉伸。
+@export_range(1.0, 24.0, 0.5) var sunken_lift_rope_width: float = 8.0
+## 拆分后的吊架平台图相对平台碰撞中心的位置。
+@export var sunken_lift_rope_art_offset: Vector2 = Vector2(0.0, -38.0)
+## 吊架平台图的等比缩放。
+@export_range(0.05, 2.0, 0.01) var sunken_lift_rope_art_scale: float = 0.4
+
+@export_group("Interaction Dot", "interaction_dot_")
+## 是否显示可交互实体中心的普通圆点，不影响既有照明。
+@export var interaction_dot_enabled: bool = true
+## 圆点的暖白颜色与中心不透明度，边缘渐隐；不受环境光影响。
+@export var interaction_dot_color: Color = Color(1.0, 0.96, 0.85, 0.65)
+## 圆点半径，单位为世界像素，不随实体缩放。
+@export_range(1.0, 32.0, 0.5) var interaction_dot_radius: float = 15.0

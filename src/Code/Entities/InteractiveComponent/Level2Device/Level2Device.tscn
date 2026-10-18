@@ -1,4 +1,5 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
+[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
 [ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.gd" id="script"]
 [sub_resource type="Gradient" id="DeviceLightGradient"]
 offsets = PackedFloat32Array(0, 0.35, 1)
@@ -67,6 +68,8 @@ corner_radius_bottom_left = 4
 
 [node name="Level2Device" type="Node2D" groups=["level2_device"]]
 script = ExtResource("script")
+[node name="InteractionDot" type="Node2D" parent="."]
+script = ExtResource("interaction_dot")
 [node name="InteractionLight" type="PointLight2D" parent="."]
 texture = SubResource("DeviceLightTexture")
 texture_scale = 0.625

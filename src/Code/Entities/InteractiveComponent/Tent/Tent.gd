@@ -18,7 +18,6 @@ class_name Tent
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var tent_sprite: CanvasItem = $TentVisual
 @onready var light_glow: PointLight2D = $LightGlow
-@onready var status_label: Label = $StatusLabel
 
 var _glow_tween: Tween = null
 
@@ -74,12 +73,6 @@ func _update_visual_state() -> void:
 			_glow_tween = create_tween().set_loops()
 			_glow_tween.tween_property(light_glow, "energy", 1.4, 0.8).set_trans(Tween.TRANS_SINE)
 			_glow_tween.tween_property(light_glow, "energy", 0.8, 0.8).set_trans(Tween.TRANS_SINE)
-		if status_label:
-			status_label.visible = true
-			status_label.text = "重生点已设置"
-	else:
-		if status_label:
-			status_label.visible = false
 
 ## 导出帐篷持久化数据。
 ## @return 位置、重生偏移和激活状态组成的字典。

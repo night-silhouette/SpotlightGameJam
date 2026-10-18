@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="5_sccv2"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="6_es0s6"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/PressureButton/PressureButton.tscn" id="7_es0s6"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/LiftVisual.tscn" id="8_swing"]
 [ext_resource type="Texture2D" uid="uid://d1l7p0nqflvhk" path="res://Art/New/component/extracted/platform_floating_rock_lower.png" id="8_kkdgi"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/SignalDoor/SignalDoor.tscn" id="8_sccv2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/SignalVanishBlocker/SignalVanishBlocker.tscn" id="9_es0s6"]
@@ -255,8 +256,17 @@ scale = Vector2(1.0201304, 1.0201304)
 position = Vector2(10, -790)
 movement_offset = Vector2(0, 1100)
 movement_speed = 150.0
+show_path_preview = false
 requires_activation = true
 trigger_button = NodePath("../../button/1")
+
+[node name="VisualRect" parent="collisionlayer/MovePl/1" index="1"]
+visible = false
+
+[node name="TopHighlight" parent="collisionlayer/MovePl/1" index="2"]
+visible = false
+
+[node name="SwingVisual" parent="collisionlayer/MovePl/1" instance=ExtResource("8_swing")]
 
 [node name="MovingPlatform2" parent="collisionlayer/MovePl" unique_id=55806743 instance=ExtResource("3_2lsnt")]
 position = Vector2(667, -1366)

@@ -1,4 +1,6 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Shader" path="res://Code/Entities/World/DepthsLibrary/Level2/Lighting/DescentMoonbeam.gdshader" id="3_descent"]
 
 [ext_resource type="Shader" path="res://Code/Entities/World/DepthsLibrary/Level2/Lighting/HubBeam.gdshader" id="2"]
 
@@ -27,6 +29,17 @@ height = 256
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_beam_white"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="BeamUVTexture"]
+gradient = SubResource("Gradient_beam_white")
+width = 1
+height = 1
+
+[sub_resource type="ShaderMaterial" id="DescentBeamMaterial"]
+shader = ExtResource("3_descent")
 
 [sub_resource type="ShaderMaterial" id="BeamMaterial"]
 shader = ExtResource("2")
@@ -100,13 +113,15 @@ z_index = 11
 modulate = Color(0.7, 0.83, 1, 0.19)
 
 [node name="MainBeam" type="Polygon2D" parent="DescentBeams"]
-material = SubResource("BeamMaterial")
-polygon = PackedVector2Array(646, -2930, 736, -2930, 795, -1100, 608, -1100)
+texture = SubResource("BeamUVTexture")
+material = SubResource("DescentBeamMaterial")
+polygon = PackedVector2Array(610, -2940, 770, -2940, 815, 520, 585, 520)
 uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
 [node name="SideBeam" type="Polygon2D" parent="DescentBeams"]
-material = SubResource("BeamMaterial")
-polygon = PackedVector2Array(666, -2930, 705, -2930, 764, -1390, 633, -1390)
+texture = SubResource("BeamUVTexture")
+material = SubResource("DescentBeamMaterial")
+polygon = PackedVector2Array(662, -2940, 708, -2940, 745, 440, 655, 440)
 uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
 
 [node name="DescentOpeningGlow" type="Sprite2D" parent="DescentBeams"]
