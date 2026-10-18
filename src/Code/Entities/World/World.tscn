@@ -801,8 +801,8 @@ metadata/_editor_description_ = "靠宫殿交互锚点(4683,-1235)暂放，请�
 texture = ExtResource("24_nameplates")
 
 [node name="议政桌_2_14至2_15" parent="story/c3" unique_id=1963937542 instance=ExtResource("12_terh4")]
-position = Vector2(2267, -1788)
-scale = Vector2(2.9108229, 2.9108229)
+position = Vector2(2191, -1807)
+scale = Vector2(4.9120336, 4.9120336)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_14"), SubResource("C3_2_15")])
 metadata/_editor_description_ = "参考宫殿交互锚点(4683,-1235)暂放，请确认中央石桌位置。"
@@ -812,8 +812,8 @@ scale = Vector2(0.13365571, 0.13365571)
 texture = ExtResource("29_l2oj5")
 
 [node name="蛇身雕塑_2_17至2_19" parent="story/c3" unique_id=2071370340 instance=ExtResource("12_terh4")]
-position = Vector2(1745, -1864.9999)
-scale = Vector2(3.8974733, 3.8974733)
+position = Vector2(1992.0001, -1858)
+scale = Vector2(3.023746, 3.023746)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubResource("C3_2_18"), SubResource("C3_2_19")])
 metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
