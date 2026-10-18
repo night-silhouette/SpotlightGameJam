@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_l2oj5"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
-[ext_resource type="PackedScene" uid="uid://bekfm826b2gww" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
@@ -23,13 +23,13 @@
 [ext_resource type="Texture2D" uid="uid://bla1x5c0rw0ji" path="res://Art/New/component/extracted/scholars_notebook.svg" id="19_scholars_notebook"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
 [ext_resource type="Texture2D" uid="uid://l7l1mk7tvqvi" path="res://Art/AI/pottery.svg" id="21_pottery"]
-[ext_resource type="Texture2D" uid="uid://b68kia0f4aqxy" path="res://Art/AI/tools.svg" id="22_tools"]
 [ext_resource type="Texture2D" uid="uid://keofucnt1pv7" path="res://Art/AI/mural.svg" id="23_mural"]
 [ext_resource type="Texture2D" uid="uid://kjvcd42nonrm" path="res://Art/AI/nameplates.svg" id="24_nameplates"]
-[ext_resource type="Texture2D" uid="uid://bpwayo7t0eh0" path="res://Art/AI/council_table.svg" id="25_council_table"]
-[ext_resource type="Texture2D" uid="uid://bbywuxdy8dmt2" path="res://Art/AI/snake_statue.svg" id="26_snake_statue"]
+[ext_resource type="Texture2D" uid="uid://cq5dxd8fa1uon" path="res://Art/New/component/game1/tool.PNG" id="26_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
 [ext_resource type="Texture2D" uid="uid://b3xfwicv6u8iv" path="res://Art/AI/chapter4_props.svg" id="29_c4_props"]
+[ext_resource type="Texture2D" uid="uid://bhr7e4fieem42" path="res://Art/New/component/IMG_1456.PNG" id="29_l2oj5"]
+[ext_resource type="Texture2D" uid="uid://hwkhojwsvxwe" path="res://Art/New/component/snake_shrine_statue.png" id="30_m5q0i"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
@@ -40,12 +40,69 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2oj5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
 
 [sub_resource type="Shader" id="Shader_low_water_outline"]
+code = "shader_type canvas_item;
+
+uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
+uniform float outline_strength : hint_range(0.0, 1.0) = 0.0;
+uniform float outline_width : hint_range(1.0, 8.0) = 3.0;
+uniform float edge_damage : hint_range(0.0, 0.5) = 0.16;
+uniform float tail_fade : hint_range(0.0, 1.2) = 0.0;
+uniform float powder_dissolve : hint_range(0.0, 1.1) = 0.0;
+
+varying vec2 character_pixel;
+
+void vertex() {
+	character_pixel = VERTEX;
+}
+
+float pixel_noise(vec2 pixel_position) {
+	return fract(sin(dot(pixel_position, vec2(12.9898, 78.233))) * 43758.5453);
+}
+
+void fragment() {
+	vec4 base_color = COLOR;
+	vec2 offset = TEXTURE_PIXEL_SIZE * outline_width;
+	float neighbor_alpha = min(
+		min(texture(TEXTURE, UV + vec2(offset.x, 0.0)).a, texture(TEXTURE, UV - vec2(offset.x, 0.0)).a),
+		min(texture(TEXTURE, UV + vec2(0.0, offset.y)).a, texture(TEXTURE, UV - vec2(0.0, offset.y)).a)
+	);
+	float edge = base_color.a * (1.0 - neighbor_alpha) * outline_strength;
+	float noise = pixel_noise(floor(UV / TEXTURE_PIXEL_SIZE));
+	float rough_edge = edge * mix(0.55, 1.0, noise);
+	float chip = edge * step(1.0 - edge_damage, noise);
+	base_color.rgb = mix(base_color.rgb, outline_color.rgb, rough_edge * outline_color.a);
+	base_color.a *= 1.0 - chip * 0.85;
+	if (tail_fade > 0.0) {
+		float from_tail = clamp((character_pixel.x + 84.0) / 84.0, 0.0, 1.0);
+		base_color.a *= 1.0 - 0.3 * smoothstep(from_tail - 0.08, from_tail + 0.08, tail_fade);
+	}
+	if (powder_dissolve > 0.0) {
+		float grain = pixel_noise(floor(character_pixel));
+		float powder_edge = 1.0 - smoothstep(0.0, 0.13, abs(grain - powder_dissolve));
+		base_color.rgb = mix(base_color.rgb, vec3(1.0, 0.91, 0.64), powder_edge * powder_dissolve);
+		base_color.a *= 1.0 - smoothstep(grain - 0.06, grain + 0.06, powder_dissolve);
+	}
+	COLOR = base_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
+resource_local_to_scene = true
+shader = SubResource("Shader_low_water_outline")
+shader_parameter/outline_color = Color(0, 0, 0, 1)
+shader_parameter/outline_strength = 0.0
+shader_parameter/outline_width = 3.0
+shader_parameter/edge_damage = 0.16
+shader_parameter/tail_fade = 0.0
+shader_parameter/powder_dissolve = 0.0
+
+[sub_resource type="Shader" id="Shader_o2yww"]
 code = "shader_type canvas_item;
 
 uniform vec4 outline_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
@@ -74,9 +131,9 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
 resource_local_to_scene = true
-shader = SubResource("Shader_low_water_outline")
+shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
 shader_parameter/outline_strength = 0.0
 shader_parameter/outline_width = 3.0
@@ -91,39 +148,6 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
@@ -136,6 +160,39 @@ shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1og5t"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_15xio"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u3ot4"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -397,16 +454,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_l2oj5")
+material = SubResource("ShaderMaterial_o2yww")
 
-[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_m5q0i")
+[node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
+material = SubResource("ShaderMaterial_s2vhm")
 
-[node name="Walk" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_m5q0i")
+[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
+material = SubResource("ShaderMaterial_hehhy")
 
-[node name="Action" parent="PlayerWithCamera/Player/sprite" parent_id_path=PackedInt32Array(1075589275, 503209207, 1048294822) index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_m5q0i")
+[node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
+material = SubResource("ShaderMaterial_hehhy")
+
+[node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
+material = SubResource("ShaderMaterial_hehhy")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1701, 0)
@@ -425,6 +485,7 @@ tween_resource = SubResource("Resource_yocbw")
 [node name="Camp" parent="." unique_id=1903763566 instance=ExtResource("1_camp")]
 z_index = -1
 position = Vector2(-96, -1560)
+metadata/_edit_lock_ = true
 
 [node name="ColorRect" parent="Camp" index="0" unique_id=791088076]
 offset_left = 16.0
@@ -444,70 +505,54 @@ position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
-position = Vector2(2635, -338)
+position = Vector2(2678, -361)
 metadata/_edit_lock_ = true
-
-[node name="DesertScenery" parent="SunkenPalace" index="11" unique_id=606180320]
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0"]
 position = Vector2(5310, -65)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_o2yww")
+material = SubResource("ShaderMaterial_vqyf3")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
-position = Vector2(5310, -65)
+position = Vector2(5395, -62)
+scale = Vector2(0.7676052, -0.7676052)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
 position = Vector2(4164.031, -1232.1624)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
-material = SubResource("ShaderMaterial_s2vhm")
+material = SubResource("ShaderMaterial_2flee")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
-position = Vector2(4164.031, -1232.1624)
+position = Vector2(4207.031, -1255.1624)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0"]
 position = Vector2(4310.6597, -2677)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
-material = SubResource("ShaderMaterial_hehhy")
+material = SubResource("ShaderMaterial_1og5t")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
-position = Vector2(4310.6597, -2677)
+position = Vector2(4353.6597, -2700)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0"]
 position = Vector2(3389, -3375.9998)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
-material = SubResource("ShaderMaterial_vqyf3")
+material = SubResource("ShaderMaterial_15xio")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
-position = Vector2(3389, -3375.9998)
+position = Vector2(3432, -3398.9998)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0"]
 position = Vector2(1675.5127, -2562.0002)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
-material = SubResource("ShaderMaterial_2flee")
+material = SubResource("ShaderMaterial_u3ot4")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
-position = Vector2(1675.5127, -2562.0002)
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_o2yww")
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
-material = SubResource("ShaderMaterial_s2vhm")
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
-material = SubResource("ShaderMaterial_hehhy")
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
-material = SubResource("ShaderMaterial_vqyf3")
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
-material = SubResource("ShaderMaterial_2flee")
+position = Vector2(1718.5127, -2585.0002)
 
 [node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="4" unique_id=208978342]
 position = Vector2(-1081, -1401)
@@ -523,20 +568,17 @@ position = Vector2(-118, 3250)
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19118, -1215)
 
-[node name="ReturnPhase" parent="OasisBattlefield" index="2" unique_id=1083308710]
-visible = true
-
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
 [node name="CameraGate2" parent="CameraNode" unique_id=1274666655 instance=ExtResource("7_hfiwn")]
-position = Vector2(2120, -38)
+position = Vector2(2043.9999, -84.99999)
 scale = Vector2(0.4082091, 2.459945)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
-position = Vector2(-115.999985, -362.99997)
+position = Vector2(-85, -362.00003)
 scale = Vector2(0.408, 20)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
@@ -564,7 +606,7 @@ position = Vector2(-18736, -371)
 [node name="MusicNode" type="Node2D" parent="." unique_id=1909380459]
 
 [node name="FootstepSurfaceArea" parent="MusicNode" unique_id=607193711 instance=ExtResource("8_35sqx")]
-position = Vector2(2121, -427)
+position = Vector2(2045, -427.99997)
 scale = Vector2(0.48881865, 7.9301405)
 player_path = NodePath("../../PlayerWithCamera/Player")
 left_surface = "Sand"
@@ -731,13 +773,15 @@ metadata/_editor_description_ = "参考宫殿原交互锚点(4672,-1583)暂放�
 texture = ExtResource("21_pottery")
 
 [node name="工具农具_2_7至2_8" parent="story/c3" unique_id=734180189 instance=ExtResource("12_terh4")]
-position = Vector2(4740, -1580)
+position = Vector2(6019, -11)
+scale = Vector2(1.6191423, 1.6191423)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_7"), SubResource("C3_2_8")])
 metadata/_editor_description_ = "靠宫殿交互锚点(4672,-1583)暂放，请核对残墙与行走面。"
 
 [node name="工具农具贴图" type="Sprite2D" parent="story/c3/工具农具_2_7至2_8" unique_id=1272523501]
-texture = ExtResource("22_tools")
+scale = Vector2(0.047484964, 0.047484964)
+texture = ExtResource("26_l2oj5")
 
 [node name="壁画_2_10至2_11" parent="story/c3" unique_id=241219892 instance=ExtResource("12_terh4")]
 position = Vector2(5686, -1426)
@@ -761,22 +805,28 @@ metadata/_editor_description_ = "靠宫殿交互锚点(4683,-1235)暂放，请�
 texture = ExtResource("24_nameplates")
 
 [node name="议政桌_2_14至2_15" parent="story/c3" unique_id=1963937542 instance=ExtResource("12_terh4")]
-position = Vector2(4683, -1235)
+position = Vector2(2267, -1788)
+scale = Vector2(2.9108229, 2.9108229)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_14"), SubResource("C3_2_15")])
 metadata/_editor_description_ = "参考宫殿交互锚点(4683,-1235)暂放，请确认中央石桌位置。"
 
 [node name="议政桌贴图" type="Sprite2D" parent="story/c3/议政桌_2_14至2_15" unique_id=562975797]
-texture = ExtResource("25_council_table")
+scale = Vector2(0.13365571, 0.13365571)
+texture = ExtResource("29_l2oj5")
 
 [node name="蛇身雕塑_2_17至2_19" parent="story/c3" unique_id=2071370340 instance=ExtResource("12_terh4")]
-position = Vector2(4179, -1645)
+position = Vector2(1745, -1864.9999)
+scale = Vector2(3.8974733, 3.8974733)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubResource("C3_2_18"), SubResource("C3_2_19")])
 metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
 
 [node name="蛇身雕塑贴图" type="Sprite2D" parent="story/c3/蛇身雕塑_2_17至2_19" unique_id=1689419626]
-texture = ExtResource("26_snake_statue")
+position = Vector2(-5.3587704, -15.406193)
+scale = Vector2(0.102967866, 0.102967866)
+texture = ExtResource("30_m5q0i")
+flip_h = true
 
 [node name="高处蓄水池_2_22至2_23" parent="story/c3" unique_id=397872988 instance=ExtResource("12_terh4")]
 position = Vector2(1672, -2562)

@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://c7mxy8v3k1q1w"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/Tent/Tent.gd" id="1_tent"]
+[ext_resource type="Script" uid="uid://bmg2e3ngpxdwg" path="res://Code/Entities/InteractiveComponent/Tent/Tent.gd" id="1_tent"]
+[ext_resource type="Texture2D" uid="uid://doiqq0n1j41rc" path="res://Art/New/component/10_18_slices/10_18_02_hanging_cover.png" id="2_tkyrd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tent"]
 size = Vector2(48, 40)
@@ -16,39 +17,41 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.5, 0)
 
-[node name="Tent" type="Area2D" groups=["interactive", "tent"]]
+[node name="Tent" type="Area2D" unique_id=1127400997 groups=["interactive", "tent"]]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_tent")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=624119231]
 position = Vector2(0, -20)
 shape = SubResource("RectangleShape2D_tent")
 
-[node name="TentVisual" type="Node2D" parent="."]
+[node name="TentVisual" type="Node2D" parent="." unique_id=1777524145]
 
-[node name="TentFabric" type="Polygon2D" parent="TentVisual"]
+[node name="TentFabric" type="Polygon2D" parent="TentVisual" unique_id=1400715992]
+visible = false
 color = Color(0.42, 0.34, 0.26, 1)
 polygon = PackedVector2Array(-24, 0, 0, -36, 24, 0)
 
-[node name="TentDoor" type="Polygon2D" parent="TentVisual"]
+[node name="TentDoor" type="Polygon2D" parent="TentVisual" unique_id=875801229]
+visible = false
 color = Color(0.22, 0.16, 0.12, 1)
 polygon = PackedVector2Array(-10, 0, 0, -22, 10, 0)
 
-[node name="TentPole" type="Line2D" parent="TentVisual"]
+[node name="TentPole" type="Line2D" parent="TentVisual" unique_id=265950574]
+visible = false
 points = PackedVector2Array(0, -38, 0, 0)
 width = 2.0
 default_color = Color(0.65, 0.52, 0.35, 1)
 
-[node name="LightGlow" type="PointLight2D" parent="."]
+[node name="LightGlow" type="PointLight2D" parent="." unique_id=95594616]
 position = Vector2(0, -18)
 enabled = false
 color = Color(1, 0.85, 0.5, 1)
-energy = 1.0
 texture = SubResource("GradientTexture2D_tent_light")
 texture_scale = 1.5
 
-[node name="StatusLabel" type="Label" parent="."]
+[node name="StatusLabel" type="Label" parent="." unique_id=9561822]
 visible = false
 offset_left = -60.0
 offset_top = -54.0
@@ -61,3 +64,8 @@ theme_override_font_sizes/font_size = 11
 text = "重生点已设置"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=782892417]
+position = Vector2(0.045860052, -28.177673)
+scale = Vector2(0.21537647, 0.21537647)
+texture = ExtResource("2_tkyrd")
