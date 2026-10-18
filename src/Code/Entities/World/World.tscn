@@ -10,27 +10,27 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_l2oj5"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
-[ext_resource type="PackedScene" uid="uid://bekfm826b2gww" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/dialogbox/DialogBox.tscn" id="9_dialog"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
 [ext_resource type="Texture2D" uid="uid://cr8v8th45p3ul" path="res://Art/New/component/extracted/stargazing_desk.svg" id="13_stargazing_desk"]
-[ext_resource type="Texture2D" uid="uid://cl2s2a6edeh3e" path="res://Art/New/ai/brass_magnifier.svg" id="14_magnifier"]
 [ext_resource type="Texture2D" uid="uid://bh5wg0taldg8l" path="res://Art/New/component/extracted/moon_phase_dial.svg" id="15_moon_phase_dial"]
 [ext_resource type="Texture2D" uid="uid://5jd43vy6horr" path="res://Art/New/component/extracted/torn_picture_book.svg" id="16_torn_picture_book"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/PictureBook.tscn" id="17_picture_book"]
+[ext_resource type="Texture2D" uid="uid://pjfw3kxc63bm" path="res://Art/New/component/game2/IMG_1496.PNG" id="18_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://b7m1livmw8npo" path="res://Art/New/component/extracted/proverb_stele.svg" id="18_proverb_stele"]
 [ext_resource type="Texture2D" uid="uid://bla1x5c0rw0ji" path="res://Art/New/component/extracted/scholars_notebook.svg" id="19_scholars_notebook"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
 [ext_resource type="Texture2D" uid="uid://l7l1mk7tvqvi" path="res://Art/AI/pottery.svg" id="21_pottery"]
-[ext_resource type="Texture2D" uid="uid://keofucnt1pv7" path="res://Art/AI/mural.svg" id="23_mural"]
-[ext_resource type="Texture2D" uid="uid://kjvcd42nonrm" path="res://Art/AI/nameplates.svg" id="24_nameplates"]
 [ext_resource type="Texture2D" uid="uid://cq5dxd8fa1uon" path="res://Art/New/component/game1/tool.PNG" id="26_l2oj5"]
+[ext_resource type="Texture2D" uid="uid://lgoxfr44l36l" path="res://Art/New/component/game1/mural.JPG" id="27_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
-[ext_resource type="Texture2D" uid="uid://b3xfwicv6u8iv" path="res://Art/AI/chapter4_props.svg" id="29_c4_props"]
+[ext_resource type="Texture2D" uid="uid://dw8g0j7ceq8e2" path="res://Art/New/component/game1/IMG_1495.PNG" id="28_o2yww"]
 [ext_resource type="Texture2D" uid="uid://bhr7e4fieem42" path="res://Art/New/component/IMG_1456.PNG" id="29_l2oj5"]
-[ext_resource type="Texture2D" uid="uid://hwkhojwsvxwe" path="res://Art/New/component/snake_shrine_statue.png" id="30_m5q0i"]
+[ext_resource type="Texture2D" uid="uid://de8n6lqqeepkq" path="res://Art/New/component/game1/snake.png" id="30_l2oj5"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
+[ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -508,49 +508,49 @@ scale = Vector2(1.0168765, 0.68783075)
 position = Vector2(2678, -361)
 metadata/_edit_lock_ = true
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0"]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="1"]
 position = Vector2(5310, -65)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6"]
 material = SubResource("ShaderMaterial_s2vhm")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="7" unique_id=424886505]
 position = Vector2(5395, -62)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="1"]
 position = Vector2(4164.031, -1232.1624)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6"]
 material = SubResource("ShaderMaterial_hehhy")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="7" unique_id=424886505]
 position = Vector2(4207.031, -1255.1624)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0"]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="1"]
 position = Vector2(4310.6597, -2677)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6"]
 material = SubResource("ShaderMaterial_vqyf3")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="7" unique_id=424886505]
 position = Vector2(4353.6597, -2700)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0"]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="1"]
 position = Vector2(3389, -3375.9998)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6"]
 material = SubResource("ShaderMaterial_2flee")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="7" unique_id=424886505]
 position = Vector2(3432, -3398.9998)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0"]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="1"]
 position = Vector2(1675.5127, -2562.0002)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6"]
 material = SubResource("ShaderMaterial_1og5t")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="7" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
 
 [node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="4" unique_id=208978342]
@@ -687,15 +687,18 @@ scale = Vector2(0.7409028, 1)
 texture = ExtResource("13_stargazing_desk")
 
 [node name="放大镜" parent="story/c2" unique_id=1866626411 instance=ExtResource("12_terh4")]
-position = Vector2(22, 676)
-scale = Vector2(0.3446726, 0.368074)
+z_index = -1
+position = Vector2(49.000004, 680)
+rotation = -1.3497165
+scale = Vector2(0.49296683, 0.5264366)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_ciajo")])
 show_repeat_dialog = true
 repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7posy")])
 
 [node name="放大镜贴图" type="Sprite2D" parent="story/c2/放大镜" unique_id=211672534]
-texture = ExtResource("14_magnifier")
+scale = Vector2(0.23095538, 0.23095538)
+texture = ExtResource("18_l2oj5")
 
 [node name="月相刻盘" parent="story/c2" unique_id=1549139785 instance=ExtResource("12_terh4")]
 position = Vector2(-4154, 3472)
@@ -783,25 +786,28 @@ scale = Vector2(0.047484964, 0.047484964)
 texture = ExtResource("26_l2oj5")
 
 [node name="壁画_2_10至2_11" parent="story/c3" unique_id=241219892 instance=ExtResource("12_terh4")]
-position = Vector2(5686, -1426)
-scale = Vector2(1.5154283, 1.5699457)
+z_index = -1
+position = Vector2(3746, -1731.0001)
+scale = Vector2(11.7303705, 11.7303705)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_10"), SubResource("C3_2_11")])
 metadata/_editor_description_ = "参考宫殿交互锚点(5915,-1365)暂放；需在编辑器确认墙面方向。"
 
 [node name="壁画贴图" type="Sprite2D" parent="story/c3/壁画_2_10至2_11" unique_id=596580882]
-position = Vector2(-2.6395416, -5.0957413)
-scale = Vector2(0.44150487, 0.517453)
-texture = ExtResource("23_mural")
+position = Vector2(-2, 1.0003052)
+scale = Vector2(0.06419067, 0.07523282)
+texture = ExtResource("27_m5q0i")
 
 [node name="战士铭牌_2_12至2_13" parent="story/c3" unique_id=1471686417 instance=ExtResource("12_terh4")]
-position = Vector2(4615, -1235)
+position = Vector2(5933, -2874)
+scale = Vector2(2.9464839, 2.9464839)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_12"), SubResource("C3_2_13")])
 metadata/_editor_description_ = "靠宫殿交互锚点(4683,-1235)暂放，请确认铭牌与石桌布局。"
 
 [node name="战士铭牌贴图" type="Sprite2D" parent="story/c3/战士铭牌_2_12至2_13" unique_id=230421738]
-texture = ExtResource("24_nameplates")
+scale = Vector2(-0.04992918, -0.04992918)
+texture = ExtResource("28_o2yww")
 
 [node name="议政桌_2_14至2_15" parent="story/c3" unique_id=1963937542 instance=ExtResource("12_terh4")]
 position = Vector2(2191, -1807)
@@ -822,9 +828,10 @@ first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubR
 metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
 
 [node name="蛇身雕塑贴图" type="Sprite2D" parent="story/c3/蛇身雕塑_2_17至2_19" unique_id=1689419626]
-position = Vector2(-5.3587704, -15.406193)
-scale = Vector2(0.102967866, 0.102967866)
-texture = ExtResource("30_m5q0i")
+z_index = -1
+position = Vector2(-194.1301, 10.582881)
+scale = Vector2(0.18702753, 0.18702753)
+texture = ExtResource("30_l2oj5")
 flip_h = true
 
 [node name="高处蓄水池_2_22至2_23" parent="story/c3" unique_id=397872988 instance=ExtResource("12_terh4")]
@@ -855,24 +862,28 @@ enter_dialog_once = true
 metadata/_editor_description_ = "第四章入口叙事区域；仅对白，不改变绿洲场景。请在编辑器确认必经路径。"
 
 [node name="残破武器_4_4至4_5" parent="story/c4" unique_id=740384175 instance=ExtResource("12_terh4")]
-position = Vector2(-10411, 4)
+z_index = -1
+position = Vector2(-911.00006, -151)
+scale = Vector2(0.10480849, 0.10480849)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_4"), SubResource("C4_5")])
 
 [node name="残破武器贴图" type="Sprite2D" parent="story/c4/残破武器_4_4至4_5" unique_id=1102879880]
-texture = ExtResource("29_c4_props")
+texture = ExtResource("31_s2vhm")
 region_enabled = true
-region_rect = Rect2(0, 0, 140, 128)
+region_rect = Rect2(1718, 564, 910, 866)
 
 [node name="枯骨与发光植物_4_6至4_7" parent="story/c4" unique_id=1081844673 instance=ExtResource("12_terh4")]
-position = Vector2(-10628, 5)
+z_index = -1
+position = Vector2(-1743, -330)
+scale = Vector2(0.14751557, 0.14751557)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_6"), SubResource("C4_7")])
 
 [node name="枯骨与发光植物贴图" type="Sprite2D" parent="story/c4/枯骨与发光植物_4_6至4_7" unique_id=958197716]
-texture = ExtResource("29_c4_props")
+texture = ExtResource("31_s2vhm")
 region_enabled = true
-region_rect = Rect2(128, 0, 128, 128)
+region_rect = Rect2(442, 887, 1126, 605)
 metadata/_editor_description_ = "仅视觉提示，不新增拾取或骨头逻辑。"
 
 [node name="刻痕枯骨前置观察_4_8至4_9" parent="story/c4" unique_id=1906082788 instance=ExtResource("12_terh4")]
