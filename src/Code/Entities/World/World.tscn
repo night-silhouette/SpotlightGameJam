@@ -28,8 +28,8 @@
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
 [ext_resource type="Texture2D" uid="uid://dw8g0j7ceq8e2" path="res://Art/New/component/game1/IMG_1495.PNG" id="28_o2yww"]
 [ext_resource type="Texture2D" uid="uid://bhr7e4fieem42" path="res://Art/New/component/IMG_1456.PNG" id="29_l2oj5"]
-[ext_resource type="Texture2D" uid="uid://de8n6lqqeepkq" path="res://Art/New/component/game1/snake.png" id="30_l2oj5"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
+[ext_resource type="Texture2D" uid="uid://cfrgqi60o3h13" path="res://Art/New/component/game1/2.PNG" id="31_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
 
@@ -499,6 +499,10 @@ visible = true
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
 
+[node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
+z_index = -1
+scale = Vector2(0.51655513, 0.51655513)
+
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2678, -361)
 metadata/_edit_lock_ = true
@@ -560,7 +564,7 @@ texture = ExtResource("27_sun_crown")
 position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
-position = Vector2(-19118, -1215)
+position = Vector2(-19152, -1263)
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
@@ -784,19 +788,21 @@ texture = ExtResource("26_l2oj5")
 
 [node name="壁画_2_10至2_11" parent="story/c3" unique_id=241219892 instance=ExtResource("12_terh4")]
 z_index = -1
-position = Vector2(3746, -1731.0001)
-scale = Vector2(11.7303705, 11.7303705)
+position = Vector2(2631, -1890)
+scale = Vector2(9.507462, 9.507462)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_10"), SubResource("C3_2_11")])
 metadata/_editor_description_ = "参考宫殿交互锚点(5915,-1365)暂放；需在编辑器确认墙面方向。"
+metadata/_edit_lock_ = true
 
 [node name="壁画贴图" type="Sprite2D" parent="story/c3/壁画_2_10至2_11" unique_id=596580882]
-position = Vector2(-2, 1.0003052)
-scale = Vector2(0.06419067, 0.07523282)
+position = Vector2(-70.68132, -14.725271)
+scale = Vector2(0.07908968, 0.07908968)
 texture = ExtResource("27_m5q0i")
 
 [node name="战士铭牌_2_12至2_13" parent="story/c3" unique_id=1471686417 instance=ExtResource("12_terh4")]
-position = Vector2(5933, -2874)
+z_index = -1
+position = Vector2(5488, -1000)
 scale = Vector2(2.9464839, 2.9464839)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_12"), SubResource("C3_2_13")])
@@ -807,29 +813,33 @@ scale = Vector2(-0.04992918, -0.04992918)
 texture = ExtResource("28_o2yww")
 
 [node name="议政桌_2_14至2_15" parent="story/c3" unique_id=1963937542 instance=ExtResource("12_terh4")]
-position = Vector2(2191, -1807)
-scale = Vector2(4.9120336, 4.9120336)
+position = Vector2(2195, -1790)
+scale = Vector2(3.620352, 3.620352)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_14"), SubResource("C3_2_15")])
 metadata/_editor_description_ = "参考宫殿交互锚点(4683,-1235)暂放，请确认中央石桌位置。"
+metadata/_edit_lock_ = true
 
 [node name="议政桌贴图" type="Sprite2D" parent="story/c3/议政桌_2_14至2_15" unique_id=562975797]
 scale = Vector2(0.13365571, 0.13365571)
 texture = ExtResource("29_l2oj5")
 
 [node name="蛇身雕塑_2_17至2_19" parent="story/c3" unique_id=2071370340 instance=ExtResource("12_terh4")]
-position = Vector2(1992.0001, -1858)
+position = Vector2(1539, -1853)
 scale = Vector2(3.023746, 3.023746)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubResource("C3_2_18"), SubResource("C3_2_19")])
 metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
+metadata/_edit_lock_ = true
 
 [node name="蛇身雕塑贴图" type="Sprite2D" parent="story/c3/蛇身雕塑_2_17至2_19" unique_id=1689419626]
 z_index = -1
-position = Vector2(-194.1301, 10.582881)
-scale = Vector2(0.18702753, 0.18702753)
-texture = ExtResource("30_l2oj5")
+position = Vector2(-3.30719, -1.3228791)
+scale = Vector2(0.09350025, 0.09350025)
+texture = ExtResource("31_m5q0i")
 flip_h = true
+region_enabled = true
+region_rect = Rect2(1175, 559, 467, 813)
 
 [node name="高处蓄水池_2_22至2_23" parent="story/c3" unique_id=397872988 instance=ExtResource("12_terh4")]
 position = Vector2(1672, -2562)

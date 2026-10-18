@@ -26,8 +26,8 @@
 [ext_resource type="Texture2D" uid="uid://dlj06f35t0tbs" path="res://Art/New/dessert/bg_dunes_mid.png" id="24_7cx4m"]
 [ext_resource type="Texture2D" uid="uid://cmij6cyuvd76s" path="res://Art/New/map1/back/back3.JPG" id="24_oiahc"]
 [ext_resource type="Texture2D" uid="uid://bc8tsbrv5gfie" path="res://Art/New/map1/back/back4.JPG" id="25_m3c1b"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/TutorialHintArea/TutorialHintArea.tscn" id="26_jump_hint"]
 [ext_resource type="Texture2D" uid="uid://cwig3hjhtg6q3" path="res://Art/New/dessert/bg_desert_silhouette.png" id="25_rv2kr"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/TutorialHintArea/TutorialHintArea.tscn" id="26_jump_hint"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7nnfa"]
 texture = ExtResource("5_7nnfa")
@@ -50,7 +50,7 @@ tile_size = Vector2i(665, 665)
 physics_layer_0/collision_layer = 1
 sources/1 = SubResource("TileSetAtlasSource_7nnfa")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e1x64"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pvafd"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -61,7 +61,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_owl38"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oiahc"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -72,7 +72,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7cx4m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m3c1b"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -83,7 +83,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rv2kr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mxtox"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -94,7 +94,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k6gi6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ltlc"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -158,10 +158,10 @@ color = Color(1, 1, 0, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="." unique_id=2084892891]
 visible = false
-offset_left = -1367.5848
-offset_top = -4679.3623
-offset_right = 3332.415
-offset_bottom = -779.3623
+offset_left = -1498.0
+offset_top = -4620.0
+offset_right = 3502.0
+offset_bottom = -820.0
 
 [node name="ColorRect5" type="ColorRect" parent="." unique_id=1089693802]
 visible = false
@@ -321,20 +321,20 @@ texture = ExtResource("8_kkdgi")
 position = Vector2(2717, 299)
 scale = Vector2(1.1041223, -1.973826)
 
-[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea" index="1"]
+[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea" index="0"]
 visible = true
 position = Vector2(2675, 273)
-scale = Vector2(0.048, 0.048)
+scale = Vector2(0.14, 0.14)
 tile_map_data = PackedByteArray("AAD+//z/AQADAAMAAGD+//3/AQADAAMAAGD+//7/AQADAAMAAGD+////AQADAAMAAGD+/wAAAQADAAMAAGD+/wIAAQADAAMAAGD+/wEAAQADAAMAAGD+/wMAAQADAAMAAGD///z/AAABAAQAAAAAAPz/AQAAAAMAAFAAAP3/AQABAAMAAFAAAP7/AQAAAAMAAFAAAP//AQABAAMAAFAAAAAAAQACAAMAAFAAAAEAAQAAAAMAAFAAAAIAAQABAAMAAFAAAAMAAQACAAMAAFD///3/AAABAAQAAAD///7/AAABAAQAAAD/////AAABAAQAAAD//wAAAAABAAQAAAD//wEAAAABAAQAAAD//wIAAAABAAQAAAD//wMAAAABAAQAAAA=")
 tile_set = ExtResource("11_flekk")
 
-[node name="AfterVisual" parent="collisionlayer/WaterFl/WaterFlowArea" index="2"]
+[node name="AfterVisual" parent="collisionlayer/WaterFl/WaterFlowArea" index="1"]
 visible = true
 
-[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea" index="6"]
-material = SubResource("ShaderMaterial_e1x64")
+[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea" index="5"]
+material = SubResource("ShaderMaterial_pvafd")
 
-[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea" index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea" index="6" unique_id=424886505]
 z_index = 6
 position = Vector2(2717, 299)
 scale = Vector2(0.7676052, 0.7676052)
@@ -343,74 +343,74 @@ scale = Vector2(0.7676052, 0.7676052)
 position = Vector2(1529.0306, -894.1623)
 scale = Vector2(1.555298, 2.5596209)
 
-[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea2" index="1"]
+[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea2" index="0"]
 visible = true
 position = Vector2(-45.004715, -35.162277)
 scale = Vector2(0.048, 0.048)
 tile_map_data = PackedByteArray("AAAAAAAAAAACAAQAAAABAAEAAAACAAQAAAA=")
 tile_set = ExtResource("11_flekk")
 
-[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea2" index="6"]
-material = SubResource("ShaderMaterial_owl38")
+[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea2" index="5"]
+material = SubResource("ShaderMaterial_oiahc")
 
-[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea2" index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea2" index="6" unique_id=424886505]
 position = Vector2(1529.0306, -894.1623)
 
 [node name="WaterFlowArea3" parent="collisionlayer/WaterFl" unique_id=1155138509 instance=ExtResource("2_rune3")]
 position = Vector2(1675.6597, -2339)
 scale = Vector2(5.7432566, 1.9014851)
 
-[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea3" index="1"]
+[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea3" index="0"]
 position = Vector2(1675.6597, -2339)
 scale = Vector2(0.048, 0.048)
 tile_map_data = PackedByteArray("AADy//3/AQABAAMAAADz//3/AQACAAMAAAD0//3/AQADAAMAAAD1//3/AQABAAMAAAD2//3/AQACAAMAAAD3//3/AQADAAMAAAD4//3/AQABAAMAAAD5//3/AQACAAMAAAD6//3/AQADAAMAAAD7//3/AQABAAMAAAD8//3/AQACAAMAAAD9//3/AQADAAMAAAD+//3/AQABAAMAAAD///3/AQACAAMAAAAAAP3/AQADAAMAAAABAP3/AQABAAMAAAACAP3/AQACAAMAAAADAP3/AQADAAMAAAAEAP3/AQABAAMAAAAFAP3/AQACAAMAAAAGAP3/AQADAAMAAAAHAP3/AQABAAMAAAAIAP3/AQACAAMAAAAJAP3/AQADAAMAAAAKAP3/AQABAAMAAAALAP3/AQABAAMAAAAMAP3/AQABAAMAAAANAP3/AQACAAMAAAAOAP3/AQADAAMAAADy/wIAAQABAAMAACDz/wIAAQACAAMAACD0/wIAAQADAAMAACD1/wIAAQABAAMAACD2/wIAAQACAAMAACD3/wIAAQADAAMAACD4/wIAAQABAAMAACD5/wIAAQACAAMAACD6/wIAAQADAAMAACD7/wIAAQABAAMAACD8/wIAAQACAAMAACD9/wIAAQADAAMAACD+/wIAAQABAAMAACD//wIAAQACAAMAACAAAAIAAQADAAMAACABAAIAAQABAAMAACACAAIAAQACAAMAACADAAIAAQADAAMAACAEAAIAAQABAAMAACAFAAIAAQACAAMAACAGAAIAAQADAAMAACAHAAIAAQABAAMAACAIAAIAAQACAAMAACAJAAIAAQADAAMAACAKAAIAAQABAAMAACALAAIAAQABAAMAACAMAAIAAQABAAMAACANAAIAAQACAAMAACAOAAIAAQADAAMAACAOAP//AQACAAMAAFAOAAAAAQADAAMAAFAOAAEAAQADAAMAAFAOAP7/AQABAAMAAFDy//7/AQABAAMAAEDy////AQABAAMAAEDy/wAAAQACAAMAAEDy/wEAAQADAAMAAEDz//7/AAABAAQAAADz////AAABAAQAAADz/wAAAAABAAQAAADz/wEAAAABAAQAAAD0//7/AAABAAQAAAD0////AAABAAQAAAD0/wAAAAABAAQAAAD0/wEAAAABAAQAAAD1//7/AAABAAQAAAD1////AAABAAQAAAD1/wAAAAABAAQAAAD1/wEAAAABAAQAAAD2//7/AAABAAQAAAD2////AAABAAQAAAD2/wAAAAABAAQAAAD2/wEAAAABAAQAAAD3//7/AAABAAQAAAD3////AAABAAQAAAD3/wAAAAABAAQAAAD3/wEAAAABAAQAAAD4//7/AAABAAQAAAD4////AAABAAQAAAD4/wAAAAABAAQAAAD4/wEAAAABAAQAAAD5//7/AAABAAQAAAD5////AAABAAQAAAD5/wAAAAABAAQAAAD5/wEAAAABAAQAAAD6//7/AAABAAQAAAD6////AAABAAQAAAD6/wAAAAABAAQAAAD6/wEAAAABAAQAAAD7//7/AAABAAQAAAD7////AAABAAQAAAD7/wAAAAABAAQAAAD7/wEAAAABAAQAAAD8//7/AAABAAQAAAD8////AAABAAQAAAD8/wAAAAABAAQAAAD8/wEAAAABAAQAAAD9//7/AAABAAQAAAD9////AAABAAQAAAD9/wAAAAABAAQAAAD9/wEAAAABAAQAAAD+//7/AAABAAQAAAD+////AAABAAQAAAD+/wAAAAABAAQAAAD+/wEAAAABAAQAAAD///7/AAABAAQAAAD/////AAABAAQAAAD//wAAAAABAAQAAAD//wEAAAABAAQAAAAAAP7/AAABAAQAAAAAAP//AAABAAQAAAAAAAAAAAABAAQAAAAAAAEAAAABAAQAAAABAP7/AAABAAQAAAABAP//AAABAAQAAAABAAAAAAABAAQAAAABAAEAAAABAAQAAAACAP7/AAABAAQAAAACAP//AAABAAQAAAACAAAAAAABAAQAAAACAAEAAAABAAQAAAADAP7/AAABAAQAAAADAP//AAABAAQAAAADAAAAAAABAAQAAAADAAEAAAABAAQAAAAEAP7/AAABAAQAAAAEAP//AAABAAQAAAAEAAAAAAABAAQAAAAEAAEAAAABAAQAAAAFAP7/AAABAAQAAAAFAP//AAABAAQAAAAFAAAAAAABAAQAAAAFAAEAAAABAAQAAAAGAP7/AAABAAQAAAAGAP//AAABAAQAAAAGAAAAAAABAAQAAAAGAAEAAAABAAQAAAAHAP7/AAABAAQAAAAHAP//AAABAAQAAAAHAAAAAAABAAQAAAAHAAEAAAABAAQAAAAIAP7/AAABAAQAAAAIAP//AAABAAQAAAAIAAAAAAABAAQAAAAIAAEAAAABAAQAAAAJAP7/AAABAAQAAAAJAP//AAABAAQAAAAJAAAAAAABAAQAAAAJAAEAAAABAAQAAAAKAP7/AAABAAQAAAAKAP//AAABAAQAAAAKAAAAAAABAAQAAAAKAAEAAAABAAQAAAALAP7/AAABAAQAAAALAP//AAABAAQAAAALAAAAAAABAAQAAAALAAEAAAABAAQAAAAMAP7/AAABAAQAAAAMAP//AAABAAQAAAAMAAAAAAABAAQAAAAMAAEAAAABAAQAAAANAP7/AAABAAQAAAANAP//AAABAAQAAAANAAAAAAABAAQAAAANAAEAAAABAAQAAAA=")
 tile_set = ExtResource("11_flekk")
 
-[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea3" index="6"]
-material = SubResource("ShaderMaterial_7cx4m")
+[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea3" index="5"]
+material = SubResource("ShaderMaterial_m3c1b")
 
-[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea3" index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea3" index="6" unique_id=424886505]
 position = Vector2(1675.6597, -2339)
 
 [node name="WaterFlowArea4" parent="collisionlayer/WaterFl" unique_id=1223072001 instance=ExtResource("2_rune4")]
 position = Vector2(754, -3037.9998)
 scale = Vector2(1.043738, 9.331192)
 
-[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea4" index="1"]
+[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea4" index="0"]
 position = Vector2(754, -3037.9998)
 scale = Vector2(0.048, 0.048)
 tile_map_data = PackedByteArray("AAD+//H/AQACAAMAAAD9//H/AQACAAMAAAD///H/AQACAAMAAAAAAPH/AQACAAMAAAABAPH/AQACAAMAAAD9//L/AAABAAQAAAD9//P/AAABAAQAAAD9//T/AAABAAQAAAD9//X/AAABAAQAAAD9//b/AAABAAQAAAD9//f/AAABAAQAAAD9//j/AAABAAQAAAD9//n/AAABAAQAAAD9//r/AAABAAQAAAD9//v/AAABAAQAAAD9//z/AAABAAQAAAD9//3/AAABAAQAAAD+//L/AAABAAQAAAD+//P/AAABAAQAAAD+//T/AAABAAQAAAD+//X/AAABAAQAAAD+//b/AAABAAQAAAD+//f/AAABAAQAAAD+//j/AAABAAQAAAD+//n/AAABAAQAAAD+//r/AAABAAQAAAD+//v/AAABAAQAAAD+//z/AAABAAQAAAD+//3/AAABAAQAAAD///L/AAABAAQAAAD///P/AAABAAQAAAD///T/AAABAAQAAAD///X/AAABAAQAAAD///b/AAABAAQAAAD///f/AAABAAQAAAD///j/AAABAAQAAAD///n/AAABAAQAAAD///r/AAABAAQAAAD///v/AAABAAQAAAD///z/AAABAAQAAAD///3/AAABAAQAAAAAAPL/AAABAAQAAAAAAPP/AAABAAQAAAAAAPT/AAABAAQAAAAAAPX/AAABAAQAAAAAAPb/AAABAAQAAAAAAPf/AAABAAQAAAAAAPj/AAABAAQAAAAAAPn/AAABAAQAAAAAAPr/AAABAAQAAAAAAPv/AAABAAQAAAAAAPz/AAABAAQAAAAAAP3/AAABAAQAAAABAPL/AAABAAQAAAABAPP/AAABAAQAAAABAPT/AAABAAQAAAABAPX/AAABAAQAAAABAPb/AAABAAQAAAABAPf/AAABAAQAAAABAPj/AAABAAQAAAABAPn/AAABAAQAAAABAPr/AAABAAQAAAABAPv/AAABAAQAAAABAPz/AAABAAQAAAABAP3/AAABAAQAAAABAA4AAQABAAMAADAAAA4AAQACAAMAADD//w4AAQADAAMAADD+/w4AAQAEAAMAADD9/w4AAQAFAAMAADD9/wUAAAABAAQAAAD+/wUAAAABAAQAAAD//wUAAAABAAQAAAAAAAUAAAABAAQAAAABAAUAAAABAAQAAAD9/wYAAAABAAQAAAD9/wcAAAABAAQAAAD9/wgAAAABAAQAAAD9/wkAAAABAAQAAAD9/woAAAABAAQAAAD9/wsAAAABAAQAAAD9/wwAAAABAAQAAAD9/w0AAAABAAQAAAD+/wYAAAABAAQAAAD+/wcAAAABAAQAAAD+/wgAAAABAAQAAAD+/wkAAAABAAQAAAD+/woAAAABAAQAAAD+/wsAAAABAAQAAAD+/wwAAAABAAQAAAD+/w0AAAABAAQAAAD//wYAAAABAAQAAAD//wcAAAABAAQAAAD//wgAAAABAAQAAAD//wkAAAABAAQAAAD//woAAAABAAQAAAD//wsAAAABAAQAAAD//wwAAAABAAQAAAD//w0AAAABAAQAAAAAAAYAAAABAAQAAAAAAAcAAAABAAQAAAAAAAgAAAABAAQAAAAAAAkAAAABAAQAAAAAAAoAAAABAAQAAAAAAAsAAAABAAQAAAAAAAwAAAABAAQAAAAAAA0AAAABAAQAAAABAAYAAAABAAQAAAABAAcAAAABAAQAAAABAAgAAAABAAQAAAABAAkAAAABAAQAAAABAAoAAAABAAQAAAABAAsAAAABAAQAAAABAAwAAAABAAQAAAABAA0AAAABAAQAAAD9//7/AAABAAQAAAD9////AAABAAQAAAD9/wAAAAABAAQAAAD9/wEAAAABAAQAAAD9/wIAAAABAAQAAAD9/wMAAAABAAQAAAD9/wQAAAABAAQAAAD+//7/AAABAAQAAAD+////AAABAAQAAAD+/wAAAAABAAQAAAD+/wEAAAABAAQAAAD+/wIAAAABAAQAAAD+/wMAAAABAAQAAAD+/wQAAAABAAQAAAD///7/AAABAAQAAAD/////AAABAAQAAAD//wAAAAABAAQAAAD//wEAAAABAAQAAAD//wIAAAABAAQAAAD//wMAAAABAAQAAAD//wQAAAABAAQAAAAAAP7/AAABAAQAAAAAAP//AAABAAQAAAAAAAAAAAABAAQAAAAAAAEAAAABAAQAAAAAAAIAAAABAAQAAAAAAAMAAAABAAQAAAAAAAQAAAABAAQAAAABAP7/AQACAAMAAFABAP//AQADAAMAAFABAAAAAQAEAAMAAFABAAEAAQACAAMAAFABAAIAAQACAAMAAFABAAMAAQADAAMAAFABAAQAAQAEAAMAAFA=")
 tile_set = ExtResource("11_flekk")
 
-[node name="VisualRect" parent="collisionlayer/WaterFl/WaterFlowArea4" index="3" unique_id=141421356]
+[node name="VisualRect" parent="collisionlayer/WaterFl/WaterFlowArea4" index="2" unique_id=141421356]
 visible = false
 
-[node name="SolidCollision" parent="collisionlayer/WaterFl/WaterFlowArea4" index="4" unique_id=173205080]
+[node name="SolidCollision" parent="collisionlayer/WaterFl/WaterFlowArea4" index="3" unique_id=173205080]
 visible = false
 
-[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea4" index="6"]
-material = SubResource("ShaderMaterial_rv2kr")
+[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea4" index="5"]
+material = SubResource("ShaderMaterial_mxtox")
 
-[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea4" index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea4" index="6" unique_id=424886505]
 position = Vector2(754, -3037.9998)
 
 [node name="WaterFlowArea5" parent="collisionlayer/WaterFl" unique_id=1594472404 instance=ExtResource("2_rune5")]
 position = Vector2(-959.48737, -2224.0002)
 scale = Vector2(0.39573365, 5.918553)
 
-[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea5" index="1"]
+[node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea5" index="0"]
 position = Vector2(-959.48737, -2224.0002)
 scale = Vector2(0.048, 0.048)
 tile_map_data = PackedByteArray("AAD+//b/AQACAAMAAAD///b/AQADAAMAAAD+//f/AAABAAQAAAD+//j/AAABAAQAAAD+//n/AAABAAQAAAD+//r/AAABAAQAAAD+//v/AAABAAQAAAD+//z/AAABAAQAAAD+//3/AAABAAQAAAD+//7/AAABAAQAAAD+////AAABAAQAAAD+/wAAAAABAAQAAAD+/wEAAAABAAQAAAD+/wIAAAABAAQAAAD+/wMAAAABAAQAAAD+/wQAAAABAAQAAAD+/wUAAAABAAQAAAD+/wYAAAABAAQAAAD+/wcAAAABAAQAAAD+/wgAAQACAAMAADD///f/AAABAAQAAAD///j/AAABAAQAAAD///n/AAABAAQAAAD///r/AAABAAQAAAD///v/AAABAAQAAAD///z/AAABAAQAAAD///3/AAABAAQAAAD///7/AAABAAQAAAD/////AAABAAQAAAD//wAAAAABAAQAAAD//wEAAAABAAQAAAD//wIAAAABAAQAAAD//wMAAAABAAQAAAD//wQAAAABAAQAAAD//wUAAAABAAQAAAD//wYAAAABAAQAAAD//wcAAAABAAQAAAD//wgAAQACAAMAADA=")
 tile_set = ExtResource("11_flekk")
 
-[node name="SolidCollision" parent="collisionlayer/WaterFl/WaterFlowArea5" index="4" unique_id=173205080]
+[node name="SolidCollision" parent="collisionlayer/WaterFl/WaterFlowArea5" index="3" unique_id=173205080]
 scale = Vector2(1.0162519, 1.0006812)
 
-[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea5" index="6"]
-material = SubResource("ShaderMaterial_k6gi6")
+[node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea5" index="5"]
+material = SubResource("ShaderMaterial_7ltlc")
 
-[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea5" index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(-959.48737, -2224.0002)
 
 [node name="MiniCh" type="Node2D" parent="collisionlayer" unique_id=1155513935]
@@ -444,8 +444,8 @@ scale = Vector2(0.81438094, 0.95797414)
 
 [node name="Crown" parent="collisionlayer/InterRa" unique_id=208978342 instance=ExtResource("6_es0s6")]
 z_index = 1
-position = Vector2(-954.00006, -1400)
-scale = Vector2(0.81438094, 0.95797414)
+position = Vector2(-1056, -1403)
+scale = Vector2(0.70247006, 0.8263309)
 
 [node name="Sprite2D" type="Sprite2D" parent="collisionlayer/InterRa/Crown" unique_id=227547166]
 position = Vector2(1.2758174, -1.6268411)
@@ -488,23 +488,24 @@ flip_h = true
 [node name="OneWayDropPlatformComponent" parent="collisionlayer" unique_id=2104634833 instance=ExtResource("3_ovobq")]
 position = Vector2(2696, -1158)
 
-[node name="JumpHeightHint" parent="." instance=ExtResource("26_jump_hint")]
+[node name="JumpHeightHint" parent="." unique_id=555898766 instance=ExtResource("26_jump_hint")]
 position = Vector2(1240, 350)
 metadata/_editor_description_ = "三格竖木板（本地 x=1453.8）前的长按跳跃教学；右上水平平台位于 x=1613.4..1719.8。"
 
-[node name="DashHint" parent="." instance=ExtResource("26_jump_hint")]
+[node name="DashHint" parent="." unique_id=1159788614 instance=ExtResource("26_jump_hint")]
 position = Vector2(1666.6, 220)
 hint_kind = "dash"
 metadata/_editor_description_ = "跳跃教学竖板右上方横木平台上的冲刺提示。"
 
-[node name="WaterWallHint" parent="." instance=ExtResource("26_jump_hint")]
+[node name="WaterWallHint" parent="." unique_id=771491948 instance=ExtResource("26_jump_hint")]
 position = Vector2(2490, 350)
 hint_kind = "water_wall"
 metadata/_editor_description_ = "第一道水墙（本地 x=2717）左侧地面上的交互教学。"
 
 [node name="visualplayer" type="Node2D" parent="." unique_id=1788018380]
 z_index = -1
-position = Vector2(616, 1302)
+position = Vector2(1341.9999, -1162)
+scale = Vector2(0.19822538, 0.19822538)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="visualplayer" unique_id=1592384472]
 position = Vector2(215.2692, 148.25145)
