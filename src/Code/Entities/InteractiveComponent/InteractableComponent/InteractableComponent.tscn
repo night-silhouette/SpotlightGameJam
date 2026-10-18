@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bufrvjp0xqq8m"]
 
 [ext_resource type="Script" uid="uid://c5ippsnfw70lo" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.gd" id="1"]
+[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
 
 [sub_resource type="RectangleShape2D" id="Shape"]
 size = Vector2(64, 64)
@@ -12,3 +13,6 @@ script = ExtResource("1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=134382680]
 shape = SubResource("Shape")
+
+[node name="InteractionDot" type="Node2D" parent="."]
+script = ExtResource("interaction_dot")

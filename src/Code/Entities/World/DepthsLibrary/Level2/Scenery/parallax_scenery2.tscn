@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://da6rxnslb1cle"]
 
-[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/01.png" id="tex01"]
+[ext_resource type="Texture2D" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryPillar.png" id="tex01"]
 
 [ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Horizontal/03.png" id="tex03"]
 
@@ -148,14 +148,16 @@ z_index = 10
 scroll_scale = Vector2(1.2, 1)
 repeat_size = Vector2(4096, 0)
 repeat_times = 3
-editor_description = "仅 01 黑色模糊柱子。按预览图位置使用两个原图节点，不裁剪、不降低透明度。整个 4096 宽单元重复。"
+editor_description = "前景使用从 Horizontal/12.png 裁出的独立实体柱，两根柱子组成 4096 宽循环单元，无物理碰撞。"
 
 [node name="LeftPillar" type="Sprite2D" parent="ForegroundLoop"]
-position = Vector2(-2126, 0)
+position = Vector2(247, 0)
+scale = Vector2(0.8896612, 0.8896612)
 texture = ExtResource("tex01")
 centered = false
 
 [node name="RightPillar" type="Sprite2D" parent="ForegroundLoop"]
-position = Vector2(0, 0)
+position = Vector2(2295, 0)
+scale = Vector2(0.8896612, 0.8896612)
 texture = ExtResource("tex01")
 centered = false

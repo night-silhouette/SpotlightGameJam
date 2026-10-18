@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://c7mxy8v3k1q1w"]
 
+[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
 [ext_resource type="Script" uid="uid://bmg2e3ngpxdwg" path="res://Code/Entities/InteractiveComponent/Tent/Tent.gd" id="1_tent"]
 [ext_resource type="Texture2D" uid="uid://doiqq0n1j41rc" path="res://Art/New/component/10_18_slices/10_18_02_hanging_cover.png" id="2_tkyrd"]
 
@@ -21,6 +22,9 @@ fill_to = Vector2(0.5, 0)
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_tent")
+
+[node name="InteractionDot" type="Node2D" parent="."]
+script = ExtResource("interaction_dot")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=624119231]
 position = Vector2(0, -20)
@@ -50,20 +54,6 @@ enabled = false
 color = Color(1, 0.85, 0.5, 1)
 texture = SubResource("GradientTexture2D_tent_light")
 texture_scale = 1.5
-
-[node name="StatusLabel" type="Label" parent="." unique_id=9561822]
-visible = false
-offset_left = -60.0
-offset_top = -54.0
-offset_right = 60.0
-offset_bottom = -34.0
-theme_override_colors/font_color = Color(1, 0.88, 0.5, 0.9)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 3
-theme_override_font_sizes/font_size = 11
-text = "重生点已设置"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=782892417]
 position = Vector2(0.045860052, -28.177673)

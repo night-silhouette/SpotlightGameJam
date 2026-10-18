@@ -14,9 +14,6 @@
 [sub_resource type="ShaderMaterial" id="FountainStreamMaterial"]
 shader = ExtResource("fountain_stream_shader")
 
-[sub_resource type="RectangleShape2D" id="FountainPedestalShape"]
-size = Vector2(94, 56)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor_top"]
 size = Vector2(1088, 16)
 
@@ -76,12 +73,12 @@ texture = ExtResource("fountain_idle")
 hframes = 9
 
 [node name="PedestalBody" type="StaticBody2D" parent="Fountain"]
-position = Vector2(0, -12)
+position = Vector2(0.76, -31.26)
 collision_layer = 1
 collision_mask = 0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Fountain/PedestalBody"]
-shape = SubResource("FountainPedestalShape")
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Fountain/PedestalBody"]
+polygon = PackedVector2Array(-56, -42, 56, -42, 59, -37, 39, -34, 25, -20, 8, -16, 8, 9, 14, 23, 66, 23, 66, 44, -66, 44, -66, 23, -15, 23, -10, 9, -10, -16, -25, -20, -39, -34, -56, -37)
 
 [node name="Codex" parent="." instance=ExtResource("device")]
 position = Vector2(820, 495)

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"entities": {
 		"CameraNode/CameraGate": {
 			"unlocked": false
@@ -659,4 +660,10 @@
 	"scene_path": "res://Code/Entities/World/World.tscn",
 	"slot_index": 1,
 	"timestamp": "2026-10-18 15:04:17"
+=======
+	"entities": {},
+	"scene_path": "res://Code/Entities/World/World.tscn",
+	"slot_index": 1,
+	"timestamp": "2026-10-18 17:43:36"
+>>>>>>> f3def4f4ddb171ef37e7b5abdbd0804981a02310
 }

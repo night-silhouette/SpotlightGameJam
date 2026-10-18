@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://ddy27q8b8l3ox"]
 
+[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
 [ext_resource type="Script" uid="uid://w4rnm8c2tph3" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.gd" id="1_chalice"]
 [ext_resource type="Texture2D" uid="uid://ckm8crcqev1ug" path="res://Art/New/component/10_18_slices/10_18_01_stand.png" id="2_8u1x2"]
 
@@ -71,6 +72,9 @@ corner_radius_bottom_left = 3
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_chalice")
+
+[node name="InteractionDot" type="Node2D" parent="."]
+script = ExtResource("interaction_dot")
 
 [node name="ChaliceBase" type="ColorRect" parent="." unique_id=533725492]
 visible = false
