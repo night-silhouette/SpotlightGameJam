@@ -81,7 +81,7 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 启动与 Autoload | `project.godot:11-29,50-99` | 主场景为 `E/StartMenu/StartMenu.tscn`；单例为 Util、SignalBus、GlobalValue、PhantomCameraManager、ExportSettings、_mcp_game_helper。此处输入是默认值，会被改键文件覆盖。配置及插件只读。 |
-| 开始菜单与槽位选择 | `E/StartMenu/StartMenu.gd:32-211` | 已有槽载入；空槽/覆写新开先显示加载状态，禁用关闭与重复点击，等待 `StartNewGameInSlot` 后失败恢复弹窗。存档和制作人弹窗打开时由菜单接管取消键。 |
+| 开始菜单与槽位选择 | `E/StartMenu/StartMenu.gd:35-62,218-241`；`E/StartMenu/StartMenu.tscn:483-504`；`A/ExportSettings.gd:744-756` | 已有槽直接载入；空槽/覆写新开先播放 NewGameIntro 黑幕，两行文字“雨水将带着所有被遗忘的名字 / 回到世界的出处”淡入1.2秒、停留3秒、淡出1秒，黑幕保持至 `StartNewGameInSlot` 切换世界，避免世界开场对白提前播放。`SaveManager.gd:100-173` 接收可选 intro_tween，后台资源加载与文字过场同时开始，两者均完成才写新档并切场景；资源加载慢时保持纯黑等待，失败停止过场并恢复菜单。过场拦鼠标、禁设置快捷键及重复新开，加载失败隐藏黑幕并恢复弹窗；字号随小窗口缩小，文字/颜色/字号/时长取 `new_game_intro_*`。存档和制作人弹窗打开时由菜单接管取消键。本次仅静态核对，未运行游戏或写存档。 |
 | 全游戏背景音乐 | `A/Util.gd:3-43`；`A/ExportSettings.gd:642-645` | Util 单例延迟初始化音量设置后，经现有音乐总线播放 `Music/bgm/MainMenu.wav` 和 `Music/bgm/GrowMaintheme.wav`：从第一首开始，各播完一次后交替；流副本关闭自身循环，播放器 finished 切换下一首，场景切换不中断。仅初次启动默认2秒渐入，使用统一的背景音乐基础分贝，不改变音量设置默认值及原音频导入设置；实际听感及衔接待验收。 |
 | 制作人名单 | `E/StartMenu/StartMenu.gd:36-39,50-57,78-79,91-92`；`E/StartMenu/StartMenu.tscn:358-543` | 沿用现有 CreditsModal 入口与关闭/Esc链路，复用 SettingsSkin 和 SettingsFrame 的墨色暖纸配色、手绘边框及三角关闭区域；TeamGrid 两列展示去重后的8人，特别鸣谢原文保留，纵向滚动及外框等比缩放适配小窗口。2026-10-16 Godot 4.7.2 headless 单独装配该弹窗，名单/鸣谢内容、资源加载、关闭按钮及1280×720、800×600、480×320面板边界与等比缩放断言通过；未启动正式 World，未做视觉验收。 |
 | 正式世界装配 | `W/World.tscn:347-427` | 同时装配 DialogBox、PlayerWithCamera、Camp、SunkenPalace、DepthsLibrary、OasisBattlefield；不是在此逐关切场景。交互实例有剧情和锁输入覆盖值。 |

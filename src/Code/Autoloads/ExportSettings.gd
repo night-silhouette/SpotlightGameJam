@@ -741,6 +741,20 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
 
+@export_group("New Game Intro", "new_game_intro_")
+## 仅新开存档播放的黑幕文字；换行对应屏幕上的两行。
+@export_multiline var new_game_intro_text: String = "雨水将带着所有被遗忘的名字\n回到世界的出处"
+## 开场文字颜色。
+@export var new_game_intro_text_color: Color = Color("eee5cf")
+## 1280×720 基准下的字号，小窗口等比缩小。
+@export_range(16, 64, 1) var new_game_intro_font_size: int = 28
+## 文字淡入时间，单位为秒。
+@export_range(0.0, 5.0, 0.1) var new_game_intro_fade_in_duration: float = 1.2
+## 文字完全显示后的停留时间，单位为秒。
+@export_range(0.0, 15.0, 0.1) var new_game_intro_hold_duration: float = 3.0
+## 文字淡出时间，单位为秒；黑幕保留到世界载入。
+@export_range(0.0, 5.0, 0.1) var new_game_intro_fade_out_duration: float = 1.0
+
 @export_group("World Opening", "world_opening_")
 ## 世界就绪后等待的帧数，与开场剧情及读档初始化对齐。
 @export_range(0, 10, 1) var world_opening_fade_ready_frames: int = 4

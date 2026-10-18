@@ -1,11 +1,7 @@
 [gd_scene format=3 uid="uid://dnjptu4fcsor4"]
 
 [ext_resource type="Script" uid="uid://d0dmb1icodlat" path="res://Code/Entities/StartMenu/StartMenu.gd" id="1_menu"]
-[ext_resource type="Texture2D" uid="uid://qfu2b4by57mq" path="res://Art/Archived/Oldhuntt/background.png" id="2_bg"]
-[ext_resource type="Texture2D" uid="uid://bksi4kbkwcuiu" path="res://Art/Archived/Oldhuntt/stars.png" id="3_stars"]
-[ext_resource type="Texture2D" uid="uid://d0ipe53b3g433" path="res://Art/Archived/Oldhuntt/moon.png" id="4_moon"]
-[ext_resource type="Texture2D" uid="uid://cerblpvuqhtbo" path="res://Art/Archived/Oldhuntt/mid_shot.png" id="5_mid"]
-[ext_resource type="Texture2D" uid="uid://cxigiyyvq33h4" path="res://Art/Archived/Oldhuntt/foreground.png" id="6_fg"]
+[ext_resource type="Texture2D" path="res://Art/New/start/start.jpg" id="2_bg"]
 [ext_resource type="Texture2D" uid="uid://c38orbh8ydgwl" path="res://Art/New/ui/main_title.png" id="7_menu_title"]
 [ext_resource type="Texture2D" uid="uid://dahu7qqvllbem" path="res://Art/New/ui/main_button_start.png" id="8_menu_start"]
 [ext_resource type="Texture2D" uid="uid://cm3oic0c6vqiy" path="res://Art/New/ui/main_button_credits.png" id="9_menu_credits"]
@@ -67,64 +63,6 @@ grow_vertical = 2
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
-metadata/_edit_lock_ = true
-
-[node name="Stars" type="TextureRect" parent="BackgroundLayers" unique_id=1001004]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_stars")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_lock_ = true
-
-[node name="Moon" type="TextureRect" parent="BackgroundLayers" unique_id=1001005]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("4_moon")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_lock_ = true
-
-[node name="MidMountains" type="TextureRect" parent="BackgroundLayers" unique_id=1001006]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("5_mid")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_lock_ = true
-
-[node name="Foreground" type="TextureRect" parent="BackgroundLayers" unique_id=1001007]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("6_fg")
-expand_mode = 1
-stretch_mode = 6
-metadata/_edit_lock_ = true
-
-[node name="VignetteMask" type="ColorRect" parent="BackgroundLayers" unique_id=1001008]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.02, 0.04, 0.08, 0.45)
 metadata/_edit_lock_ = true
 
 [node name="MainUI" type="Control" parent="." unique_id=1001009]
@@ -541,6 +479,29 @@ text = "Spotlight Game Jam 2026
 所有参与体验测试的玩家"
 horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="NewGameIntro" type="CanvasLayer" parent="."]
+layer = 130
+visible = false
+
+[node name="Black" type="ColorRect" parent="NewGameIntro"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Text" type="Label" parent="NewGameIntro/Black"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="QuitConfirmDialog" type="ConfirmationDialog" parent="." unique_id=1001046]
 unique_name_in_owner = true

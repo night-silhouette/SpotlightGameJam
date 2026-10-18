@@ -101,7 +101,8 @@ static func GetAllSlotsInfo() -> Array[Dictionary]:
 ## @param tree 场景树 SceneTree
 ## @param slot_index 槽位编号 (1 到 5)
 ## @param target_scene_path 目标场景路径 (留空时取 ExportSettings.start_menu_world_scene_path)
-static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_path: String = "") -> bool:
+## @param intro_tween 可选的开场过场；后台加载与其并行，过场结束后才写入新档并切场景。
+static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_path: String = "", intro_tween: Tween = null) -> bool:
 	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
 		return false
 
@@ -127,6 +128,9 @@ static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_pa
 	var world_scene = ResourceLoader.load_threaded_get(world_path) as PackedScene
 	if not world_scene:
 		return false
+	# 加载较慢时过场可能已经结束，不再等待已发出的 finished 信号。
+	if intro_tween != null and intro_tween.is_running():
+		await intro_tween.finished
 
 	var current_datetime = Time.get_datetime_dict_from_system()
 	var time_str = "%04d-%02d-%02d %02d:%02d:%02d" % [
