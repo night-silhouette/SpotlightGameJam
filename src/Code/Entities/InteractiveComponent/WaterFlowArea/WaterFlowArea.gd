@@ -1,7 +1,7 @@
 extends StaticBody2D
 class_name WaterFlowArea
 
-## 流水区域：右键点击区域切换固态与流体；流体状态下为进入的玩家提供加速。
+## 流水区域：按 interact 映射切换鼠标指向区域的固态与流体；流体状态下为进入的玩家提供加速。
 
 ## 流水区域完成初始化或流体状态发生变化时触发；is_fluid 为当前是否处于流体状态。
 signal FluidStateChanged(is_fluid: bool)

@@ -24,6 +24,9 @@ signal PlayerOpeningReleaseRequested
 ## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
 signal DialogBox(type: StringName, content: String)
 
+## 请求显示非模态教学字幕；text 为完整文案，空字符串清除当前字幕，不锁定玩家操作。
+signal TutorialSubtitleRequested(text: String)
+
 ## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
 signal ComponentInteracted(component: Node2D, interactor: Node2D)
 ## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。

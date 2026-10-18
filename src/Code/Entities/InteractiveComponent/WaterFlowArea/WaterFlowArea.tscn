@@ -1,6 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7t8r2m4vy3p1"]
-
-[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
+[gd_scene load_steps=5 format=3 uid="uid://c7t8r2m4vy3p1"]
 
 [ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.gd" id="1_water"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.tscn" id="2_curtain"]
@@ -14,9 +12,6 @@ size = Vector2(160, 100)
 [node name="WaterFlowArea" type="StaticBody2D" unique_id=314159265 groups=["water_flow"]]
 collision_mask = 2
 script = ExtResource("1_water")
-
-[node name="InteractionDot" type="Node2D" parent="."]
-script = ExtResource("interaction_dot")
 
 [node name="BeforeVisual" type="TileMapLayer" parent="."]
 visible = false

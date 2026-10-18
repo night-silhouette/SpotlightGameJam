@@ -31,6 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://de8n6lqqeepkq" path="res://Art/New/component/game1/snake.png" id="30_l2oj5"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
+[ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -40,7 +41,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l2oj5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -92,7 +93,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -131,7 +132,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -147,17 +148,6 @@ script = ExtResource("2_mkscu")
 
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
 resource_local_to_scene = true
@@ -193,6 +183,17 @@ shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1og5t"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_15xio"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -287,10 +288,6 @@ script = ExtResource("5_acpp2")
 text = "封面已经褪色，纸页皱皱巴巴，边角也有点卷曲，显然曾被一次又一次翻阅。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="C3_2_1"]
-script = ExtResource("5_acpp2")
-text = "太阳在沙丘上留下了无名的城"
-
 [sub_resource type="Resource" id="C3_2_2"]
 script = ExtResource("5_acpp2")
 text = "一座破败的宫殿半埋于炙热的黄沙之中。高大的石墙早已倾颓，断裂的石柱仍倔强地撑起残存的穹顶，但仍能看出这里旧日的恢宏。墙边留存着几处规整的蓄水池与水道。"
@@ -376,10 +373,6 @@ dialog_type = "独白"
 text = "得快点躲开！
 这么多水，怎么会，这座城不是已经荒废了吗？"
 
-[sub_resource type="Resource" id="C4_1"]
-script = ExtResource("5_acpp2")
-text = "绿洲从未竟的声声叹息中生长"
-
 [sub_resource type="Resource" id="C4_2"]
 script = ExtResource("5_acpp2")
 text = "金色瀚海在此处骤然断截，层层叠叠的绿意涌到眼前。藤蔓攀缘，枝干交错，阳光在水面上留下细碎的鳞光。"
@@ -441,6 +434,8 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[node name="TutorialSubtitle" parent="." unique_id=456715450 instance=ExtResource("31_tutorial_subtitle")]
+
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
@@ -454,19 +449,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_l2oj5")
-
-[node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
 material = SubResource("ShaderMaterial_m5q0i")
 
-[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
+[node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
 material = SubResource("ShaderMaterial_o2yww")
+
+[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_o2yww")
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_o2yww")
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1701, 0)
@@ -512,7 +507,7 @@ metadata/_edit_lock_ = true
 position = Vector2(5310, -65)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6"]
-material = SubResource("ShaderMaterial_s2vhm")
+material = SubResource("ShaderMaterial_hehhy")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="7" unique_id=424886505]
 position = Vector2(5395, -62)
@@ -521,7 +516,7 @@ position = Vector2(5395, -62)
 position = Vector2(4164.031, -1232.1624)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6"]
-material = SubResource("ShaderMaterial_hehhy")
+material = SubResource("ShaderMaterial_vqyf3")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="7" unique_id=424886505]
 position = Vector2(4207.031, -1255.1624)
@@ -530,7 +525,7 @@ position = Vector2(4207.031, -1255.1624)
 position = Vector2(4310.6597, -2677)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6"]
-material = SubResource("ShaderMaterial_vqyf3")
+material = SubResource("ShaderMaterial_2flee")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="7" unique_id=424886505]
 position = Vector2(4353.6597, -2700)
@@ -539,7 +534,7 @@ position = Vector2(4353.6597, -2700)
 position = Vector2(3389, -3375.9998)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6"]
-material = SubResource("ShaderMaterial_2flee")
+material = SubResource("ShaderMaterial_1og5t")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="7" unique_id=424886505]
 position = Vector2(3432, -3398.9998)
@@ -548,7 +543,7 @@ position = Vector2(3432, -3398.9998)
 position = Vector2(1675.5127, -2562.0002)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6"]
-material = SubResource("ShaderMaterial_1og5t")
+material = SubResource("ShaderMaterial_15xio")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="7" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
@@ -646,6 +641,7 @@ scale = Vector2(0.42096186, 3.7220325)
 position = Vector2(1814.8912, -1.0746815)
 act_text = "第二幕"
 chapter_text = "烈阳遗梦"
+subtitle_text = "太阳在沙丘上留下了无名的城"
 
 [node name="ChapterTrigger2" parent="chapter" unique_id=520894648 instance=ExtResource("10_mvgin")]
 position = Vector2(-3634.5337, 101.82608)
@@ -660,6 +656,7 @@ rotation = -1.5707964
 scale = Vector2(4, 0.4)
 act_text = "第四幕"
 chapter_text = "绿洲悲歌"
+subtitle_text = "绿洲从未竟的声声叹息中生长"
 
 [node name="story" type="Node2D" parent="." unique_id=1662514281]
 
@@ -761,7 +758,7 @@ position = Vector2(2885, -22)
 scale = Vector2(3, 3)
 enable_interaction = false
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_1"), SubResource("C3_2_2"), SubResource("C3_2_3")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_2"), SubResource("C3_2_3")])
 enter_dialog_once = true
 metadata/_editor_description_ = "按第二幕章节触发器约(2883,-22)及宫殿入口锚点暂放；请在编辑器确认入城必经路径。"
 
@@ -857,7 +854,7 @@ position = Vector2(-391, -385)
 scale = Vector2(1.322886, 1.1634629)
 enable_interaction = false
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_1"), SubResource("C4_2")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_2")])
 enter_dialog_once = true
 metadata/_editor_description_ = "第四章入口叙事区域；仅对白，不改变绿洲场景。请在编辑器确认必经路径。"
 

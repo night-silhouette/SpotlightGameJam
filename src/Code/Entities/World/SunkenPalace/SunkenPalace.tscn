@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://dlj06f35t0tbs" path="res://Art/New/dessert/bg_dunes_mid.png" id="24_7cx4m"]
 [ext_resource type="Texture2D" uid="uid://cmij6cyuvd76s" path="res://Art/New/map1/back/back3.JPG" id="24_oiahc"]
 [ext_resource type="Texture2D" uid="uid://bc8tsbrv5gfie" path="res://Art/New/map1/back/back4.JPG" id="25_m3c1b"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/TutorialHintArea/TutorialHintArea.tscn" id="26_jump_hint"]
 [ext_resource type="Texture2D" uid="uid://cwig3hjhtg6q3" path="res://Art/New/dessert/bg_desert_silhouette.png" id="25_rv2kr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7nnfa"]
@@ -480,6 +481,20 @@ flip_h = true
 
 [node name="OneWayDropPlatformComponent" parent="collisionlayer" unique_id=2104634833 instance=ExtResource("3_ovobq")]
 position = Vector2(2696, -1158)
+
+[node name="JumpHeightHint" parent="." instance=ExtResource("26_jump_hint")]
+position = Vector2(1240, 350)
+metadata/_editor_description_ = "三格竖木板（本地 x=1453.8）前的长按跳跃教学；右上水平平台位于 x=1613.4..1719.8。"
+
+[node name="DashHint" parent="." instance=ExtResource("26_jump_hint")]
+position = Vector2(1666.6, 220)
+hint_kind = "dash"
+metadata/_editor_description_ = "跳跃教学竖板右上方横木平台上的冲刺提示。"
+
+[node name="WaterWallHint" parent="." instance=ExtResource("26_jump_hint")]
+position = Vector2(2490, 350)
+hint_kind = "water_wall"
+metadata/_editor_description_ = "第一道水墙（本地 x=2717）左侧地面上的交互教学。"
 
 [node name="visualplayer" type="Node2D" parent="." unique_id=1788018380]
 z_index = -1
