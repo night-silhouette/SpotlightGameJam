@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="6_wx588"]
 [ext_resource type="Texture2D" uid="uid://nrl4kscecxca" path="res://Art/New/component/lake/lake.png" id="8_wx588"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="10_na041"]
+[ext_resource type="Texture2D" path="res://Code/Entities/World/Camp/残碑_右.png" id="SteleRight"]
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 
 [sub_resource type="Resource" id="Resource_68lmy"]
@@ -78,6 +79,7 @@ offset_left = 14.0
 offset_top = -61.999992
 offset_right = 2114.0
 offset_bottom = 1638.0
+mouse_filter = 2
 
 [node name="ColorRect2" type="ColorRect" parent="." unique_id=509544559]
 visible = false
@@ -85,6 +87,7 @@ offset_left = 271.0
 offset_top = 646.0
 offset_right = 1871.0
 offset_bottom = 1596.0
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
@@ -148,7 +151,11 @@ disable_movement_during_dialog = true
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_1khv5"), SubResource("Resource_wx588"), SubResource("Resource_na041"), SubResource("Resource_0yts4")])
 story_lines = Array[ExtResource("6_qv0jn")]([])
-metadata/placement_note = "临时触发区：Camp 目前没有残碑实体。请在放入残碑后移动至实际物件位置。"
+metadata/placement_note = "残碑使用同目录残碑_右.png，保留原剧情交互位置。"
+
+[node name="BrokenStele" parent="Chapter1/SteleStory_1_12_to_1_14" index="2"]
+texture = ExtResource("SteleRight")
+region_enabled = false
 
 [node name="LeaveStory_1_15" parent="Chapter1" index="1" unique_id=1367280678]
 position = Vector2(2287, 1572)

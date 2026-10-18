@@ -310,6 +310,12 @@ position = Vector2(667, -1366)
 movement_offset = Vector2(1100, 0)
 movement_speed = 150.0
 
+[node name="VisualRect" parent="collisionlayer/MovePl/MovingPlatform2" index="1"]
+visible = false
+
+[node name="TopHighlight" parent="collisionlayer/MovePl/MovingPlatform2" index="2"]
+visible = false
+
 [node name="Sprite2D" type="Sprite2D" parent="collisionlayer/MovePl/MovingPlatform2" unique_id=1297841182]
 position = Vector2(-1.1051636, 11.3428955)
 scale = Vector2(0.1024604, 0.1024604)

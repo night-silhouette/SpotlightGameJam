@@ -249,8 +249,20 @@ func _refresh_saves_ui() -> void:
 
 ## 载入已有存档进入游戏
 func _on_slot_load_pressed(slot_idx: int) -> void:
-	saves_modal.visible = false
-	SaveManagerRef.LoadFromSlot(get_tree(), slot_idx)
+	if _starting_new_game:
+		return
+	_starting_new_game = true
+	btn_close_saves.disabled = true
+	saves_list.visible = false
+	_sync_setting_shortcut()
+	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "正在载入存档…"
+	var loaded: bool = await SaveManagerRef.LoadFromSlot(get_tree(), slot_idx)
+	if not loaded and is_instance_valid(self):
+		_starting_new_game = false
+		btn_close_saves.disabled = false
+		saves_list.visible = true
+		_sync_setting_shortcut()
+		$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "载入失败，请覆写或选择其他存档"
 
 ## 空白处或指定槽位开启新存档并进入 World.tscn
 func _on_slot_new_game_pressed(slot_idx: int) -> void:

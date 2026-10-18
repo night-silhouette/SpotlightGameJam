@@ -98,7 +98,7 @@ func _show_dialog(dialog_type: StringName, content: String) -> void:
 	if dialog_type == NARRATION:
 		_narration_text.text = content
 		_narration.show()
-		_auto_close_timer.start()
+		_auto_close_timer.start(clampf(content.length() * ExportSettings.dialog_narration_seconds_per_character, ExportSettings.dialog_narration_min_duration, ExportSettings.dialog_narration_max_duration))
 	else:
 		_title.text = String(dialog_type)
 		_title.add_theme_color_override("font_color", Color(0.72, 0.86, 1.0))

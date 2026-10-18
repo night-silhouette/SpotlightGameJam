@@ -1,7 +1,6 @@
 extends StateMachine
 
 var _rope_pose_active: bool = false
-var _double_jump_blocks_wall_grab: bool = false
 
 func _ready() -> void:
 	SignalBus.PlayerGrapplePhaseChanged.connect(_on_grapple_phase_changed)
@@ -71,8 +70,6 @@ func change_state(next_state_name: String) -> void:
 func phy_middleware() -> void:
 	if not gameInputControl:
 		return
-	if obj.is_on_floor():
-		_double_jump_blocks_wall_grab = false
 	if obj.debug_flight_enabled:
 		return
 	# 受伤、死亡和持绳动作不被普通移动、跳跃或攀爬动画抢占。
@@ -100,7 +97,6 @@ func phy_middleware() -> void:
 	if gameInputControl.is_jump:
 		change_state("jump")
 	if "is_double_jump" in gameInputControl and gameInputControl.is_double_jump:
-		_double_jump_blocks_wall_grab = true
 		# 如果已经在 jump 状态中，先 exit 或再次进入以赋二段跳速度
 		if cur_state_name == "jump":
 			var jump_state = state_map.get("jump")
@@ -112,5 +108,6 @@ func phy_middleware() -> void:
 	if gameInputControl.is_dash:
 		change_state("dash")
 	var holding_toward_wall: bool = obj != null and int(sign(gameInputControl.row_dir)) == obj.face_dir
-	if obj and not _double_jump_blocks_wall_grab and not obj.is_on_floor() and obj.is_front_has_rigid and holding_toward_wall and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
+	# 二段跳不改变墙面方向锁；仅扒住另一方向的墙或落地后才能再次扒原方向。
+	if obj and not obj.is_on_floor() and obj.is_front_has_rigid and holding_toward_wall and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
 		change_state("climb")

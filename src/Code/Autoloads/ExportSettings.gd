@@ -711,8 +711,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_max_save_slots: int = 5
 ## 游戏启动时是否自动载入第一个存档 (若存在)
 @export var setting_auto_load_slot_1: bool = false
-## 存档文件路径前缀模版 (支持 res://Saves/save_slot_ 或 user://save_slot_)
-@export var setting_save_path_prefix: String = "res://Code/Entities/Setting/Saves/save_slot_"
+## 存档文件路径前缀（仅user://可写目录；res://旧档由SaveManager只读兼容）。
+@export var setting_save_path_prefix: String = "user://Saves/save_slot_"
 
 ## 按键绑定持久化文件路径 (独立于存档槽位)
 @export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
@@ -728,6 +728,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.5, 4.0, 0.1) var setting_panel_edge_width: float = 1.6
 
 @export_group("Dialog", "dialog_")
+## 旁白自动消失的最短停留秒数。
+@export_range(0.1, 10.0, 0.1) var dialog_narration_min_duration: float = 2.5
+## 旁白自动消失的最长停留秒数。
+@export_range(0.1, 20.0, 0.1) var dialog_narration_max_duration: float = 6.0
+## 旁白每个字符对应的阅读秒数，最终时长限制在最短与最长停留时间之间。
+@export_range(0.01, 1.0, 0.01) var dialog_narration_seconds_per_character: float = 0.12
 ## 独白与旁白继续箭头的悬停颜色；正常状态为白色。
 @export var dialog_arrow_hover_color: Color = Color(1.0, 0.95, 0.70, 1.0)
 ## 独白每秒显示的字符数。
@@ -865,3 +871,24 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var interaction_dot_color: Color = Color(1.0, 0.96, 0.85, 0.65)
 ## 圆点半径，单位为世界像素，不随实体缩放。
 @export_range(1.0, 32.0, 0.5) var interaction_dot_radius: float = 15.0
+
+@export_group("Low Health Sand Overlay", "low_health_sand_")
+## 屏幕边缘沙化开关；独立于人物的15%缺水表现。
+@export var low_health_sand_enabled: bool = true
+## 生命比例严格低于此值才进入危机状态；0 表示不触发。
+@export_range(0.0, 1.0, 0.01) var low_health_sand_threshold: float = 0.3
+## 边缘最大不透明度，不影响中心视野。
+@export_range(0.0, 1.0, 0.01) var low_health_sand_max_opacity: float = 0.62
+## 最大侵蚀宽度占屏幕短边比例，硬限制不超过18%。
+@export_range(0.01, 0.18, 0.01) var low_health_sand_edge_width: float = 0.18
+## 强度从0到1或从1到0所需秒数；0为立即切换，死亡始终立即清除。
+@export_range(0.0, 3.0, 0.05) var low_health_sand_fade_duration: float = 0.65
+## 呼吸频率（次/秒）与微弱透明度起伏幅度。
+@export_range(0.0, 2.0, 0.05) var low_health_sand_pulse_speed: float = 0.32
+@export_range(0.0, 0.15, 0.01) var low_health_sand_pulse_amount: float = 0.06
+## 细沙尺寸（屏幕像素）及沿边缘流动速度（屏幕像素/秒）。
+@export_range(0.5, 4.0, 0.1) var low_health_sand_grain_size: float = 1.4
+@export_range(0.0, 60.0, 1.0) var low_health_sand_flow_speed: float = 12.0
+## 沙金与暗沙颜色；颜色alpha与最大不透明度相乘。
+@export var low_health_sand_color: Color = Color(0.76, 0.59, 0.32, 1.0)
+@export var low_health_sand_dark_color: Color = Color(0.19, 0.13, 0.075, 1.0)

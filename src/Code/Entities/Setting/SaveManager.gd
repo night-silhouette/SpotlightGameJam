@@ -1,406 +1,300 @@
 class_name SaveManager
 extends RefCounted
 
-## =============================================================================
-## SaveManager.gd - 5槽位游戏存档管理服务
-## 提供最多 5 个独立存档槽位的新建、载入、删除及元数据查询。
-## 严格只收集与还原实体对象（具备 ExportSaveData / LoadSaveData）的数据，
-## 绝不保存、改动或重置按键绑定。
-## =============================================================================
-
+## 五槽位实体存档服务；游戏状态与独立按键绑定互不影响。
 const MAX_SLOTS: int = 5
-const DEFAULT_PATH_PREFIX: String = "res://Code/Entities/Setting/Saves/save_slot_"
+const DEFAULT_PATH_PREFIX: String = "user://Saves/save_slot_"
+const LEGACY_PATH_PREFIX: String = "res://Code/Entities/Setting/Saves/save_slot_"
 
-## 当前激活的存档槽位 (默认槽位 1)
 static var active_slot: int = 1
+static var _changing_scene: bool = false
 
-## 获取当前活跃存档槽位
+## 返回当前活跃槽位编号，未设置时返回1。
 static func GetActiveSlot() -> int:
 	return active_slot if active_slot > 0 else 1
 
-## 设置当前活跃存档槽位
+## 设置活跃槽位；slot_index 必须在1至5之间。
 static func SetActiveSlot(slot_index: int) -> void:
-	if slot_index > 0:
+	if slot_index >= 1 and slot_index <= MAX_SLOTS:
 		active_slot = slot_index
 
-## 便捷自动保存接口，直接保存当前活跃槽位
+## 保存当前场景至活跃槽位；tree 为场景树，返回写盘是否成功。
 static func AutoSave(tree: SceneTree) -> bool:
 	return SaveToSlot(tree, GetActiveSlot())
 
-## 获取指定槽位的保存路径
-## @param slot_index 槽位编号 (1 到 5)
+## 返回slot_index（1至5）的可写路径；只接受user://前缀，旧res://配置回退默认值。
 static func GetSlotPath(slot_index: int) -> String:
-	var prefix = DEFAULT_PATH_PREFIX
-	var export_settings = Engine.get_singleton("ExportSettings") if Engine.has_singleton("ExportSettings") else null
-	if not export_settings and Engine.get_main_loop() is SceneTree:
-		var root = (Engine.get_main_loop() as SceneTree).root
-		if root and root.has_node("ExportSettings"):
-			export_settings = root.get_node("ExportSettings")
-	if export_settings and "setting_save_path_prefix" in export_settings:
-		prefix = export_settings.setting_save_path_prefix
+	var prefix = ExportSettings.setting_save_path_prefix
+	if not prefix.begins_with("user://") or "/../" in prefix:
+		prefix = DEFAULT_PATH_PREFIX
 	return "%s%d.json" % [prefix, slot_index]
 
-
-## 检查指定槽位是否存在有效存档
-## @param slot_index 槽位编号 (1 到 5)
-static func HasSlot(slot_index: int) -> bool:
-	if slot_index < 1 or slot_index > MAX_SLOTS:
-		return false
-	return FileAccess.file_exists(GetSlotPath(slot_index))
-
-## 获取槽位简要信息
-## @param slot_index 槽位编号 (1 到 5)
-## @return 字典包含 exists, timestamp, player_hp, player_max_hp, desc 等信息
-static func GetSlotInfo(slot_index: int) -> Dictionary:
-	var res: Dictionary = {
-		"slot_index": slot_index,
-		"exists": false,
-		"timestamp": "",
-		"player_hp": 0.0,
-		"player_max_hp": 0.0,
-		"desc": "空存档位"
-	}
-	if not HasSlot(slot_index):
-		return res
-		
+static func _get_read_path(slot_index: int) -> String:
 	var path = GetSlotPath(slot_index)
-	var file = FileAccess.open(path, FileAccess.READ)
-	if not file:
-		return res
-	var content = file.get_as_text()
-	file.close()
-	
-	var json = JSON.new()
-	if json.parse(content) != OK:
-		return res
-	var data = json.get_data()
-	if not (data is Dictionary):
-		return res
-		
-	res["exists"] = true
-	res["timestamp"] = data.get("timestamp", "未知时间")
-	var entities = data.get("entities", {})
-	if entities is Dictionary:
-		for node_path_str in entities.keys():
-			var entity_data = entities[node_path_str]
-			if entity_data is Dictionary and entity_data.has("now_hp"):
-				res["player_hp"] = entity_data.get("now_hp", 0.0)
-				res["player_max_hp"] = entity_data.get("max_hp", 200.0)
-				break
-	res["desc"] = "存档 %d - %s" % [slot_index, res["timestamp"]]
-	return res
+	if FileAccess.file_exists(path):
+		return path
+	if FileAccess.file_exists(path + ".deleted"):
+		return ""
+	var legacy_path = "%s%d.json" % [LEGACY_PATH_PREFIX, slot_index]
+	return legacy_path if FileAccess.file_exists(legacy_path) else ""
 
-## 获取所有5个槽位的概要列表
+## 检查slot_index（1至5）是否有档案文件；损坏档案由载入时校验。
+static func HasSlot(slot_index: int) -> bool:
+	return slot_index >= 1 and slot_index <= MAX_SLOTS and _get_read_path(slot_index) != ""
+
+static func _read_slot(slot_index: int) -> Dictionary:
+	if not HasSlot(slot_index):
+		return {}
+	var file = FileAccess.open(_get_read_path(slot_index), FileAccess.READ)
+	if not file:
+		return {}
+	var json = JSON.new()
+	var error = json.parse(file.get_as_text())
+	file.close()
+	if error != OK or not json.data is Dictionary:
+		return {}
+	var data: Dictionary = json.data
+	if not data.get("entities") is Dictionary or not data.get("scene_path", "") is String:
+		return {}
+	if not data.get("timestamp", "") is String:
+		return {}
+	for path in data.entities:
+		if not path is String or path.is_empty() or path.begins_with("/") or ":" in path or ".." in path.split("/"):
+			return {}
+		if not data.entities[path] is Dictionary:
+			return {}
+	return data
+
+## 返回slot_index（1至5）的存在状态、时间、玩家生命值及描述；损坏档保留可删除入口。
+static func GetSlotInfo(slot_index: int) -> Dictionary:
+	var info: Dictionary = {"slot_index": slot_index, "exists": HasSlot(slot_index), "timestamp": "", "player_hp": 0.0, "player_max_hp": 0.0, "desc": "空存档位"}
+	var data = _read_slot(slot_index)
+	if data.is_empty():
+		if info.exists:
+			info.desc = "存档损坏，请覆写或删除"
+		return info
+	info.timestamp = data.get("timestamp", "未知时间")
+	for entity_data in data.entities.values():
+		if entity_data.has("now_hp"):
+			var hp = entity_data.get("now_hp", 0.0)
+			var max_hp = entity_data.get("max_hp", 200.0)
+			if (hp is float or hp is int) and (max_hp is float or max_hp is int):
+				info.player_hp = hp
+				info.player_max_hp = max_hp
+			break
+	info.desc = "存档 %d - %s" % [slot_index, info.timestamp]
+	return info
+
+## 返回全部五个槽位的概要列表。
 static func GetAllSlotsInfo() -> Array[Dictionary]:
 	var list: Array[Dictionary] = []
 	for i in range(1, MAX_SLOTS + 1):
 		list.append(GetSlotInfo(i))
 	return list
 
-## 创建新存档并直接切换载入至目标场景（如 World.tscn）
-## @param tree 场景树 SceneTree
-## @param slot_index 槽位编号 (1 到 5)
-## @param target_scene_path 目标场景路径 (留空时取 ExportSettings.start_menu_world_scene_path)
-## @param intro_tween 可选的开场过场；后台加载与其并行，过场结束后才写入新档并切场景。
+static func _make_save_data(slot_index: int, scene_path: String, entities: Dictionary) -> Dictionary:
+	return {"slot_index": slot_index, "timestamp": Time.get_datetime_string_from_system(false, true), "scene_path": scene_path, "entities": entities}
+
+static func _write_atomic(path: String, data: Dictionary) -> bool:
+	var error = DirAccess.make_dir_recursive_absolute(path.get_base_dir())
+	if error != OK:
+		return false
+	var temporary_path = path + ".tmp"
+	var file = FileAccess.open(temporary_path, FileAccess.WRITE)
+	if not file:
+		return false
+	file.store_string(JSON.stringify(data, "\t"))
+	file.flush()
+	var write_error = file.get_error()
+	file.close()
+	if write_error != OK:
+		DirAccess.remove_absolute(temporary_path)
+		return false
+	if DirAccess.rename_absolute(temporary_path, path) != OK:
+		DirAccess.remove_absolute(temporary_path)
+		return false
+	return true
+
+## 新建slot_index（1至5）并进入target_scene_path（空时取配置）；可等待intro_tween。
+## 必须await；返回true时场景已就绪并发出SaveSlotLoaded，失败不切换活跃槽位。
 static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_path: String = "", intro_tween: Tween = null) -> bool:
-	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
+	if _changing_scene or not tree or slot_index < 1 or slot_index > MAX_SLOTS:
 		return false
-
-	var world_path = target_scene_path
-	if world_path == "":
-		world_path = "res://Code/Entities/World/World.tscn"
-		if ExportSettings and "start_menu_world_scene_path" in ExportSettings:
-			world_path = ExportSettings.start_menu_world_scene_path
-	
-	if not ResourceLoader.exists(world_path):
-		push_error("StartNewGameInSlot 目标场景不存在: %s" % world_path)
+	var world_path = target_scene_path if target_scene_path != "" else ExportSettings.start_menu_world_scene_path
+	if not ResourceLoader.exists(world_path, "PackedScene"):
 		return false
-
+	_changing_scene = true
 	var request_error = ResourceLoader.load_threaded_request(world_path, "PackedScene")
 	if request_error != OK:
-		push_error("StartNewGameInSlot 无法加载目标场景: %s (%d)" % [world_path, request_error])
+		_changing_scene = false
 		return false
 	while ResourceLoader.load_threaded_get_status(world_path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
 		await tree.process_frame
 	if ResourceLoader.load_threaded_get_status(world_path) != ResourceLoader.THREAD_LOAD_LOADED:
-		push_error("StartNewGameInSlot 加载目标场景失败: %s" % world_path)
+		_changing_scene = false
 		return false
-	var world_scene = ResourceLoader.load_threaded_get(world_path) as PackedScene
-	if not world_scene:
+	var scene = ResourceLoader.load_threaded_get(world_path) as PackedScene
+	if not scene or not scene.can_instantiate():
+		_changing_scene = false
 		return false
-	# 加载较慢时过场可能已经结束，不再等待已发出的 finished 信号。
 	if intro_tween != null and intro_tween.is_running():
 		await intro_tween.finished
-
-	var current_datetime = Time.get_datetime_dict_from_system()
-	var time_str = "%04d-%02d-%02d %02d:%02d:%02d" % [
-		current_datetime.year, current_datetime.month, current_datetime.day,
-		current_datetime.hour, current_datetime.minute, current_datetime.second
-	]
-
-	var save_dict: Dictionary = {
-		"slot_index": slot_index,
-		"timestamp": time_str,
-		"scene_path": world_path,
-		"entities": {}
-	}
-
-	var path = GetSlotPath(slot_index)
-	var base_dir = path.get_base_dir()
-	if not DirAccess.dir_exists_absolute(base_dir):
-		DirAccess.make_dir_recursive_absolute(base_dir)
-
-	var file = FileAccess.open(path, FileAccess.WRITE)
-	if not file:
-		push_error("StartNewGameInSlot 无法写入存档: %s" % path)
+	if not _write_atomic(GetSlotPath(slot_index), _make_save_data(slot_index, world_path, {})):
+		_changing_scene = false
 		return false
-	file.store_string(JSON.stringify(save_dict, "\t"))
-	file.flush()
-	var write_error = file.get_error()
-	file.close()
-	if write_error != OK:
-		push_error("StartNewGameInSlot 写入存档失败: %s (%d)" % [path, write_error])
-		return false
-	SetActiveSlot(slot_index)
 	_emit_signal_bus("SaveSlotSaved", [slot_index])
+	return await _change_and_apply(tree, scene, {}, slot_index)
 
-	var err = tree.change_scene_to_packed(world_scene)
-	if err == OK:
-		await tree.process_frame
-		await tree.process_frame
-		_emit_signal_bus("SaveSlotLoaded", [slot_index])
-		return true
-	return false
-
-## 保存/新建存档到指定槽位
-## 递归查找场景树中所有实现了 ExportSaveData 的节点，收集其状态并写入
-## @param tree 场景树 SceneTree
-## @param slot_index 槽位编号 (1 到 5)
+## 收集tree当前场景实体并原子保存至slot_index（1至5）；写盘成功才切换活跃槽位。
 static func SaveToSlot(tree: SceneTree, slot_index: int) -> bool:
-	if slot_index < 1 or slot_index > MAX_SLOTS or not tree:
+	if _changing_scene or not tree or slot_index < 1 or slot_index > MAX_SLOTS:
 		return false
-
-	SetActiveSlot(slot_index)
-		
 	var root = tree.current_scene
 	if not root:
-		root = tree.root
-		
-	var entities_data: Dictionary = {}
-	if root:
-		_collect_save_data_recursive(root, root, entities_data)
-	
-	var current_datetime = Time.get_datetime_dict_from_system()
-	var time_str = "%04d-%02d-%02d %02d:%02d:%02d" % [
-		current_datetime.year, current_datetime.month, current_datetime.day,
-		current_datetime.hour, current_datetime.minute, current_datetime.second
-	]
-	
-	var scene_path = root.scene_file_path if (root and "scene_file_path" in root) else ""
-	var save_dict: Dictionary = {
-		"slot_index": slot_index,
-		"timestamp": time_str,
-		"scene_path": scene_path,
-		"entities": entities_data
-	}
-	
-	var path = GetSlotPath(slot_index)
-	var base_dir = path.get_base_dir()
-	if not DirAccess.dir_exists_absolute(base_dir):
-		DirAccess.make_dir_recursive_absolute(base_dir)
-
-	# 先完整写入同目录临时文件，避免写入失败时截断已有存档。
-	var temporary_path = path + ".tmp"
-	var file = FileAccess.open(temporary_path, FileAccess.WRITE)
-	if not file:
-		var err = FileAccess.get_open_error()
-		push_error("SaveToSlot 无法写入文件 %s, 错误码: %d" % [temporary_path, err])
 		return false
-
-	file.store_string(JSON.stringify(save_dict, "\t"))
-	file.flush()
-	var write_error = file.get_error()
-	file.close()
-	if write_error != OK:
-		DirAccess.remove_absolute(temporary_path)
-		push_error("SaveToSlot 写入失败，原存档已保留，错误码: %d" % write_error)
+	var entities: Dictionary = {}
+	_collect_save_data_recursive(root, root, entities)
+	if not _write_atomic(GetSlotPath(slot_index), _make_save_data(slot_index, root.scene_file_path, entities)):
 		return false
-	var replace_error = DirAccess.rename_absolute(temporary_path, path)
-	if replace_error != OK:
-		DirAccess.remove_absolute(temporary_path)
-		push_error("SaveToSlot 替换失败，原存档已保留，错误码: %d" % replace_error)
-		return false
-	
+	SetActiveSlot(slot_index)
 	_emit_signal_bus("SaveSlotSaved", [slot_index])
 	return true
 
-
-
-## 从指定槽位载入游戏状态
-## @param tree 场景树 SceneTree
-## @param slot_index 槽位编号 (1 到 5)
+## 重新实例化slot_index（1至5）的存档场景并恢复实体，避免残留已删除实体和瞬态。
+## 必须await；返回true表示场景就绪、数据应用完成；失败不修改活跃槽位。
 static func LoadFromSlot(tree: SceneTree, slot_index: int) -> bool:
-	if not HasSlot(slot_index) or not tree:
+	if _changing_scene or not tree:
 		return false
+	var data = _read_slot(slot_index)
+	if data.is_empty():
+		return false
+	var scene_path: String = data.get("scene_path", "")
+	if scene_path == "" or not ResourceLoader.exists(scene_path):
+		scene_path = ExportSettings.start_menu_world_scene_path
+	var scene = load(scene_path) as PackedScene
+	if not scene or not scene.can_instantiate():
+		return false
+	_changing_scene = true
+	return await _change_and_apply(tree, scene, data.entities, slot_index)
 
-	SetActiveSlot(slot_index)
-		
-	var path = GetSlotPath(slot_index)
-	var file = FileAccess.open(path, FileAccess.READ)
-	if not file:
+static func _change_and_apply(tree: SceneTree, scene: PackedScene, entities: Dictionary, slot_index: int) -> bool:
+	if tree.change_scene_to_packed(scene) != OK:
+		_changing_scene = false
 		return false
-	var content = file.get_as_text()
-	file.close()
-	
-	var json = JSON.new()
-	if json.parse(content) != OK:
-		return false
-	var data = json.get_data()
-	if not (data is Dictionary):
-		return false
-		
-	var entities_data = data.get("entities", {})
-	if not (entities_data is Dictionary):
-		return false
-		
+	# 静态服务持有协程，不依赖即将释放的菜单/设置节点继续执行。
+	await tree.scene_changed
+	await tree.process_frame
+	await tree.process_frame
 	var root = tree.current_scene
-	if not root:
-		root = tree.root
-
-	# 1. 检查存档所记录的原始场景路径
-	var saved_scene_path: String = data.get("scene_path", "")
-	# 如果存档里的 scene_path 为空或指向已被废弃场景，兜底为 World.tscn
-	var default_world_path = "res://Code/Entities/World/World.tscn"
-	if ExportSettings and "start_menu_world_scene_path" in ExportSettings:
-		default_world_path = ExportSettings.start_menu_world_scene_path
-	if saved_scene_path == "" or not ResourceLoader.exists(saved_scene_path):
-		saved_scene_path = default_world_path
-
-	var current_scene_path: String = root.scene_file_path if (root and "scene_file_path" in root) else ""
-
-	# 2. 如果当前场景与存档保存的场景不一致，且存档场景文件有效，则先切换场景
-	if saved_scene_path != "" and saved_scene_path != current_scene_path and ResourceLoader.exists(saved_scene_path):
-		var err = tree.change_scene_to_file(saved_scene_path)
-		if err == OK:
-			# 等待新场景实例化就绪后，恢复数据
-			_wait_and_apply_scene(tree, entities_data, slot_index)
-			return true
-
-	# 3. 若同场景或直接在当前场景恢复，执行双重匹配（相对路径 + 实体全局/类型兜底）
-	_apply_save_data_smart(root, entities_data)
-	
+	if not is_instance_valid(root):
+		_changing_scene = false
+		return false
+	if not _apply_save_data_smart(root, entities):
+		_changing_scene = false
+		return false
+	SetActiveSlot(slot_index)
 	_emit_signal_bus("SaveSlotLoaded", [slot_index])
+	_changing_scene = false
 	return true
 
-## 延迟等待新场景就绪并还原
-static func _wait_and_apply_scene(tree: SceneTree, entities_data: Dictionary, slot_index: int) -> void:
-	await tree.process_frame
-	await tree.process_frame
-	var new_root = tree.current_scene
-	if not new_root:
-		new_root = tree.root
-	_apply_save_data_smart(new_root, entities_data)
-	_emit_signal_bus("SaveSlotLoaded", [slot_index])
-
-## 智能实体匹配与数据应用
-## 优先使用相对节点路径精准匹配；若场景结构变化（如放入了 PlayerWithCamera 或别的父节点），自动使用节点名/实体类别/特征进行兜底匹配
-static func _apply_save_data_smart(root: Node, entities_data: Dictionary) -> void:
-	if not root or entities_data.is_empty():
-		return
-
-	# 先收集当前场景树中所有具备 LoadSaveData 的节点
+## 对root应用entities_data；相对路径优先、节点名/玩家特征兜底，每条数据最多消费一次。
+static func _apply_save_data_smart(root: Node, entities_data: Dictionary) -> bool:
+	if not is_instance_valid(root):
+		return false
 	var current_entities: Array[Node] = []
 	_gather_entities_recursive(root, current_entities)
-
+	var matches: Dictionary = {}
 	var applied_nodes: Array[Node] = []
-
-	# 1. 第一轮：相对路径精准匹配
-	for rel_path in entities_data.keys():
-		var node = root.get_node_or_null(rel_path)
-		if is_instance_valid(node) and node.has_method("LoadSaveData"):
-			node.call("LoadSaveData", entities_data[rel_path])
+	for rel_path in entities_data:
+		if not rel_path is String or not entities_data[rel_path] is Dictionary:
+			return false
+		var node = root.get_node_or_null(NodePath(rel_path))
+		if node in current_entities and not node in applied_nodes:
+			matches[rel_path] = node
 			applied_nodes.append(node)
-
-	# 2. 第二轮：对未精准匹配到的数据进行节点名/类型兜底匹配（例如 Player、Tent 等）
-	for rel_path in entities_data.keys():
-		var data = entities_data[rel_path]
-		var path_node_name = rel_path.get_file() # 获取末级节点名称，如 "Player"
-
+	for rel_path in entities_data:
+		if matches.has(rel_path):
+			continue
+		var data: Dictionary = entities_data[rel_path]
 		for candidate in current_entities:
 			if candidate in applied_nodes:
 				continue
-			
-			var is_match = false
-			# 规则 A: 节点名称完全相同 (例如两者都叫 Player)
-			if candidate.name == path_node_name:
-				is_match = true
-			# 规则 B: 候选者为 Player 且存档数据包含 player 特征 (now_hp / respawn_x)
-			elif (candidate is CharacterBody2D or candidate.is_in_group("player")) and data.has("now_hp") and data.has("respawn_x"):
-				is_match = true
-			# 规则 C: 候选者与数据具有相同位置或者帐篷特征
-			elif candidate.is_in_group("tent") and data.has("is_active"):
-				# 同名或者同类型帐篷
-				if candidate.name == path_node_name:
-					is_match = true
-
-			if is_match:
-				candidate.call("LoadSaveData", data)
+			if candidate.name == rel_path.get_file() or ((candidate is CharacterBody2D or candidate.is_in_group("player")) and data.has("now_hp") and data.has("respawn_x")):
+				matches[rel_path] = candidate
 				applied_nodes.append(candidate)
 				break
+	# 在调用任何实体恢复方法前，按实体自身导出的字段类型检查，兼容JSON数字统一为float。
+	for rel_path in matches:
+		var node: Node = matches[rel_path]
+		if node.has_method("ExportSaveData"):
+			var template = node.call("ExportSaveData")
+			if template is Dictionary and not _matches_types(entities_data[rel_path], template):
+				return false
+	for rel_path in matches:
+		matches[rel_path].call("LoadSaveData", entities_data[rel_path])
+	return true
+
+static func _matches_types(data: Dictionary, template: Dictionary) -> bool:
+	for key in data:
+		if not template.has(key):
+			continue
+		var value = data[key]
+		var expected = template[key]
+		if (expected is int or expected is float) and (value is int or value is float):
+			if not is_finite(float(value)):
+				return false
+		elif expected is String or expected is StringName:
+			if not value is String:
+				return false
+		elif typeof(value) != typeof(expected):
+			return false
+		elif value is Dictionary and not _matches_types(value, expected):
+			return false
+	return true
 
 static func _gather_entities_recursive(node: Node, out_list: Array[Node]) -> void:
-	if not is_instance_valid(node):
+	if not is_instance_valid(node) or node.is_queued_for_deletion():
 		return
 	if node.has_method("LoadSaveData"):
 		out_list.append(node)
 	for child in node.get_children():
 		_gather_entities_recursive(child, out_list)
 
-
-## 删除指定槽位存档
-## @param slot_index 槽位编号 (1 到 5)
+## 删除slot_index（1至5）的可写档案；先写删除标记屏蔽只读旧档，永不修改res://原档。
+## 返回是否成功；之后同槽新存档优先于删除标记。
 static func DeleteSlot(slot_index: int) -> bool:
-	if not HasSlot(slot_index):
+	if _changing_scene or not HasSlot(slot_index):
 		return false
 	var path = GetSlotPath(slot_index)
-	var err = DirAccess.remove_absolute(path)
-	if err == OK:
-		_emit_signal_bus("SaveSlotDeleted", [slot_index])
-		return true
-	return false
+	if not _write_atomic(path + ".deleted", {"deleted": true}):
+		return false
+	if FileAccess.file_exists(path) and DirAccess.remove_absolute(path) != OK:
+		return false
+	_emit_signal_bus("SaveSlotDeleted", [slot_index])
+	return true
 
 static func _emit_signal_bus(sig_name: StringName, args: Array) -> void:
-	var bus = Engine.get_singleton("SignalBus") if Engine.has_singleton("SignalBus") else null
-	if not bus and Engine.get_main_loop() is SceneTree:
-		var r = (Engine.get_main_loop() as SceneTree).root
-		if r and r.has_node("SignalBus"):
-			bus = r.get_node("SignalBus")
+	var tree = Engine.get_main_loop() as SceneTree
+	var bus = tree.root.get_node_or_null("SignalBus") if tree else null
 	if bus and bus.has_signal(sig_name):
 		bus.callv("emit_signal", [sig_name] + args)
 
-
-## 递归收集实现了 ExportSaveData 的节点
 static func _collect_save_data_recursive(node: Node, root: Node, out_dict: Dictionary) -> void:
-	if not is_instance_valid(node):
+	if not is_instance_valid(node) or node.is_queued_for_deletion():
 		return
 	if node.has_method("ExportSaveData"):
-		var rel_path = String(root.get_path_to(node))
 		var data = node.call("ExportSaveData")
 		if data is Dictionary:
-			out_dict[rel_path] = data
-			
+			out_dict[String(root.get_path_to(node))] = data
 	for child in node.get_children():
 		_collect_save_data_recursive(child, root, out_dict)
 
-## 递归根据相对路径查找并调用 LoadSaveData
+## 按相对路径对root还原in_dict，保留既有测试入口；node为遍历起点。
 static func _apply_save_data_recursive(node: Node, root: Node, in_dict: Dictionary) -> void:
 	if not is_instance_valid(node):
 		return
 	var rel_path = String(root.get_path_to(node))
-	if in_dict.has(rel_path) and node.has_method("LoadSaveData"):
-		var data = in_dict[rel_path]
-		if data is Dictionary:
-			node.call("LoadSaveData", data)
-			
+	if in_dict.get(rel_path) is Dictionary and node.has_method("LoadSaveData"):
+		node.call("LoadSaveData", in_dict[rel_path])
 	for child in node.get_children():
 		_apply_save_data_recursive(child, root, in_dict)
