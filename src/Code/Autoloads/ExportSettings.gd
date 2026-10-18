@@ -740,6 +740,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
+## 首次按键后主菜单界面的淡入时长，单位为秒。
+@export_range(0.0, 3.0, 0.05) var start_menu_ui_fade_duration: float = 0.8
 
 @export_group("New Game Intro", "new_game_intro_")
 ## 仅新开存档播放的黑幕文字；换行对应屏幕上的两行。

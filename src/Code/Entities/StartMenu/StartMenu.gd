@@ -31,6 +31,8 @@ const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 
 var _setting_instance: SettingUI = null
 var _starting_new_game := false
+var _awaiting_menu_input := true
+var _revealing_menu := false
 
 func _ready() -> void:
 	saves_modal.theme = SettingsSkin.CreateTheme()
@@ -51,6 +53,41 @@ func _ready() -> void:
 	_intro_text.add_theme_color_override("font_color", ExportSettings.new_game_intro_text_color)
 	get_viewport().size_changed.connect(_resize_intro_text)
 	_resize_intro_text()
+	_sync_setting_shortcut()
+
+func _input(event: InputEvent) -> void:
+	if not _awaiting_menu_input and not _revealing_menu:
+		return
+	get_viewport().set_input_as_handled()
+	if _revealing_menu:
+		return
+	var pressed := false
+	if event is InputEventKey:
+		pressed = event.pressed and not event.echo
+	elif event is InputEventMouseButton:
+		pressed = event.pressed
+	elif event is InputEventJoypadButton:
+		pressed = event.pressed
+	elif event is InputEventScreenTouch:
+		pressed = event.pressed
+	if pressed:
+		_reveal_menu()
+
+func _reveal_menu() -> void:
+	_awaiting_menu_input = false
+	_revealing_menu = true
+	$BackgroundLayers/Sky.hide()
+	$BackgroundLayers/CleanBackground.show()
+	$MainUI.modulate.a = 0.0
+	$SettingsGear.modulate.a = 0.0
+	$MainUI.show()
+	$SettingsGear.show()
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property($MainUI, "modulate:a", 1.0, ExportSettings.start_menu_ui_fade_duration)
+	tween.tween_property($SettingsGear, "modulate:a", 1.0, ExportSettings.start_menu_ui_fade_duration)
+	await tween.finished
+	_revealing_menu = false
+	_sync_setting_shortcut()
 
 func _resize_intro_text() -> void:
 	var viewport_size := get_viewport_rect().size
@@ -58,7 +95,7 @@ func _resize_intro_text() -> void:
 	_intro_text.add_theme_font_size_override("font_size", maxi(1, roundi(ExportSettings.new_game_intro_font_size * text_scale)))
 
 func _sync_setting_shortcut() -> void:
-	_setting_instance.set_process_input(not _starting_new_game and not saves_modal.visible and not credits_modal.visible)
+	_setting_instance.set_process_input(not _awaiting_menu_input and not _revealing_menu and not _starting_new_game and not saves_modal.visible and not credits_modal.visible)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):

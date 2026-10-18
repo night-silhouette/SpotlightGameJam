@@ -297,6 +297,12 @@ show_path_preview = false
 requires_activation = true
 trigger_button = NodePath("../../button/1")
 
+[node name="VisualRect" parent="collisionlayer/MovePl/1" index="1"]
+visible = false
+
+[node name="TopHighlight" parent="collisionlayer/MovePl/1" index="2"]
+visible = false
+
 [node name="SwingVisual" parent="collisionlayer/MovePl/1" unique_id=768254958 instance=ExtResource("8_swing")]
 
 [node name="MovingPlatform2" parent="collisionlayer/MovePl" unique_id=55806743 instance=ExtResource("3_2lsnt")]

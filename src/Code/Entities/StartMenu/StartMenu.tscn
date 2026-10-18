@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://d0dmb1icodlat" path="res://Code/Entities/StartMenu/StartMenu.gd" id="1_menu"]
 [ext_resource type="Texture2D" path="res://Art/New/start/start.jpg" id="2_bg"]
+[ext_resource type="Texture2D" path="res://Art/New/start/start_clean.JPG" id="3_bg_clean"]
 [ext_resource type="Texture2D" uid="uid://c38orbh8ydgwl" path="res://Art/New/ui/main_title.png" id="7_menu_title"]
 [ext_resource type="Texture2D" uid="uid://dahu7qqvllbem" path="res://Art/New/ui/main_button_start.png" id="8_menu_start"]
 [ext_resource type="Texture2D" uid="uid://cm3oic0c6vqiy" path="res://Art/New/ui/main_button_credits.png" id="9_menu_credits"]
@@ -65,7 +66,21 @@ expand_mode = 1
 stretch_mode = 6
 metadata/_edit_lock_ = true
 
+[node name="CleanBackground" type="TextureRect" parent="BackgroundLayers"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_bg_clean")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="MainUI" type="Control" parent="." unique_id=1001009]
+visible = false
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -191,6 +206,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_menu_button")
 text = "退出游戏"
 
 [node name="SettingsGear" type="TextureRect" parent="." unique_id=63316014]
+visible = false
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
