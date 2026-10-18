@@ -515,7 +515,6 @@ material = SubResource("ShaderMaterial_hehhy")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
 position = Vector2(5395, -62)
-scale = Vector2(0.7676052, -0.7676052)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
 position = Vector2(4164.031, -1232.1624)
@@ -565,7 +564,7 @@ texture = ExtResource("27_sun_crown")
 position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
-position = Vector2(-19118, -1215)
+position = Vector2(-19152, -1263)
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
