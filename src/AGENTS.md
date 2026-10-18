@@ -99,7 +99,7 @@ Code/
 | --- | --- | --- |
 | 玩家初始化与节点依赖 | `P/Player.gd:4-36,197-346`；`P/Player.tscn:1464-1696` | `_ready` 同步参数、音效、计时器、状态机和信号；固定路径引用场景内控制器、HUD、粒子与音频节点。状态节点中两个 `fall` 重名，后登记项覆盖前项。 |
 | 人物动画法线 | `P/Player.tscn:11-12,15,23-29,31-34,36`；`P/NormalMaps/*.tres:1-8` | 15个 Texture2D 外部资源改引同名 CanvasTexture，保留资源 id、移除原图 uid，动画轨道及节点引用不变；CanvasTexture 将原图与同尺寸 `*_normal.png` 配对。2026-10-16 使用 Godot 4.7.2 在 TEMP 隔离小项目导入30张图片，15/15 CanvasTexture 加载及原图/法线/资源尺寸一致检查通过，退出码0；未启动正式 World，未验证实际光照渲染。 |
-| 移动输入与冲刺冷却 | `P/PlayerInputControl.gd:13-72` | `InterruptDash`；轮询移动/跳跃/冲刺，冲刺复用要求冷却及落地；下+跳在此仅抑制跳跃，平台穿透由独立组件实现。 |
+| 移动输入与冲刺冷却 | `P/PlayerInputControl.gd:15-92`；`P/States/JumpState.gd:20-47`；`A/ExportSettings.gd:192-193` | `InterruptDash`、`ConsumeGroundJump`；轮询移动/跳跃/冲刺，冲刺复用要求冷却及落地；`player_coyote_time` 默认0.12秒，走出边缘后宽限内优先普通跳，沿用普通速度/音效、不扣二段次数或播放二段环，实际起跳即消耗宽限。主动下穿、上升及特殊运动清除宽限；下+跳抑制跳跃，平台穿透由独立组件实现。2026-10-18 Godot 4.7.2 TEMP 隔离真实脚本及平台物理测试128项通过、退出0；未启动正式World或写原存档，完整手感待试玩。 |
 | 永久能力与遗物 | `P/Player.gd:348-414` | `SetAbilityEnabled`、遗物事件、调试飞行；永久解锁与临时可用次数分开，禁钩索主动释放，死亡清未献祭遗物。 |
 | 生命、受伤、死亡与重生 | `P/Player.gd:69-89,416-429,860-956`；`P/States/DiedState.gd:1-35` | `now_HP`、`ApplyDamage`、`Heal`、`Respawn`；归零转 died，广播死亡并延迟重生；重生恢复血量、能力次数与 idle。死亡状态未显式停输入控制器。 |
 | 主运动与水中运动 | `P/Player.gd:504-591,958-985` | `_physics_process` 处理飞行/重力/游泳/惯性/受伤阻尼；`PlayerBeforeMotion` 后调用 `move_and_slide`。水区采用进入计数，最后一次离开才结束水中状态。 |
@@ -110,7 +110,7 @@ Code/
 | 跳跃、攀爬、冲刺与受伤状态 | `P/States/JumpState.gd:1-86`；`ClimbState.gd:1-55`；`DashState.gd:1-29`；`HurtState.gd:1-32`；`RopeState.gd:1-30`（后四者同属 `P/States/`） | 地面/二段/蹬墙跳，攀爬滑落与宽限，定向冲刺，受伤 generation 防旧回调；RopeState 当帧推进动画。Idle/Run/Fall/Turn 状态也在同目录，修改切换规则需检查相关状态。 |
 | 钩索发射与输入 | `P/RopeController.gd:81-201,242-342` | `ShootRope`、`TriggerPull`、`TriggerSwing`、`ReleaseRope`；检查生命/解锁/输入，发射即扣血、落空不退款；先广播阶段更新动作与发射点。返回成功表示发射而非命中。 |
 | 钩索命中、拉拽与摆动 | `P/RopeController.gd:344-419,440-633`；`P/GrappleVisual.gd:1-39` | FLYING 命中时，若飞行期间已松手或当前未按住则直接 PULLING，否则 LATCHED 再转 PULLING/SWINGING；逐段射线、移动挂点、长度约束和脱钩惯性；摆动路径另有 `move_and_slide`，不能忽略主玩家运动循环。视觉单独读取绳段数据。 |
-| 水符文与旧符文 UI | `P/WaterRuneController.gd:1-36`；`P/playerUi/RuneUi/RuneUI.gd:1-47` | `_unhandled_input` 在右键按下时遍历 water_flow 并检查点击命中；`TryActivateTargetArea` 对传入的有效区域调用 `ToggleRuneFluid`，再发 `WaterRuneActivated`；当前无冷却/距离检查。旧 RuneUI 的 E 键及冷却显示不是当前行为，正式 HUD 未挂载它。 |
+| 水符文与旧符文 UI | `P/WaterRuneController.gd:1-36`；`P/playerUi/RuneUi/RuneUI.gd:1-47` | `_unhandled_input` 在 `interact` 映射按下时遍历 water_flow 并检查鼠标指向命中，随设置改键生效；`TryActivateTargetArea` 对传入的有效区域调用 `ToggleRuneFluid`，再发 `WaterRuneActivated`；当前无冷却/距离检查。旧 RuneUI 的 E 键及冷却显示不是当前行为，正式 HUD 未挂载它。 |
 | HUD 与触屏动作 | `P/playerUi/HpUi/PlayerUI.gd:39-190`；`C/TouchActionButton.gd:11-111`；`P/playerUi/HpUi/PlayerUI.tscn:191-243` | 六档血量/数字、能力请求与回显、设置入口；触屏用 `Input.action_press/release`，支持拖出/回入，隐藏时释放输入。布局来自移动端设置。 |
 | 掉血按钮与伤害假人 | `P/playerUi/StartLoseHpButton/StartLoseHpButton.gd:1-19`；`E/Dummy/TestDummy.gd:1-37` | 按钮发 `StartPlayerHpDrain`，未挂在当前 HUD；假人区域直接调用玩家 `ApplyDamage`，未走总线。两者仍有本地参数。 |
 
@@ -120,10 +120,11 @@ Code/
 
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
-| 包装器与相机装配 | `PlayerWithCamera.gd:5-164`；`PlayerWithCamera.tscn:3-56` | Player、PhantomCameraHost、基础镜头、双 Shot；`_enter_tree` 配镜头，父 ready 再同步玩家参数，会覆盖玩家已读取的 ExportSettings 值。 |
+| 包装器与相机装配 | `PlayerWithCamera.gd:5-164`；`PlayerWithCamera.tscn:3-59` | Player、PhantomCameraHost、基础镜头、双 Shot、CameraGateFade；`_enter_tree` 配镜头，父 ready 再同步玩家参数，会覆盖玩家已读取的 ExportSettings 值。 |
 | 模式请求、限位与切镜 | `PlayerWithCamera.gd:182-487` | 六模式和旧 `CameraShotRequested` 兼容；按玩家过滤，双 Shot 交替；ritual/fixed 要有效 anchor。`_process` 每帧重算门限位，`_gate_overlaps_view` 按真实 Camera2D 中心/zoom 计算视野，与门有效碰撞形状的世界范围只比较正交轴（左右门比较 y，上下门比较 x）；不重叠时跳过稳定及过渡限位但保留登记，重新重叠可恢复，禁用形状不参与。门限位仍与原边界合并，重生复位，失败/被抢占会清理并解锁。 |
 | CG、字幕与输入锁 | `PlayerWithCamera.gd:494-526`；`CameraPresentation.gd:1-64`；`CameraNarration.gd:1-50` | ritual 近景转远景，generation 防旧回调，最终到位发 `CameraShotReady`；只禁玩家子树处理，不暂停全世界；文字横/竖逐字显示，不解析 BBCode。 |
 | 镜头门与固定镜头区 | `IC/CameraGate/CameraGate.gd:14-86`；`IC/CameraFocusArea/CameraFocusArea.gd:1-26` | 门发 `CameraGateChanged` 或 `CameraGateSideChanged/Removed`；FocusArea 进入发 `CameraFixedRequested`、退出发 `CameraNormalRequested`。门存档仅一次性 unlocked。 |
+| 镜头门渐变黑幕 | `E/PlayerWithCamera/CameraGateFade.gd:1-70`；同目录 `CameraGateFade.tscn:1-16`；`E/PlayerWithCamera/PlayerWithCamera.tscn:9,55`；`A/ExportSettings.gd:549-561` | 独立 CanvasLayer 129 全屏透明黑色 ColorRect，忽略鼠标，按同级 Player 过滤门事件；非一次性仅 reset=false 播放，一次性先登记 active=true 再收到 false 后延迟复核门仍在树中且未排队删除，避免初始化和移除误触发。默认0.12秒淡入、保持至 camera_gate_transition_duration、0.25秒淡出，最大不透明度1，可禁用；重入杀旧 Tween 并从当前透明度续播，SaveSlotLoaded/PlayerRespawned 清除遮罩及待播放回调。不改原镜头运动、不锁输入、不存档。2026-10-18 Godot 4.7.2 TEMP 最小项目隔离运行退出0，22项断言通过，覆盖真实 CameraGate 登记/进入/退出树、目标过滤、reset/初始false忽略、淡入/保持/淡出、重入、读档/重生清理、开关及零时长；未启动正式World、未写原存档及原 .godot，完整视觉待人工验收。 |
 | 第二关导演与井遮挡 | `L2/Level2CameraDirector.gd:19-119`；`L2/Level2ShaftOcclusion.gd:1-39`；`L2/Level2PlayerWithCamera.gd:1-90` | 按地图局部坐标选区、配置 bounds/follow_target，让位于慢降/回落；遮挡只绘制、不增加碰撞。专用包装器不覆盖玩家物理参数，`SnapToPlayer` 用于出生/复活。 |
 
 ### 10.5 关卡流程与交互机关
@@ -131,7 +132,7 @@ Code/
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 通用交互、描述与输入锁 | `IC/InteractableComponent/InteractableComponent.gd:61-214` | `Interact` 检查启用/距离/防重入，发 `ComponentInteracted` 和描述/独白事件；距离按矩形最近边计算，点击另检查命中。对话请求走 `DialogBox`，锁输入而非物理。 |
-| 帐篷与圣杯 | `IC/Tent/Tent.gd:24-60,79-104`；`IC/MiniChaliceStation/MiniChaliceStation.gd:35-89,144-189` | 帐篷 `ActivateTent→TentActivated→Player.SetRespawnPosition`，自身不 AutoSave；读档激活帐篷会重发事件；已移除“重生点已设置”文字节点及显示逻辑，保留交互圆点和原激活光照。圣杯按最大HP比例 Heal，发 `ChaliceStationUsed`，保存可用性/冷却。 |
+| 帐篷与圣杯 | `IC/Tent/Tent.gd:24-60,79-104`；`IC/MiniChaliceStation/MiniChaliceStation.gd:35-89,132-200` | 帐篷 `ActivateTent→TentActivated→Player.SetRespawnPosition`，自身不 AutoSave；读档激活帐篷会重发事件；已移除“重生点已设置”文字节点及显示逻辑，保留交互圆点和原激活光照。圣杯按最大HP比例 Heal，发 `ChaliceStationUsed`，保存可用性/冷却；靠近判定按玩家到 Sprite2D 图像边缘的世界距离（`A/ExportSettings.gd:455-456`，默认85），不再要求进入旧28×36 Area；鼠标和触屏均按图像矩形命中。Godot 4.7.2 TEMP 回归8项通过：旧矩形外图像点击、回血、充能拒绝、图像外拒绝、远距拒绝及恢复后再次饮用；未启动正式World或写存档。 |
 | 湖泊治疗、献祭与结局 | `IC/Lake/Lake.gd:30-156` | 进入治疗并请求遗物状态；`PlayerRelicConsumeRequested` 献祭王冠/残卷解锁 double_jump/rope，枯骨触发 `LakeEndingTriggered`。出生/读档已在湖中只治疗，需离开再入才献祭。 |
 | 第一关王冠与按钮绑定 | `W/SunkenPalace/SunkenPalace.gd:10-70`；`W/SunkenPalace/SunkenPalace.tscn:92-97,179-182` | Crown 的 `ComponentInteracted` 隐藏物件并发 `lock1`；未献祭死亡可恢复。平台绑定按钮1，门绑定按钮2/3/4；不是第二关专用机关事件。 |
 | 第二关设备、钥匙与符文序列 | `IC/Level2Device/Level2Device.gd:8-54`；`L2/Level2Map.gd:187-238,311-341`；`L2/Rooms/Hub.tscn:43-100` | 鼠标与触屏靠近并点击可见 Sprite2D 图像（或无贴图设备的 Visual 多边形）发 `Level2InteractionRequested`；`_on_requested` 按 kind 处理 key/rune/lore/fountain/codex。符文顺序取配置、错误归零，weave 钥匙需解谜；喷泉提交三钥匙后独立启动水泵；左侧残卷从进入关卡起即可点击拾取，不依赖喷泉激活，首次拾取发 `lock2` 和原旁白/独白，重复点击不生效；刷新发 `Level2StateChanged`。 |
@@ -169,9 +170,15 @@ Code/
 
 ### 10.7 视觉装饰与现有测试入口
 
+水墙教学补充：`SunkenPalace.tscn:461-464` 在第一道水墙左侧地面本地 `(2490,350)` 预置 `WaterWallHint`，`hint_kind="water_wall"`，沿用240×200区域与底部字幕。`IC/TutorialHintArea/TutorialHintArea.gd:15-21` 按类型选择文案；`A/ExportSettings.gd:10-11` 的 `tutorial_water_wall_hint_text` 默认“左键交互水墙”。只新增提示，不改变水墙输入绑定；正式关卡位置待试玩确认。
+
+冲刺教学补充：`SunkenPalace.tscn:456-459` 在横木平台上方本地 `(1666.6,220)` 预置 `DashHint`，`hint_kind="dash"`；`IC/TutorialHintArea/TutorialHintArea.gd:3-19` 按类型选择跳跃/冲刺文案，经同一总线复用底部字幕，原跳跃区域默认类型不变。冲刺文案 `A/ExportSettings.gd:8-9` 为“Shift键冲刺”。本次平台内实际触发位置仍待试玩确认。
+
+跳跃教学字幕：`E/TutorialSubtitle/TutorialSubtitle.gd:10-49`、同名 `.tscn`，`IC/TutorialHintArea/TutorialHintArea.gd:5-16`、同名 `.tscn`；`A/ExportSettings.gd:3-26` 集中配置文案、纸色/墨色/暖金配色、字号、布局和0.7秒淡入/4秒停留/1秒淡出。`SignalBus.TutorialSubtitleRequested(text)` 驱动独立 CanvasLayer 底部居中字幕，不锁输入、不拦鼠标；空文字清除，重复请求取消旧Tween。`World.tscn` 预置字幕；`SunkenPalace.tscn` 的 `JumpHeightHint` 位于本地 `(1240,350)`，240×200区域在三格竖木板 x=1453.8 前（右上平台 x=1613.4..1719.8），只接受 player 组，每次离开再进入可重播，不存档。2026-10-18 Godot 4.7.2 headless 独立组件95项检查通过，覆盖物理进入/重入、渐变采样、替换/清空、1280×720/800×600/480×320缩放与不缩放布局；未启动正式World或写存档，完整关卡触发位置及画风仍待人工验收。定位木板时正式宫殿资源曾报告既有TileSet越界错误，未在此任务修改。
+
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
-| 普通交互提示圆点 | `C/InteractionDot.gd:1-86`；`A/ExportSettings.gd:804-810`；`IC/InteractableComponent/InteractableComponent.tscn:17-18`；`IC/Level2Device/Level2Device.tscn:71-72`；`IC/WaterFlowArea/WaterFlowArea.tscn:18-19`；`IC/MiniChaliceStation/MiniChaliceStation.tscn:76-77`；`IC/Tent/Tent.tscn:26-27` | 五个场景预置同一 Node2D（帐篷只继承脚本、不继承基础场景，故单独预置）；暖白半径15、动态居中的普通圆点，中心不透明度0.65，径向渐变至透明边缘，无额外光晕；本次柔边及尺寸位置调整未运行视觉验收。CanvasItemMaterial 使用 unshaded，不新增光源、光晕或粒子，不改既有照明。每帧依父实体可见/处理及 enable_interaction、is_available、available 隐藏或恢复，不依赖距离或首次交互标记；设备按点击美术选择规则，通用实体支持直接 Sprite2D 子节点（含任意名字的绘本/笔记美术），无图时用碰撞，水墙两态均按 area_size。每帧通过 source.to_global(bounds.get_center()) 计算所选图像/多边形/碰撞矩形的世界中心并定位，已移除顶部偏移参数；top_level 和单位世界变换保持圆点大小不受实体缩放/旋转影响，不扫描世界或UI。2026-10-18 Godot 4.7.2 TEMP 隔离导入及运行均退出0，75项断言通过：四类基础场景及帐篷加载、默认/隐藏/停用/恢复、可交互开关、重复交互、圣杯真实冷却计时恢复、设备 available/美术隐藏/旋转包围盒、绘本命名美术、世界大小恒定与移动跟随、全局开关。隔离环境未装原音频总线，有4条缺总线警告及退出时2个 ObjectDB 实例泄漏警告；未启动正式World、未写原存档，完整关卡视觉待人工验收。 |
+| 普通交互提示圆点 | `C/InteractionDot.gd:1-86`；`A/ExportSettings.gd:804-810`；`IC/InteractableComponent/InteractableComponent.tscn:17-18`；`IC/Level2Device/Level2Device.tscn:71-72`；`IC/MiniChaliceStation/MiniChaliceStation.tscn:76-77`；`IC/Tent/Tent.tscn:26-27` | 四个场景预置同一 Node2D（帐篷只继承脚本、不继承基础场景，故单独预置）；流水区域 WaterFlowArea 已移除提示节点，固态/流水态均不显示交互圆点；暖白半径15、动态居中的普通圆点，中心不透明度0.65，径向渐变至透明边缘，无额外光晕；本次柔边及尺寸位置调整未运行视觉验收。CanvasItemMaterial 使用 unshaded，不新增光源、光晕或粒子，不改既有照明。每帧依父实体可见/处理及 enable_interaction、is_available、available 隐藏或恢复，不依赖距离或首次交互标记；设备按点击美术选择规则，通用实体支持直接 Sprite2D 子节点（含任意名字的绘本/笔记美术），无图时用碰撞，水墙两态均按 area_size。每帧通过 source.to_global(bounds.get_center()) 计算所选图像/多边形/碰撞矩形的世界中心并定位，已移除顶部偏移参数；top_level 和单位世界变换保持圆点大小不受实体缩放/旋转影响，不扫描世界或UI。2026-10-18 Godot 4.7.2 TEMP 隔离导入及运行均退出0，75项断言通过：四类基础场景及帐篷加载、默认/隐藏/停用/恢复、可交互开关、重复交互、圣杯真实冷却计时恢复、设备 available/美术隐藏/旋转包围盒、绘本命名美术、世界大小恒定与移动跟随、全局开关。隔离环境未装原音频总线，有4条缺总线警告及退出时2个 ObjectDB 实例泄漏警告；未启动正式World、未写原存档，完整关卡视觉待人工验收。 |
 | 通用视差与测试相机 | `E/ParallaxScenery/ParallaxScenery.gd:6-48`；`E/ParallaxScenery/ParallaxTestCamera.gd:1-27` | 各层周期/速度/接缝，复制材质隔离实例；top_level 避免关卡位移叠加，scroll_offset 包含世界位置。预览场景在同目录，测试相机左右移动/R复位。 |
 | 第一关沙漠背景 | `W/SunkenPalace/DesertScenery.gd:1-79`；`W/SunkenPalace/DesertScenery.tscn:10-85`；`W/SunkenPalace/SunkenPalace.tscn:423-427,669-703`；`A/ExportSettings.gd:786-788` | SunkenPalace 的沙漠景物不属于 Camp 或全局背景。BaseSky、SunBokeh、MesaRocks、RockPillars、CactusFar 保留在 `DesertScenery` 子场景内作为 Parallax2D；DunesMid、DesertSilhouette 已直接放进 `SunkenPalace.tscn`，是普通 Node2D 子节点，编辑器中的 position/scale 会直接生效，控制器不改写其变换。两层前景不设 top_level，因此纵向随宫殿世界离开镜头；各自仍以原图+水平镜像衔接。控制器运行时读取当前 Camera2D 的真实画面中心并换算为 SunkenPalace 本地 X，统一控制五层背景和两层前景；默认起点 -515 对齐 World 中世界 X=2120 的 Camp/宫殿 CameraGate，因此 Camp 中整套隐藏、镜头进入宫殿后整套显示，并避免覆盖第三关。2026-10-18 Godot 4.7.2 headless 验证新场景结构可加载、七层统一显隐、直接摆放的前景变换保持不变、随世界纵向移动及宫殿整体平移保持构图；完整视觉仍待人工验收。 |
 | 第一关升降平台 T 字悬绳 | `W/SunkenPalace/LiftVisual.gd:1-28`；`W/SunkenPalace/LiftVisual.tscn:1-31`；`W/SunkenPalace/SunkenPalace.tscn:255-269`；`A/ExportSettings.gd:790-803` | 仅纵向平台 MovePl/1 使用；原始 swing 图只读，拆分 PNG 存于同目录 LiftPlatform.png / LiftRope.png。横绳固定左墙及右上台阶，竖绳下端跟随吊环，Line2D TILE 重复纹理而非拉伸；节点坐标换算保持整关平移和读档位置同步。2026-10-18 Godot 4.7.2 TEMP 隔离验证 PNG/场景加载、46/596/1146 绳长、往返、固定端点、整体平移及踏板对齐通过，正式关卡视觉待验收；不改平台碰撞或触发逻辑。 |

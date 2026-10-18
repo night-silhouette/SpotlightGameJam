@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.gd" id="1_script"]
+
+[node name="TutorialSubtitle" type="CanvasLayer"]
+layer = 20
+script = ExtResource("1_script")
+
+[node name="Root" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Subtitle" type="VBoxContainer" parent="Root"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Root/Subtitle"]
+layout_mode = 2
+mouse_filter = 2
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Decoration" type="CenterContainer" parent="Root/Subtitle"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Line" type="ColorRect" parent="Root/Subtitle/Decoration"]
+layout_mode = 2
+mouse_filter = 2

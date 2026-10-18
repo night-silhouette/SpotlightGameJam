@@ -21,7 +21,7 @@ func enter() -> void:
 	if not s_fall.is_connected(_fall):
 		s_fall.connect(_fall, CONNECT_ONE_SHOT)
 
-	if obj.is_on_floor():
+	if obj.is_on_floor() or gameInputControl.is_jump:
 		obj.velocity.y = -obj.jump_speed
 		if obj.has_method("PlayJumpFirstSFX"):
 			obj.PlayJumpFirstSFX()
@@ -43,6 +43,7 @@ func enter() -> void:
 		if obj.has_method("PlayJumpFirstSFX"):
 			obj.PlayJumpFirstSFX()
 
+	gameInputControl.ConsumeGroundJump()
 	if obj.is_back_has_rigid and not gameInputControl.is_double_jump:
 		var back_wall_dir = -obj.face_dir
 		if obj.wall_jump_lock_dir != back_wall_dir:

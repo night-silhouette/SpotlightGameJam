@@ -35,8 +35,7 @@ var _cached_player: Node2D = null
 func _ready() -> void:
 	add_to_group("touch_interactables")
 	_sync_from_export_settings()
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
+	_update_player_range()
 	if prompt_button:
 		prompt_button.button_mask = MOUSE_BUTTON_MASK_RIGHT
 		prompt_button.pressed.connect(_on_prompt_pressed)
@@ -44,6 +43,7 @@ func _ready() -> void:
 	_update_visual_state(is_available)
 
 func _process(_delta: float) -> void:
+	_update_player_range()
 	if not _player_in_range or not is_available:
 		return
 	var bound_event := KeybindManager.GetPrimaryEventForAction(ExportSettings.interactable_action)
@@ -66,20 +66,19 @@ func _setup_reset_timer() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed(ExportSettings.interactable_action):
 		return
+	_update_player_range()
 	if _player_in_range and is_available and is_instance_valid(_cached_player):
-		if event is InputEventMouseButton:
-			var shape := collision_shape.shape as RectangleShape2D
-			var point := collision_shape.to_local(get_global_mouse_position())
-			if not shape or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
-				return
+		if event is InputEventMouseButton and not _contains_world_point(get_global_mouse_position()):
+			return
 		_drink_chalice(_cached_player)
 		get_viewport().set_input_as_handled()
 
+## 尝试在世界坐标 world_pos 点击圣杯；interactor 为附近玩家，成功饮用返回 true。
 func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
+	_update_player_range()
 	if not _player_in_range or not is_available or interactor != _cached_player:
 		return false
-	var shape := collision_shape.shape as RectangleShape2D
-	if shape == null or not Rect2(-shape.size * 0.5, shape.size).has_point(collision_shape.to_local(world_pos)):
+	if not _contains_world_point(world_pos):
 		return false
 	_on_prompt_pressed()
 	return true
@@ -129,16 +128,27 @@ func _update_visual_state(available: bool) -> void:
 			if cooldown_label:
 				cooldown_label.visible = false
 
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("player") or body is CharacterBody2D:
-		_player_in_range = true
-		_cached_player = body
-		_update_visual_state(is_available)
+func _contains_world_point(world_pos: Vector2) -> bool:
+	var art := $Sprite2D as Sprite2D
+	return art.is_visible_in_tree() and art.get_rect().has_point(art.to_local(world_pos))
 
-func _on_body_exited(body: Node2D) -> void:
-	if body == _cached_player:
-		_player_in_range = false
-		_cached_player = null
+func _update_player_range() -> void:
+	var previous_in_range := _player_in_range
+	_cached_player = null
+	var art := $Sprite2D as Sprite2D
+	var rect := art.get_rect()
+	var nearest_distance := ExportSettings.chalice_interact_distance
+	for candidate in get_tree().get_nodes_in_group("player"):
+		if not candidate is Node2D:
+			continue
+		var local_point := art.to_local(candidate.global_position)
+		var closest := local_point.clamp(rect.position, rect.end)
+		var distance: float = candidate.global_position.distance_to(art.to_global(closest))
+		if distance <= nearest_distance:
+			nearest_distance = distance
+			_cached_player = candidate
+	_player_in_range = is_instance_valid(_cached_player)
+	if previous_in_range != _player_in_range:
 		_update_visual_state(is_available)
 
 func _drink_chalice(player: Node2D) -> void:

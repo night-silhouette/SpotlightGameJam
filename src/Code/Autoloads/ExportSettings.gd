@@ -1,5 +1,34 @@
 extends Node
 
+const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
+
+@export_group("Tutorial Subtitle", "tutorial_")
+## 跳跃教学区域每次重新进入时请求的文案。
+@export var tutorial_jump_hint_text: String = "长按跳跃以达到更高高度"
+## 横木平台冲刺教学区域每次重新进入时请求的文案。
+@export var tutorial_dash_hint_text: String = "Shift键冲刺"
+## 第一处水墙前的交互教学文案。
+@export var tutorial_water_wall_hint_text: String = "左键交互水墙"
+## 字幕淡入、全显停留和淡出的时长，单位秒。
+@export_range(0.0, 5.0, 0.05) var tutorial_fade_in_duration: float = 0.7
+@export_range(0.0, 20.0, 0.1) var tutorial_hold_duration: float = 4.0
+@export_range(0.0, 5.0, 0.05) var tutorial_fade_out_duration: float = 1.0
+## 文字颜色复用设置界面的暖纸色，默认不透明度为0.8。
+@export var tutorial_text_color: Color = Color(TUTORIAL_SKIN.PAPER, 0.8)
+## 墨色文字阴影及暖金装饰线颜色。
+@export var tutorial_shadow_color: Color = Color(TUTORIAL_SKIN.INK, 0.6)
+@export var tutorial_line_color: Color = Color(TUTORIAL_SKIN.ACCENT, 0.45)
+@export_range(12, 64, 1) var tutorial_font_size: int = 24
+@export var tutorial_shadow_offset: Vector2i = Vector2i(0, 2)
+## 字幕底边距及左右安全距离，单位为界面像素。
+@export_range(0.0, 240.0, 1.0) var tutorial_bottom_margin: float = 64.0
+@export_range(0.0, 120.0, 1.0) var tutorial_screen_margin: float = 24.0
+## 字幕最大宽度；小窗口按左右安全距离自动收窄并换行。
+@export_range(120.0, 1600.0, 1.0) var tutorial_max_width: float = 760.0
+@export_range(0, 40, 1) var tutorial_line_spacing: int = 10
+@export_range(0.0, 1.0, 0.01) var tutorial_line_width_ratio: float = 0.3
+@export_range(1.0, 4.0, 0.5) var tutorial_line_thickness: float = 1.0
+
 @export_group("Level 3 - Outward Scenery", "outward_scenery_")
 ## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
 @export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
@@ -162,6 +191,8 @@ extends Node
 @export_range(0.0, 11.0, 0.5) var player_step_horizontal_distance: float = 1.0
 ## 跳跃初速度
 @export var player_jump_speed: float = 380.0
+## 离开平台后仍可普通起跳的宽限时间（秒）；0 表示关闭，不消耗二段跳。
+@export_range(0.0, 0.3, 0.01) var player_coyote_time: float = 0.12
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)
 @export var player_jump_ability: float = 0.85
 ## 二段跳初速度
@@ -452,6 +483,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var chalice_reset_time: float = 10.0
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
+## 玩家距圣杯图像边缘的最大交互距离（世界像素），不要求身体进入点击区域。
+@export_range(0.0, 300.0, 1.0) var chalice_interact_distance: float = 85.0
 
 @export_group("Interactive - Tent", "tent_")
 ## 帐篷重生延迟时长 (秒，玩家死亡后多久在帐篷重生)
@@ -524,6 +557,14 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
 ## 非一次性镜头门允许画面移动一个视口宽/高所需的秒数。
 @export_range(0.05, 5.0, 0.05) var camera_gate_transition_duration: float = 0.4
+## 镜头门真实切换时是否播放全屏渐变黑幕，不改变镜头运动或玩家输入。
+@export var camera_gate_fade_enabled: bool = true
+## 镜头门黑幕的最大不透明度，0 为全透明，1 为全黑。
+@export_range(0.0, 1.0, 0.01) var camera_gate_fade_opacity: float = 1.0
+## 镜头门黑幕淡入秒数；淡入后保持至门过渡时长，再淡出。
+@export_range(0.0, 5.0, 0.01) var camera_gate_fade_in: float = 0.12
+## 镜头门黑幕淡出秒数。
+@export_range(0.0, 5.0, 0.01) var camera_gate_fade_out: float = 0.25
 
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
