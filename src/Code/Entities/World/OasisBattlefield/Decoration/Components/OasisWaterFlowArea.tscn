@@ -1,9 +1,30 @@
 [gd_scene format=3 uid="uid://cff62entx013e"]
 
 [ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="1"]
+[ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="2_vy51q"]
 [ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="3_vy51q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iipxi"]
+resource_local_to_scene = true
+shader = ExtResource("2_vy51q")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
 [node name="OasisWaterFlowArea" unique_id=854148023 instance=ExtResource("1")]
 
+[node name="BeforeVisual" parent="." index="0"]
+top_level = true
+
+[node name="WaterCurtain" parent="." index="5"]
+material = SubResource("ShaderMaterial_iipxi")
+
 [node name="RuneSprite" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="0" unique_id=1245761883]
 texture = ExtResource("3_vy51q")
+
+[node name="BeforeSpriteVisualsTransform" parent="." index="7" unique_id=1195621893]
+update_rotation = false

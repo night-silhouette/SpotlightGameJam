@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://ddy27q8b8l3ox"]
 
-[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
 [ext_resource type="Script" uid="uid://w4rnm8c2tph3" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.gd" id="1_chalice"]
 [ext_resource type="Texture2D" uid="uid://ckm8crcqev1ug" path="res://Art/New/component/10_18_slices/10_18_01_stand.png" id="2_8u1x2"]
+[ext_resource type="Texture2D" uid="uid://qlbghk2rt53k" path="res://Art/New/component/mini/mini.png" id="4_jxiib"]
+[ext_resource type="Script" uid="uid://xchv8ecw3vrd" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chalice"]
 size = Vector2(28, 36)
@@ -68,12 +69,104 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_0iw7i"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(5357, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0154"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(4870, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ksv5o"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(4383, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6me4o"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(3896, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50265"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(3409, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jq00m"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(2922, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xcfiy"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(2435, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1mqw"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(1948, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_83hep"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(1461, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qkqng"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(974, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jl44a"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(487, 0, 487, 290)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tm4k8"]
+atlas = ExtResource("4_jxiib")
+region = Rect2(0, 0, 487, 290)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lvx6x"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0iw7i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j0154")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ksv5o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6me4o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50265")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jq00m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xcfiy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1mqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_83hep")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qkqng")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jl44a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tm4k8")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="MiniChaliceStation" type="Area2D" unique_id=1318143604 groups=["chalice", "interactive"]]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_chalice")
 
-[node name="InteractionDot" type="Node2D" parent="."]
+[node name="InteractionDot" type="Node2D" parent="." unique_id=1002068984]
 script = ExtResource("interaction_dot")
 
 [node name="ChaliceBase" type="ColorRect" parent="." unique_id=533725492]
@@ -175,6 +268,16 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=831813807]
+visible = false
 position = Vector2(-0.30973238, -15.986568)
 scale = Vector2(0.11782947, 0.11782947)
 texture = ExtResource("2_8u1x2")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=907740416]
+position = Vector2(-0.57468796, -15.446495)
+rotation = 1.5707964
+scale = Vector2(0.08714287, 0.08714287)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+frame_progress = 0.6254219
+flip_h = true
+flip_v = true

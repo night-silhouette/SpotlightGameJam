@@ -6,7 +6,7 @@
 [ext_resource type="TileSet" uid="uid://erbpx3namsju" path="res://Art/New/map1/map1.tres" id="4_map1"]
 [ext_resource type="PackedScene" uid="uid://kltw4unihbsh" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="6_qv0jn"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="6_wx588"]
+[ext_resource type="PackedScene" uid="uid://bgmsq6p2vupnu" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="6_wx588"]
 [ext_resource type="Texture2D" uid="uid://nrl4kscecxca" path="res://Art/New/component/lake/lake.png" id="8_wx588"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="10_na041"]
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
@@ -74,6 +74,7 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=791088076]
+visible = false
 offset_left = 14.0
 offset_top = -61.999992
 offset_right = 2114.0
@@ -117,6 +118,7 @@ tile_set = ExtResource("4_map1")
 metadata/_edit_lock_ = true
 
 [node name="OneWayDropPlatformComponent" parent="collision_layer" unique_id=308015232 instance=ExtResource("6_wx588")]
+visible = false
 position = Vector2(970, 1634)
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="collision_layer" unique_id=1739054656]
@@ -163,6 +165,8 @@ disable_movement_during_dialog = true
 show_enter_dialog = true
 enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_k8pln"), SubResource("Resource_a07x8")])
 enter_dialog_once = true
+
+[node name="visual_layer" type="Node2D" parent="." unique_id=598225606]
 
 [editable path="Lake"]
 [editable path="Chapter1"]

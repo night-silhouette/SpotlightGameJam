@@ -18,3 +18,16 @@ scale = Vector2(182.4564, -14.813491)
 visible = false
 
 [node name="ReturnPhase" parent="." unique_id=1083308710 instance=ExtResource("4_return_phase")]
+
+[node name="PhaseTransition" type="CanvasLayer" parent="."]
+visible = false
+layer = 130
+
+[node name="Black" type="ColorRect" parent="PhaseTransition"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+color = Color(0, 0, 0, 0)

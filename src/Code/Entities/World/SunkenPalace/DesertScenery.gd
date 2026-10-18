@@ -65,9 +65,11 @@ func _update_layer_visibility() -> void:
 	else:
 		var viewport_center := get_viewport_rect().size * 0.5
 		camera_world = get_viewport().get_canvas_transform().affine_inverse() * viewport_center
-	var camera_local_x := palace.to_local(camera_world).x
+	var camera_local := palace.to_local(camera_world)
 	var bounds: Vector2 = ExportSettings.sunken_scenery_camera_bounds
-	var in_palace := camera_local_x >= bounds.x and camera_local_x <= bounds.y
+	var in_x_bounds := camera_local.x >= bounds.x and camera_local.x <= bounds.y
+	var in_y_distance := absf(camera_local.y) <= ExportSettings.sunken_scenery_camera_y_distance
+	var in_palace := in_x_bounds and in_y_distance
 	for layer in _all_scenery_layers():
 		layer.visible = in_palace
 

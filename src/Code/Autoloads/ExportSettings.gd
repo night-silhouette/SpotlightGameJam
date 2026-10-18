@@ -753,6 +753,16 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 第三关水纹滚动速度，只控制装饰动画。
 @export_range(0.0, 5.0) var oasis_art_water_scroll_speed: float = 1.5
 
+@export_group("Oasis Phase Transition", "oasis_phase_transition_")
+## 拾取枯骨后从去程切至返程时是否播放全屏黑幕。
+@export var oasis_phase_transition_enabled: bool = true
+## 去程画面淡入至全黑的时长，单位秒。
+@export_range(0.0, 5.0, 0.05) var oasis_phase_transition_fade_in: float = 0.45
+## 已切换到返程后继续保持全黑的时长，单位秒。
+@export_range(0.0, 5.0, 0.05) var oasis_phase_transition_hold: float = 0.15
+## 返程画面从全黑淡出的时长，单位秒；淡出完成后开始追逐。
+@export_range(0.0, 5.0, 0.05) var oasis_phase_transition_fade_out: float = 0.45
+
 @export_group("Interactable Component", "interactable_")
 @export var interactable_action: StringName = &"interact"
 @export var interactable_description_lines: Array[String] = []
@@ -825,8 +835,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 100.0, 1.0) var room_camera_zone_exit_margin: float = 24.0
 
 @export_group("Sunken Palace - Scenery", "sunken_scenery_")
-## 沉没宫殿本地坐标的背景显示范围，避免第一关背景覆盖其他关卡。
+## 沉没宫殿本地 X 坐标的背景显示范围，避免第一关背景覆盖其他关卡。
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
+## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
+@export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。

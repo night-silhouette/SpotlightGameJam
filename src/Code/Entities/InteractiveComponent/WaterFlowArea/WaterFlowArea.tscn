@@ -15,6 +15,7 @@ script = ExtResource("1_water")
 
 [node name="BeforeVisual" type="TileMapLayer" parent="."]
 visible = false
+top_level = true
 collision_enabled = false
 navigation_enabled = false
 
@@ -56,7 +57,12 @@ offset_bottom = 50.0
 [node name="BeforeSpriteVisuals" type="Node2D" parent="." unique_id=424886505]
 top_level = true
 
-
 [node name="BeforeSpriteVisualsTransform" type="RemoteTransform2D" parent="." unique_id=1195621893]
 remote_path = NodePath("../BeforeSpriteVisuals")
+update_rotation = false
+update_scale = false
+
+[node name="BeforeVisualTransform" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../BeforeVisual")
+update_rotation = false
 update_scale = false

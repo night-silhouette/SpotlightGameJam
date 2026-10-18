@@ -58,7 +58,7 @@ animations = [{
 }],
 "loop": 2,
 "name": &"default",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [node name="OasisBattlefieldChaser" type="Node2D" unique_id=359283040 groups=["oasis_battlefield_chaser"]]
@@ -68,7 +68,6 @@ script = ExtResource("1_script")
 visible = false
 offset_left = -3000.0
 offset_top = -5000.0
-offset_right = 0.0
 offset_bottom = 5000.0
 color = Color(0.13725491, 0.12941177, 0.12941177, 1)
 
@@ -86,7 +85,7 @@ rotation = 1.5707964
 scale = Vector2(0.7612028, 0.7612028)
 sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
-frame_progress = 0.8482763
+frame_progress = 0.060472883
 
 [node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=2099503861]
 position = Vector2(140.63103, 392.78598)
@@ -94,7 +93,57 @@ rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
 sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
-frame_progress = 0.02038338
+frame_progress = 0.871556
+
+[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1032007072]
+position = Vector2(55.999996, -665.03687)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.7822959
+flip_h = true
+
+[node name="AnimatedSprite2D10" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=45699029]
+position = Vector2(55.999996, 663.56726)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.7116036
+flip_h = true
+
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1316026563]
+position = Vector2(103.11394, 787.7095)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.42962825
+
+[node name="AnimatedSprite2D11" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=894748125]
+position = Vector2(126.78667, 252.11426)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.27161717
+
+[node name="AnimatedSprite2D12" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=323952200]
+position = Vector2(134.67752, -227.25836)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.15039736
+
+[node name="AnimatedSprite2D13" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1825956639]
+position = Vector2(103.11392, -638.7899)
+rotation = 1.5707964
+scale = Vector2(-0.8370868, 0.7733525)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.22761738
 
 [node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1329412585]
 position = Vector2(101.97661, 120.24017)
@@ -102,7 +151,15 @@ rotation = 1.5707964
 scale = Vector2(-0.55012846, 0.50824267)
 sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
-frame_progress = 0.06305047
+frame_progress = 0.7434966
+
+[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=739585874]
+position = Vector2(55.99999, 576.00006)
+rotation = 1.5707964
+scale = Vector2(-0.55012846, 0.50824267)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.7631639
 
 [node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1880946854]
 position = Vector2(67.024185, -117.51436)
@@ -112,21 +169,29 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.9754087
 
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=640771443]
+position = Vector2(104.57167, -452.5537)
+rotation = 1.8325958
+scale = Vector2(-0.55012846, 0.50824267)
+sprite_frames = SubResource("SpriteFrames_lvx6x")
+autoplay = "default"
+frame_progress = 0.97211343
+
 [node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1933442660]
 position = Vector2(11.0242, -77.09236)
 rotation = 0.7853982
 scale = Vector2(-0.55012846, 0.50824267)
 sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
-frame_progress = 0.7039686
+frame_progress = 0.49953458
 flip_h = true
 
 [node name="ColorRect" type="ColorRect" parent="DirectionalChaseMover" unique_id=1168009893]
-offset_left = -361.53995
-offset_top = -584.0
-offset_right = -321.53995
-offset_bottom = -544.0
-scale = Vector2(10.022507, 29.97351)
+offset_left = -566.8805
+offset_top = -897.73413
+offset_right = -526.8805
+offset_bottom = -857.73413
+scale = Vector2(15.274931, 45.68152)
 color = Color(0.13725491, 0.12941177, 0.12941177, 1)
 
 [editable path="DirectionalChaseMover"]

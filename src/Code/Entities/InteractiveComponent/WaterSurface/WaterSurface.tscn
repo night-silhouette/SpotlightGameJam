@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://61k0qwat2og7"]
 
 [ext_resource type="Script" uid="uid://c3o12kqrc4qmp" path="res://Code/Entities/InteractiveComponent/WaterSurface/WaterSurface.gd" id="1_water_script"]
 [ext_resource type="Shader" uid="uid://ccluob1w5flsw" path="res://Code/Entities/InteractiveComponent/WaterSurface/water_scroll.gdshader" id="2_water_shader"]
@@ -7,15 +7,14 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_water"]
 resource_local_to_scene = true
 shader = ExtResource("2_water_shader")
-shader_parameter/offset_x = 0.0
+shader_parameter/offset_x = 0.004005834586465179
 
-[node name="WaterSurface" type="Node2D"]
+[node name="WaterSurface" type="Node2D" unique_id=887864214]
 script = ExtResource("1_water_script")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=137981898]
 material = SubResource("ShaderMaterial_water")
 offset_right = 665.0
 offset_bottom = 665.0
 texture = ExtResource("3_water_texture")
 stretch_mode = 1
-

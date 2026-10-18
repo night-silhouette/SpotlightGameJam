@@ -14,6 +14,8 @@ extends Node2D
 @onready var _bone_interactable: Node2D = $OutwardPhase/InteractableComponent
 @onready var _get_boat_area: Area2D = $OutwardPhase/get_boat
 @onready var _the_end_area: Area2D = $ReturnPhase/TheEnd
+@onready var _phase_transition: CanvasLayer = $PhaseTransition
+@onready var _phase_transition_black: ColorRect = $PhaseTransition/Black
 
 var _in_return_phase: bool = false
 var _boat_departure_triggered: bool = false
@@ -24,7 +26,12 @@ var _bone_offered: bool = false
 var _loaded_checkpoint: bool = false
 var _loaded_respawn_position: Vector2 = Vector2.ZERO
 var _reset_chase_on_respawn: bool = false
+var _reset_boat_on_respawn: bool = false
 var _phase_collision_states: Dictionary = {}
+var _phase_transition_running: bool = false
+var _phase_transition_tween: Tween
+var _transition_player: Node2D
+var _transition_player_process_mode: int = Node.PROCESS_MODE_INHERIT
 
 
 func _ready() -> void:
@@ -45,17 +52,63 @@ func _ready() -> void:
 	if not _the_end_area.body_entered.is_connected(_on_the_end_body_entered):
 		_the_end_area.body_entered.connect(_on_the_end_body_entered)
 	if start_in_return_phase:
-		SwitchToReturnPhase()
+		SwitchToReturnPhase(false)
 	else:
 		_set_phase_enabled(outward_phase, true)
 		_set_phase_enabled(return_phase, false)
 	_refresh_bone()
 
 
-## 切换到返程/追逐阶段，启用返程内容、关闭去程内容，并在追逐者可用时开始追逐。
-func SwitchToReturnPhase() -> void:
-	if _in_return_phase:
+## 切换到返程/追逐阶段；use_black_transition 为 true 时，先淡入全黑再替换阶段，淡出后开始追逐。
+func SwitchToReturnPhase(use_black_transition: bool = true) -> void:
+	if _in_return_phase or _phase_transition_running:
 		return
+	if not use_black_transition or not ExportSettings.oasis_phase_transition_enabled:
+		_activate_return_phase(true)
+		return
+
+	_phase_transition_running = true
+	var player := get_tree().get_first_node_in_group(&"player") as Node2D
+	_lock_transition_player(player)
+	_phase_transition.visible = true
+	_phase_transition_black.color.a = 0.0
+
+	_phase_transition_tween = create_tween()
+	_phase_transition_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	_phase_transition_tween.tween_property(
+		_phase_transition_black,
+		"color:a",
+		1.0,
+		maxf(0.0, ExportSettings.oasis_phase_transition_fade_in)
+	)
+	await _phase_transition_tween.finished
+	if not _phase_transition_running:
+		return
+	if not is_instance_valid(player) or float(player.get("now_HP")) <= 0.0 or not _bone_claimed:
+		_finish_phase_transition()
+		return
+
+	# 仅在全黑后替换阶段；追逐者保持重置，直到黑幕完全淡出。
+	_activate_return_phase(false)
+	_phase_transition_tween = create_tween()
+	_phase_transition_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	var hold_duration: float = maxf(0.0, ExportSettings.oasis_phase_transition_hold)
+	if hold_duration > 0.0:
+		_phase_transition_tween.tween_interval(hold_duration)
+	_phase_transition_tween.tween_property(
+		_phase_transition_black,
+		"color:a",
+		0.0,
+		maxf(0.0, ExportSettings.oasis_phase_transition_fade_out)
+	)
+	await _phase_transition_tween.finished
+	if not _phase_transition_running:
+		return
+	_start_chase()
+	_finish_phase_transition()
+
+
+func _activate_return_phase(start_chase: bool) -> void:
 	_in_return_phase = true
 	var player := get_tree().get_first_node_in_group(&"player")
 	if is_instance_valid(player) and player.has_method(&"SetRespawnPosition"):
@@ -67,9 +120,38 @@ func SwitchToReturnPhase() -> void:
 	if is_instance_valid(_chaser):
 		if _chaser.has_method(&"ResetChase"):
 			_chaser.call(&"ResetChase")
-		if _chaser.has_method(&"StartChase"):
-			_chaser.call(&"StartChase")
+		if start_chase:
+			_start_chase()
 	_chase_finished = false
+
+
+func _start_chase() -> void:
+	if is_instance_valid(_chaser) and _chaser.has_method(&"StartChase"):
+		_chaser.call(&"StartChase")
+
+
+func _lock_transition_player(player: Node2D) -> void:
+	if not is_instance_valid(player) or player.process_mode == Node.PROCESS_MODE_DISABLED:
+		return
+	_transition_player = player
+	_transition_player_process_mode = player.process_mode
+	player.process_mode = Node.PROCESS_MODE_DISABLED
+
+
+func _finish_phase_transition() -> void:
+	_phase_transition_running = false
+	_phase_transition_tween = null
+	_phase_transition_black.color.a = 0.0
+	_phase_transition.visible = false
+	if is_instance_valid(_transition_player):
+		_transition_player.process_mode = _transition_player_process_mode
+	_transition_player = null
+
+
+func _cancel_phase_transition() -> void:
+	if _phase_transition_tween != null:
+		_phase_transition_tween.kill()
+	_finish_phase_transition()
 
 
 ## 骨头收集完成后的关卡入口；对话结束后切换到返程/追逐阶段。
@@ -95,7 +177,9 @@ func OnBoneCollected() -> void:
 	_refresh_bone()
 	if SignalBus.has_signal(&"lock3"):
 		SignalBus.emit_signal(&"lock3")
-	SwitchToReturnPhase()
+	await SwitchToReturnPhase()
+	if not _in_return_phase:
+		return
 	SaveManager.AutoSave(get_tree())
 
 
@@ -113,6 +197,7 @@ func ExportSaveData() -> Dictionary:
 
 ## 从存档还原第三关状态；若仍持有骨头则恢复返程，否则在拾取点待交互。
 func LoadSaveData(data: Dictionary) -> void:
+	_cancel_phase_transition()
 	_bone_offered = bool(data.get("bone_offered", false))
 	_bone_claimed = _bone_offered or bool(data.get("bone_claimed", false))
 	_loaded_checkpoint = bool(data.get("checkpoint_reached", false))
@@ -129,11 +214,14 @@ func LoadSaveData(data: Dictionary) -> void:
 	_in_return_phase = false
 	_chase_activation_pending = false
 	_chase_finished = false
+	_reset_chase_on_respawn = false
+	_reset_boat_on_respawn = false
 	_set_phase_enabled(return_phase, false)
 	_set_phase_enabled(outward_phase, true)
 
 
 func _on_save_loaded(_slot: int) -> void:
+	_cancel_phase_transition()
 	var player := get_tree().get_first_node_in_group(&"player")
 	if not is_instance_valid(player):
 		return
@@ -146,7 +234,7 @@ func _on_save_loaded(_slot: int) -> void:
 			player.call(&"SetRespawnPosition", _loaded_respawn_position)
 		_loaded_checkpoint = false
 	if carrying and not _bone_offered:
-		SwitchToReturnPhase()
+		SwitchToReturnPhase(false)
 	elif _in_return_phase and not _bone_offered:
 		_in_return_phase = false
 		_set_phase_enabled(return_phase, false)
@@ -210,6 +298,9 @@ func _on_component_interacted(component: Node2D, interactor: Node2D) -> void:
 func _on_player_died(player: Node2D) -> void:
 	if player != get_tree().get_first_node_in_group(&"player"):
 		return
+	if _phase_transition_running:
+		_cancel_phase_transition()
+	_reset_boat_on_respawn = not _in_return_phase and _boat_departure_triggered
 	_reset_chase_on_respawn = _in_return_phase and not _chase_finished
 	# 必须在死亡信号这一帧立刻停止、关闭伤害并复位。之前仅在复活时
 	# ResetChase，会留下约一秒的移动窗口，Boss 可移动到复活点造成连续死亡。
@@ -234,6 +325,9 @@ func _refresh_bone() -> void:
 
 
 func _on_player_respawned(_respawn_position: Vector2) -> void:
+	if _reset_boat_on_respawn:
+		_reset_boat_on_respawn = false
+		_reset_outward_boat()
 	if not _reset_chase_on_respawn:
 		return
 	_reset_chase_on_respawn = false
@@ -249,7 +343,11 @@ func _on_player_respawned(_respawn_position: Vector2) -> void:
 	_set_phase_enabled(return_phase, false)
 	_set_phase_enabled(outward_phase, true)
 
-	if is_instance_valid(_boat) and _boat.has_method(&"ResetBoat"):
+	_reset_outward_boat()
+
+
+func _reset_outward_boat() -> void:
+	if is_instance_valid(_boat):
 		_boat.ResetBoat()
 	_boat_departure_triggered = false
 
