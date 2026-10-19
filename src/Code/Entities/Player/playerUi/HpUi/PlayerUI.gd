@@ -32,7 +32,6 @@ const HEALTH_FRAME_X = [25, 146, 258, 379, 503, 626]
 @onready var sun_key_icon: TextureRect = $Control/KeyIcons/Sun
 @onready var moon_key_icon: TextureRect = $Control/KeyIcons/Moon
 @onready var weave_key_icon: TextureRect = $Control/KeyIcons/Weave
-@onready var ending_overlay: ColorRect = $Control/EndingOverlay
 
 @onready var right_action_buttons: Control = $Control/RightActionButtons
 @onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
@@ -109,7 +108,6 @@ func _ready() -> void:
 		SignalBus.PlayerDebugFlightChanged.connect(_on_debug_flight_changed)
 		SignalBus.PlayerRelicsChanged.connect(_on_player_relics_changed)
 		SignalBus.Level2StateChanged.connect(_on_level2_state_changed)
-		SignalBus.LakeEndingTriggered.connect(_on_lake_ending_triggered)
 	
 	if ExportSettings:
 		_max_hp = ExportSettings.player_max_hp
@@ -164,9 +162,6 @@ func _on_level2_state_changed(level: Node2D) -> void:
 	sun_key_icon.visible = "sun" in carried and not "sun" in submitted
 	moon_key_icon.visible = "moon" in carried and not "moon" in submitted
 	weave_key_icon.visible = "weave" in carried and not "weave" in submitted
-
-func _on_lake_ending_triggered() -> void:
-	ending_overlay.visible = true
 
 func _on_setting_button_pressed() -> void:
 	if SignalBus:

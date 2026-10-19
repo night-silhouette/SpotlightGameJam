@@ -42,6 +42,10 @@ func _ready() -> void:
 	SettingsFrame.Mount(save_panel, btn_close_saves)
 	credits_modal.theme = SettingsSkin.CreateTheme()
 	SettingsSkin.ApplyToTree(credits_modal)
+	var thanks_detail: Label = $CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/ThanksSection/Sec3Detail
+	thanks_detail.text = "Spotlight Game Jam 2026"
+	if not ExportSettings.credits_early_playtesters.is_empty():
+		thanks_detail.text += "\n测试游玩早期版本：" + "、".join(ExportSettings.credits_early_playtesters)
 	var credits_panel: PanelContainer = $CreditsModal/PanelContainer
 	SettingsFrame.Mount(credits_panel, btn_close_credits)
 	_setup_signals()

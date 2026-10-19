@@ -72,6 +72,9 @@ func _switch_bgm(music: AudioStreamWAV, loop: bool) -> void:
 		add_child(next_player)
 		_bgm_tracks[next_player] = music
 	var stream := next_player.stream as AudioStreamWAV
+	if loop:
+		stream.loop_begin = 0
+		stream.loop_end = int(round(stream.get_length() * stream.mix_rate))
 	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD if loop else AudioStreamWAV.LOOP_DISABLED
 	_bgm_player = next_player
 	if not next_player.playing:

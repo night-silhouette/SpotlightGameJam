@@ -157,8 +157,11 @@ signal PlayerOfferingReleaseRequested(player: Node2D, source: Node)
 signal PlayerOfferingCancelled(player: Node2D, source: Node)
 ## 玩家真正死亡时触发；player 为死亡的角色，而非即死请求。
 signal PlayerDied(player: Node2D)
-## 刻痕枯骨投入湖泊、进入大结局时触发；无参数。
+## 刻痕枯骨完整献祭并登记永久完成时触发；无参数，不直接播放结局画面。
 signal LakeEndingTriggered
+
+## 指定渐显卡淡出隐藏并 Finished 后请求章节；channel 为场景装配的匹配通道。
+signal ChapterCardRequested(channel: StringName)
 
 #region 1. 玩家钩锁与移动事件
 

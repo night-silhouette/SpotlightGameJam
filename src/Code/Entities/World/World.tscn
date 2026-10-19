@@ -973,7 +973,14 @@ content = "《敌人的定义》
 这场战争有两种开端。一种发生在战争之前，由边界、生命、恐惧和那些不会被兑现的承诺构成。另一种发生在战争之后，由演说家、祭祀和历史学家共同撰写。我看到了，对面有我的朋友。我说，我们曾相依为命，长官说，他们注定会背叛。原来敌人可以是一个与你素不相识的人，也可以是那个被要求忘记的人。"
 display_duration = 12.0
 trigger_relic = &"bones"
-metadata/_editor_description_ = "第四章尾声；使用 GradualTextTrigger，位置与离场路径需在编辑器确认。"
+finished_chapter_channel = &"chapter5_after_enemy_definition"
+metadata/_editor_description_ = "第四章尾声；本卡淡出隐藏后的 Finished 请求第五章卡。"
+
+[node name="第五章_万物流转" parent="story" instance=ExtResource("10_mvgin")]
+act_text = "第五章："
+chapter_text = "万物流转"
+subtitle_text = "苍穹以无言送别每片云朵远去"
+request_channel = &"chapter5_after_enemy_definition"
 
 [node name="PropBookStackTwo" type="Sprite2D" parent="." unique_id=995955917]
 position = Vector2(-3462, 3762)
