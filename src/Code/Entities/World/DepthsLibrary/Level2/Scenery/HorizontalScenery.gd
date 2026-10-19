@@ -85,6 +85,11 @@ func _shaft_bounds(region_name: StringName) -> Vector4:
 	if region == null or not bool(region.get_meta("vertical_layout", false)):
 		return Vector4.ZERO
 	var rect := region.get_global_rect()
+	if region_name == &"LowerStairwell":
+		var overlap := clampf(float(_setting(&"level2_scenery_lower_entry_overlap")), 0.0, region.size.y)
+		var clip_top := region.get_global_transform() * Vector2(0.0, overlap)
+		rect.size.y = maxf(rect.end.y - clip_top.y, 0.0)
+		rect.position.y = clip_top.y
 	return Vector4(rect.position.x, rect.position.y, rect.end.x, rect.end.y)
 
 func _refresh() -> void:
@@ -119,6 +124,8 @@ func _refresh() -> void:
 	if not Engine.is_editor_hint():
 		player = get_tree().get_first_node_in_group("player") as Node2D
 	for material in _materials:
+		material.set_shader_parameter("background_contrast", float(_setting(&"level2_scenery_background_contrast")))
+		material.set_shader_parameter("background_brightness", float(_setting(&"level2_scenery_background_brightness")))
 		material.set_shader_parameter("world_bounds", Vector4(corner.x, corner.y, end.x, end.y))
 		material.set_shader_parameter("descent_bounds", descent)
 		material.set_shader_parameter("stairwell_bounds", stairwell)

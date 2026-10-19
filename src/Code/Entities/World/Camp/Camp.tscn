@@ -7,18 +7,28 @@
 [ext_resource type="PackedScene" uid="uid://kltw4unihbsh" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="6_qv0jn"]
 [ext_resource type="PackedScene" uid="uid://bgmsq6p2vupnu" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="6_wx588"]
+[ext_resource type="Shader" uid="uid://cgvndcurji3r6" path="res://Code/Entities/InteractiveComponent/Lake/OfferingDissolve.gdshader" id="7_v13fp"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="10_na041"]
 [ext_resource type="Texture2D" uid="uid://c1pt0dl15p118" path="res://Art/New/map0/well_back.png" id="12_a07x8"]
 [ext_resource type="Texture2D" uid="uid://bim1i3llsdill" path="res://Art/New/map0/back.PNG" id="13_a07x8"]
 [ext_resource type="Texture2D" uid="uid://dcej284deuq0a" path="res://Art/New/map0/well_fore(1).png" id="13_v13fp"]
 [ext_resource type="Texture2D" uid="uid://b8iqkq7jndigg" path="res://Code/Entities/World/Camp/残碑_右.png" id="SteleRight"]
-[ext_resource type="Script" path="res://Code/Entities/World/world_bgm.gd" id="WorldBgm"]
+[ext_resource type="Script" uid="uid://dumyuory5gub6" path="res://Code/Entities/World/world_bgm.gd" id="WorldBgm"]
 
 [sub_resource type="Resource" id="Resource_68lmy"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
 text = "这帐篷……是用无数片颜色各异的碎布料拼凑缝补的。有人在这里生活过？"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oslkj"]
+resource_local_to_scene = true
+size = Vector2(169.84523, 144.98253)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fdr8k"]
+resource_local_to_scene = true
+shader = ExtResource("7_v13fp")
+shader_parameter/progress = 0.0
 
 [sub_resource type="Resource" id="Line_1_1"]
 script = ExtResource("6_qv0jn")
@@ -125,9 +135,14 @@ tile_map_data = PackedByteArray("AAADABEACAAAAAQAAAAEABEACAABAAQAAAAFABEACAABAAQ
 tile_set = ExtResource("4_map1")
 
 [node name="Lake" parent="." unique_id=231864433 instance=ExtResource("4_bci5y")]
-z_index = 0
 position = Vector2(1289, 1593)
 scale = Vector2(1.6936214, 1.6936214)
+
+[node name="CollisionShape2D" parent="Lake" index="3" unique_id=1216154260]
+shape = SubResource("RectangleShape2D_oslkj")
+
+[node name="OfferingVisual" parent="Lake" index="5"]
+material = SubResource("ShaderMaterial_fdr8k")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1733413255]
 visible = false
@@ -190,7 +205,7 @@ z_index = -2
 position = Vector2(1100.3456, 2450.6436)
 texture = ExtResource("13_a07x8")
 
-[node name="WorldBgm" type="Node" parent="."]
+[node name="WorldBgm" type="Node" parent="." unique_id=1313303911]
 script = ExtResource("WorldBgm")
 
 [editable path="Lake"]

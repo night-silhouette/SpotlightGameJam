@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://Art/New/component/game1/2.PNG" id="1_atlas"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wolf"]
+atlas = ExtResource("1_atlas")
+region = Rect2(478, 342, 499, 1029)
+filter_clip = true
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_base"]
+size = Vector2(74, 59)
+
+[node name="WolfStatue" type="StaticBody2D"]
+collision_layer = 1
+collision_mask = 0
+editor_description = "狼雕像：从 game1/2.PNG 图集单独裁出狼与底座，不修改原图。原点在底部中心；整体移动/等比缩放根节点，图片和碰撞一起调整。"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-49.9, -205.8)
+scale = Vector2(0.2, 0.2)
+texture = SubResource("AtlasTexture_wolf")
+centered = false
+
+[node name="BaseCollision" type="CollisionShape2D" parent="."]
+position = Vector2(12.3, -29.5)
+shape = SubResource("RectangleShape2D_base")
+
+[node name="StatueCollision" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-4.50, -203.20, 4.50, -190.60, 9.50, -205.00, 14.70, -190.00, 20.10, -186.80, 21.90, -179.00, 30.70, -175.60, 30.70, -171.60, 16.90, -169.20, 21.10, -161.20, 25.10, -152.00, 30.90, -104.40, 28.10, -91.60, 21.30, -78.00, 23.10, -65.20, 29.30, -59.60, -5.90, -59.60, -6.10, -67.20, -10.30, -75.20, -7.10, -82.60, -13.70, -85.00, -18.50, -91.40, -17.90, -99.20, -31.70, -98.20, -44.70, -103.60, -49.10, -111.20, -35.90, -108.80, -24.50, -114.80, -19.90, -132.80, -8.90, -148.20, -3.50, -161.00, -4.50, -166.20, -9.70, -167.80, -2.90, -172.80, -9.90, -178.60, -2.30, -182.80)

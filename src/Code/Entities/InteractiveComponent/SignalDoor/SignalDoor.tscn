@@ -1,19 +1,18 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://chlvh0u1t0maf"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/SignalDoor/SignalDoor.gd" id="1_door"]
+[ext_resource type="Script" uid="uid://cdndfqlwo5kry" path="res://Code/Entities/InteractiveComponent/SignalDoor/SignalDoor.gd" id="1_door"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
 size = Vector2(32, 128)
 
-[node name="SignalDoor" type="AnimatableBody2D" groups=["signal_door"]]
-collision_layer = 1
+[node name="SignalDoor" type="AnimatableBody2D" unique_id=960675483 groups=["signal_door"]]
 collision_mask = 2
-sync_to_physics = true
 script = ExtResource("1_door")
 
-[node name="SolidCollision" type="CollisionShape2D" parent="."]
+[node name="SolidCollision" type="CollisionShape2D" parent="." unique_id=851997423]
 shape = SubResource("RectangleShape2D_door")
 
-[node name="Visual" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-16, -64, 16, -64, 16, 64, -16, 64)
+[node name="Visual" type="Polygon2D" parent="." unique_id=1307840080]
+visible = false
 color = Color(0.24, 0.34, 0.42, 1)
+polygon = PackedVector2Array(-16, -64, 16, -64, 16, 64, -16, 64)

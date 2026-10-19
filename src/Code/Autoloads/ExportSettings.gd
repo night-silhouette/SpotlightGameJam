@@ -156,6 +156,9 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。
 @export var level2_scenery_enabled: bool = true
+## 横向远中景的小幅收色；1 保留原图，前景柱子不受影响。
+@export_range(0.5, 1.0, 0.01) var level2_scenery_background_contrast: float = 0.85
+@export_range(0.5, 1.0, 0.01) var level2_scenery_background_brightness: float = 0.86
 ## 横向分层原画在世界中的显示高度；保持每张图片原始宽高比。
 @export var level2_scenery_artwork_height: float = 800.0
 ## 远景相对镜头的移动比例。
@@ -174,6 +177,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var level2_scenery_vertical_clear_radius: float = 32.0
 ## 折返井蓝色底图水平偏移（适配后的像素），不移动柱子或圆桌。
 @export var level2_scenery_lower_blue_offset_x: float = 6.0
+## 横向背景向折返井内覆盖的深度；64 像素对齐入口第一级台阶，仅改变裁切。
+@export_range(0.0, 180.0) var level2_scenery_lower_entry_overlap: float = 64.0
 ## 竖井柱子纵向循环的重叠淡化比例，避免原图首尾硬切。
 @export_range(0.01, 0.15) var level2_scenery_vertical_loop_blend: float = 0.06
 ## 下层竖井雕花柱相对原位置的最大视差位移（像素）；不循环，雕花保持在下部。
@@ -184,6 +189,20 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.0, 1.0) var level2_scenery_vertical_middle_speed: float = 0.35
 ## 竖井右侧阴影柱的纵向移动比例；大于 1 时比地形滚动更快。
 @export_range(1.0, 2.0) var level2_scenery_vertical_foreground_speed: float = 1.6
+
+@export_group("Level 2 - Readability", "level2_readability_")
+## 角色与可站立书本的柔和补光；离开第二关随环境光淡出。
+@export var level2_readability_enabled: bool = true
+@export var level2_readability_fill_color: Color = Color(0.72, 0.83, 1.0, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_readability_player_energy: float = 0.50
+@export_range(0.0, 1.0, 0.01) var level2_readability_book_energy: float = 0.42
+## 人物左上方的局部柔光，使用原法线显出耳朵、肩部和衣服的体积。
+@export_range(0.0, 1.0, 0.01) var level2_readability_rim_energy: float = 0.35
+@export var level2_readability_rim_offset: Vector2 = Vector2(-25.0, -35.0)
+@export_range(40.0, 240.0, 1.0) var level2_readability_rim_radius: float = 110.0
+## 仅在书本透明轮廓内提亮朝上的边缘，宽度为世界像素，不增加发光外圈。
+@export_range(0.0, 0.5, 0.01) var level2_readability_book_edge_strength: float = 0.38
+@export_range(0.0, 2.0, 0.1) var level2_readability_book_edge_width: float = 1.2
 
 @export_group("Level 2 - Camera", "level2_camera_")
 ## 窄屏时限制可见高度，避免露出上下相邻房间；不改项目全局分辨率。
@@ -601,6 +620,9 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_camera_box_fraction: Vector2 = Vector2(0.05, 0.25)
 
 @export_group("Camera Gate", "camera_gate_")
+## 设置了 scope_origin_path 的永久边界，仅在玩家处于所属关卡的此局部 Y 范围时启用。
+## 当前用于第三关 CameraGate5；覆盖绿洲路线及跳跃余量，排除地下第二关。
+@export var camera_gate_scope_y_range: Vector2 = Vector2(-1600.0, 2300.0)
 ## 镜头门边界沿禁止露出方向向内收缩的距离（世界像素）。
 @export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
 ## 非一次性镜头门允许画面移动一个视口宽/高所需的秒数。
@@ -613,6 +635,32 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 5.0, 0.01) var camera_gate_fade_in: float = 0.12
 ## 镜头门黑幕淡出秒数。
 @export_range(0.0, 5.0, 0.01) var camera_gate_fade_out: float = 0.25
+
+@export_group("Level Transition Visual", "level_transition_visual_")
+## 关卡接缝黑雾的颜色；该组件位于世界空间，不依赖摄像头或镜头门。
+@export var level_transition_visual_black_color: Color = Color(0.19, 0.13, 0.075, 1.0)
+## 关卡接缝黑雾中心的不透明度。
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_black_opacity: float = 0.72
+## 黑雾矩形边缘的柔化比例，越大过渡越宽。
+@export_range(0.01, 0.5, 0.01) var level_transition_visual_black_edge_softness: float = 0.22
+## 黑雾内部明暗扰动强度，只制造雾感，不采样或模糊游戏画面。
+@export_range(0.0, 0.5, 0.01) var level_transition_visual_black_fog_amount: float = 0.12
+## 黑雾纹理密度。
+@export_range(0.5, 16.0, 0.1) var level_transition_visual_black_fog_scale: float = 4.0
+## 黑雾流动速度；0 为静止。
+@export_range(0.0, 2.0, 0.01) var level_transition_visual_black_fog_speed: float = 0.08
+## 关卡出口白光的主色。
+@export var level_transition_visual_glow_color: Color = Color(1.0, 0.92, 0.72, 1.0)
+## 白光出口中心的最大不透明度。
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_glow_core_opacity: float = 1.0
+## 白光出口外围光晕的不透明度。
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_glow_halo_opacity: float = 0.72
+## 白光矩形边缘的柔化比例，越大过渡越宽。
+@export_range(0.01, 0.5, 0.01) var level_transition_visual_glow_edge_softness: float = 0.28
+## 白光呼吸幅度；0 为稳定常亮。
+@export_range(0.0, 0.5, 0.01) var level_transition_visual_glow_pulse_strength: float = 0.08
+## 白光呼吸速度；0 为静止。
+@export_range(0.0, 5.0, 0.05) var level_transition_visual_glow_pulse_speed: float = 0.7
 
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
@@ -841,6 +889,20 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Vanishing Blocker", "vanishing_blocker_")
 @export var vanishing_blocker_zone_group: StringName = &"VanishZone"
 @export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5
+## 区域触发的消失挡板向下沉入地形的世界坐标距离。
+@export_range(0.0, 2048.0, 1.0) var vanishing_blocker_sink_distance: float = 240.0
+## 信号消失挡板是否使用碎裂 shader；关闭时回退为普通透明淡出。
+@export var vanishing_blocker_shatter_enabled: bool = true
+## 碎块在目标 CanvasItem 本地坐标中的尺寸；TileMap 缩放会同步缩放视觉块大小。
+@export_range(16.0, 512.0, 1.0) var vanishing_blocker_shard_size: float = 180.0
+## 碎块横向散开的本地坐标距离。
+@export_range(0.0, 512.0, 1.0) var vanishing_blocker_scatter_distance: float = 90.0
+## 碎块下落的本地坐标距离。
+@export_range(0.0, 1024.0, 1.0) var vanishing_blocker_fall_distance: float = 240.0
+## 碎块裂缝亮边宽度，取值范围 0 到 0.25。
+@export_range(0.0, 0.25, 0.005) var vanishing_blocker_edge_width: float = 0.08
+## 碎裂过程中的裂缝亮边颜色与强度（Alpha）。
+@export var vanishing_blocker_edge_color: Color = Color(0.94, 0.72, 0.39, 1.0)
 
 @export_group("Oasis Boat", "oasis_boat_")
 ## 第三关七个停靠点的航线进度，按递增顺序配置，起点为 0、终点为 1。

@@ -62,10 +62,12 @@ func _initialize() -> void:
 	_materials.append(_blue_base_material)
 
 func _blue_offset() -> float:
+	return _scenery_setting(&"level2_scenery_lower_blue_offset_x")
+
+func _scenery_setting(property_name: StringName) -> float:
 	if not Engine.is_editor_hint():
-		return ExportSettings.level2_scenery_lower_blue_offset_x
+		return float(ExportSettings.get(property_name))
 	# Match the saved setting in editor previews, where autoloads do not run.
-	var property_name := &"level2_scenery_lower_blue_offset_x"
 	var state := SETTINGS_SCENE.get_state()
 	for index in range(state.get_node_property_count(0)):
 		if state.get_node_property_name(0, index) == property_name:
@@ -135,6 +137,11 @@ func _update_motion() -> void:
 func _update_materials() -> void:
 	var corner := global_position
 	var end := get_global_transform() * size
+	# Keep the authored fitting and parallax; only hand the entrance pixels
+	# back to the horizontal background, down to the first stair.
+	if name == &"LowerStairwell":
+		var overlap := clampf(_scenery_setting(&"level2_scenery_lower_entry_overlap"), 0.0, size.y)
+		corner = get_global_transform() * Vector2(0.0, overlap)
 	var player: Node2D = null
 	if not Engine.is_editor_hint():
 		player = get_tree().get_first_node_in_group("player") as Node2D

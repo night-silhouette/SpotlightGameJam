@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://coqapohckmmsd"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.gd" id="1_gate"]
+[ext_resource type="Script" uid="uid://cocupduy7hvim" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.gd" id="1_gate"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
 size = Vector2(64, 128)
 
-[node name="CameraGate" type="Area2D"]
+[node name="CameraGate" type="Area2D" unique_id=163722970]
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_gate")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2041954483]
 shape = SubResource("RectangleShape2D_gate")

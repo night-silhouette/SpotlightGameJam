@@ -1,35 +1,54 @@
 @tool
 extends Node2D
-## SunkenPalace 沙漠背景控制器：背景保留视差，直接放在宫殿场景中的前景按世界坐标显示。
+## SunkenPalace 沙漠景物控制器：同步视差背景偏移，并按宫殿镜头区域统一显隐现存图层。
 
 
 @onready var _coverage_bounds: Control = $CoverageBounds
-@onready var _parallax_layers: Array[Parallax2D] = [
-	$CoverageBounds/BaseSky,
-	$CoverageBounds/SunBokeh,
-	$CoverageBounds/MesaRocks,
-	$CoverageBounds/RockPillars,
-	$CoverageBounds/CactusFar,
+const LAYER_PATHS: Array[NodePath] = [
+	^"CoverageBounds/BaseSky",
+	^"CoverageBounds/SunBokeh",
+	^"CoverageBounds/MesaRocks",
+	^"CoverageBounds/RockPillars",
+	^"CoverageBounds/CactusFar",
+	^"DunesMid",
+	^"DesertSilhouette",
 ]
 
-var _foreground_layers: Array[CanvasItem] = []
+var _parallax_layers: Array[Parallax2D] = []
+var _scenery_layers: Array[CanvasItem] = []
+var _authored_visibility: Dictionary[int, bool] = {}
 
 
 func _ready() -> void:
-	_refresh_foreground_layers()
+	_refresh_layers()
 	_sync_layer_offsets()
 	_update_layer_visibility()
 
 
 func _process(_delta: float) -> void:
-	_refresh_foreground_layers()
+	_refresh_layers()
 	_sync_layer_offsets()
 	_update_layer_visibility()
 
 
+func _refresh_layers() -> void:
+	_parallax_layers.clear()
+	_scenery_layers.clear()
+	for layer_path in LAYER_PATHS:
+		var layer := get_node_or_null(layer_path) as CanvasItem
+		if layer == null:
+			continue
+		_scenery_layers.append(layer)
+		if layer is Parallax2D:
+			_parallax_layers.append(layer as Parallax2D)
+		var instance_id := layer.get_instance_id()
+		if Engine.is_editor_hint() or not _authored_visibility.has(instance_id):
+			_authored_visibility[instance_id] = layer.visible
+
+
 func _sync_layer_offsets() -> void:
 	# Parallax2D 需要 top_level 计算视差，因此显式把 SunkenPalace 的世界位置
-	# 合入偏移。前景是宫殿的普通 Node2D 子节点，不在这里改写其编辑器位置。
+	# 合入偏移。前景是本场景的普通 Node2D 子节点，不在这里改写其编辑器位置或可见性。
 	var palace_origin := Vector2.ZERO
 	if get_parent() is Node2D:
 		palace_origin = (get_parent() as Node2D).global_position
@@ -39,21 +58,9 @@ func _sync_layer_offsets() -> void:
 		layer.scroll_offset = authored_offset + palace_origin * layer.scroll_scale
 
 
-func _refresh_foreground_layers() -> void:
-	_foreground_layers.clear()
-	var palace := get_parent()
-	if palace == null:
-		return
-	for node_name in [&"DunesMid", &"DesertSilhouette"]:
-		var layer := palace.get_node_or_null(NodePath(node_name)) as CanvasItem
-		if layer != null:
-			_foreground_layers.append(layer)
-
-
 func _update_layer_visibility() -> void:
+	# 编辑器里不强改可见性，保留策划对根节点或单层 visible 的选择。
 	if Engine.is_editor_hint():
-		for layer in _all_scenery_layers():
-			layer.visible = true
 		return
 	var palace := get_parent() as Node2D
 	if palace == null:
@@ -70,12 +77,6 @@ func _update_layer_visibility() -> void:
 	var in_x_bounds := camera_local.x >= bounds.x and camera_local.x <= bounds.y
 	var in_y_distance := absf(camera_local.y) <= ExportSettings.sunken_scenery_camera_y_distance
 	var in_palace := in_x_bounds and in_y_distance
-	for layer in _all_scenery_layers():
-		layer.visible = in_palace
-
-
-func _all_scenery_layers() -> Array[CanvasItem]:
-	var result: Array[CanvasItem] = []
-	result.assign(_parallax_layers)
-	result.append_array(_foreground_layers)
-	return result
+	for layer in _scenery_layers:
+		var authored_visible: bool = _authored_visibility.get(layer.get_instance_id(), true)
+		layer.visible = authored_visible and in_palace
