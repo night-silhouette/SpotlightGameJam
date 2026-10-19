@@ -142,6 +142,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var level2_scenery_vertical_clear_radius: float = 32.0
 ## 折返井蓝色底图水平偏移（适配后的像素），不移动柱子或圆桌。
 @export var level2_scenery_lower_blue_offset_x: float = 6.0
+## 横向背景向折返井内覆盖的深度；64 像素对齐入口第一级台阶，仅改变裁切。
+@export_range(0.0, 180.0) var level2_scenery_lower_entry_overlap: float = 64.0
 ## 竖井柱子纵向循环的重叠淡化比例，避免原图首尾硬切。
 @export_range(0.01, 0.15) var level2_scenery_vertical_loop_blend: float = 0.06
 ## 下层竖井雕花柱相对原位置的最大视差位移（像素）；不循环，雕花保持在下部。

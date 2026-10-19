@@ -85,6 +85,11 @@ func _shaft_bounds(region_name: StringName) -> Vector4:
 	if region == null or not bool(region.get_meta("vertical_layout", false)):
 		return Vector4.ZERO
 	var rect := region.get_global_rect()
+	if region_name == &"LowerStairwell":
+		var overlap := clampf(float(_setting(&"level2_scenery_lower_entry_overlap")), 0.0, region.size.y)
+		var clip_top := region.get_global_transform() * Vector2(0.0, overlap)
+		rect.size.y = maxf(rect.end.y - clip_top.y, 0.0)
+		rect.position.y = clip_top.y
 	return Vector4(rect.position.x, rect.position.y, rect.end.x, rect.end.y)
 
 func _refresh() -> void:

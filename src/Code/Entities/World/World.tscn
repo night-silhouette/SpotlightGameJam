@@ -14,28 +14,28 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/ChapterTrigger.tscn" id="10_mvgin"]
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
-[ext_resource type="Texture2D" uid="uid://cr8v8th45p3ul" path="res://Art/New/component/extracted/stargazing_desk.svg" id="13_stargazing_desk"]
-[ext_resource type="Texture2D" uid="uid://bh5wg0taldg8l" path="res://Art/New/component/extracted/moon_phase_dial.svg" id="15_moon_phase_dial"]
-[ext_resource type="Texture2D" uid="uid://5jd43vy6horr" path="res://Art/New/component/extracted/torn_picture_book.svg" id="16_torn_picture_book"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/PictureBook.tscn" id="17_picture_book"]
 [ext_resource type="Texture2D" uid="uid://pjfw3kxc63bm" path="res://Art/New/component/game2/IMG_1496.PNG" id="18_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://b7m1livmw8npo" path="res://Art/New/component/extracted/proverb_stele.svg" id="18_proverb_stele"]
-[ext_resource type="Texture2D" uid="uid://bla1x5c0rw0ji" path="res://Art/New/component/extracted/scholars_notebook.svg" id="19_scholars_notebook"]
+[ext_resource type="Texture2D" uid="uid://c7tamaotdei3v" path="res://Art/New/component/game2/IMG_9862.PNG" id="18_vqyf3"]
+[ext_resource type="Texture2D" uid="uid://wxlchat6tecv" path="res://Art/New/component/game2/IMG_9854.PNG" id="20_hehhy"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
+[ext_resource type="Texture2D" uid="uid://daiwax240goed" path="res://Art/New/component/game2/IMG_9861.PNG" id="20_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://l7l1mk7tvqvi" path="res://Art/AI/pottery.svg" id="21_pottery"]
+[ext_resource type="Texture2D" uid="uid://db3isch3a43c7" path="res://Art/New/component/game2/IMG_9867.PNG" id="23_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://cq5dxd8fa1uon" path="res://Art/New/component/game1/tool.PNG" id="26_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://lgoxfr44l36l" path="res://Art/New/component/game1/mural.JPG" id="27_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
 [ext_resource type="Texture2D" uid="uid://dw8g0j7ceq8e2" path="res://Art/New/component/game1/IMG_1495.PNG" id="28_o2yww"]
 [ext_resource type="Texture2D" uid="uid://bhr7e4fieem42" path="res://Art/New/component/IMG_1456.PNG" id="29_l2oj5"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
-[ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="32_hehhy"]
-[ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
-[ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
-[ext_resource type="Texture2D" uid="uid://bdqe2o5arwlue" path="res://Art/New/component/extracted/prop_paper_manuscript.png" id="35_1og5t"]
 [ext_resource type="Texture2D" uid="uid://cfrgqi60o3h13" path="res://Art/New/component/game1/2.PNG" id="31_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
+[ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="32_hehhy"]
+[ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
+[ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
+[ext_resource type="Texture2D" uid="uid://ds3r00oipjgsn" path="res://Art/New/component/game2/IMG_9866.PNG" id="36_2flee"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -45,7 +45,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -97,7 +97,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -136,7 +136,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1og5t"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -152,50 +152,6 @@ script = ExtResource("2_mkscu")
 
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1og5t"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_15xio"]
 resource_local_to_scene = true
@@ -241,6 +197,17 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6xeld"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
 [sub_resource type="Resource" id="C3_2_20"]
 script = ExtResource("5_acpp2")
 text = "一顶日轮冠。嵌在蛇身雕塑的头顶，仍保留着精巧而庄严的形制，冠体金色，纹饰层层舒展。"
@@ -271,16 +238,6 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 [sub_resource type="Resource" id="Resource_0dlu5"]
 script = ExtResource("5_acpp2")
 text = "石桌上蒙着一层尘土。尘土之下，是几张繁复的星图。密密麻麻的星点与刻线，圆环层层套叠，还有绘制到一半，散落一旁。像是书写它们的人只是暂时离开了。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Resource_ciajo"]
-script = ExtResource("5_acpp2")
-text = "黄铜制成的单片放大镜。静静躺在桌边，已失去光泽，但很精巧。试了试感觉很趁手。"
-metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
-[sub_resource type="Resource" id="Resource_7posy"]
-script = ExtResource("5_acpp2")
-text = "黄铜制成的单片放大镜。静静躺在桌边，已失去光泽，但很精巧。试了试感觉很趁手。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_d0knf"]
@@ -322,7 +279,22 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_r37dm"]
 script = ExtResource("5_acpp2")
-text = "封面已经褪色，纸页皱皱巴巴，边角也有点卷曲，显然曾被一次又一次翻阅。"
+text = "往书架深处探了探，摸到一本厚重的笔记，封面已经褪色，纸页皱皱巴巴，边角也有点卷，显然曾被反复翻阅过。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_hehhy"]
+script = ExtResource("5_acpp2")
+text = "往书架深处探了探，摸到一本厚重的笔记，封面已经褪色，纸页皱皱巴巴，边角也有点卷，显然曾被反复翻阅过。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_urly8"]
+script = ExtResource("5_acpp2")
+text = "桌边静静躺着一柄黄铜单片放大镜，已失去了光泽，却很精巧。拿起来试了试，意外地趁手。"
+metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="Resource" id="Resource_vqyf3"]
+script = ExtResource("5_acpp2")
+text = "桌边静静躺着一柄黄铜单片放大镜，已失去了光泽，却很精巧。拿起来试了试，意外地趁手。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="C3_2_2"]
@@ -456,6 +428,21 @@ script = ExtResource("5_acpp2")
 dialog_type = "独白"
 text = "走吧，该离开这里了，把这片绿洲的故事……带回去。"
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yjgml"]
+size = Vector2(611.42773, 233.02002)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bufyr"]
+size = Vector2(389.9995, 116.007324)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8botp"]
+size = Vector2(85.75, 22.96875)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pixej"]
+size = Vector2(858.2285, 829.8208)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_k318m"]
+size = Vector2(143.94089, 192.96324)
+
 [node name="World" type="Node2D" unique_id=2146248688]
 
 [node name="OpeningFade" type="CanvasLayer" parent="." unique_id=2037180482]
@@ -486,19 +473,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_m5q0i")
+material = SubResource("ShaderMaterial_vqyf3")
 
 [node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
-material = SubResource("ShaderMaterial_o2yww")
+material = SubResource("ShaderMaterial_2flee")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_s2vhm")
+material = SubResource("ShaderMaterial_1og5t")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_s2vhm")
+material = SubResource("ShaderMaterial_1og5t")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_s2vhm")
+material = SubResource("ShaderMaterial_1og5t")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1701, 0)
@@ -544,50 +531,50 @@ scale = Vector2(0.51655513, 0.51655513)
 position = Vector2(2678, -361)
 metadata/_edit_lock_ = true
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="1"]
-position = Vector2(5310, -65)
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0"]
+position = Vector2(5390, -61.99997)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6"]
-material = SubResource("ShaderMaterial_1og5t")
-
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="7" unique_id=424886505]
-position = Vector2(5395, -62)
-scale = Vector2(0.7676052, -0.7676052)
-
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="1"]
-position = Vector2(4164.031, -1232.1624)
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
 material = SubResource("ShaderMaterial_15xio")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="7" unique_id=424886505]
-position = Vector2(4207.031, -1255.1624)
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
+position = Vector2(5390, -61.99997)
+scale = Vector2(0.7676052, -0.7676052)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="1"]
-position = Vector2(4310.6597, -2677)
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
+position = Vector2(4211, -1265)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
 material = SubResource("ShaderMaterial_u3ot4")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="7" unique_id=424886505]
-position = Vector2(4353.6597, -2700)
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
+position = Vector2(4211, -1265)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="1"]
-position = Vector2(3389, -3375.9998)
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0"]
+position = Vector2(4348, -2647)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
 material = SubResource("ShaderMaterial_m0d35")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
+position = Vector2(4348, -2647)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0"]
 position = Vector2(3432, -3398.9998)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="1"]
-position = Vector2(1675.5127, -2562.0002)
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
 material = SubResource("ShaderMaterial_pw4kg")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="7" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
+position = Vector2(3432, -3398.9998)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0"]
+position = Vector2(1718.5127, -2585.0002)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
+material = SubResource("ShaderMaterial_6xeld")
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
 
 [node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="4" unique_id=208978342]
@@ -600,6 +587,9 @@ texture = ExtResource("27_sun_crown")
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-118, 3250)
+
+[node name="Level2Map" parent="DepthsLibrary" index="0" unique_id=1757350464]
+position = Vector2(41, 11)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
 position = Vector2(-19152, -1263)
@@ -621,9 +611,9 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate4" parent="CameraNode" unique_id=256393181 instance=ExtResource("7_hfiwn")]
-position = Vector2(1264.9999, 3929)
-rotation = -1.5707964
-scale = Vector2(0.452, 100)
+position = Vector2(1151, 3927)
+rotation = -4.712389
+scale = Vector2(0.95576847, 51.16023)
 blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
@@ -705,7 +695,7 @@ subtitle_text = "绿洲从未竟的声声叹息中生长"
 [node name="c2" type="Node2D" parent="story" unique_id=420887994]
 
 [node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]
-position = Vector2(201, 625.00006)
+position = Vector2(191, 353.00003)
 scale = Vector2(1.8545073, 2.0664856)
 enable_interaction = false
 show_enter_dialog = true
@@ -713,7 +703,8 @@ enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_1p2nt"
 enter_dialog_once = true
 
 [node name="观星桌案" parent="story/c2" unique_id=1286710586 instance=ExtResource("12_terh4")]
-position = Vector2(-42, 638)
+visible = false
+position = Vector2(249.00006, 3677)
 scale = Vector2(1.4325283, 1.5979006)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_terh4"), SubResource("Resource_hrpuy")])
@@ -721,26 +712,12 @@ show_repeat_dialog = true
 repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_0dlu5")])
 
 [node name="观星桌案贴图" type="Sprite2D" parent="story/c2/观星桌案" unique_id=1213739031]
-position = Vector2(1.3961328, 0.6258278)
-scale = Vector2(0.7409028, 1)
-texture = ExtResource("13_stargazing_desk")
-
-[node name="放大镜" parent="story/c2" unique_id=1866626411 instance=ExtResource("12_terh4")]
-z_index = -1
-position = Vector2(49.000004, 680)
-rotation = -1.3497165
-scale = Vector2(0.49296683, 0.5264366)
-show_first_dialog = true
-first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_ciajo")])
-show_repeat_dialog = true
-repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7posy")])
-
-[node name="放大镜贴图" type="Sprite2D" parent="story/c2/放大镜" unique_id=211672534]
-scale = Vector2(0.23095538, 0.23095538)
-texture = ExtResource("18_l2oj5")
+position = Vector2(2.0942068, -17.523048)
+scale = Vector2(0.22441807, 0.18368031)
+texture = ExtResource("18_vqyf3")
 
 [node name="月相刻盘" parent="story/c2" unique_id=1549139785 instance=ExtResource("12_terh4")]
-position = Vector2(-4154, 3472)
+position = Vector2(-4102, 3442.0002)
 scale = Vector2(2.958631, 3.1635995)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_d0knf"), SubResource("Resource_yq83x")])
@@ -748,19 +725,26 @@ show_repeat_dialog = true
 repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_m8xep")])
 
 [node name="月相刻盘贴图" type="Sprite2D" parent="story/c2/月相刻盘" unique_id=1287020260]
-texture = ExtResource("15_moon_phase_dial")
+position = Vector2(51.037125, 3.4770622)
+scale = Vector2(0.3592362, 0.3536396)
+texture = ExtResource("20_hehhy")
 
 [node name="残缺的绘本" parent="story/c2" unique_id=1763227010 instance=ExtResource("12_terh4")]
-position = Vector2(-4184, 3738)
+position = Vector2(-4096, 3645)
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_womvd"), SubResource("Resource_e17ub")])
 
 [node name="残缺的绘本贴图" type="Sprite2D" parent="story/c2/残缺的绘本" unique_id=1071641378]
-texture = ExtResource("16_torn_picture_book")
+position = Vector2(8.000004, 2.9999084)
+scale = Vector2(0.26368615, 0.30682996)
+texture = ExtResource("20_vqyf3")
+region_enabled = true
+region_rect = Rect2(0, 0, 502, 496)
 
 [node name="PictureBook" parent="story/c2/残缺的绘本" unique_id=85174331 instance=ExtResource("17_picture_book")]
 
 [node name="刻有谚语的石碑" parent="story/c2" unique_id=1341038314 instance=ExtResource("12_terh4")]
-position = Vector2(-414, 3710)
+visible = false
+position = Vector2(-3475, 3710)
 scale = Vector2(1.1128523, 2.4469175)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_4qq5m")])
@@ -772,16 +756,18 @@ scale = Vector2(1, 0.40868)
 texture = ExtResource("18_proverb_stele")
 
 [node name="学者的笔记" parent="story/c2" unique_id=313767927 instance=ExtResource("12_terh4")]
-position = Vector2(-626, 3752)
+position = Vector2(-3849, 3629)
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_r37dm")])
+repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_hehhy")])
 
 [node name="笔记贴图" type="Sprite2D" parent="story/c2/学者的笔记" unique_id=1374682915]
-texture = ExtResource("19_scholars_notebook")
+position = Vector2(5.000019, -2.00008)
+scale = Vector2(0.23820065, 0.2106858)
+texture = ExtResource("23_vqyf3")
 
 [node name="ScholarNotebook" parent="story/c2/学者的笔记" unique_id=137594361 instance=ExtResource("17_picture_book")]
 book_title = "学者的笔记"
-pages = Array[String](["我们曾经共同生活在这片土地上。日族守护白昼，在阳光下耕种、劳作；月族行走长夜，循着月色寻找水源。
-没有人问水属于谁。因为所有人都知道，水若不能流动，便无法抵达需要它的地方。水像一条看不见的线，将昼与夜缝在一起，我们从未觉得彼此有什么不同。", "最初，我们只是拥有不同的分工。后来，白昼与长夜，将我们带向不同的道路，也让我们渐渐习惯只与自己的族人同行。我们开始用不同的名字称呼自己，自然而然形成了界限，我们站在这界限的两边，互相推搡。", "后来，我们惊讶地发现昼与夜并非永恒。日族越强，白昼便越长；月族越强，长夜便越长。若让另一方永远消失，世界是否就永远属于我们？当第一次有人指出这问题时，一切都失控了。", "可这个世界不属于日，也不属于月。昼与夜彼此成全，水与土地相互依存。一方存在的意义，从来都不在自己之中。可当我终于看清这一点时，已经太迟了。", "决战只剩两日。世界将会朝一边倾覆，而另一边同样得不到幸福。", "他们同时拥有……同生于这片天地……新世界……"])
+pages = Array[String](["我们曾经共同生活在这片土地上。日族守护白昼，在阳光下耕种、劳作；月族行走长夜，循着月色寻找水源。水像一条看不见的线，将昼与夜缝在一起，我们从未觉得彼此有什么不同。", "最初，我们只是拥有不同的分工。后来，白昼与长夜，将我们带向不同的道路，也让我们渐渐习惯只与自己的族人同行。我们开始用不同的名字称呼自己，自然而然形成了界限，我们站在这界限的两边，互相推搡。", "后来，我们惊讶地发现昼与夜并非永恒。日族越强，白昼便越长；月族越强，长夜便越长。若让另一方永远消失，世界是否就永远属于我们？当第一次有人指出这问题时，一切都失控了。", "可这个世界不属于日，也不属于月。昼与夜彼此成全，水与土地相互依存。一方存在的意义，从来都不在自己之中。可当我终于看清这一点时，已经太迟了。", "决战只剩两日。世界将会朝一边倾覆，而另一边同样得不到幸福。", "他们同时拥有……同生于这片天地……新世界……"])
 page_monologues = Array[String](["", "", "原来如此……", "", "日族宫殿里的痕迹，还有这里留下的文字，都在讲同一场战争。那场战争，月族战败了，世界也不再是原来的世界了。", "欸？这页内容好模糊……看不懂啊，这说的是我吗？可‘他们’是什么意思？还有很多和我一样的人吗"])
 close_monologues = Array[String]([])
 
@@ -792,6 +778,20 @@ content = "《水的法则》
 作者佚名
 水从不拒绝任何容器，它流入王的金盏，也流入乞丐的掌心，若将他倒入墓穴，它便与死者共处，若将它引入宫殿，它也不会因此变得高贵。可水的来处，水的名字，却成了使自己凌驾于他人之上的证明。他们争论，倘若一人编织牢笼，一人引鸟入笼，谁才是它的主人？幸好，水不会因这些语句就停止流动"
 display_duration = 9.9
+
+[node name="放大镜" parent="story/c2" unique_id=1000769939 instance=ExtResource("12_terh4")]
+position = Vector2(-4041, 3643)
+rotation = -0.5104905
+scale = Vector2(0.99999994, 0.99999994)
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_urly8")])
+show_repeat_dialog = true
+repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_vqyf3")])
+
+[node name="Sprite2D" type="Sprite2D" parent="story/c2/放大镜" unique_id=2118658782]
+position = Vector2(-5.165341, 5.129992)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("18_l2oj5")
 
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
 
@@ -969,25 +969,113 @@ display_duration = 12.0
 trigger_relic = &"bones"
 metadata/_editor_description_ = "第四章尾声；使用 GradualTextTrigger，位置与离场路径需在编辑器确认。"
 
-[node name="PropBookStackTwo" type="Sprite2D" parent="." unique_id=995955917]
-position = Vector2(-3462, 3762)
+[node name="Node2D" type="Node2D" parent="." unique_id=671045226]
+position = Vector2(130, 7)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D" unique_id=1035317049]
+position = Vector2(-4365, 3763.9998)
 scale = Vector2(0.14, 0.154)
+
+[node name="PropBookStackTwo" type="Sprite2D" parent="Node2D/StaticBody2D" unique_id=995955917]
+scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("32_hehhy")
 
-[node name="PropBookHorizontal3" type="Sprite2D" parent="." unique_id=1715462420]
-position = Vector2(-3567, 3776)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=1930308889]
+position = Vector2(-5.716797, 58.070313)
+scale = Vector2(0.9999996, 0.99999964)
+shape = SubResource("RectangleShape2D_yjgml")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Node2D/StaticBody2D" unique_id=275834055]
+position = Vector2(-37.859375, -130.30469)
+scale = Vector2(0.9999996, 0.99999964)
+shape = SubResource("RectangleShape2D_bufyr")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Node2D" unique_id=698764827]
+position = Vector2(788, 6)
+
+[node name="PropBookHorizontal3" type="Sprite2D" parent="Node2D/StaticBody2D2" unique_id=1715462420]
+position = Vector2(-3826, 3770)
 scale = Vector2(0.14, 0.174)
 texture = ExtResource("33_vqyf3")
 
-[node name="PropDeskScholarStandalone" type="Sprite2D" parent="." unique_id=1551741024]
-position = Vector2(-3695, 3721.9998)
-scale = Vector2(0.14, 0.14)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D2" unique_id=1165148430]
+position = Vector2(-3826, 3767)
+shape = SubResource("RectangleShape2D_8botp")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Node2D" unique_id=1335915112]
+position = Vector2(611, -116)
+
+[node name="PropBookHorizontal3" type="Sprite2D" parent="Node2D/StaticBody2D4" unique_id=393813796]
+position = Vector2(-3826, 3770)
+scale = Vector2(0.14, 0.174)
+texture = ExtResource("33_vqyf3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D4" unique_id=905736735]
+position = Vector2(-3826, 3767)
+shape = SubResource("RectangleShape2D_8botp")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="Node2D" unique_id=139654383]
+position = Vector2(410, -228)
+
+[node name="PropBookHorizontal3" type="Sprite2D" parent="Node2D/StaticBody2D5" unique_id=1577462490]
+position = Vector2(-3826, 3770)
+scale = Vector2(0.14, 0.174)
+texture = ExtResource("33_vqyf3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D5" unique_id=321952756]
+position = Vector2(-3826, 3767)
+shape = SubResource("RectangleShape2D_8botp")
+
+[node name="StaticBody2D8" type="StaticBody2D" parent="Node2D" unique_id=2142719374]
+position = Vector2(3845, -3113)
+
+[node name="PropBookHorizontal3" type="Sprite2D" parent="Node2D/StaticBody2D8" unique_id=949402442]
+position = Vector2(-3817.9998, 3769.0002)
+scale = Vector2(0.15571429, 0.1937961)
+texture = ExtResource("33_vqyf3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D8" unique_id=796719885]
+position = Vector2(-3817.875, 3766.4844)
+shape = SubResource("RectangleShape2D_8botp")
+
+[node name="StaticBody2D7" type="StaticBody2D" parent="Node2D" unique_id=153274839]
+position = Vector2(195, -197)
+
+[node name="PropBookHorizontal3" type="Sprite2D" parent="Node2D/StaticBody2D7" unique_id=629420401]
+position = Vector2(-3826, 3770)
+scale = Vector2(0.14, 0.174)
+texture = ExtResource("33_vqyf3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D7" unique_id=1102743048]
+position = Vector2(-3826, 3767)
+shape = SubResource("RectangleShape2D_8botp")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Node2D" unique_id=1621546421]
+position = Vector2(22, 12)
+
+[node name="PropDeskScholarStandalone" type="Sprite2D" parent="Node2D/StaticBody2D3" unique_id=1573149544]
+position = Vector2(-4240, 3705.0002)
+scale = Vector2(0.26241815, 0.16183837)
 texture = ExtResource("34_2flee")
 
-[node name="PropPaperManuscript" type="Sprite2D" parent="." unique_id=1374298095]
-position = Vector2(-3689, 3617)
-scale = Vector2(0.14, 0.14)
-texture = ExtResource("35_1og5t")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D3" unique_id=583251707]
+position = Vector2(-4215.5425, 3726.5422)
+scale = Vector2(0.23430213, 0.1338661)
+shape = SubResource("RectangleShape2D_pixej")
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="Node2D" unique_id=1079873933]
+position = Vector2(242, -258)
+
+[node name="Img9866" type="Sprite2D" parent="Node2D/StaticBody2D6" unique_id=1083397126]
+position = Vector2(-4208.5, 3965.9998)
+scale = Vector2(0.44985253, 0.51486886)
+texture = ExtResource("36_2flee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D6" unique_id=1458667855]
+position = Vector2(-4207.507, 3971.915)
+rotation = 1.5743064
+scale = Vector2(0.99999964, 0.99999964)
+shape = SubResource("RectangleShape2D_k318m")
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
@@ -995,6 +1083,7 @@ texture = ExtResource("35_1og5t")
 [editable path="Camp/Lake"]
 [editable path="Camp/Chapter1"]
 [editable path="SunkenPalace"]
+[editable path="SunkenPalace/collisionlayer/OnwayPl/OneWayDropPlatformComponent2"]
 [editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea"]
 [editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2"]
 [editable path="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3"]
