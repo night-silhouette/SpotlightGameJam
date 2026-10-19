@@ -15,26 +15,27 @@
 [ext_resource type="PackedScene" uid="uid://ddy27q8b8l3ox" path="res://Code/Entities/InteractiveComponent/MiniChaliceStation/MiniChaliceStation.tscn" id="11_a4q47"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="12_terh4"]
 [ext_resource type="Texture2D" uid="uid://cr8v8th45p3ul" path="res://Art/New/component/extracted/stargazing_desk.svg" id="13_stargazing_desk"]
-[ext_resource type="Texture2D" uid="uid://cl2s2a6edeh3e" path="res://Art/New/ai/brass_magnifier.svg" id="14_magnifier"]
 [ext_resource type="Texture2D" uid="uid://bh5wg0taldg8l" path="res://Art/New/component/extracted/moon_phase_dial.svg" id="15_moon_phase_dial"]
 [ext_resource type="Texture2D" uid="uid://5jd43vy6horr" path="res://Art/New/component/extracted/torn_picture_book.svg" id="16_torn_picture_book"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/PictureBook.tscn" id="17_picture_book"]
+[ext_resource type="Texture2D" uid="uid://pjfw3kxc63bm" path="res://Art/New/component/game2/IMG_1496.PNG" id="18_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://b7m1livmw8npo" path="res://Art/New/component/extracted/proverb_stele.svg" id="18_proverb_stele"]
 [ext_resource type="Texture2D" uid="uid://bla1x5c0rw0ji" path="res://Art/New/component/extracted/scholars_notebook.svg" id="19_scholars_notebook"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
 [ext_resource type="Texture2D" uid="uid://l7l1mk7tvqvi" path="res://Art/AI/pottery.svg" id="21_pottery"]
-[ext_resource type="Texture2D" uid="uid://keofucnt1pv7" path="res://Art/AI/mural.svg" id="23_mural"]
-[ext_resource type="Texture2D" uid="uid://kjvcd42nonrm" path="res://Art/AI/nameplates.svg" id="24_nameplates"]
 [ext_resource type="Texture2D" uid="uid://cq5dxd8fa1uon" path="res://Art/New/component/game1/tool.PNG" id="26_l2oj5"]
+[ext_resource type="Texture2D" uid="uid://lgoxfr44l36l" path="res://Art/New/component/game1/mural.JPG" id="27_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://dosp8lrgy7bwk" path="res://Art/AI/sun_crown.svg" id="27_sun_crown"]
-[ext_resource type="Texture2D" uid="uid://b3xfwicv6u8iv" path="res://Art/AI/chapter4_props.svg" id="29_c4_props"]
+[ext_resource type="Texture2D" uid="uid://dw8g0j7ceq8e2" path="res://Art/New/component/game1/IMG_1495.PNG" id="28_o2yww"]
 [ext_resource type="Texture2D" uid="uid://bhr7e4fieem42" path="res://Art/New/component/IMG_1456.PNG" id="29_l2oj5"]
-[ext_resource type="Texture2D" uid="uid://hwkhojwsvxwe" path="res://Art/New/component/snake_shrine_statue.png" id="30_m5q0i"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="32_hehhy"]
 [ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
 [ext_resource type="Texture2D" uid="uid://bdqe2o5arwlue" path="res://Art/New/component/extracted/prop_paper_manuscript.png" id="35_1og5t"]
+[ext_resource type="Texture2D" uid="uid://cfrgqi60o3h13" path="res://Art/New/component/game1/2.PNG" id="31_m5q0i"]
+[ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
+[ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -44,7 +45,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m5q0i"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -96,7 +97,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o2yww"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -135,7 +136,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s2vhm"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -151,6 +152,39 @@ script = ExtResource("2_mkscu")
 
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hehhy"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vqyf3"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2flee"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1og5t"]
 resource_local_to_scene = true
@@ -291,13 +325,9 @@ script = ExtResource("5_acpp2")
 text = "封面已经褪色，纸页皱皱巴巴，边角也有点卷曲，显然曾被一次又一次翻阅。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="Resource" id="C3_2_1"]
-script = ExtResource("5_acpp2")
-text = "太阳在沙丘上留下了无名的城"
-
 [sub_resource type="Resource" id="C3_2_2"]
 script = ExtResource("5_acpp2")
-text = "一座破败的宫殿半埋于炙热的黄沙之中。高大的石墙早已倾颓，断裂的石柱仍倔强地撑起残存的穹顶，但仍能看出这里旧日的恢宏。墙边留存着几处规整的蓄水池与水道。"
+text = "一座矗立于茫茫黄沙之间的古老宫殿，逐渐映入眼帘。高耸的石墙历经风沙侵蚀，墙根堆积着厚厚的黄沙，部分墙体已经倾颓，但仍能从中窥见其旧日的恢宏气势。数条干涸的水道像一道道已经结痂的伤疤，安静地等在墙根。 "
 
 [sub_resource type="Resource" id="C3_2_3"]
 script = ExtResource("5_acpp2")
@@ -380,10 +410,6 @@ dialog_type = "独白"
 text = "得快点躲开！
 这么多水，怎么会，这座城不是已经荒废了吗？"
 
-[sub_resource type="Resource" id="C4_1"]
-script = ExtResource("5_acpp2")
-text = "绿洲从未竟的声声叹息中生长"
-
 [sub_resource type="Resource" id="C4_2"]
 script = ExtResource("5_acpp2")
 text = "金色瀚海在此处骤然断截，层层叠叠的绿意涌到眼前。藤蔓攀缘，枝干交错，阳光在水面上留下细碎的鳞光。"
@@ -445,6 +471,8 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[node name="TutorialSubtitle" parent="." unique_id=456715450 instance=ExtResource("31_tutorial_subtitle")]
+
 [node name="DialogBox" parent="." unique_id=244490565 instance=ExtResource("9_dialog")]
 
 [node name="PlayerWithCamera" parent="." unique_id=1075589275 instance=ExtResource("1_sk8ge")]
@@ -458,19 +486,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_hehhy")
+material = SubResource("ShaderMaterial_m5q0i")
 
 [node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
-material = SubResource("ShaderMaterial_vqyf3")
+material = SubResource("ShaderMaterial_o2yww")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_2flee")
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_2flee")
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_2flee")
+material = SubResource("ShaderMaterial_s2vhm")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1701, 0)
@@ -507,6 +535,10 @@ visible = true
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
+
+[node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
+z_index = -1
+scale = Vector2(0.51655513, 0.51655513)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2678, -361)
@@ -570,19 +602,19 @@ texture = ExtResource("27_sun_crown")
 position = Vector2(-118, 3250)
 
 [node name="OasisBattlefield" parent="." unique_id=958829481 instance=ExtResource("4_oasis")]
-position = Vector2(-19118, -1215)
+position = Vector2(-19152, -1263)
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
 [node name="CameraGate2" parent="CameraNode" unique_id=1274666655 instance=ExtResource("7_hfiwn")]
-position = Vector2(2043.9999, -84.99999)
-scale = Vector2(0.4082091, 2.459945)
+position = Vector2(2046.0002, -562)
+scale = Vector2(0.7298663, 10.17604)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate" parent="CameraNode" unique_id=1513205410 instance=ExtResource("7_hfiwn")]
-position = Vector2(-85, -362.00003)
+position = Vector2(-121, -1497)
 scale = Vector2(0.408, 20)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
@@ -597,9 +629,9 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate3" parent="CameraNode" unique_id=2049029743 instance=ExtResource("7_hfiwn")]
-position = Vector2(2995, 156)
+position = Vector2(2995, 135)
 rotation = -1.5707964
-scale = Vector2(2, 50)
+scale = Vector2(0.6035969, 99.60132)
 blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
@@ -651,6 +683,7 @@ scale = Vector2(0.42096186, 3.7220325)
 position = Vector2(1814.8912, -1.0746815)
 act_text = "第二幕"
 chapter_text = "烈阳遗梦"
+subtitle_text = "太阳在沙丘上留下了无名的城"
 
 [node name="ChapterTrigger2" parent="chapter" unique_id=520894648 instance=ExtResource("10_mvgin")]
 position = Vector2(-3634.5337, 101.82608)
@@ -665,6 +698,7 @@ rotation = -1.5707964
 scale = Vector2(4, 0.4)
 act_text = "第四幕"
 chapter_text = "绿洲悲歌"
+subtitle_text = "绿洲从未竟的声声叹息中生长"
 
 [node name="story" type="Node2D" parent="." unique_id=1662514281]
 
@@ -692,15 +726,18 @@ scale = Vector2(0.7409028, 1)
 texture = ExtResource("13_stargazing_desk")
 
 [node name="放大镜" parent="story/c2" unique_id=1866626411 instance=ExtResource("12_terh4")]
-position = Vector2(22, 676)
-scale = Vector2(0.3446726, 0.368074)
+z_index = -1
+position = Vector2(49.000004, 680)
+rotation = -1.3497165
+scale = Vector2(0.49296683, 0.5264366)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_ciajo")])
 show_repeat_dialog = true
 repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_7posy")])
 
 [node name="放大镜贴图" type="Sprite2D" parent="story/c2/放大镜" unique_id=211672534]
-texture = ExtResource("14_magnifier")
+scale = Vector2(0.23095538, 0.23095538)
+texture = ExtResource("18_l2oj5")
 
 [node name="月相刻盘" parent="story/c2" unique_id=1549139785 instance=ExtResource("12_terh4")]
 position = Vector2(-4154, 3472)
@@ -759,11 +796,11 @@ display_duration = 9.9
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
 
 [node name="入城_2_1至2_3" parent="story/c3" unique_id=1926561481 instance=ExtResource("12_terh4")]
-position = Vector2(2885, -22)
+position = Vector2(5007, -69)
 scale = Vector2(3, 3)
 enable_interaction = false
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_1"), SubResource("C3_2_2"), SubResource("C3_2_3")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_2"), SubResource("C3_2_3")])
 enter_dialog_once = true
 metadata/_editor_description_ = "按第二幕章节触发器约(2883,-22)及宫殿入口锚点暂放；请在编辑器确认入城必经路径。"
 
@@ -788,49 +825,59 @@ scale = Vector2(0.047484964, 0.047484964)
 texture = ExtResource("26_l2oj5")
 
 [node name="壁画_2_10至2_11" parent="story/c3" unique_id=241219892 instance=ExtResource("12_terh4")]
-position = Vector2(5686, -1426)
-scale = Vector2(1.5154283, 1.5699457)
+z_index = -1
+position = Vector2(2631, -1890)
+scale = Vector2(9.507462, 9.507462)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_10"), SubResource("C3_2_11")])
 metadata/_editor_description_ = "参考宫殿交互锚点(5915,-1365)暂放；需在编辑器确认墙面方向。"
+metadata/_edit_lock_ = true
 
 [node name="壁画贴图" type="Sprite2D" parent="story/c3/壁画_2_10至2_11" unique_id=596580882]
-position = Vector2(-2.6395416, -5.0957413)
-scale = Vector2(0.44150487, 0.517453)
-texture = ExtResource("23_mural")
+position = Vector2(-70.68132, -14.725271)
+scale = Vector2(0.07908968, 0.07908968)
+texture = ExtResource("27_m5q0i")
 
 [node name="战士铭牌_2_12至2_13" parent="story/c3" unique_id=1471686417 instance=ExtResource("12_terh4")]
-position = Vector2(4615, -1235)
+z_index = -1
+position = Vector2(5488, -1000)
+scale = Vector2(2.9464839, 2.9464839)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_12"), SubResource("C3_2_13")])
 metadata/_editor_description_ = "靠宫殿交互锚点(4683,-1235)暂放，请确认铭牌与石桌布局。"
 
 [node name="战士铭牌贴图" type="Sprite2D" parent="story/c3/战士铭牌_2_12至2_13" unique_id=230421738]
-texture = ExtResource("24_nameplates")
+scale = Vector2(-0.04992918, -0.04992918)
+texture = ExtResource("28_o2yww")
 
 [node name="议政桌_2_14至2_15" parent="story/c3" unique_id=1963937542 instance=ExtResource("12_terh4")]
-position = Vector2(2267, -1788)
-scale = Vector2(2.9108229, 2.9108229)
+position = Vector2(2195, -1790)
+scale = Vector2(3.620352, 3.620352)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_14"), SubResource("C3_2_15")])
 metadata/_editor_description_ = "参考宫殿交互锚点(4683,-1235)暂放，请确认中央石桌位置。"
+metadata/_edit_lock_ = true
 
 [node name="议政桌贴图" type="Sprite2D" parent="story/c3/议政桌_2_14至2_15" unique_id=562975797]
 scale = Vector2(0.13365571, 0.13365571)
 texture = ExtResource("29_l2oj5")
 
 [node name="蛇身雕塑_2_17至2_19" parent="story/c3" unique_id=2071370340 instance=ExtResource("12_terh4")]
-position = Vector2(1745, -1864.9999)
-scale = Vector2(3.8974733, 3.8974733)
+position = Vector2(1539, -1853)
+scale = Vector2(3.023746, 3.023746)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_17"), SubResource("C3_2_18"), SubResource("C3_2_19")])
 metadata/_editor_description_ = "现有冠拾取点(1724,-1751)上方暂放，请确认蛇身石台和可达交互距离；此节点不拾取冠。"
+metadata/_edit_lock_ = true
 
 [node name="蛇身雕塑贴图" type="Sprite2D" parent="story/c3/蛇身雕塑_2_17至2_19" unique_id=1689419626]
-position = Vector2(-5.3587704, -15.406193)
-scale = Vector2(0.102967866, 0.102967866)
-texture = ExtResource("30_m5q0i")
+z_index = -1
+position = Vector2(-3.30719, -1.3228791)
+scale = Vector2(0.09350025, 0.09350025)
+texture = ExtResource("31_m5q0i")
 flip_h = true
+region_enabled = true
+region_rect = Rect2(1175, 559, 467, 813)
 
 [node name="高处蓄水池_2_22至2_23" parent="story/c3" unique_id=397872988 instance=ExtResource("12_terh4")]
 position = Vector2(1672, -2562)
@@ -855,29 +902,33 @@ position = Vector2(-391, -385)
 scale = Vector2(1.322886, 1.1634629)
 enable_interaction = false
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_1"), SubResource("C4_2")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_2")])
 enter_dialog_once = true
 metadata/_editor_description_ = "第四章入口叙事区域；仅对白，不改变绿洲场景。请在编辑器确认必经路径。"
 
 [node name="残破武器_4_4至4_5" parent="story/c4" unique_id=740384175 instance=ExtResource("12_terh4")]
-position = Vector2(-10411, 4)
+z_index = -1
+position = Vector2(-911.00006, -151)
+scale = Vector2(0.10480849, 0.10480849)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_4"), SubResource("C4_5")])
 
 [node name="残破武器贴图" type="Sprite2D" parent="story/c4/残破武器_4_4至4_5" unique_id=1102879880]
-texture = ExtResource("29_c4_props")
+texture = ExtResource("31_s2vhm")
 region_enabled = true
-region_rect = Rect2(0, 0, 140, 128)
+region_rect = Rect2(1718, 564, 910, 866)
 
 [node name="枯骨与发光植物_4_6至4_7" parent="story/c4" unique_id=1081844673 instance=ExtResource("12_terh4")]
-position = Vector2(-10628, 5)
+z_index = -1
+position = Vector2(-1743, -330)
+scale = Vector2(0.14751557, 0.14751557)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C4_6"), SubResource("C4_7")])
 
 [node name="枯骨与发光植物贴图" type="Sprite2D" parent="story/c4/枯骨与发光植物_4_6至4_7" unique_id=958197716]
-texture = ExtResource("29_c4_props")
+texture = ExtResource("31_s2vhm")
 region_enabled = true
-region_rect = Rect2(128, 0, 128, 128)
+region_rect = Rect2(442, 887, 1126, 605)
 metadata/_editor_description_ = "仅视觉提示，不新增拾取或骨头逻辑。"
 
 [node name="刻痕枯骨前置观察_4_8至4_9" parent="story/c4" unique_id=1906082788 instance=ExtResource("12_terh4")]

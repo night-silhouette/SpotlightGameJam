@@ -1,6 +1,7 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bgmsq6p2vupnu"]
 
 [ext_resource type="Script" uid="uid://b20h0k0svg5iq" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://mb7xpi262pbj" path="res://Art/New/component/game0/oneway.png" id="2_uyw7g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape_platform"]
 size = Vector2(128, 16)
@@ -8,24 +9,30 @@ size = Vector2(128, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape_sensor"]
 size = Vector2(128, 72)
 
-[node name="OneWayDropPlatformComponent" type="StaticBody2D"]
+[node name="OneWayDropPlatformComponent" type="StaticBody2D" unique_id=1932976224]
 script = ExtResource("1_script")
 
-[node name="Visual" type="Polygon2D" parent="."]
+[node name="Visual" type="Polygon2D" parent="." unique_id=574346527]
+visible = false
+color = Color(0.54509807, 0.7764706, 0.6431373, 1)
 polygon = PackedVector2Array(-64, -8, 64, -8, 64, 8, -64, 8)
-color = Color(0.545, 0.776, 0.643, 1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2079263097]
 shape = SubResource("RectangleShape_platform")
 one_way_collision = true
 one_way_collision_margin = 4.0
 
-[node name="DropSensor" type="Area2D" parent="."]
+[node name="DropSensor" type="Area2D" parent="." unique_id=528865655]
 position = Vector2(0, -44)
 collision_layer = 0
 collision_mask = 4294967295
-monitoring = true
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DropSensor"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DropSensor" unique_id=617333480]
+position = Vector2(0, -44)
 shape = SubResource("RectangleShape_sensor")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=986019218]
+position = Vector2(-2.9999998, -24.999998)
+scale = Vector2(0.39992645, 0.39992645)
+texture = ExtResource("2_uyw7g")

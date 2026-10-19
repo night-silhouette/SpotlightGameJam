@@ -24,6 +24,9 @@ signal PlayerOpeningReleaseRequested
 ## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
 signal DialogBox(type: StringName, content: String)
 
+## 请求显示非模态教学字幕；text 为完整文案，空字符串清除当前字幕，不锁定玩家操作。
+signal TutorialSubtitleRequested(text: String)
+
 ## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
 signal ComponentInteracted(component: Node2D, interactor: Node2D)
 ## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。
@@ -104,6 +107,8 @@ signal CameraGateChanged(player: Node2D, gate: Area2D, active: bool, side: int, 
 signal CameraGateSideChanged(player: Node2D, gate: Area2D, side: int, boundary: float, reset: bool)
 ## 非一次性镜头门退出场景；移除该门的当前及待切换约束。
 signal CameraGateSideRemoved(player: Node2D, gate: Area2D)
+## 目标玩家实际进入镜头门碰撞区域时请求黑幕；player 为该门配置的玩家，gate 为触发的门实例，已解锁的一次性门不发送。
+signal CameraGateFadeRequested(player: Node2D, gate: Area2D)
 
 ## =============================================================================
 ## SignalBus.gd - 全局信号总线

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="4_phantom"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="5_dxr6y"]
 [ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/CameraPresentation.tscn" id="5_presentation"]
+[ext_resource type="PackedScene" path="res://Code/Entities/PlayerWithCamera/CameraGateFade.tscn" id="6_gate_fade"]
 
 [sub_resource type="Resource" id="Resource_gwwv2"]
 script = ExtResource("5_dxr6y")
@@ -50,6 +51,8 @@ tween_resource = SubResource("Resource_jymye")
 tween_on_load = false
 
 [node name="CameraPresentation" parent="." unique_id=2091758055 instance=ExtResource("5_presentation")]
+
+[node name="CameraGateFade" parent="." instance=ExtResource("6_gate_fade")]
 
 [node name="AnchorA" type="Marker2D" parent="." unique_id=1434775426]
 

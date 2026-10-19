@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dtsf0m778x60b" path="res://Code/Entities/Plot/Chapter1.gd" id="1_chapter"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="2_trigger"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="3_line"]
-[ext_resource type="Texture2D" uid="uid://kt6luo4owmgw" path="res://Art/AI/broken_stele.svg" id="4_stele"]
+[ext_resource type="Texture2D" uid="uid://corok5pq1klwj" path="res://Art/New/component/game0/IMG_1498.PNG" id="4_tf67n"]
 
 [sub_resource type="Resource" id="Line_1_1"]
 script = ExtResource("3_line")
@@ -47,7 +47,9 @@ story_lines = Array[ExtResource("3_line")]([SubResource("Line_1_12"), SubResourc
 
 [node name="BrokenStele" type="Sprite2D" parent="SteleStory_1_12_to_1_14" unique_id=1866377039]
 position = Vector2(0, -32)
-texture = ExtResource("4_stele")
+texture = ExtResource("4_tf67n")
+region_enabled = true
+region_rect = Rect2(316, 88, 172, 240)
 
 [node name="LeaveStory_1_15" parent="." unique_id=1367280678 instance=ExtResource("2_trigger")]
 position = Vector2(1940, 1603)

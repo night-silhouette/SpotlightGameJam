@@ -18,8 +18,6 @@ signal MonologueRequested(lines: Array[String])
 @export var use_export_settings: bool = true
 ## 是否允许通过交互键或点击碰撞区域交互。
 @export var enable_interaction: bool = true
-## 碰撞区域边缘之外允许玩家交互的距离（世界单位）。
-@export var interaction_reach: float = 64.0
 ## 本组件触发的对话框显示期间是否禁止玩家输入；关闭对话后恢复，玩家动画与物理仍继续运行。
 @export var disable_movement_during_dialog: bool = false
 
@@ -59,6 +57,7 @@ var _dialog_box: Node
 var _locked_players: Dictionary = {}
 
 func _ready() -> void:
+	_fit_collision_to_art()
 	add_to_group("touch_interactables")
 	var ancestor: Node = self
 	while ancestor != null and _dialog_box == null:
@@ -75,6 +74,32 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
+func _fit_collision_to_art() -> void:
+	# 纯进入区域剧情沿用手工触发范围，不按装饰图改变区域。
+	if not enable_interaction:
+		return
+	var bounds := Rect2()
+	var has_art := false
+	for child in get_children():
+		var sprite := child as Sprite2D
+		if sprite == null or sprite.texture == null or not sprite.visible:
+			continue
+		var rect := sprite.get_rect()
+		for corner in [rect.position, Vector2(rect.end.x, rect.position.y), rect.end, Vector2(rect.position.x, rect.end.y)]:
+			var point: Vector2 = sprite.transform * corner
+			if not has_art:
+				bounds = Rect2(point, Vector2.ZERO)
+				has_art = true
+			else:
+				bounds = bounds.expand(point)
+	if not has_art or not bounds.has_area():
+		return
+	# 每个实体独享形状，避免修改共享场景资源影响其他交互物。
+	var shape := RectangleShape2D.new()
+	shape.size = bounds.size
+	_collision_shape.transform = Transform2D(0.0, bounds.get_center())
+	_collision_shape.shape = shape
+
 func _physics_process(_delta: float) -> void:
 	_players = _players.filter(func(player: Node2D) -> bool: return is_instance_valid(player))
 	for input_control in _locked_players:
@@ -85,18 +110,38 @@ func _physics_process(_delta: float) -> void:
 			input_control.set("is_idle", true)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not enable_interaction or not event.is_action_pressed(interaction_action):
+	if not enable_interaction or not is_visible_in_tree() or not event.is_action_pressed(interaction_action):
 		return
 	if event is InputEventMouseButton:
-		var shape := _collision_shape.shape as RectangleShape2D
-		var point := _collision_shape.to_local(get_global_mouse_position())
-		if shape == null or not Rect2(-shape.size * 0.5, shape.size).has_point(point):
+		var mouse_position := get_global_mouse_position()
+		if not _contains_world_point(mouse_position):
 			return
+		# 重叠时优先前景交互物，避免雕塑先于其上的王冠消耗点击。
+		for candidate in get_tree().get_nodes_in_group("touch_interactables"):
+			var other := candidate as InteractableComponent
+			if other == null or other == self or not other.enable_interaction or not other.is_visible_in_tree() or not other.is_processing_unhandled_input():
+				continue
+			if other._get_interaction_z_index() > _get_interaction_z_index() and other._contains_world_point(mouse_position):
+				return
 	for candidate in get_tree().get_nodes_in_group("player"):
 		var player := candidate as Node2D
-		if player != null and _is_in_reach(player) and Interact(player):
+		if player != null and Interact(player):
 			get_viewport().set_input_as_handled()
 			return
+
+func _contains_world_point(world_pos: Vector2) -> bool:
+	var shape := _collision_shape.shape as RectangleShape2D
+	return shape != null and not _collision_shape.disabled and Rect2(-shape.size * 0.5, shape.size).has_point(_collision_shape.to_local(world_pos))
+
+func _get_interaction_z_index() -> int:
+	var result := z_index
+	var item: CanvasItem = self
+	while item.z_as_relative:
+		item = item.get_parent() as CanvasItem
+		if item == null:
+			break
+		result += item.z_index
+	return result
 
 func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
 	var shape := _collision_shape.shape as RectangleShape2D
@@ -104,20 +149,11 @@ func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
 		return false
 	return Interact(interactor)
 
-func _is_in_reach(player: Node2D) -> bool:
-	var shape := _collision_shape.shape as RectangleShape2D
-	if shape == null:
-		return false
-	var point := _collision_shape.to_local(player.global_position)
-	var half_size := shape.size * 0.5
-	var nearest := Vector2(clampf(point.x, -half_size.x, half_size.x), clampf(point.y, -half_size.y, half_size.y))
-	return _collision_shape.to_global(nearest).distance_to(player.global_position) <= interaction_reach
-
-## 执行交互逻辑：首次交互请求描述文本，后续交互请求内心独白文本。
-## @param interactor 必须为当前重叠区域内有效的玩家节点。
+## 执行交互逻辑：首次交互请求描述文本，后续交互请求内心独白文本；不限制玩家距离。
+## @param interactor 必须为有效的玩家节点，无需与区域重叠。
 ## @return 交互成功返回 true，否则返回 false。
 func Interact(interactor: Node2D) -> bool:
-	if not enable_interaction or _dispatching or not is_instance_valid(interactor) or not _is_in_reach(interactor):
+	if not enable_interaction or _dispatching or not is_instance_valid(interactor):
 		return false
 	_dispatching = true
 	var is_description: bool = not _description_requested
@@ -173,7 +209,7 @@ func _show_dialog_lines(lines: Array[PlotDialogLine]) -> void:
 func _lock_players() -> void:
 	for candidate in get_tree().get_nodes_in_group("player"):
 		var player := candidate as Node2D
-		if player == null or not _is_in_reach(player):
+		if player == null:
 			continue
 		var input_control := player.get_node_or_null("GameInputControl")
 		if input_control == null or _locked_players.has(input_control):

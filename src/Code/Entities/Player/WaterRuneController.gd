@@ -1,7 +1,7 @@
 extends Node2D
 class_name WaterRuneController
 
-## 玩家水符文控制组件：右键点击画面内的流水区域切换状态，无技能冷却。
+## 玩家水符文控制组件：按 interact 映射切换鼠标指向的流水区域状态，无技能冷却。
 
 const cooldown: float = 0.0
 var current_cd: float = 0.0
@@ -11,7 +11,7 @@ func _ready() -> void:
 		SignalBus.WaterRuneCooldownChanged.emit(current_cd, cooldown)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+	if event.is_action_pressed("interact"):
 		var mouse_world_position = get_global_mouse_position()
 		for node in get_tree().get_nodes_in_group("water_flow"):
 			if node is WaterFlowArea and node.ContainsWorldPoint(mouse_world_position):

@@ -26,9 +26,13 @@ const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 @onready var btn_close_credits: Button = %BtnCloseCredits
 
 @onready var quit_confirm_dialog: ConfirmationDialog = %QuitConfirmDialog
+@onready var _new_game_intro: CanvasLayer = $NewGameIntro
+@onready var _intro_text: Label = $NewGameIntro/Black/Text
 
 var _setting_instance: SettingUI = null
 var _starting_new_game := false
+var _awaiting_menu_input := true
+var _revealing_menu := false
 
 func _ready() -> void:
 	saves_modal.theme = SettingsSkin.CreateTheme()
@@ -45,9 +49,53 @@ func _ready() -> void:
 	credits_modal.visibility_changed.connect(_sync_setting_shortcut)
 	saves_modal.visible = false
 	credits_modal.visible = false
+	_intro_text.text = ExportSettings.new_game_intro_text
+	_intro_text.add_theme_color_override("font_color", ExportSettings.new_game_intro_text_color)
+	get_viewport().size_changed.connect(_resize_intro_text)
+	_resize_intro_text()
+	_sync_setting_shortcut()
+
+func _input(event: InputEvent) -> void:
+	if not _awaiting_menu_input and not _revealing_menu:
+		return
+	get_viewport().set_input_as_handled()
+	if _revealing_menu:
+		return
+	var pressed := false
+	if event is InputEventKey:
+		pressed = event.pressed and not event.echo
+	elif event is InputEventMouseButton:
+		pressed = event.pressed
+	elif event is InputEventJoypadButton:
+		pressed = event.pressed
+	elif event is InputEventScreenTouch:
+		pressed = event.pressed
+	if pressed:
+		_reveal_menu()
+
+func _reveal_menu() -> void:
+	_awaiting_menu_input = false
+	_revealing_menu = true
+	$BackgroundLayers/Sky.hide()
+	$BackgroundLayers/CleanBackground.show()
+	$MainUI.modulate.a = 0.0
+	$SettingsGear.modulate.a = 0.0
+	$MainUI.show()
+	$SettingsGear.show()
+	var tween := create_tween().set_parallel(true)
+	tween.tween_property($MainUI, "modulate:a", 1.0, ExportSettings.start_menu_ui_fade_duration)
+	tween.tween_property($SettingsGear, "modulate:a", 1.0, ExportSettings.start_menu_ui_fade_duration)
+	await tween.finished
+	_revealing_menu = false
+	_sync_setting_shortcut()
+
+func _resize_intro_text() -> void:
+	var viewport_size := get_viewport_rect().size
+	var text_scale := minf(1.0, minf(viewport_size.x / 1280.0, viewport_size.y / 720.0))
+	_intro_text.add_theme_font_size_override("font_size", maxi(1, roundi(ExportSettings.new_game_intro_font_size * text_scale)))
 
 func _sync_setting_shortcut() -> void:
-	_setting_instance.set_process_input(not saves_modal.visible and not credits_modal.visible)
+	_setting_instance.set_process_input(not _awaiting_menu_input and not _revealing_menu and not _starting_new_game and not saves_modal.visible and not credits_modal.visible)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
@@ -201,8 +249,20 @@ func _refresh_saves_ui() -> void:
 
 ## 载入已有存档进入游戏
 func _on_slot_load_pressed(slot_idx: int) -> void:
-	saves_modal.visible = false
-	SaveManagerRef.LoadFromSlot(get_tree(), slot_idx)
+	if _starting_new_game:
+		return
+	_starting_new_game = true
+	btn_close_saves.disabled = true
+	saves_list.visible = false
+	_sync_setting_shortcut()
+	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "正在载入存档…"
+	var loaded: bool = await SaveManagerRef.LoadFromSlot(get_tree(), slot_idx)
+	if not loaded and is_instance_valid(self):
+		_starting_new_game = false
+		btn_close_saves.disabled = false
+		saves_list.visible = true
+		_sync_setting_shortcut()
+		$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "载入失败，请覆写或选择其他存档"
 
 ## 空白处或指定槽位开启新存档并进入 World.tscn
 func _on_slot_new_game_pressed(slot_idx: int) -> void:
@@ -212,10 +272,19 @@ func _on_slot_new_game_pressed(slot_idx: int) -> void:
 	$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "正在加载世界…"
 	btn_close_saves.disabled = true
 	saves_list.visible = false
-	await get_tree().process_frame
-	var started: bool = await SaveManagerRef.StartNewGameInSlot(get_tree(), slot_idx)
+	_sync_setting_shortcut()
+	_new_game_intro.show()
+	_intro_text.modulate.a = 0.0
+	var intro_tween := create_tween()
+	intro_tween.tween_property(_intro_text, "modulate:a", 1.0, ExportSettings.new_game_intro_fade_in_duration)
+	intro_tween.tween_interval(ExportSettings.new_game_intro_hold_duration)
+	intro_tween.tween_property(_intro_text, "modulate:a", 0.0, ExportSettings.new_game_intro_fade_out_duration)
+	var started: bool = await SaveManagerRef.StartNewGameInSlot(get_tree(), slot_idx, "", intro_tween)
 	if not started and is_instance_valid(self):
+		intro_tween.kill()
+		_new_game_intro.hide()
 		_starting_new_game = false
+		_sync_setting_shortcut()
 		$SavesModal/PanelContainer/Margin/VBox/HeaderHBox/ModalTitle.text = "加载失败，请重试"
 		btn_close_saves.disabled = false
 		saves_list.visible = true

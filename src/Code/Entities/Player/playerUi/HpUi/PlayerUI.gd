@@ -10,6 +10,8 @@ const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutMa
 
 const HEALTH_FRAME_X = [25, 146, 258, 379, 503, 626]
 
+@onready var low_health_sand: ColorRect = $Control/LowHealthSand
+@onready var _sand_material: ShaderMaterial = low_health_sand.material as ShaderMaterial
 @onready var health_icon: TextureRect = $Control/MarginContainer/VBoxContainer/HealthIcon
 @onready var health_label: Label = $Control/MarginContainer/VBoxContainer/HealthLabel
 @onready var drain_indicator: Label = $Control/MarginContainer/VBoxContainer/DrainIndicator
@@ -38,6 +40,52 @@ var touch_interaction_mode: bool = false
 ## 当前显示的血量
 var _target_hp: float = 200.0
 var _max_hp: float = 200.0
+var _sand_health_valid: bool = true
+var _sand_target: float = 0.0
+var _sand_intensity: float = 0.0
+var _sand_elapsed: float = 0.0
+
+func _process(delta: float) -> void:
+	_update_sand_target()
+	if _sand_target <= 0.0 and _sand_intensity <= 0.0:
+		return
+	if not visible or not $Control.is_visible_in_tree():
+		return
+	var duration: float = ExportSettings.low_health_sand_fade_duration
+	_sand_intensity = move_toward(_sand_intensity, _sand_target, delta / duration) if duration > 0.0 else _sand_target
+	if _sand_intensity <= 0.0:
+		_clear_sand_overlay()
+		return
+	low_health_sand.show()
+	_sand_elapsed += delta
+	_sand_material.set_shader_parameter("intensity", _sand_intensity)
+	_sand_material.set_shader_parameter("elapsed", _sand_elapsed)
+	_sand_material.set_shader_parameter("max_opacity", clampf(ExportSettings.low_health_sand_max_opacity, 0.0, 1.0))
+	_sand_material.set_shader_parameter("edge_width", ExportSettings.low_health_sand_edge_width)
+	_sand_material.set_shader_parameter("pulse_speed", ExportSettings.low_health_sand_pulse_speed)
+	_sand_material.set_shader_parameter("pulse_amount", ExportSettings.low_health_sand_pulse_amount)
+	_sand_material.set_shader_parameter("grain_size", ExportSettings.low_health_sand_grain_size)
+	_sand_material.set_shader_parameter("flow_speed", ExportSettings.low_health_sand_flow_speed)
+	_sand_material.set_shader_parameter("sand_color", ExportSettings.low_health_sand_color)
+	_sand_material.set_shader_parameter("dark_color", ExportSettings.low_health_sand_dark_color)
+
+func _update_sand_target() -> void:
+	if not _sand_health_valid or _target_hp <= 0.0 or not ExportSettings.low_health_sand_enabled or ExportSettings.low_health_sand_max_opacity <= 0.0:
+		_clear_sand_overlay()
+		return
+	var threshold: float = clampf(ExportSettings.low_health_sand_threshold, 0.0, 1.0)
+	var ratio: float = _target_hp / _max_hp
+	_sand_target = 0.0
+	if threshold > 0.0 and ratio < threshold:
+		_sand_target = lerpf(0.28, 1.0, clampf(1.0 - ratio / threshold, 0.0, 1.0))
+
+func _clear_sand_overlay() -> void:
+	if _sand_material and (_sand_intensity > 0.0 or low_health_sand.visible):
+		_sand_material.set_shader_parameter("intensity", 0.0)
+	_sand_target = 0.0
+	_sand_intensity = 0.0
+	_sand_elapsed = 0.0
+	low_health_sand.hide()
 
 func _ready() -> void:
 	_sync_mobile_ui_sizes()
@@ -181,8 +229,10 @@ func _check_mobile_controls() -> void:
 ## @param current_hp 当前生命值
 ## @param max_hp 最大生命值
 func UpdateHealthDisplay(current_hp: float, max_hp: float) -> void:
+	_sand_health_valid = is_finite(current_hp) and is_finite(max_hp) and max_hp > 0.0
 	_max_hp = maxf(1.0, max_hp)
 	_target_hp = clampf(current_hp, 0.0, _max_hp)
+	_update_sand_target()
 	# 前五帧每 20% 一档，最后一帧为空瓶；统一裁切尺寸避免切换时跳动。
 	var frame: int = 5 - clampi(int(ceil(_target_hp / _max_hp * 5.0)), 0, 5)
 	var atlas := health_icon.texture as AtlasTexture

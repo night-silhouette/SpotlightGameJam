@@ -1,6 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c7t8r2m4vy3p1"]
-
-[ext_resource type="Script" path="res://Code/Common/InteractionDot.gd" id="interaction_dot"]
+[gd_scene load_steps=5 format=3 uid="uid://c7t8r2m4vy3p1"]
 
 [ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.gd" id="1_water"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.tscn" id="2_curtain"]
@@ -15,11 +13,9 @@ size = Vector2(160, 100)
 collision_mask = 2
 script = ExtResource("1_water")
 
-[node name="InteractionDot" type="Node2D" parent="."]
-script = ExtResource("interaction_dot")
-
 [node name="BeforeVisual" type="TileMapLayer" parent="."]
 visible = false
+top_level = true
 collision_enabled = false
 navigation_enabled = false
 
@@ -61,7 +57,12 @@ offset_bottom = 50.0
 [node name="BeforeSpriteVisuals" type="Node2D" parent="." unique_id=424886505]
 top_level = true
 
-
 [node name="BeforeSpriteVisualsTransform" type="RemoteTransform2D" parent="." unique_id=1195621893]
 remote_path = NodePath("../BeforeSpriteVisuals")
+update_rotation = false
+update_scale = false
+
+[node name="BeforeVisualTransform" type="RemoteTransform2D" parent="."]
+remote_path = NodePath("../BeforeVisual")
+update_rotation = false
 update_scale = false

@@ -23,9 +23,9 @@ func _ready() -> void:
 	_chapter_label.text = chapter_text
 	_subtitle_label.text = subtitle_text
 	_subtitle_label.visible = not subtitle_text.is_empty()
-	_act_label.add_theme_color_override("font_color", SETTINGS_SKIN.ACCENT)
-	_chapter_label.add_theme_color_override("font_color", SETTINGS_SKIN.PAPER)
-	_subtitle_label.add_theme_color_override("font_color", SETTINGS_SKIN.ACCENT)
+	_act_label.add_theme_color_override("font_color", SETTINGS_SKIN.PAPER)
+	_chapter_label.add_theme_color_override("font_color", SETTINGS_SKIN.ACCENT)
+	_subtitle_label.add_theme_color_override("font_color", SETTINGS_SKIN.PAPER)
 	_decoration.material.set_shader_parameter("paper_color", SETTINGS_SKIN.PAPER)
 	if auto_play:
 		Play()

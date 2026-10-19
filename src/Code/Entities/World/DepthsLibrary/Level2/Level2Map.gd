@@ -2,6 +2,9 @@ extends Node2D
 ## 连续地下地图：房间通过实体通道相连，玩家能力与死亡复活由角色系统管理。
 const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 const FAILED_SFX = preload("res://Music/SFX/InteractiveLV3/Failed.wav")
+const FOUNTAIN_ACTIVATE_SFX = preload("res://Music/SFX/Interactive-SFX_Interactive/Interact.wav")
+const FOUNTAIN_ENTER_SFX = preload("res://Music/SFX/Interactive-SFX_Interactive/HuaShui.wav")
+const FOUNTAIN_EXIT_SFX = preload("res://Music/SFX/Interactive-SFX_Interactive/YouShui.wav")
 var keys: Array[String] = []
 var rune_progress: int = 0
 var puzzle_solved: bool = false
@@ -44,6 +47,8 @@ func _ready() -> void:
 	SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
 	SignalBus.PlayerBeforeMotion.connect(_on_player_before_motion)
 	$Rooms/SurfaceExit/FinishArea.body_entered.connect(_on_exit_reached)
+	$Rooms/FountainShaft/Updraft.body_entered.connect(_on_fountain_water_entered)
+	$Rooms/FountainShaft/Updraft.body_exited.connect(_on_fountain_water_exited)
 	for platform in find_children("*", "AnimatableBody2D", true, false):
 		platform.set("movement_speed", ExportSettings.level2_platform_speed)
 	for room in $Rooms.get_children():
@@ -226,6 +231,8 @@ func _on_requested(source: Node2D, player: Node2D) -> void:
 				Util.PlaySFX2D(FAILED_SFX, source.global_position, &"SFX_Interact", 6.0)
 				_toast("已提交 %d / 3 把钥匙，已提交的不会因死亡丢失。" % submitted_keys.size())
 			else:
+				if not fountain_active:
+					Util.PlaySFX2D(FOUNTAIN_ACTIVATE_SFX, source.global_position, &"SFX_Interact", 6.0)
 				fountain_active = true
 				_toast("水泵已启动，沿喷泉升回地表。", 7.0)
 			_refresh()
@@ -279,6 +286,14 @@ func _on_respawned(_position: Vector2) -> void:
 	if not from_fountain_fall:
 		_toast("未提交钥匙已回到原位，已提交的保留。" if lost > 0 else "已提交钥匙保留。")
 	SignalBus.Level2StateChanged.emit(self)
+
+func _on_fountain_water_entered(body: Node2D) -> void:
+	if fountain_active and body.is_in_group("player"):
+		Util.PlaySFX2D(FOUNTAIN_ENTER_SFX, body.global_position, &"SFX_Interact", 6.0)
+
+func _on_fountain_water_exited(body: Node2D) -> void:
+	if fountain_active and body.is_in_group("player"):
+		Util.PlaySFX2D(FOUNTAIN_EXIT_SFX, body.global_position, &"SFX_Interact", 6.0)
 
 func _on_exit_reached(body: Node2D) -> void:
 	if body != _player or not fountain_active or completed:

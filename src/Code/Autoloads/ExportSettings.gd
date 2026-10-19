@@ -1,5 +1,34 @@
 extends Node
 
+const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
+
+@export_group("Tutorial Subtitle", "tutorial_")
+## 跳跃教学区域每次重新进入时请求的文案。
+@export var tutorial_jump_hint_text: String = "长按跳跃以达到更高高度"
+## 横木平台冲刺教学区域每次重新进入时请求的文案。
+@export var tutorial_dash_hint_text: String = "Shift键冲刺"
+## 第一处水墙前的交互教学文案。
+@export var tutorial_water_wall_hint_text: String = "左键交互水墙"
+## 字幕淡入、全显停留和淡出的时长，单位秒。
+@export_range(0.0, 5.0, 0.05) var tutorial_fade_in_duration: float = 0.7
+@export_range(0.0, 20.0, 0.1) var tutorial_hold_duration: float = 4.0
+@export_range(0.0, 5.0, 0.05) var tutorial_fade_out_duration: float = 1.0
+## 文字颜色复用设置界面的暖纸色，默认不透明度为0.8。
+@export var tutorial_text_color: Color = Color(TUTORIAL_SKIN.PAPER, 0.8)
+## 墨色文字阴影及暖金装饰线颜色。
+@export var tutorial_shadow_color: Color = Color(TUTORIAL_SKIN.INK, 0.6)
+@export var tutorial_line_color: Color = Color(TUTORIAL_SKIN.ACCENT, 0.45)
+@export_range(12, 64, 1) var tutorial_font_size: int = 24
+@export var tutorial_shadow_offset: Vector2i = Vector2i(0, 2)
+## 字幕底边距及左右安全距离，单位为界面像素。
+@export_range(0.0, 240.0, 1.0) var tutorial_bottom_margin: float = 64.0
+@export_range(0.0, 120.0, 1.0) var tutorial_screen_margin: float = 24.0
+## 字幕最大宽度；小窗口按左右安全距离自动收窄并换行。
+@export_range(120.0, 1600.0, 1.0) var tutorial_max_width: float = 760.0
+@export_range(0, 40, 1) var tutorial_line_spacing: int = 10
+@export_range(0.0, 1.0, 0.01) var tutorial_line_width_ratio: float = 0.3
+@export_range(1.0, 4.0, 0.5) var tutorial_line_thickness: float = 1.0
+
 @export_group("Level 3 - Outward Scenery", "outward_scenery_")
 ## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
 @export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
@@ -164,6 +193,8 @@ extends Node
 @export_range(0.0, 11.0, 0.5) var player_step_horizontal_distance: float = 1.0
 ## 跳跃初速度
 @export var player_jump_speed: float = 380.0
+## 离开平台后仍可普通起跳的宽限时间（秒）；0 表示关闭，不消耗二段跳。
+@export_range(0.0, 0.3, 0.01) var player_coyote_time: float = 0.12
 ## 长按跳跃滞空调节能力系数 (影响跳跃手感曲线)
 @export var player_jump_ability: float = 0.85
 ## 二段跳初速度
@@ -454,6 +485,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var chalice_reset_time: float = 10.0
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
+## 玩家距圣杯图像边缘的最大交互距离（世界像素），不要求身体进入点击区域。
+@export_range(0.0, 300.0, 1.0) var chalice_interact_distance: float = 85.0
 
 @export_group("Interactive - Tent", "tent_")
 ## 帐篷重生延迟时长 (秒，玩家死亡后多久在帐篷重生)
@@ -526,6 +559,14 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
 ## 非一次性镜头门允许画面移动一个视口宽/高所需的秒数。
 @export_range(0.05, 5.0, 0.05) var camera_gate_transition_duration: float = 0.4
+## 镜头门真实切换时是否播放全屏渐变黑幕，不改变镜头运动或玩家输入。
+@export var camera_gate_fade_enabled: bool = true
+## 镜头门黑幕的最大不透明度，0 为全透明，1 为全黑。
+@export_range(0.0, 1.0, 0.01) var camera_gate_fade_opacity: float = 1.0
+## 镜头门黑幕淡入秒数；淡入后保持至门过渡时长，再淡出。
+@export_range(0.0, 5.0, 0.01) var camera_gate_fade_in: float = 0.12
+## 镜头门黑幕淡出秒数。
+@export_range(0.0, 5.0, 0.01) var camera_gate_fade_out: float = 0.25
 
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
@@ -672,8 +713,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_max_save_slots: int = 5
 ## 游戏启动时是否自动载入第一个存档 (若存在)
 @export var setting_auto_load_slot_1: bool = false
-## 存档文件路径前缀模版 (支持 res://Saves/save_slot_ 或 user://save_slot_)
-@export var setting_save_path_prefix: String = "res://Code/Entities/Setting/Saves/save_slot_"
+## 存档文件路径前缀（仅user://可写目录；res://旧档由SaveManager只读兼容）。
+@export var setting_save_path_prefix: String = "user://Saves/save_slot_"
 
 ## 按键绑定持久化文件路径 (独立于存档槽位)
 @export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
@@ -689,6 +730,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.5, 4.0, 0.1) var setting_panel_edge_width: float = 1.6
 
 @export_group("Dialog", "dialog_")
+## 旁白自动消失的最短停留秒数。
+@export_range(0.1, 10.0, 0.1) var dialog_narration_min_duration: float = 2.5
+## 旁白自动消失的最长停留秒数。
+@export_range(0.1, 20.0, 0.1) var dialog_narration_max_duration: float = 6.0
+## 旁白每个字符对应的阅读秒数，最终时长限制在最短与最长停留时间之间。
+@export_range(0.01, 1.0, 0.01) var dialog_narration_seconds_per_character: float = 0.12
 ## 独白与旁白继续箭头的悬停颜色；正常状态为白色。
 @export var dialog_arrow_hover_color: Color = Color(1.0, 0.95, 0.70, 1.0)
 ## 独白每秒显示的字符数。
@@ -701,6 +748,22 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
 ## 开始菜单背景音乐总线
 @export var start_menu_music_bus: StringName = &"MUS_StartMenu"
+## 首次按键后主菜单界面的淡入时长，单位为秒。
+@export_range(0.0, 3.0, 0.05) var start_menu_ui_fade_duration: float = 0.8
+
+@export_group("New Game Intro", "new_game_intro_")
+## 仅新开存档播放的黑幕文字；换行对应屏幕上的两行。
+@export_multiline var new_game_intro_text: String = "雨水将带着所有被遗忘的名字\n回到世界的出处"
+## 开场文字颜色。
+@export var new_game_intro_text_color: Color = Color("eee5cf")
+## 1280×720 基准下的字号，小窗口等比缩小。
+@export_range(16, 64, 1) var new_game_intro_font_size: int = 28
+## 文字淡入时间，单位为秒。
+@export_range(0.0, 5.0, 0.1) var new_game_intro_fade_in_duration: float = 1.2
+## 文字完全显示后的停留时间，单位为秒。
+@export_range(0.0, 15.0, 0.1) var new_game_intro_hold_duration: float = 3.0
+## 文字淡出时间，单位为秒；黑幕保留到世界载入。
+@export_range(0.0, 5.0, 0.1) var new_game_intro_fade_out_duration: float = 1.0
 
 @export_group("World Opening", "world_opening_")
 ## 世界就绪后等待的帧数，与开场剧情及读档初始化对齐。
@@ -713,6 +776,16 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.1, 1.0) var oasis_art_water_opacity: float = 0.78
 ## 第三关水纹滚动速度，只控制装饰动画。
 @export_range(0.0, 5.0) var oasis_art_water_scroll_speed: float = 1.5
+
+@export_group("Oasis Phase Transition", "oasis_phase_transition_")
+## 拾取枯骨后从去程切至返程时是否播放全屏黑幕。
+@export var oasis_phase_transition_enabled: bool = true
+## 去程画面淡入至全黑的时长，单位秒。
+@export_range(0.0, 5.0, 0.05) var oasis_phase_transition_fade_in: float = 0.45
+## 已切换到返程后继续保持全黑的时长，单位秒。
+@export_range(0.0, 5.0, 0.05) var oasis_phase_transition_hold: float = 0.15
+## 返程画面从全黑淡出的时长，单位秒；淡出完成后开始追逐。
+@export_range(0.0, 5.0, 0.05) var oasis_phase_transition_fade_out: float = 0.45
 
 @export_group("Interactable Component", "interactable_")
 @export var interactable_action: StringName = &"interact"
@@ -792,8 +865,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 100.0, 1.0) var room_camera_zone_exit_margin: float = 24.0
 
 @export_group("Sunken Palace - Scenery", "sunken_scenery_")
-## 沉没宫殿本地坐标的背景显示范围，避免第一关背景覆盖其他关卡。
+## 沉没宫殿本地 X 坐标的背景显示范围，避免第一关背景覆盖其他关卡。
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
+## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
+@export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。
@@ -816,3 +891,24 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var interaction_dot_color: Color = Color(1.0, 0.96, 0.85, 0.65)
 ## 圆点半径，单位为世界像素，不随实体缩放。
 @export_range(1.0, 32.0, 0.5) var interaction_dot_radius: float = 15.0
+
+@export_group("Low Health Sand Overlay", "low_health_sand_")
+## 屏幕边缘沙化开关；独立于人物的15%缺水表现。
+@export var low_health_sand_enabled: bool = true
+## 生命比例严格低于此值才进入危机状态；0 表示不触发。
+@export_range(0.0, 1.0, 0.01) var low_health_sand_threshold: float = 0.3
+## 边缘最大不透明度，不影响中心视野。
+@export_range(0.0, 1.0, 0.01) var low_health_sand_max_opacity: float = 0.62
+## 最大侵蚀宽度占屏幕短边比例，硬限制不超过18%。
+@export_range(0.01, 0.18, 0.01) var low_health_sand_edge_width: float = 0.18
+## 强度从0到1或从1到0所需秒数；0为立即切换，死亡始终立即清除。
+@export_range(0.0, 3.0, 0.05) var low_health_sand_fade_duration: float = 0.65
+## 呼吸频率（次/秒）与微弱透明度起伏幅度。
+@export_range(0.0, 2.0, 0.05) var low_health_sand_pulse_speed: float = 0.32
+@export_range(0.0, 0.15, 0.01) var low_health_sand_pulse_amount: float = 0.06
+## 细沙尺寸（屏幕像素）及沿边缘流动速度（屏幕像素/秒）。
+@export_range(0.5, 4.0, 0.1) var low_health_sand_grain_size: float = 1.4
+@export_range(0.0, 60.0, 1.0) var low_health_sand_flow_speed: float = 12.0
+## 沙金与暗沙颜色；颜色alpha与最大不透明度相乘。
+@export var low_health_sand_color: Color = Color(0.76, 0.59, 0.32, 1.0)
+@export var low_health_sand_dark_color: Color = Color(0.19, 0.13, 0.075, 1.0)
