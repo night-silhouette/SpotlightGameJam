@@ -111,6 +111,8 @@ extends Node
 @export_range(0.0, 1.0) var level2_scenery_vertical_foreground_opacity: float = 1.0
 ## 竖井玩家附近前景淡出半径，避免窄井中的柱子遮住玩家。
 @export var level2_scenery_vertical_clear_radius: float = 32.0
+## 折返井蓝色底图水平偏移（适配后的像素），不移动柱子或圆桌。
+@export var level2_scenery_lower_blue_offset_x: float = 6.0
 ## 竖井柱子纵向循环的重叠淡化比例，避免原图首尾硬切。
 @export_range(0.01, 0.15) var level2_scenery_vertical_loop_blend: float = 0.06
 ## 下层竖井雕花柱相对原位置的最大视差位移（像素）；不循环，雕花保持在下部。
@@ -730,6 +732,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Level 2 - Death Boundary", "level2_death_boundary_")
 ## 第二关可见蓝色边界与接触死亡总开关。
 @export var level2_death_boundary_enabled: bool = true
+## 符文档案房底部死亡区域的石边与黑色外观；关闭后仍保留死亡判定。
+@export var level2_death_boundary_weave_visual_enabled: bool = false
+## 日光书架房底部死亡区域的石边与黑色外观；关闭后仍保留死亡判定。
+@export var level2_death_boundary_sun_visual_enabled: bool = false
+## 月影水道底部死亡区域的石边与黑色外观；关闭后仍保留死亡判定。
+@export var level2_death_boundary_moon_visual_enabled: bool = false
 ## 兼容旧场景保留；新版死亡砖边框统一使用 level2_terrain_art_border_ratio。
 @export_range(32.0, 256.0, 8.0) var level2_death_boundary_texture_size: float = 96.0
 ## 月影水道死亡砖块向下衔接天花板的美术高度；仅合并外观，不扩大死亡碰撞。

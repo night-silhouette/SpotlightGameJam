@@ -1,49 +1,83 @@
-[gd_scene format=3]
-[ext_resource type="Shader" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="shader"]
-[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Vertical/03.png" id="tex0"]
-[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Vertical/06.png" id="tex1"]
-[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Vertical/07.png" id="tex2"]
-[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Vertical/09.png" id="tex3"]
-[ext_resource type="Texture2D" path="res://Art/Archived/UndergroudLibrary/Vertical/01.png" id="tex4"]
+[gd_scene format=3 uid="uid://da87hd87s51ma"]
+
+[ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="shader"]
+[ext_resource type="Texture2D" uid="uid://0wlsayo4mdgd" path="res://Art/Archived/UndergroudLibrary/Vertical/03.png" id="tex0"]
+[ext_resource type="Texture2D" uid="uid://cexx5u4vby1gf" path="res://Art/Archived/UndergroudLibrary/Vertical/06.png" id="tex1"]
+[ext_resource type="Texture2D" uid="uid://dwqfngtx4kvuo" path="res://Art/Archived/UndergroudLibrary/Vertical/07.png" id="tex2"]
+[ext_resource type="Texture2D" uid="uid://krjy5b6o81ps" path="res://Art/Archived/UndergroudLibrary/Vertical/09.png" id="tex3"]
+[ext_resource type="Texture2D" uid="uid://6labuijaaxmd" path="res://Art/Archived/UndergroudLibrary/Vertical/01.png" id="tex4"]
+
 [sub_resource type="ShaderMaterial" id="mat0"]
 resource_local_to_scene = true
 shader = ExtResource("shader")
 shader_parameter/vertical_layout = true
-shader_parameter/foreground = false
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
 [sub_resource type="ShaderMaterial" id="mat1"]
 resource_local_to_scene = true
 shader = ExtResource("shader")
 shader_parameter/vertical_layout = true
-shader_parameter/foreground = false
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
 [sub_resource type="ShaderMaterial" id="mat2"]
 resource_local_to_scene = true
 shader = ExtResource("shader")
 shader_parameter/vertical_layout = true
-shader_parameter/foreground = false
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
 [sub_resource type="ShaderMaterial" id="mat3"]
 resource_local_to_scene = true
 shader = ExtResource("shader")
 shader_parameter/vertical_layout = true
-shader_parameter/foreground = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
 [sub_resource type="ShaderMaterial" id="mat4"]
 resource_local_to_scene = true
 shader = ExtResource("shader")
 shader_parameter/vertical_layout = true
-shader_parameter/foreground = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 280.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
 shader_parameter/opacity = 0.35
-[node name="VerticalScenery" type="Control"]
-layout_mode = 0
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[node name="VerticalScenery" type="Control" unique_id=1292389708]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 280.0
 offset_bottom = 2940.0
 mouse_filter = 2
 metadata/vertical_layout = true
-[node name="Backdrop" type="Control" parent="."]
-clip_contents = true
+
+[node name="Backdrop" type="Control" parent="." unique_id=789636461]
 z_index = -15
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,7 +85,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-[node name="ShaftDepth" type="TextureRect" parent="Backdrop"]
+
+[node name="ShaftDepth" type="TextureRect" parent="Backdrop" unique_id=1683389892]
 material = SubResource("mat0")
 layout_mode = 1
 anchors_preset = 15
@@ -62,9 +97,9 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("tex0")
 expand_mode = 1
-stretch_mode = 0
 metadata/depth = "far"
-[node name="LeftColumns" type="TextureRect" parent="Backdrop"]
+
+[node name="LeftColumns" type="TextureRect" parent="Backdrop" unique_id=2095988122]
 material = SubResource("mat1")
 layout_mode = 1
 anchors_preset = 15
@@ -75,9 +110,9 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("tex1")
 expand_mode = 1
-stretch_mode = 0
 metadata/depth = "middle"
-[node name="RightColumns" type="TextureRect" parent="Backdrop"]
+
+[node name="RightColumns" type="TextureRect" parent="Backdrop" unique_id=183616009]
 material = SubResource("mat2")
 layout_mode = 1
 anchors_preset = 15
@@ -88,11 +123,11 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("tex2")
 expand_mode = 1
-stretch_mode = 0
 metadata/depth = "middle"
-[node name="Foreground" type="Control" parent="."]
-clip_contents = true
+
+[node name="Foreground" type="Control" parent="." unique_id=710374611]
 z_index = 4
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -100,7 +135,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-[node name="NearColumn" type="TextureRect" parent="Foreground"]
+
+[node name="NearColumn" type="TextureRect" parent="Foreground" unique_id=321569642]
 material = SubResource("mat3")
 layout_mode = 1
 anchors_preset = 15
@@ -111,9 +147,10 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("tex3")
 expand_mode = 1
-stretch_mode = 0
 metadata/depth = "front"
-[node name="DarkEdges" type="TextureRect" parent="Foreground"]
+
+[node name="DarkEdges" type="TextureRect" parent="Foreground" unique_id=687332941]
+visible = false
 material = SubResource("mat4")
 layout_mode = 1
 anchors_preset = 15
@@ -124,5 +161,4 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("tex4")
 expand_mode = 1
-stretch_mode = 0
 metadata/depth = "front"

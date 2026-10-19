@@ -49,8 +49,8 @@ metadata/label = "交织"
 metadata/rune_id = "weave"
 
 [node name="TimingSpikesA" parent="." unique_id=684085317 instance=ExtResource("spikes")]
-solid_base_enabled = true
 position = Vector2(585, 500)
+solid_base_enabled = true
 
 [node name="BaseSlot" parent="TimingSpikesA" index="0"]
 visible = false
@@ -62,161 +62,76 @@ position = Vector2(0, -14.21)
 visible = false
 
 [node name="Sprite2D" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="2" unique_id=35015235]
-position = Vector2(-14.434998, 12.54499150)
+position = Vector2(-14.434998, 12.5449915)
 rotation = 3.1415927
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("3_gu7in")
+offset = Vector2(0, 89)
 region_enabled = true
 region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
 
-[node name="Sprite2D" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot"]
+[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="3" unique_id=1725377885]
+position = Vector2(-4.4349976, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="4" unique_id=1904993960]
+position = Vector2(5.5650024, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="5" unique_id=1980561138]
+position = Vector2(15.565002, 12.5449915)
+rotation = 3.1415927
+scale = Vector2(0.07, 0.07)
+texture = ExtResource("3_gu7in")
+offset = Vector2(0, 89)
+region_enabled = true
+region_rect = Rect2(0, 178, 159, 203)
+
+[node name="Sprite2D" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot" index="0" unique_id=1410421921]
 position = Vector2(-14.434998, -1.6650085)
 rotation = 3.1415927
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("3_gu7in")
+offset = Vector2(0, -101.5)
 region_enabled = true
 region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
 
-[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="3" unique_id=1725377885]
-position = Vector2(-4.4349976, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot"]
+[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot" index="1" unique_id=1522970414]
 position = Vector2(-4.4349976, -1.6650085)
 rotation = 3.1415927
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("3_gu7in")
+offset = Vector2(0, -101.5)
 region_enabled = true
 region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
 
-[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="4" unique_id=1904993960]
-position = Vector2(5.5650024, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot"]
+[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot" index="2" unique_id=1861562280]
 position = Vector2(5.5650024, -1.6650085)
 rotation = 3.1415927
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("3_gu7in")
+offset = Vector2(0, -101.5)
 region_enabled = true
 region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
 
-[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesA/SpikeMovingRoot" index="5" unique_id=1980561138]
-position = Vector2(15.565002, 12.54499150)
-rotation = 3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot"]
+[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesA/BaseVisualRoot" index="3" unique_id=2080667153]
 position = Vector2(15.565002, -1.6650085)
 rotation = 3.1415927
 scale = Vector2(0.07, 0.07)
 texture = ExtResource("3_gu7in")
+offset = Vector2(0, -101.5)
 region_enabled = true
 region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="TimingSpikesB" parent="." unique_id=326580925 instance=ExtResource("spikes")]
-solid_base_enabled = true
-position = Vector2(1160, 500)
-
-[node name="BaseSlot" parent="TimingSpikesB" index="0"]
-visible = false
-
-[node name="SpikeMovingRoot" parent="TimingSpikesB" index="1"]
-position = Vector2(0, -14.21)
-
-[node name="VisualPolygon" parent="TimingSpikesB/SpikeMovingRoot" index="0"]
-visible = false
-
-[node name="Sprite2D" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="2" unique_id=1005740303]
-position = Vector2(-15, 13.21000000)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D" type="Sprite2D" parent="TimingSpikesB/BaseVisualRoot"]
-position = Vector2(-15, -1)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="3" unique_id=1854677921]
-position = Vector2(-5, 13.21000000)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D2" type="Sprite2D" parent="TimingSpikesB/BaseVisualRoot"]
-position = Vector2(-5, -1)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="4" unique_id=1262427114]
-position = Vector2(5, 13.21000000)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D3" type="Sprite2D" parent="TimingSpikesB/BaseVisualRoot"]
-position = Vector2(5, -1)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
-
-[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesB/SpikeMovingRoot" index="5" unique_id=627115476]
-position = Vector2(15, 13.21000000)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 178, 159, 203)
-offset = Vector2(0, 89)
-
-[node name="Sprite2D4" type="Sprite2D" parent="TimingSpikesB/BaseVisualRoot"]
-position = Vector2(15, -1)
-rotation = -3.1415927
-scale = Vector2(0.07, 0.07)
-texture = ExtResource("3_gu7in")
-region_enabled = true
-region_rect = Rect2(0, 0, 159, 178)
-offset = Vector2(0, -101.5)
 
 [node name="Gate" type="StaticBody2D" parent="." unique_id=109426221]
 position = Vector2(1720, -60)
@@ -255,10 +170,10 @@ metadata/kind = "key"
 metadata/label = "双族交织钥匙"
 metadata/key_id = "weave"
 
-[node name="Visual" parent="WeaveKey" index="0"]
+[node name="Visual" parent="WeaveKey" index="2"]
 visible = false
 
-[node name="Caption" parent="WeaveKey" index="1"]
+[node name="Caption" parent="WeaveKey" index="3"]
 offset_left = -113.0
 offset_top = -119.0
 offset_right = 117.0
@@ -277,5 +192,4 @@ tile_set = ExtResource("L2Terrain")
 navigation_enabled = false
 
 [editable path="TimingSpikesA"]
-[editable path="TimingSpikesB"]
 [editable path="WeaveKey"]

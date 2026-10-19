@@ -43,9 +43,18 @@ func _draw() -> void:
 	if art != null and art.is_visible_in_tree() and art_enabled:
 		return
 	var rectangles: Array[Rect2] = []
+	var weave_visual: bool = bool(SETTINGS.get_property_default_value("level2_death_boundary_weave_visual_enabled")) if Engine.is_editor_hint() else ExportSettings.level2_death_boundary_weave_visual_enabled
+	var sun_visual: bool = bool(SETTINGS.get_property_default_value("level2_death_boundary_sun_visual_enabled")) if Engine.is_editor_hint() else ExportSettings.level2_death_boundary_sun_visual_enabled
+	var moon_visual: bool = bool(SETTINGS.get_property_default_value("level2_death_boundary_moon_visual_enabled")) if Engine.is_editor_hint() else ExportSettings.level2_death_boundary_moon_visual_enabled
 	for child in get_children():
 		var collider := child as CollisionShape2D
 		if collider == null or collider.disabled or not collider.shape is RectangleShape2D:
+			continue
+		if collider.name == &"WeaveArchiveDeathWater" and not weave_visual:
+			continue
+		if collider.name == &"SunStacksDeathWater" and not sun_visual:
+			continue
+		if collider.name == &"MoonAqueductDeathWater" and not moon_visual:
 			continue
 		var shape := collider.shape as RectangleShape2D
 		rectangles.append(collider.transform * Rect2(-shape.size * 0.5, shape.size))

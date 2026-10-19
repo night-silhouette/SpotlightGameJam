@@ -3,8 +3,12 @@ extends Control
 ## Fits the supplied composition and clips its Parallax2D layers to the shaft.
 const COVERAGE_SHADER: Shader = preload("res://Code/Entities/World/DepthsLibrary/Level2/Scenery/HorizontalCoverage.gdshader")
 const COMPOSITION: PackedScene = preload("res://Code/Entities/World/DepthsLibrary/Level2/Scenery/VerticalComposition.tscn")
+const SETTINGS_SCENE: PackedScene = preload("res://Code/Autoloads/ExportSettings.tscn")
+const SETTINGS_SCRIPT: Script = preload("res://Code/Autoloads/ExportSettings.gd")
 var _original_transforms: Dictionary = {}
 var _materials: Array[ShaderMaterial] = []
+var _blue_base_material: ShaderMaterial
+var _last_blue_offset := 0.0
 var _art_size := Vector2.ONE
 var _last_size := Vector2.ZERO
 
@@ -15,6 +19,7 @@ func _ready() -> void:
 func _initialize() -> void:
 	_original_transforms.clear()
 	_materials.clear()
+	_blue_base_material = null
 	_last_size = Vector2.ZERO
 	var composition := get_node_or_null("Composition")
 	if composition == null:
@@ -50,18 +55,36 @@ func _initialize() -> void:
 		for sprite in layer.get_children():
 			if sprite is Sprite2D:
 				sprite.material = material
+	# Only the blue backing moves; the ledge sharing BlueDepth stays in place.
+	var blue_base := composition.get_node("BlueDepth/BlueBase") as Sprite2D
+	_blue_base_material = blue_base.material.duplicate() as ShaderMaterial
+	blue_base.material = _blue_base_material
+	_materials.append(_blue_base_material)
+
+func _blue_offset() -> float:
+	if not Engine.is_editor_hint():
+		return ExportSettings.level2_scenery_lower_blue_offset_x
+	# Match the saved setting in editor previews, where autoloads do not run.
+	var property_name := &"level2_scenery_lower_blue_offset_x"
+	var state := SETTINGS_SCENE.get_state()
+	for index in range(state.get_node_property_count(0)):
+		if state.get_node_property_name(0, index) == property_name:
+			return float(state.get_node_property_value(0, index))
+	return float(SETTINGS_SCRIPT.get_property_default_value(property_name))
 
 func _fit_to_bounds() -> void:
 	var factor := size / _art_size
 	for sprite: Sprite2D in _original_transforms:
 		var original: Transform2D = _original_transforms[sprite]
 		sprite.transform = Transform2D(Vector2(factor.x, 0), Vector2(0, factor.y), Vector2.ZERO) * original
+	_last_blue_offset = _blue_offset()
+	$Composition/BlueDepth/BlueBase.position.x += _last_blue_offset
 	_last_size = size
 
 func _process(_delta: float) -> void:
 	if _materials.is_empty():
 		_initialize()
-	if size != _last_size:
+	if size != _last_size or not is_equal_approx(_last_blue_offset, _blue_offset()):
 		_fit_to_bounds()
 	if is_visible_in_tree():
 		_update_motion()
@@ -120,3 +143,6 @@ func _update_materials() -> void:
 		material.set_shader_parameter("opacity", 1.0 if Engine.is_editor_hint() else ExportSettings.level2_scenery_vertical_foreground_opacity)
 		material.set_shader_parameter("clear_radius", 32.0 if Engine.is_editor_hint() else ExportSettings.level2_scenery_vertical_clear_radius)
 		material.set_shader_parameter("player_world", player.global_position if is_instance_valid(player) else Vector2(-100000, -100000))
+	# Shift this sprite's clip too, otherwise the extra coverage is discarded.
+	var blue_shift := get_global_transform().basis_xform(Vector2(_last_blue_offset, 0.0))
+	_blue_base_material.set_shader_parameter("world_bounds", Vector4(corner.x + blue_shift.x, corner.y + blue_shift.y, end.x + blue_shift.x, end.y + blue_shift.y))
