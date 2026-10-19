@@ -1,5 +1,9 @@
 extends Node
 
+@export_group("Debug", "debug_")
+## 是否显示玩家界面的调试能力面板。
+@export var debug_panel_enabled: bool = false
+
 @export_group("Chapter 5", "chapter5_")
 ## 地面位移相对当前脚下坐标和真实湖中心，单位世界像素。
 @export var chapter5_approach_distance: float = 18.0
