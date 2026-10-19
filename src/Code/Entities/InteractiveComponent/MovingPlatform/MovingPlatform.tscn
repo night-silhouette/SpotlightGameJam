@@ -10,6 +10,7 @@ collision_mask = 2
 script = ExtResource("1_moving_platform")
 
 [node name="SolidCollision" type="CollisionShape2D" parent="." unique_id=523826842]
+visible = false
 shape = SubResource("RectangleShape2D_platform")
 
 [node name="VisualRect" type="Polygon2D" parent="." unique_id=1715168700]

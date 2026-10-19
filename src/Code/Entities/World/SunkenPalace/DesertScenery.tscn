@@ -74,31 +74,34 @@ position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("6_cactus_far")
 centered = false
 
-[node name="DunesMid" type="Node2D" parent="." unique_id=1361401322]
+[node name="DunesMid" type="Parallax2D" parent="CoverageBounds" unique_id=1361401322]
+top_level = true
 z_index = -10
 z_as_relative = false
-position = Vector2(-360.56775, 215.92136)
-scale = Vector2(0.86917573, 0.7291989)
-metadata/_editor_description_ = "中景沙丘以原图和水平镜像图组成 3200 像素无缝循环单元；跟随 DesertScenery 整体移动，显示状态可在编辑器中独立设置。"
+scroll_scale = Vector2(0.12, 0)
+scroll_offset = Vector2(4.5261054, 230.82874)
+metadata/_editor_description_ = "中景沙丘使用背景式横向视差；镜头上升超过 ExportSettings 阈值后停止纵向紧跟，避免露出素材下边界。"
 
-[node name="Sprite" type="Sprite2D" parent="DunesMid" unique_id=398358687]
-position = Vector2(-4.5261054, -230.82872)
-texture = ExtResource("7_dunes_mid")
-centered = false
-
-[node name="Sprite2" type="Sprite2D" parent="DunesMid" unique_id=1685854202]
-position = Vector2(3193.2932, -229.98654)
-texture = ExtResource("7_dunes_mid")
-centered = false
-
-[node name="SpriteMirrored" type="Sprite2D" parent="DunesMid" unique_id=290336486]
-position = Vector2(1595.4739, -230.82872)
+[node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=290336486]
+position = Vector2(1357.0945, -41.910088)
+scale = Vector2(0.8691759, 0.7291989)
 texture = ExtResource("7_dunes_mid")
 centered = false
 flip_h = true
 
+[node name="Sprite2" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=398358687]
+position = Vector2(-22.720665, -51.93396)
+scale = Vector2(0.86917573, 0.7291989)
+texture = ExtResource("7_dunes_mid")
+centered = false
+
+[node name="Sprite3" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=1685854202]
+position = Vector2(2724.079, -46.21414)
+scale = Vector2(0.86917573, 0.7291989)
+texture = ExtResource("7_dunes_mid")
+centered = false
+
 [node name="DesertSilhouette" type="Node2D" parent="." unique_id=245001437]
-visible = false
 z_index = 1
 z_as_relative = false
 position = Vector2(-360.56775, 215.92136)

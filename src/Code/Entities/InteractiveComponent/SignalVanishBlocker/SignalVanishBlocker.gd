@@ -24,7 +24,7 @@ signal Vanished
 @export_category("Vanish Behavior")
 ## 是否播放透明度淡出；关闭时立即隐藏或释放。
 @export var fade_enabled: bool = true
-## 是否使用 ExportSettings 中的 vanishing_blocker_fade_duration。
+## 是否使用 ExportSettings 中的 vanishing_blocker_weathering_duration。
 @export var use_export_settings: bool = true
 ## 不使用全局配置时采用的淡出时长（秒）。
 @export_range(0.0, 10.0, 0.05) var fade_duration: float = 0.5
@@ -39,16 +39,25 @@ var _shatter_material: ShaderMaterial
 
 func _ready() -> void:
 	if use_export_settings:
-		fade_duration = maxf(ExportSettings.vanishing_blocker_fade_duration, 0.0)
+		fade_duration = maxf(ExportSettings.vanishing_blocker_weathering_duration, 0.0)
+	_ensure_visual_target()
+	_connect_trigger()
+
+func _ensure_visual_target() -> void:
+	if is_instance_valid(_visual_target):
+		return
 	_resolve_visual_target()
 	_prepare_visual_effect()
-	_connect_trigger()
 
 func _resolve_visual_target() -> void:
 	if not visual_target_path.is_empty():
 		_visual_target = get_node_or_null(visual_target_path) as CanvasItem
 		if not is_instance_valid(_visual_target):
 			push_warning("SignalVanishBlocker could not find visual target: %s" % visual_target_path)
+	if not is_instance_valid(_visual_target) and is_instance_valid(get_parent()):
+		# 兼容编辑器仍持有旧场景内存、实例覆盖丢失或旧存档场景没有显式路径的情况。
+		# 约定同级画面层命名为“挡板节点名 + TileMapLayer”。
+		_visual_target = get_parent().get_node_or_null(NodePath(String(name) + "TileMapLayer")) as CanvasItem
 	if not is_instance_valid(_visual_target):
 		_visual_target = get_node_or_null(^"Visual") as CanvasItem
 	if is_instance_valid(_visual_target) and _visual_target != self:
@@ -98,7 +107,13 @@ func _on_channel_state_changed(channel: StringName, is_active: bool, _source: No
 ## 禁用全部子级 CollisionShape2D/CollisionPolygon2D，并执行淡出消失流程。
 ## @return 首次触发返回 true；已经消失或正在消失时返回 false。
 func Vanish() -> bool:
+	_ensure_visual_target()
 	if _is_vanished:
+		# 重复触发时也修复旧运行实例中可能遗留的可见 TileMap 和碰撞。
+		_set_visual_collision_disabled()
+		_set_vanish_progress(1.0)
+		if is_instance_valid(_visual_target):
+			_visual_target.hide()
 		return false
 	_is_vanished = true
 	_set_collisions_disabled(self)
@@ -113,7 +128,7 @@ func Vanish() -> bool:
 		return true
 	var tween := create_tween()
 	if is_instance_valid(_shatter_material):
-		tween.tween_method(_set_vanish_progress, 0.0, 1.0, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+		tween.tween_method(_set_vanish_progress, 0.0, 1.0, duration)
 	elif is_instance_valid(_visual_target):
 		tween.tween_property(_visual_target, "modulate:a", 0.0, duration)
 	else:
@@ -157,6 +172,7 @@ func ExportSaveData() -> Dictionary:
 ## @param data 由 ExportSaveData() 生成的字典；缺少 vanished 时保持当前状态。
 func LoadSaveData(data: Dictionary) -> void:
 	if bool(data.get("vanished", false)):
+		_ensure_visual_target()
 		_is_vanished = true
 		_set_collisions_disabled(self)
 		_set_visual_collision_disabled()

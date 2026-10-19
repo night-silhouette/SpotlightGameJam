@@ -18,13 +18,9 @@ func _ready() -> void:
 func _on_component_interacted(component: Node2D, _interactor: Node2D) -> void:
 	if _crown_triggered or _crown_offered or component != _crown:
 		return
-	var player := get_tree().get_first_node_in_group(&"player")
-	if is_instance_valid(player) and bool(player.get("has_sunken_crown")):
-		_crown_triggered = true
-		_refresh_crown()
-		return
 	_crown_triggered = true
 	_refresh_crown()
+	# lock1 的接收方均为幂等更新；即使玩家已持有王冠，也必须补发以修复挡板半完成状态。
 	SignalBus.lock1.emit()
 
 

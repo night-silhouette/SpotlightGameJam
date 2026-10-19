@@ -594,7 +594,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 关卡接缝黑雾的颜色；该组件位于世界空间，不依赖摄像头或镜头门。
 @export var level_transition_visual_black_color: Color = Color(0.19, 0.13, 0.075, 1.0)
 ## 关卡接缝黑雾中心的不透明度。
-@export_range(0.0, 1.0, 0.01) var level_transition_visual_black_opacity: float = 0.72
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_black_opacity: float = 0.82
 ## 黑雾矩形边缘的柔化比例，越大过渡越宽。
 @export_range(0.01, 0.5, 0.01) var level_transition_visual_black_edge_softness: float = 0.22
 ## 黑雾内部明暗扰动强度，只制造雾感，不采样或模糊游戏画面。
@@ -847,16 +847,18 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 2048.0, 1.0) var vanishing_blocker_sink_distance: float = 240.0
 ## 信号消失挡板是否使用碎裂 shader；关闭时回退为普通透明淡出。
 @export var vanishing_blocker_shatter_enabled: bool = true
+## 信号挡板的石质风化消散时长（秒）。
+@export_range(0.0, 10.0, 0.05) var vanishing_blocker_weathering_duration: float = 1.2
 ## 碎块在目标 CanvasItem 本地坐标中的尺寸；TileMap 缩放会同步缩放视觉块大小。
 @export_range(16.0, 512.0, 1.0) var vanishing_blocker_shard_size: float = 180.0
-## 碎块横向散开的本地坐标距离。
-@export_range(0.0, 512.0, 1.0) var vanishing_blocker_scatter_distance: float = 90.0
-## 碎块下落的本地坐标距离。
-@export_range(0.0, 1024.0, 1.0) var vanishing_blocker_fall_distance: float = 240.0
-## 碎块裂缝亮边宽度，取值范围 0 到 0.25。
-@export_range(0.0, 0.25, 0.005) var vanishing_blocker_edge_width: float = 0.08
-## 碎裂过程中的裂缝亮边颜色与强度（Alpha）。
-@export var vanishing_blocker_edge_color: Color = Color(0.94, 0.72, 0.39, 1.0)
+## 石面松动时的轻微横向偏移尺度（本地坐标）。
+@export_range(0.0, 512.0, 1.0) var vanishing_blocker_scatter_distance: float = 6.0
+## 石面风化时缓慢沉降的本地坐标距离。
+@export_range(0.0, 1024.0, 1.0) var vanishing_blocker_fall_distance: float = 36.0
+## 不规则石缝宽度，取值范围 0 到 0.25。
+@export_range(0.0, 0.25, 0.005) var vanishing_blocker_edge_width: float = 0.018
+## 石缝的沙褐阴影色及混合强度（Alpha），不发光。
+@export var vanishing_blocker_edge_color: Color = Color(0.19, 0.13, 0.075, 0.65)
 
 @export_group("Oasis Boat", "oasis_boat_")
 ## 第三关七个停靠点的航线进度，按递增顺序配置，起点为 0、终点为 1。
@@ -931,6 +933,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
 ## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
 @export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
+## 镜头升到沉没宫殿原点上方多少像素后，中景沙丘停止纵向紧跟；更高时沙丘会相对画面向下移动，避免露出下边界。
+@export_range(0.0, 3000.0, 10.0, "or_greater") var sunken_scenery_dunes_stop_follow_height: float = 320.0
+## 中景沙丘在停止高度以内的纵向跟随比例：1 完全贴随画面，0 完全按世界位置移动。
+@export_range(0.0, 1.0, 0.05) var sunken_scenery_dunes_vertical_follow_ratio: float = 1.0
 ## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
 @export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 72.0
 ## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。

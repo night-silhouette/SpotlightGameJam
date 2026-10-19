@@ -2,7 +2,7 @@ shader_type canvas_item;
 render_mode unshaded;
 
 uniform vec4 mist_color : source_color = vec4(0.19, 0.13, 0.075, 1.0);
-uniform float opacity : hint_range(0.0, 1.0) = 0.72;
+uniform float opacity : hint_range(0.0, 1.0) = 0.82;
 uniform float edge_softness : hint_range(0.01, 0.5) = 0.22;
 uniform float fog_amount : hint_range(0.0, 0.5) = 0.12;
 uniform float fog_scale : hint_range(0.5, 16.0) = 4.0;

@@ -1,66 +1,57 @@
 shader_type canvas_item;
-
 uniform float progress : hint_range(0.0, 1.0) = 0.0;
-uniform float shard_size : hint_range(16.0, 512.0) = 180.0;
-uniform float scatter_distance : hint_range(0.0, 512.0) = 90.0;
-uniform float fall_distance : hint_range(0.0, 1024.0) = 240.0;
-uniform float edge_width : hint_range(0.0, 0.25) = 0.08;
-uniform vec4 edge_color : source_color = vec4(0.94, 0.72, 0.39, 1.0);
-
-varying vec2 original_local_position;
-
-float hash21(vec2 value) {
-	value = fract(value * vec2(123.34, 456.21));
-	value += dot(value, value + 45.32);
-	return fract(value.x * value.y);
+uniform float shard_size = 180.0;
+uniform float scatter_distance = 6.0;
+uniform float fall_distance = 36.0;
+uniform float edge_width = 0.018;
+uniform vec4 edge_color : source_color = vec4(0.19, 0.13, 0.075, 0.65);
+varying vec2 stone_position;
+float hash21(vec2 p) {
+ p = fract(p * vec2(123.34, 456.21));
+ p += dot(p, p + 45.32);
+ return fract(p.x * p.y);
 }
-
-vec3 shard_data(vec2 local_position) {
-	vec2 grid_position = local_position / max(shard_size, 1.0);
-	vec2 cell = floor(grid_position);
-	vec2 within_cell = fract(grid_position);
-	float triangle = step(1.0, within_cell.x + within_cell.y);
-	float random_value = hash21(cell * 2.0 + vec2(triangle, triangle * 7.0));
-	return vec3(cell, random_value);
-}
-
-float shard_progress(float random_value) {
-	float start = mix(0.02, 0.68, random_value);
-	return clamp((progress - start) / max(1.0 - start, 0.001), 0.0, 1.0);
-}
-
 void vertex() {
-	original_local_position = VERTEX;
-	vec3 data = shard_data(VERTEX + vec2(shard_size * 0.37));
-	float local_progress = shard_progress(data.z);
-	float direction = mix(-1.0, 1.0, hash21(data.xy + 19.17));
-	float rotation_bias = mix(-0.35, 0.35, hash21(data.xy + 61.73));
-	VERTEX.x += direction * scatter_distance * local_progress;
-	VERTEX.x += rotation_bias * fall_distance * local_progress * local_progress;
-	VERTEX.y += fall_distance * local_progress * local_progress;
+ stone_position = VERTEX;
+ // Uniform settling preserves TileMap geometry instead of stretching tile triangles.
+ float settle = smoothstep(0.2, 1.0, progress);
+ VERTEX += vec2(scatter_distance * 0.15, fall_distance) * settle * settle;
 }
-
 void fragment() {
-	vec4 base_color = texture(TEXTURE, UV) * COLOR;
-	if (base_color.a <= 0.001) {
-		discard;
-	}
-
-	vec2 grid_position = original_local_position / max(shard_size, 1.0);
-	vec2 within_cell = fract(grid_position);
-	vec3 data = shard_data(original_local_position);
-	float local_progress = shard_progress(data.z);
-
-	float cell_border = min(min(within_cell.x, 1.0 - within_cell.x), min(within_cell.y, 1.0 - within_cell.y));
-	float diagonal_border = abs(within_cell.x + within_cell.y - 1.0) * 0.7071;
-	float fracture_distance = min(cell_border, diagonal_border);
-	float fracture = 1.0 - smoothstep(0.0, edge_width, fracture_distance);
-	float active_edge = fracture * smoothstep(0.0, 0.18, local_progress) * (1.0 - smoothstep(0.72, 1.0, local_progress));
-	base_color.rgb = mix(base_color.rgb, edge_color.rgb, active_edge * edge_color.a);
-	base_color.a *= 1.0 - smoothstep(0.58, 1.0, local_progress);
-
-	if (base_color.a <= 0.001 || progress >= 0.9999) {
-		discard;
-	}
-	COLOR = base_color;
+ vec4 stone = texture(TEXTURE, UV) * COLOR;
+ vec2 p = stone_position / max(shard_size, 1.0);
+ vec2 cell = floor(p);
+ vec2 local = fract(p);
+ float nearest = 8.0;
+ float second = 8.0;
+ vec2 stone_id = vec2(0.0);
+ for (int y = -1; y <= 1; y++) {
+  for (int x = -1; x <= 1; x++) {
+   vec2 neighbor = vec2(float(x), float(y));
+   vec2 id = cell + neighbor;
+   vec2 seed = vec2(hash21(id), hash21(id + 31.7));
+   float d = length(neighbor + 0.2 + seed * 0.6 - local);
+   if (d < nearest) {
+    second = nearest;
+    nearest = d;
+    stone_id = id;
+   } else {
+    second = min(second, d);
+   }
+  }
+ }
+ float age = hash21(stone_id + 11.3);
+ float phase = smoothstep(age * 0.26, 0.72 + age * 0.28, progress);
+ float grain = hash21(floor(stone_position / max(shard_size * 0.035, 1.0)));
+ float border = second - nearest;
+ float crack = 1.0 - smoothstep(edge_width, edge_width + 0.025, border);
+ float weathering = smoothstep(0.0, 0.28, phase);
+ stone.rgb = mix(stone.rgb, stone.rgb * 0.72 + edge_color.rgb * 0.28,
+  crack * weathering * edge_color.a);
+ // Dark seams crumble first; the original stone then erodes into fine grains.
+ float resistance = mix(grain, age, 0.3) - crack * 0.22;
+ float erosion = smoothstep(resistance - 0.09, resistance + 0.09, phase * 1.3 - 0.15);
+ stone.a *= 1.0 - erosion;
+ if (progress >= 0.9999) { stone.a = 0.0; }
+ COLOR = stone;
 }
