@@ -343,7 +343,7 @@ area_size = Vector2(176.65958, 197.3826)
 
 [node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea" index="0"]
 visible = true
-position = Vector2(2270.9998, 81)
+position = Vector2(2341, 79)
 scale = Vector2(0.14, 0.14)
 tile_map_data = PackedByteArray("AAD/////BgABAAEAAAAAAP//BgADAAEAAAD//wAABgABAAEAAAAAAAAABgADAAEAAAD///7/BgABAAEAAAAAAP7/BgABAAEAABAAAAEABgABAAEAABD//wEABgABAAEAAAA=")
 tile_set = ExtResource("11_flekk")
@@ -363,7 +363,7 @@ material = SubResource("ShaderMaterial_m3c1b")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea" index="6" unique_id=424886505]
 z_index = 6
-position = Vector2(2842.0002, 174.00017)
+position = Vector2(2825, 188.99985)
 rotation = 0.56009614
 scale = Vector2(1.7609997, -1.7609997)
 

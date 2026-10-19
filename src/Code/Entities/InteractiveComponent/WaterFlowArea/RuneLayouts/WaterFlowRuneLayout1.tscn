@@ -4,7 +4,7 @@
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="2_duxql"]
 [ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="2_rune"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nilno"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_duxql"]
 resource_local_to_scene = true
 shader = ExtResource("2_duxql")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -18,16 +18,12 @@ shader_parameter/impact_strength = 0.0
 [node name="WaterFlowRuneLayout1" unique_id=438049887 instance=ExtResource("1_base")]
 
 [node name="WaterCurtain" parent="." index="5"]
-material = SubResource("ShaderMaterial_nilno")
+material = SubResource("ShaderMaterial_duxql")
 
 [node name="Sprite2D" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="0" unique_id=1494022826]
-position = Vector2(-32, -84.000015)
-rotation = 0.61773604
 scale = Vector2(0.096674204, 0.096674204)
 texture = ExtResource("2_rune")
 
 [node name="Sprite2D2" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="1" unique_id=1568588087]
-position = Vector2(-2.5502968, -101.3858)
-rotation = -2.4482937
 scale = Vector2(0.096674204, 0.096674204)
 texture = ExtResource("2_rune")

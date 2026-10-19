@@ -50,7 +50,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pw4kg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m0d35"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -102,7 +102,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6xeld"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pw4kg"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -141,7 +141,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7iiyn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6xeld"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -158,14 +158,25 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4ei61"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7iiyn"]
 resource_local_to_scene = true
 size = Vector2(169.84523, 144.98253)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mid21"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ei61"]
 resource_local_to_scene = true
 shader = ExtResource("8_u3ot4")
 shader_parameter/progress = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mid21"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5kn67"]
 resource_local_to_scene = true
@@ -211,17 +222,6 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsxhb"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
 [sub_resource type="Resource" id="C3_2_20"]
 script = ExtResource("5_acpp2")
 text = "一顶日轮冠。嵌在蛇身雕塑的头顶，仍保留着精巧而庄严的形制，冠体金色，纹饰层层舒展。"
@@ -232,13 +232,13 @@ dialog_type = "独白"
 text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……
 先带走吧，说不定之后会用得到。"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gurr7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsxhb"]
 resource_local_to_scene = true
 shader = ExtResource("13_m0d35")
 shader_parameter/fade_width_pixels = 72.0
 shader_parameter/fade_height_pixels = 56.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m60ys"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gurr7"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -249,7 +249,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o3wgv"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m60ys"]
 resource_local_to_scene = true
 shader = ExtResource("13_2flee")
 shader_parameter/repeat_width = 4831.0
@@ -492,21 +492,22 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_pw4kg")
+material = SubResource("ShaderMaterial_m0d35")
 
 [node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
-material = SubResource("ShaderMaterial_6xeld")
+material = SubResource("ShaderMaterial_pw4kg")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_7iiyn")
+material = SubResource("ShaderMaterial_6xeld")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_7iiyn")
+material = SubResource("ShaderMaterial_6xeld")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_7iiyn")
+material = SubResource("ShaderMaterial_6xeld")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
+physics_interpolation_mode = 2
 position = Vector2(1701, 0)
 scale = Vector2(1.2, 1.2)
 
@@ -535,10 +536,10 @@ scale = Vector2(375.14157, 66.18482)
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
-shape = SubResource("RectangleShape2D_4ei61")
+shape = SubResource("RectangleShape2D_7iiyn")
 
 [node name="OfferingVisual" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="5"]
-material = SubResource("ShaderMaterial_mid21")
+material = SubResource("ShaderMaterial_4ei61")
 
 [node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
 z_index = -1
@@ -554,17 +555,17 @@ tile_map_data = PackedByteArray("AAD5/wQABQACAAAAAAD6/wQABQACAAAAAAD7/wQABQACAAA
 position = Vector2(5397, -60)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_5kn67")
+material = SubResource("ShaderMaterial_mid21")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
-position = Vector2(5390, -61.99997)
-scale = Vector2(0.7676052, -0.7676052)
+position = Vector2(5456.259, 41.143944)
+rotation = -3.6580007
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
 position = Vector2(4164, -1261.9999)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
-material = SubResource("ShaderMaterial_gcgcm")
+material = SubResource("ShaderMaterial_5kn67")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
 position = Vector2(4211, -1265)
@@ -573,7 +574,7 @@ position = Vector2(4211, -1265)
 position = Vector2(4345, -2640)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
-material = SubResource("ShaderMaterial_5q427")
+material = SubResource("ShaderMaterial_gcgcm")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
 position = Vector2(4348, -2647)
@@ -583,7 +584,7 @@ position = Vector2(3442, -3411)
 tile_map_data = PackedByteArray("AAD///v/BgACAAAAAAAAAPv/BgACAAAAAAD///z/BgACAAEAAAD///3/BgACAAEAAAD///7/BgACAAEAAAD/////BgACAAEAAAD//wAABgACAAEAAAD//wEABgACAAEAAAD//wIABgACAAEAAAD//wMABgACAAEAAAD//wQABgACAAIAAAAAAAQABgACAAIAAAAAAAMABgACAAEAAAAAAAIABgADAAYAABAAAAEABgADAAEAAAAAAAAABgADAAEAAAAAAP//BgADAAEAAAAAAP7/BgADAAYAADAAAP3/BgACAAEAAAAAAPz/BgACAAEAAAA=")
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
-material = SubResource("ShaderMaterial_3lcmj")
+material = SubResource("ShaderMaterial_5q427")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
 position = Vector2(3432, -3398.9998)
@@ -595,7 +596,7 @@ scale = Vector2(1.7469953, -0.9010272)
 position = Vector2(1667.9999, -2574.0002)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" index="5"]
-material = SubResource("ShaderMaterial_dsxhb")
+material = SubResource("ShaderMaterial_3lcmj")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
@@ -609,7 +610,7 @@ first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_20"), SubR
 texture = ExtResource("27_sun_crown")
 
 [node name="visualplayer" parent="SunkenPalace" index="16" unique_id=1788018380]
-material = SubResource("ShaderMaterial_gurr7")
+material = SubResource("ShaderMaterial_dsxhb")
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-118, 3250)
@@ -634,10 +635,10 @@ tile_map_data = PackedByteArray("AAAw/+7/CAABAAEAAAAz/+7/CAADAAEAAAAx/+7/CAACAAE
 visible = true
 
 [node name="WaterCurtain" parent="OasisBattlefield/OutwardPhase/WaterFlowArea6" parent_id_path=PackedInt32Array(958829481, 135291713, 854148023) index="5"]
-material = SubResource("ShaderMaterial_m60ys")
+material = SubResource("ShaderMaterial_gurr7")
 
 [node name="GreenDecoration" parent="OasisBattlefield/OutwardPhase/OutwardScenery/ForegroundLoop" parent_id_path=PackedInt32Array(958829481, 135291713, 1852138962, 1710055464) index="0" unique_id=625607659]
-material = SubResource("ShaderMaterial_o3wgv")
+material = SubResource("ShaderMaterial_m60ys")
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
