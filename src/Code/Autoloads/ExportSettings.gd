@@ -889,6 +889,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
 ## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
 @export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
+## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
+@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 72.0
+## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。
+@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 56.0
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。

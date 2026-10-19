@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/PermanentCameraBoundary/PermanentCameraBoundary.gd" id="1_boundary"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boundary"]
+size = Vector2(64, 128)
+
+[node name="PermanentCameraBoundary" type="Area2D"]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("1_boundary")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_boundary")

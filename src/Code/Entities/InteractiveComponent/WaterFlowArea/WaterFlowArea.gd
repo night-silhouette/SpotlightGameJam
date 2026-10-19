@@ -46,9 +46,13 @@ var _bodies_in_water: Array[CharacterBody2D] = []
 var _has_applied_state: bool = false
 var _last_applied_fluid: bool = false
 var _impact_tween: Tween
+var _before_visual_position_offset: Vector2 = Vector2.ZERO
+var _before_sprite_visuals_position_offset: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	add_to_group("touch_interactables")
+	_capture_top_level_visual_offsets()
+	_sync_top_level_visual_positions()
 	_sync_from_export_settings()
 	_update_dimensions()
 	_apply_state(is_fluid)
@@ -57,10 +61,45 @@ func _ready() -> void:
 	fluid_area.body_exited.connect(_on_fluid_area_body_exited)
 
 func _process(_delta: float) -> void:
+	_sync_top_level_visual_positions()
 	if is_fluid and not _bodies_in_water.is_empty():
 		var player_body := _bodies_in_water[0]
 		if is_instance_valid(player_body):
 			_set_water_curtain_impact_position(player_body.global_position)
+
+func _capture_top_level_visual_offsets() -> void:
+	if before_visual:
+		_before_visual_position_offset = _get_configured_visual_offset(before_visual)
+	if before_sprite_visuals:
+		_before_sprite_visuals_position_offset = _get_configured_visual_offset(before_sprite_visuals)
+
+func _get_configured_visual_offset(visual: Node2D) -> Vector2:
+	# Top-level canvas nodes keep the coordinate space of whichever inherited
+	# scene last edited them. Compare every nested scene coordinate space and
+	# retain the nearest one, so merging a room into World cannot turn the
+	# room's origin into an unintended visual offset.
+	var configured_position := visual.position
+	var closest_offset := configured_position
+	var closest_distance_squared := INF
+	var ancestor: Node = self
+	while ancestor:
+		if ancestor is Node2D and not ancestor.scene_file_path.is_empty():
+			var scene_root := ancestor as Node2D
+			var component_position_in_scene := scene_root.to_local(global_position)
+			var candidate_offset := configured_position - component_position_in_scene
+			var candidate_distance_squared := candidate_offset.length_squared()
+			if candidate_distance_squared < closest_distance_squared:
+				closest_offset = candidate_offset
+				closest_distance_squared = candidate_distance_squared
+		ancestor = ancestor.get_parent()
+	return closest_offset
+
+func _sync_top_level_visual_positions() -> void:
+	var component_position := global_position
+	if before_visual:
+		before_visual.global_position = component_position + _before_visual_position_offset
+	if before_sprite_visuals:
+		before_sprite_visuals.global_position = component_position + _before_sprite_visuals_position_offset
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
