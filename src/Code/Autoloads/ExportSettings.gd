@@ -811,6 +811,18 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Vanishing Blocker", "vanishing_blocker_")
 @export var vanishing_blocker_zone_group: StringName = &"VanishZone"
 @export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5
+## 信号消失挡板是否使用碎裂 shader；关闭时回退为普通透明淡出。
+@export var vanishing_blocker_shatter_enabled: bool = true
+## 碎块在目标 CanvasItem 本地坐标中的尺寸；TileMap 缩放会同步缩放视觉块大小。
+@export_range(16.0, 512.0, 1.0) var vanishing_blocker_shard_size: float = 180.0
+## 碎块横向散开的本地坐标距离。
+@export_range(0.0, 512.0, 1.0) var vanishing_blocker_scatter_distance: float = 90.0
+## 碎块下落的本地坐标距离。
+@export_range(0.0, 1024.0, 1.0) var vanishing_blocker_fall_distance: float = 240.0
+## 碎块裂缝亮边宽度，取值范围 0 到 0.25。
+@export_range(0.0, 0.25, 0.005) var vanishing_blocker_edge_width: float = 0.08
+## 碎裂过程中的裂缝亮边颜色与强度（Alpha）。
+@export var vanishing_blocker_edge_color: Color = Color(0.94, 0.72, 0.39, 1.0)
 
 @export_group("Oasis Boat", "oasis_boat_")
 ## 第三关七个停靠点的航线进度，按递增顺序配置，起点为 0、终点为 1。

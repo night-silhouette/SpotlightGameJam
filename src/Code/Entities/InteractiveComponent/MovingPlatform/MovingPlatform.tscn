@@ -1,47 +1,44 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://5alqmt1n0ve8"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.gd" id="1_moving_platform"]
+[ext_resource type="Script" uid="uid://i2hcww1t6e5d" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.gd" id="1_moving_platform"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_platform"]
 size = Vector2(112, 20)
 
-[node name="MovingPlatform" type="AnimatableBody2D" groups=["moving_platform", "platform"]]
-collision_layer = 1
+[node name="MovingPlatform" type="AnimatableBody2D" unique_id=984763460 groups=["moving_platform", "platform"]]
 collision_mask = 2
-sync_to_physics = true
-platform_size = Vector2(112, 20)
-movement_speed = 90.0
-endpoint_wait_time = 0.45
-loop_movement = true
-start_from_end = false
-show_path_preview = true
 script = ExtResource("1_moving_platform")
 
-[node name="SolidCollision" type="CollisionShape2D" parent="."]
+[node name="SolidCollision" type="CollisionShape2D" parent="." unique_id=523826842]
 shape = SubResource("RectangleShape2D_platform")
 
-[node name="VisualRect" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-56, -10, 56, -10, 56, 10, -56, 10)
+[node name="VisualRect" type="Polygon2D" parent="." unique_id=1715168700]
+visible = false
 color = Color(0.32, 0.62, 0.72, 1)
+polygon = PackedVector2Array(-56, -10, 56, -10, 56, 10, -56, 10)
 
-[node name="TopHighlight" type="Line2D" parent="."]
+[node name="TopHighlight" type="Line2D" parent="." unique_id=1068205]
+visible = false
 points = PackedVector2Array(-52, -6, 52, -6)
 width = 3.0
 default_color = Color(0.7, 0.9, 0.95, 1)
 
-[node name="PathPreview" type="Line2D" parent="."]
+[node name="PathPreview" type="Line2D" parent="." unique_id=580721527]
+visible = false
 show_behind_parent = true
 points = PackedVector2Array(0, 0, 240, 0)
 width = 2.0
 default_color = Color(0.35, 0.75, 0.85, 0.45)
 
-[node name="StartMarker" type="Polygon2D" parent="."]
+[node name="StartMarker" type="Polygon2D" parent="." unique_id=1335685943]
+visible = false
 show_behind_parent = true
-polygon = PackedVector2Array(-5, 0, 0, -5, 5, 0, 0, 5)
 color = Color(0.35, 0.85, 0.55, 0.75)
+polygon = PackedVector2Array(-5, 0, 0, -5, 5, 0, 0, 5)
 
-[node name="EndMarker" type="Polygon2D" parent="."]
+[node name="EndMarker" type="Polygon2D" parent="." unique_id=1228134724]
+visible = false
 show_behind_parent = true
 position = Vector2(240, 0)
-polygon = PackedVector2Array(-5, 0, 0, -5, 5, 0, 0, 5)
 color = Color(0.9, 0.6, 0.25, 0.75)
+polygon = PackedVector2Array(-5, 0, 0, -5, 5, 0, 0, 5)
