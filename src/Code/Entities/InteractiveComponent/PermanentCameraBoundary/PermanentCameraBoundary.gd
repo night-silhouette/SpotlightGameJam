@@ -13,6 +13,8 @@ var _registered: bool = false
 
 func _ready() -> void:
 	set_physics_process(not scope_origin_path.is_empty())
+	SignalBus.PlayerRespawned.connect(_on_player_respawned)
+	SignalBus.SaveSlotLoaded.connect(_on_save_slot_loaded)
 	call_deferred("_broadcast_limit")
 
 
@@ -48,6 +50,14 @@ func _is_in_scope(player: Node2D) -> bool:
 	var height: float = origin.to_local(player.global_position).y
 	var span: Vector2 = ExportSettings.camera_gate_scope_y_range
 	return height >= minf(span.x, span.y) and height <= maxf(span.x, span.y)
+
+
+func _on_player_respawned(_respawn_position: Vector2) -> void:
+	_broadcast_limit()
+
+
+func _on_save_slot_loaded(_slot_index: int) -> void:
+	_broadcast_limit()
 
 
 func _send_limit(player: Node2D, active: bool) -> void:

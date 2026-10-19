@@ -20,6 +20,7 @@ func _ready() -> void:
 		return
 	set_process(false)
 	SignalBus.SaveSlotLoaded.connect(_on_save_slot_loaded)
+	SignalBus.PlayerRespawned.connect(_on_player_respawned)
 	call_deferred("_broadcast_state")
 
 
@@ -170,6 +171,11 @@ func _broadcast_state() -> void:
 
 
 func _on_save_slot_loaded(_slot_index: int) -> void:
+	_broadcast_state()
+
+
+func _on_player_respawned(_respawn_position: Vector2) -> void:
+	# 重生是位置重置，不是实际跨门；同时清除消费者中未完成的推镜。
 	_broadcast_state()
 
 

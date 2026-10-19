@@ -134,6 +134,12 @@ Code/
 | 镜头门渐变黑幕 | `E/PlayerWithCamera/CameraGateFade.gd:1-49`；同目录 `CameraGateFade.tscn:1-16`；`E/PlayerWithCamera/PlayerWithCamera.tscn:9,55`；`IC/CameraGate/CameraGate.gd`（`_physics_process`、`_broadcast_state`）；`A/SignalBus.gd:110-111`；`A/ExportSettings.gd:549-561` | 独立 CanvasLayer 129 全屏透明黑色 ColorRect，忽略鼠标；只监听 `CameraGateFadeRequested(player,gate)`，按同级 Player 过滤。玩家仅进入镜头门碰撞区域、停在区域内或原路退出时不播放黑幕；完整越过由碰撞区域两条外边缘构成的滞回区、镜头侧别确认切换时才发送信号。非一次性门每次真正越界播放并切换镜头侧；一次性门真正越界时才播放并永久解锁。初始化、读档重置、移除门和远处不相关的镜头限位更新均不触发。默认0.12秒淡入、保持至 camera_gate_transition_duration、0.25秒淡出，最大不透明度1，可禁用；重入杀旧 Tween 并从当前透明度续播，SaveSlotLoaded/PlayerRespawned 清除遮罩。不改原镜头无限限位和运动规则、不锁输入。2026-10-19 已按真实门碰撞范围改为越界提交；正式 World 视觉待人工验收。 |
 | 第二关导演与井遮挡 | `L2/Level2CameraDirector.gd:19-119`；`L2/Level2ShaftOcclusion.gd:1-39`；`L2/Level2PlayerWithCamera.gd:1-90` | 按地图局部坐标选区、配置 bounds/follow_target，让位于慢降/回落；遮挡只绘制、不增加碰撞。专用包装器不覆盖玩家物理参数，`SnapToPlayer` 用于出生/复活。 |
 
+2026-10-20 第二关地下向左镜头误回第三关修复：实际 `W/World.tscn` 的 `CameraNode/CameraGate5` 曾漏配 `scope_origin_path`，虽然永久边界脚本已有高度判断，仍作为全局下边界生效；现显式绑定 `../../OasisBattlefield`。Godot 4.7.2 TEMP 隔离回归29项通过：从真实 World 提取该边界实例配置与绿洲原点，运行真实永久边界脚本及抽取的真实镜头限位接收/合并方法，复现漏配时地下下限误为85；修后覆盖地下四个高度各五处向左位置、第三关四处高度仍保持下限85、返回地下撤销及地下重新广播。镜头对象使用 Camera2D 替代 PhantomCamera2D，仅验证边界计算与信号链；未运行完整 World 或验收实际镜头运动，未修改原 project.godot/.godot/存档。
+
+2026-10-20 镜头范围扩查：正式 World 共5个普通镜头门、5个永久边界。其余四个永久边界为全局世界外框；CameraFocusArea 无业务场景实例，RoomCameraZone 仅第二关 RestArchive 使用、默认关闭且按玩家在 TriggerShape 局部矩形内判定；Level2CameraDirector 仅装配在 Level2Playtest，正式第二关慢降检查井的 scenery_bounds，回落检查穿过真实井口的轨迹，Chapter5 镜头由章节演出请求。`CameraGate.gd` 新增 `_on_player_respawned`，接 PlayerRespawned 静默重判侧别，避免把复活位移当实际跨门并清除旧推镜；`PermanentCameraBoundary.gd` 新增复活/读档回调，同次通知立即重算范围、登记或撤销限位。
+
+本轮 TEMP `camera_audit_26ab96308c1b49ea9940cbada8f141b9` Godot4.7.2 headless 对照：从真实 World 提取上述全部10处配置与绿洲原点，使用完整门/永久边界脚本、真实 SignalBus 信号声明及 ExportSettings 对应字段、抽取的真实限位接收/合并方法。Camera2D 替代 PhantomCamera2D，未装插件及玩家业务。相同418项检查，修前155项失败/退出1，修后0失败/退出0；覆盖1152×648/800×600与0.5/1/2倍缩放的门内停留、正反跨门、范围外绕行、禁用碰撞、远处视野不应用、复活/读档清旧推镜；第二关6高度×7横向点无第三关下限且合并限位仍包含玩家；第三关高度端点与内点、复活立即启用/地下读档立即撤销、全局外框保留、一次性解锁保留及其他玩家信号隔离。初次夹具直接复制SignalBus含SaveManager预加载而失败，改为只复制真实信号声明后对照运行；最终无SCRIPT ERROR，隔离UID路径回退和沙箱系统证书读取错误不影响断言。未运行完整 World、真实PhantomCamera切镜/构图或实际存档流程，不以隔离检查声称所有路线已试玩；未改原 project.godot/.godot/存档/源素材。
+
 ### 10.5 关卡流程与交互机关
 
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |

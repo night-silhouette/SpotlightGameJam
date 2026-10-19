@@ -766,6 +766,7 @@ position = Vector2(-10096, 85)
 rotation = -1.5707964
 scale = Vector2(0.6545826, 145.11647)
 player_path = NodePath("../../PlayerWithCamera/Player")
+scope_origin_path = NodePath("../../OasisBattlefield")
 
 [node name="MiniChaliceStation" parent="." unique_id=78567387 instance=ExtResource("11_a4q47")]
 z_index = -1
