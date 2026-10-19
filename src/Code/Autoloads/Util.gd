@@ -8,6 +8,9 @@ const GAME_BGMS = [
 const LEVEL3_BGM: AudioStreamWAV = preload("res://Music/bgm/MUSLv3.wav")
 const BGM_CROSSFADE_DURATION: float = 2.5
 
+# 仅保存本次运行的接近骸骨解锁；死亡及场景重载不清除，不写入存档。
+var level3_bgm_unlocked: bool = false
+
 var _bgm_player: AudioStreamPlayer
 var _bgm_index: int = 0
 var _bgm_mode: StringName = &"normal"
