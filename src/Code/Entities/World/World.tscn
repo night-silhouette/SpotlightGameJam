@@ -513,12 +513,6 @@ offset_right = 22.280294
 offset_bottom = -996.0
 scale = Vector2(375.14157, 66.18482)
 
-[node name="CampScenery" parent="Camp" index="2" unique_id=305596168]
-z_index = -30
-
-[node name="06" parent="Camp" index="3" unique_id=646416155]
-visible = true
-
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
@@ -656,10 +650,9 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate5" parent="CameraNode" unique_id=1218241481 instance=ExtResource("7_permanent_boundary")]
-position = Vector2(-6702, 106)
+position = Vector2(-10096, 85)
 rotation = -1.5707964
-scale = Vector2(0.6035969, 99.60132)
-blocked_side = 3
+scale = Vector2(0.6545826, 145.11647)
 player_path = NodePath("../../PlayerWithCamera/Player")
 
 [node name="MiniChaliceStation" parent="." unique_id=78567387 instance=ExtResource("11_a4q47")]
@@ -1017,6 +1010,34 @@ texture = ExtResource("34_2flee")
 position = Vector2(-3689, 3617)
 scale = Vector2(0.14, 0.14)
 texture = ExtResource("35_1og5t")
+
+[node name="PermanentCameraBoundary2" type="Node2D" parent="." unique_id=193676859]
+
+[node name="PermanentCameraBoundary" parent="PermanentCameraBoundary2" unique_id=716628443 instance=ExtResource("7_permanent_boundary")]
+position = Vector2(-19543, -563)
+scale = Vector2(1.0587658, 20.068052)
+blocked_side = 0
+player_path = NodePath("../../PlayerWithCamera/Player")
+
+[node name="PermanentCameraBoundary2" parent="PermanentCameraBoundary2" unique_id=1190097923 instance=ExtResource("7_permanent_boundary")]
+position = Vector2(7050, -2169)
+scale = Vector2(-1.8909255, 53.131954)
+blocked_side = 2
+player_path = NodePath("../../PlayerWithCamera/Player")
+
+[node name="PermanentCameraBoundary3" parent="PermanentCameraBoundary2" unique_id=455384233 instance=ExtResource("7_permanent_boundary")]
+position = Vector2(-10267.001, -1449)
+rotation = -1.5707964
+scale = Vector2(0.7449419, 153.97089)
+blocked_side = 1
+player_path = NodePath("../../PlayerWithCamera/Player")
+
+[node name="PermanentCameraBoundary4" parent="PermanentCameraBoundary2" unique_id=420931601 instance=ExtResource("7_permanent_boundary")]
+position = Vector2(4049.0002, -4764)
+rotation = -1.5707964
+scale = Vector2(0.9375154, 46.052975)
+blocked_side = 1
+player_path = NodePath("../../PlayerWithCamera/Player")
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]
