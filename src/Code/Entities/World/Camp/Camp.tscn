@@ -11,6 +11,8 @@
 [ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
 [ext_resource type="Texture2D" uid="uid://b8iqkq7jndigg" path="res://Code/Entities/World/Camp/残碑_右.png" id="SteleRight"]
 
+[ext_resource type="Script" path="res://Code/Entities/World/world_bgm.gd" id="WorldBgm"]
+
 [sub_resource type="Resource" id="Resource_68lmy"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
@@ -170,6 +172,9 @@ enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_k8pln"
 enter_dialog_once = true
 
 [node name="visual_layer" type="Node2D" parent="." unique_id=598225606]
+
+[node name="WorldBgm" type="Node" parent="."]
+script = ExtResource("WorldBgm")
 
 [editable path="Lake"]
 [editable path="Chapter1"]

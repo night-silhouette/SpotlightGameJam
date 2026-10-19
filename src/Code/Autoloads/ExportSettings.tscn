@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bqckn4tk862os" path="res://Code/Autoloads/ExportSettings.gd" id="1_hob1f"]
 [ext_resource type="Texture2D" path="res://Art/New/component/game1/ancient_crown.png" id="2_crown"]
-[ext_resource type="Texture2D" path="res://Art/New/component/extracted/prop_paper_scroll_rolled_1.png" id="3_codex"]
+[ext_resource type="Texture2D" path="res://Art/New/component/extracted/rune_circle_emblem.png" id="3_codex"]
 [ext_resource type="Texture2D" path="res://Code/Entities/InteractiveComponent/Lake/OfferingBone.tres" id="4_bones"]
 
 [node name="ExportSettings" type="Node2D" unique_id=636711994]

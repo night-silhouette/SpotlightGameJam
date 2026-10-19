@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bcchjmwvo6507" path="res://Code/Entities/World/OasisBattlefield/outward_phase.tscn" id="3_outward_phase"]
 [ext_resource type="PackedScene" uid="uid://be0yr2uqfbi41" path="res://Code/Entities/World/OasisBattlefield/return_phase.tscn" id="4_return_phase"]
 
+[ext_resource type="Script" path="res://Code/Entities/World/world_bgm.gd" id="5_world_bgm"]
+
 [node name="OasisBattlefield" type="Node2D" unique_id=1726602721 node_paths=PackedStringArray("chase_respawn_point")]
 script = ExtResource("2_oasis_battlefield")
 chase_respawn_point = NodePath("OutwardPhase/ChaseRespawnPoint")
@@ -18,6 +20,9 @@ scale = Vector2(182.4564, -14.813491)
 visible = false
 
 [node name="ReturnPhase" parent="." unique_id=1083308710 instance=ExtResource("4_return_phase")]
+
+[node name="WorldBgm" type="Node" parent="."]
+script = ExtResource("5_world_bgm")
 
 [node name="PhaseTransition" type="CanvasLayer" parent="."]
 visible = false

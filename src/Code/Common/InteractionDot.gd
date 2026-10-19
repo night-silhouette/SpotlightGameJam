@@ -30,7 +30,7 @@ func _process(_delta: float) -> void:
 	_update_dot()
 
 func _update_dot() -> void:
-	visible = ExportSettings.interaction_dot_enabled and _entity.is_visible_in_tree() and _entity.can_process()
+	visible = ExportSettings.interaction_dot_enabled and not _entity.get_meta("interaction_dot_hidden", false) and _entity.is_visible_in_tree() and _entity.can_process()
 	if "enable_interaction" in _entity:
 		visible = visible and _entity.enable_interaction
 	elif "is_available" in _entity:

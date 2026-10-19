@@ -37,6 +37,8 @@
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
 
+[ext_resource type="Script" path="res://Code/Entities/World/world_bgm.gd" id="32_world_bgm"]
+
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
 uniform vec4 afterimage_color : source_color = vec4(1.0, 0.94, 0.65, 0.65);
@@ -457,6 +459,7 @@ dialog_type = "独白"
 text = "走吧，该离开这里了，把这片绿洲的故事……带回去。"
 
 [node name="World" type="Node2D" unique_id=2146248688]
+script = ExtResource("32_world_bgm")
 
 [node name="OpeningFade" type="CanvasLayer" parent="." unique_id=2037180482]
 layer = 128
@@ -701,6 +704,7 @@ subtitle_text = "绿洲从未竟的声声叹息中生长"
 [node name="c2" type="Node2D" parent="story" unique_id=420887994]
 
 [node name="自我感叹" parent="story/c2" unique_id=2133373683 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(201, 625.00006)
 scale = Vector2(1.8545073, 2.0664856)
 enable_interaction = false
@@ -792,6 +796,7 @@ display_duration = 9.9
 [node name="c3" type="Node2D" parent="story" unique_id=207949406]
 
 [node name="入城_2_1至2_3" parent="story/c3" unique_id=1926561481 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(5007, -69)
 scale = Vector2(3, 3)
 enable_interaction = false
@@ -876,6 +881,7 @@ region_enabled = true
 region_rect = Rect2(1175, 559, 467, 813)
 
 [node name="高处蓄水池_2_22至2_23" parent="story/c3" unique_id=397872988 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(1672, -2562)
 scale = Vector2(2, 2)
 enable_interaction = false
@@ -894,6 +900,7 @@ trigger_relic = &"crown"
 [node name="c4" type="Node2D" parent="story" unique_id=927032881]
 
 [node name="进入绿洲_4_1至4_2" parent="story/c4" unique_id=326893196 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(-391, -385)
 scale = Vector2(1.322886, 1.1634629)
 enable_interaction = false
@@ -928,6 +935,7 @@ region_rect = Rect2(442, 887, 1126, 605)
 metadata/_editor_description_ = "仅视觉提示，不新增拾取或骨头逻辑。"
 
 [node name="刻痕枯骨前置观察_4_8至4_9" parent="story/c4" unique_id=1906082788 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(-18658, -518)
 scale = Vector2(3.9478683, 4.6546264)
 disable_movement_during_dialog = true
@@ -937,6 +945,7 @@ enter_dialog_once = true
 metadata/_editor_description_ = "靠近原有骨头前置观察/对白；不新增可拾取骨头，也不触发拔骨机制，请在编辑器核对原有骨头位置。"
 
 [node name="绿洲生长_4_17至4_18" parent="story/c4" unique_id=692998647 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(-2070, -402)
 scale = Vector2(2.3579326, 2.7803662)
 enable_interaction = false
@@ -947,6 +956,7 @@ enter_dialog_once = true
 metadata/_editor_description_ = "一次性叙事区域；不控制光点、根须或水流生成，请核对演出接入。"
 
 [node name="走出绿洲_4_19" parent="story/c4" unique_id=1199339892 instance=ExtResource("12_terh4")]
+metadata/interaction_dot_hidden = true
 position = Vector2(-725.00006, -377)
 scale = Vector2(7.0708966, -7.010785)
 enable_interaction = false

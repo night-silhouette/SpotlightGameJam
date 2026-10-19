@@ -5,8 +5,14 @@ const GAME_BGMS = [
 	preload("res://Music/bgm/GrowMaintheme.wav"),
 ]
 
+const LEVEL3_BGM: AudioStreamWAV = preload("res://Music/bgm/MUSLv3.wav")
+const BGM_CROSSFADE_DURATION: float = 2.5
+
 var _bgm_player: AudioStreamPlayer
 var _bgm_index: int = 0
+var _bgm_mode: StringName = &"normal"
+var _bgm_tracks: Dictionary = {}
+var _bgm_tweens: Dictionary = {}
 
 var _audio_initialized: bool = false
 var _audio_volumes: Dictionary = {}
@@ -28,25 +34,83 @@ func _start_game_audio() -> void:
 	_start_game_bgm()
 
 func _start_game_bgm() -> void:
-	_bgm_player = AudioStreamPlayer.new()
-	_bgm_player.bus = ExportSettings.audio_music_bus
-	_bgm_player.volume_linear = 0.0
-	_bgm_player.finished.connect(_play_next_bgm)
-	add_child(_bgm_player)
-	_play_next_bgm()
-	var target_volume := db_to_linear(ExportSettings.audio_bgm_volume_db)
-	var duration: float = ExportSettings.audio_bgm_fade_in_duration
-	if duration <= 0.0:
-		_bgm_player.volume_linear = target_volume
+	if not is_instance_valid(_bgm_player):
+		SetBgmMode(_bgm_mode)
+
+func SetBgmMode(mode: StringName) -> void:
+	if mode != &"normal" and mode != &"level3" and mode != &"camp":
+		return
+	if mode == _bgm_mode and is_instance_valid(_bgm_player):
+		return
+	_initialize_audio_settings()
+	_bgm_mode = mode
+	if mode == &"normal":
+		_play_next_bgm()
+	elif mode == &"level3":
+		_switch_bgm(LEVEL3_BGM, true)
 	else:
-		create_tween().tween_property(_bgm_player, "volume_linear", target_volume, duration)
+		_switch_bgm(GAME_BGMS[0], true)
 
 func _play_next_bgm() -> void:
-	var music := GAME_BGMS[_bgm_index].duplicate() as AudioStreamWAV
-	music.loop_mode = AudioStreamWAV.LOOP_DISABLED
-	_bgm_player.stream = music
+	var music: AudioStreamWAV = GAME_BGMS[_bgm_index]
 	_bgm_index = (_bgm_index + 1) % GAME_BGMS.size()
-	_bgm_player.play()
+	_switch_bgm(music, false)
+
+func _switch_bgm(music: AudioStreamWAV, loop: bool) -> void:
+	var next_player: AudioStreamPlayer = null
+	for track_player: AudioStreamPlayer in _bgm_tracks:
+		if _bgm_tracks[track_player] == music and track_player.playing:
+			next_player = track_player
+			break
+	if next_player == null:
+		next_player = AudioStreamPlayer.new()
+		next_player.process_mode = Node.PROCESS_MODE_ALWAYS
+		next_player.bus = ExportSettings.audio_music_bus
+		next_player.volume_linear = 0.0
+		next_player.stream = music.duplicate() as AudioStreamWAV
+		next_player.finished.connect(_on_bgm_finished.bind(next_player))
+		add_child(next_player)
+		_bgm_tracks[next_player] = music
+	var stream := next_player.stream as AudioStreamWAV
+	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD if loop else AudioStreamWAV.LOOP_DISABLED
+	_bgm_player = next_player
+	if not next_player.playing:
+		next_player.play()
+	for track_player: AudioStreamPlayer in _bgm_tracks:
+		var target_volume: float = db_to_linear(ExportSettings.audio_bgm_volume_db) if track_player == next_player else 0.0
+		_fade_bgm(track_player, target_volume)
+
+func _fade_bgm(player: AudioStreamPlayer, target_volume: float) -> void:
+	if _bgm_tweens.has(player):
+		var previous_tween: Tween = _bgm_tweens[player]
+		previous_tween.kill()
+	var tween: Tween = player.create_tween()
+	tween.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+	_bgm_tweens[player] = tween
+	tween.tween_property(player, "volume_linear", target_volume, BGM_CROSSFADE_DURATION)
+	tween.tween_callback(_on_bgm_faded.bind(player))
+
+func _on_bgm_faded(player: AudioStreamPlayer) -> void:
+	_bgm_tweens.erase(player)
+	if player != _bgm_player:
+		_release_bgm(player)
+
+func _on_bgm_finished(player: AudioStreamPlayer) -> void:
+	var was_current: bool = player == _bgm_player
+	if was_current:
+		_bgm_player = null
+	_release_bgm(player)
+	if was_current and _bgm_mode == &"normal":
+		_play_next_bgm()
+
+func _release_bgm(player: AudioStreamPlayer) -> void:
+	if _bgm_tweens.has(player):
+		var tween: Tween = _bgm_tweens[player]
+		tween.kill()
+		_bgm_tweens.erase(player)
+	_bgm_tracks.erase(player)
+	player.stop()
+	player.queue_free()
 
 ## 初始化并恢复独立音量设置；无参数，可重复调用且不会重置总线基准音量。
 func InitializeAudioSettings() -> void:

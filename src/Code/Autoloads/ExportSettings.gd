@@ -9,6 +9,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var tutorial_dash_hint_text: String = "Shift键冲刺"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
+## 手机版第一处水墙前的交互教学文案。
+@export var tutorial_mobile_water_wall_hint_text: String = "切换钩锁和交互模式，点击屏幕交互水墙"
 ## 字幕淡入、全显停留和淡出的时长，单位秒。
 @export_range(0.0, 5.0, 0.05) var tutorial_fade_in_duration: float = 0.7
 @export_range(0.0, 20.0, 0.1) var tutorial_hold_duration: float = 4.0
@@ -212,7 +214,7 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
 @export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.png")
 ## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
-@export var starseekers_codex_texture: Texture2D = preload("res://Art/New/component/extracted/prop_paper_scroll_rolled_1.png")
+@export var starseekers_codex_texture: Texture2D = preload("res://Art/New/component/extracted/rune_circle_emblem.png")
 ## The Scarred Bones 贴图；留空时使用程序生成的临时图标。
 @export var scarred_bones_texture: Texture2D = preload("res://Code/Entities/InteractiveComponent/Lake/OfferingBone.tres")
 ## 湖第一次交互后的水量比例。
@@ -221,8 +223,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.1, 3.0, 0.05) var lake_relic_flight_duration: float = 0.65
 ## 湖泊流水图集的循环播放帧率（帧/秒）。
 @export_range(1.0, 30.0, 0.5) var lake_stream_animation_fps: float = 6.0
-## 第7帧持物包围尺寸（Action 局部像素，骨头旋转前）。
-@export var lake_relic_held_sizes: Dictionary = {"crown": Vector2(44, 22), "codex": Vector2(65, 18), "bones": Vector2(13, 66)}
+## 第7帧持物包围尺寸（Action 局部像素，骨头旋转前）；残卷保留交接宽度并按471×457原图等比显示。
+@export var lake_relic_held_sizes: Dictionary = {"crown": Vector2(44, 22), "codex": Vector2(65, 63.06794), "bones": Vector2(13, 66)}
 ## 故障超时；正常时序依赖动画完成信号而非该时长。
 @export_range(2.0, 30.0, 0.1) var lake_take_timeout: float = 8.0
 @export_range(0.0, 5.0, 0.05) var lake_relic_hold_duration: float = 0.55
