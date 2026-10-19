@@ -1,0 +1,113 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/Plot/Chapter5/Chapter5.gd" id="1"]
+[ext_resource type="Shader" path="res://Code/Entities/Plot/Chapter5/Chapter5Rain.gdshader" id="2"]
+[ext_resource type="Texture2D" path="res://Art/New/component/game1/snake.png" id="3"]
+[ext_resource type="Shader" path="res://Code/Entities/Plot/Chapter5/Chapter5Surge.gdshader" id="4"]
+[ext_resource type="Shader" path="res://Code/Entities/Plot/Chapter5/Chapter5Stele.gdshader" id="5"]
+[ext_resource type="AudioStream" path="res://Music/SFX/fiveC/WorldFlood1(1).wav" id="6"]
+[ext_resource type="AudioStream" path="res://Music/SFX/fiveC/Thunder(1).wav" id="7"]
+[ext_resource type="AudioStream" path="res://Music/SFX/fiveC/Rain(1).wav" id="8"]
+
+[sub_resource type="ShaderMaterial" id="SurgeMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("4")
+
+[sub_resource type="ShaderMaterial" id="SteleMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("5")
+
+[sub_resource type="ShaderMaterial" id="RainMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("2")
+
+[sub_resource type="CanvasItemMaterial" id="GhostMaterial"]
+light_mode = 1
+
+[node name="Chapter5" type="Node2D"]
+script = ExtResource("1")
+stele_material = SubResource("SteleMaterial")
+
+[node name="Thunder" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7")
+bus = &"Amb_Home"
+
+[node name="RainAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8")
+bus = &"Amb_Home"
+
+[node name="SurgeAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6")
+bus = &"SFX_Interact"
+
+[node name="Phantom" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("GhostMaterial")
+modulate = Color(0.76, 0.9, 1, 0)
+texture = ExtResource("3")
+scale = Vector2(0.11, 0.11)
+
+[node name="Presentation" type="CanvasLayer" parent="."]
+layer = 85
+
+[node name="Rain" type="ColorRect" parent="Presentation"]
+visible = false
+material = SubResource("RainMaterial")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Surge" type="ColorRect" parent="Presentation"]
+visible = false
+material = SubResource("SurgeMaterial")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Black" type="ColorRect" parent="Presentation"]
+color = Color(0, 0, 0, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="Presentation"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 30.0
+offset_bottom = 170.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="Inscription" type="Label" parent="Presentation/Layout"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0.05, 0.08, 0.1, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "直到最后一场雨落下。"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Resume" type="Button" parent="Presentation/Layout"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "继续第五章"
+
+[node name="Menu" type="Button" parent="Presentation/Layout"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+text = "返回主菜单（保存进度）"

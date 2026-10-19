@@ -285,7 +285,7 @@ func _on_player_died(player: Node2D) -> void:
 	if _phase_transition_running:
 		_cancel_phase_transition()
 	_reset_boat_on_respawn = not _in_return_phase and _boat_departure_triggered
-	_reset_chase_on_respawn = _in_return_phase and not _chase_finished
+	_reset_chase_on_respawn = _in_return_phase and (not _chase_finished or (_bone_claimed and not _bone_offered))
 	# 必须在死亡信号这一帧立刻停止、关闭伤害并复位。之前仅在复活时
 	# ResetChase，会留下约一秒的移动窗口，Boss 可移动到复活点造成连续死亡。
 	if _reset_chase_on_respawn and is_instance_valid(_chaser) and _chaser.has_method(&"ResetChase"):

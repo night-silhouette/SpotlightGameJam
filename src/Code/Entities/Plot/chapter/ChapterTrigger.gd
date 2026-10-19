@@ -12,6 +12,7 @@ extends Area2D
 var _triggered: bool = false
 
 func _ready() -> void:
+	_card.Finished.connect(_on_card_finished)
 	if request_channel == &"":
 		body_entered.connect(_on_body_entered)
 	else:
@@ -24,6 +25,10 @@ func _on_body_entered(body: Node2D) -> void:
 func _on_chapter_requested(channel: StringName) -> void:
 	if channel == request_channel:
 		_show_chapter()
+
+func _on_card_finished() -> void:
+	if _triggered and request_channel != &"":
+		SignalBus.ChapterCardFinished.emit(request_channel)
 
 func _show_chapter() -> void:
 	if _triggered:

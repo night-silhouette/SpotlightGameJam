@@ -124,6 +124,8 @@ func _refresh() -> void:
 	if not Engine.is_editor_hint():
 		player = get_tree().get_first_node_in_group("player") as Node2D
 	for material in _materials:
+		material.set_shader_parameter("background_contrast", float(_setting(&"level2_scenery_background_contrast")))
+		material.set_shader_parameter("background_brightness", float(_setting(&"level2_scenery_background_brightness")))
 		material.set_shader_parameter("world_bounds", Vector4(corner.x, corner.y, end.x, end.y))
 		material.set_shader_parameter("descent_bounds", descent)
 		material.set_shader_parameter("stairwell_bounds", stairwell)

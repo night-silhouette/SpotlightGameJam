@@ -8,7 +8,18 @@ class_name Player
 @onready var dash_afterimages: Node2D = $DashAfterimages
 @onready var dash_afterimage_material: ShaderMaterial = $DashAfterimages.material as ShaderMaterial
 var _opening_locked: bool = false
-var offering_locked: bool = false
+var _offering_locked: bool = false
+var chapter5_locked: bool = false
+var chapter5_ground_position: Vector2
+var _chapter5_saved_visible := true
+var _chapter5_source: Node
+var _chapter5_tween: Tween
+var _chapter5_particle_gradient: Gradient
+var offering_locked: bool:
+	get:
+		return _offering_locked or chapter5_locked
+	set(value):
+		_offering_locked = value
 var _offering_source: Node
 var _offering_relic: StringName
 var _offering_animation: StringName
@@ -316,6 +327,7 @@ func _sync_from_export_settings() -> void:
 			sfx_move_falling_speed_threshold = ExportSettings.sfx_move_falling_speed_threshold
 
 func _ready() -> void:
+	SignalBus.Chapter5PlayerRequested.connect(_on_chapter5_player_requested)
 	_sync_from_export_settings()
 	_init_footstep_sounds()
 	_init_move_sounds()
@@ -511,7 +523,9 @@ func _on_offering_requested(player: Node2D, source: Node, relic: StringName) -> 
 	ani_move.advance(0.0)
 
 func _on_offering_animation_finished(animation_name: StringName) -> void:
-	if not offering_locked or animation_name != _offering_animation or _offering_prepared:
+	if chapter5_locked:
+		SignalBus.Chapter5PoseFinished.emit(self, _chapter5_source, animation_name)
+	if not _offering_locked or animation_name != _offering_animation or _offering_prepared:
 		return
 	_offering_prepared = true
 	var marker: Marker2D = get_node("sprite/Action/Offering" + String(_offering_relic).capitalize())
@@ -539,23 +553,26 @@ func _release_offering() -> void:
 		ani_move.play(&"idle")
 
 func _cancel_offering() -> void:
-	if not offering_locked:
+	if not _offering_locked:
 		return
 	var source := _offering_source
 	_release_offering()
 	SignalBus.PlayerOfferingCancelled.emit(self, source)
 
 func _exit_tree() -> void:
+	_release_chapter5()
 	_cancel_offering()
 
 func _process(delta: float) -> void:
-	if offering_locked:
+	if chapter5_locked and (not is_instance_valid(_chapter5_source) or now_HP <= 0.0):
+		_release_chapter5()
+	if _offering_locked:
 		_offering_elapsed += delta
 		if not is_instance_valid(_offering_source) or now_HP <= 0.0 or not gameInputControl.is_physics_processing():
 			_cancel_offering()
 		elif not _offering_prepared and (ani_move.current_animation != _offering_animation or _offering_elapsed > ani_move.get_animation(_offering_animation).length + 2.0):
 			_cancel_offering()
-	if is_hp_draining and now_HP > 0.0:
+	if is_hp_draining and now_HP > 0.0 and not chapter5_locked:
 		now_HP -= hp_drain_rate * delta
 	_update_low_water_effect(delta)
 	if _dash_afterimage_active:
@@ -725,8 +742,7 @@ func _physics_process(delta: float) -> void:
 		wall_jump_lock_dir = 0
 		ResetDoubleJump()
 
-	is_front_has_rigid = _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
-	is_back_has_rigid = _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
+	RefreshWallContacts()
 
 	_handle_footstep_audio(delta)
 	_handle_continuous_move_audio(delta)
@@ -791,6 +807,37 @@ func SetFacingDirection(direction: int) -> void:
 			ray.scale.x *= -1
 	face_dir = direction
 	sprite.scale.x = abs(sprite.scale.x) * direction
+	RefreshWallContacts()
+
+## 同步当前物理位置与朝向的前后墙接触；无参数，不消耗或补充跳跃次数。
+func RefreshWallContacts() -> void:
+	is_front_has_rigid = HasClimbableWall(face_dir)
+	is_back_has_rigid = HasClimbableWall(-face_dir)
+
+## 查询世界侧的可攀墙；direction 只接受 -1（世界左）或 1（世界右），返回当前真实命中。
+func HasClimbableWall(direction: int) -> bool:
+	if direction != -1 and direction != 1:
+		return false
+	for ray: RayCast2D in [front_head, front_body, front_upper_body, front_lower_body,
+			back_head, back_body, back_upper_body, back_lower_body]:
+		if not ray:
+			continue
+		var world_direction := ray.to_global(ray.target_position) - ray.global_position
+		if int(sign(world_direction.x)) != direction:
+			continue
+		ray.force_raycast_update()
+		if _check_wall_climbable(ray) and ray.get_collision_normal().x * direction < -0.5:
+			return true
+	return false
+
+## 尝试消耗一次真实扒墙机会；direction 为世界左 -1 / 右 1，成功才锁定该侧并补充二段跳。
+## 同侧必须落地或成功扒住反向墙后才能再用，转身和射线节点名称不改变墙侧身份。
+func TryGrabWall(direction: int) -> bool:
+	if is_on_floor() or wall_jump_lock_dir == direction or not HasClimbableWall(direction):
+		return false
+	wall_jump_lock_dir = direction
+	ResetDoubleJump()
+	return true
 
 ## 初始化加载动作音频资源
 func _init_move_sounds() -> void:
@@ -1135,8 +1182,8 @@ func be_hurted(damage: float) -> void:
 ## 实体数据导出
 func ExportSaveData() -> Dictionary:
 	return {
-		"position_x": global_position.x,
-		"position_y": global_position.y,
+		"position_x": chapter5_ground_position.x if chapter5_locked else global_position.x,
+		"position_y": chapter5_ground_position.y if chapter5_locked else global_position.y,
 		"now_hp": now_HP,
 		"max_hp": Max_HP,
 		"spawn_x": spawn_position.x,
@@ -1156,6 +1203,7 @@ func ExportSaveData() -> Dictionary:
 ## 实体数据加载
 ## @param data 存档字典
 func LoadSaveData(data: Dictionary) -> void:
+	_release_chapter5()
 	_cancel_offering()
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(data["position_x"], data["position_y"])
@@ -1175,3 +1223,99 @@ func LoadSaveData(data: Dictionary) -> void:
 	if data.has("footstep_surface"):
 		_on_footstep_surface_change_requested(self, str(data["footstep_surface"]), StringName(data.get("footstep_bus", footstep_bus)), StringName(data.get("move_bus", sfx_move_bus)))
 	_emit_relic_state()
+
+func _on_chapter5_player_requested(player: Node2D, source: Node, command: StringName, data: Dictionary) -> void:
+	if player != self:
+		return
+	if command == &"begin":
+		var accepted := not offering_locked and not _opening_locked and now_HP > 0.0 and can_process() and gameInputControl.is_physics_processing()
+		if accepted:
+			chapter5_ground_position = global_position
+			_chapter5_saved_visible = visible
+			_chapter5_source = source
+			rope_controller.ReleaseRope(false)
+			gameInputControl.InterruptDash()
+			gameInputControl.row_dir = 0.0
+			gameInputControl.column_dir = 0.0
+			gameInputControl.is_jump = false
+			gameInputControl.is_double_jump = false
+			gameInputControl.is_dash = false
+			velocity = Vector2.ZERO
+			chapter5_locked = true
+			_chapter5_particle_gradient = $Chapter5Powder.color_ramp
+			var vapor := Gradient.new()
+			var vapor_color: Color = ExportSettings.chapter5_vapor_color
+			vapor.colors = PackedColorArray([vapor_color, Color(vapor_color, 0.0)])
+			$Chapter5Powder.color_ramp = vapor
+			ani_move.play(&"idle")
+		SignalBus.Chapter5PlayerAcknowledged.emit(self, source, accepted)
+		return
+	if not chapter5_locked or _chapter5_source != source:
+		return
+	if command == &"conceal":
+		if _chapter5_tween and _chapter5_tween.is_valid():
+			_chapter5_tween.kill()
+		visible = false
+		$Chapter5Powder.emitting = false
+	elif command == &"release":
+		_release_chapter5()
+	elif command == &"pose":
+		if _chapter5_tween and _chapter5_tween.is_valid():
+			_chapter5_tween.kill()
+		if data.has("face"):
+			SetFacingDirection(int(data.face))
+		var animation: StringName = data.get("animation", &"idle")
+		if ani_move.has_animation(animation):
+			if data.get("backwards", false):
+				ani_move.play_backwards(animation)
+			else:
+				ani_move.play(animation)
+			ani_move.advance(0.0)
+		var vfx: AnimationPlayer = $VFX
+		if data.has("vfx") and vfx.has_animation(data.vfx):
+			vfx.speed_scale = 2.8 / maxf(float(data.get("duration", 2.8)), 0.01) if data.vfx == &"powder_dissolve" else 1.0
+			vfx.play(data.vfx)
+			vfx.advance(0.0)
+		if data.get("vapor", false):
+			$Chapter5Powder.emitting = true
+		if data.get("pause_vfx", false):
+			vfx.pause()
+		if data.has("target"):
+			_chapter5_tween = create_tween()
+			if data.get("airborne", false):
+				_chapter5_tween.tween_property(self, "global_position", data.target, maxf(float(data.duration), 0.01))
+			else:
+				_chapter5_tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+				_chapter5_tween.tween_method(_chapter5_ground_move, global_position, Vector2(data.target), maxf(float(data.duration), 0.01))
+				_chapter5_tween.tween_callback(func():
+					if chapter5_locked:
+						ani_move.play(&"idle")
+				)
+
+func _chapter5_ground_move(target: Vector2) -> void:
+	# 保持原脚下高度，使用真实碰撞，不把玩家插进湖边台阶。
+	move_and_collide(Vector2(target.x - global_position.x, 0.0))
+
+func _release_chapter5() -> void:
+	if not chapter5_locked:
+		return
+	var source := _chapter5_source
+	chapter5_locked = false
+	_chapter5_source = null
+	if _chapter5_tween and _chapter5_tween.is_valid():
+		_chapter5_tween.kill()
+	global_position = chapter5_ground_position
+	visible = _chapter5_saved_visible
+	$Chapter5Powder.emitting = false
+	$Chapter5Powder.color_ramp = _chapter5_particle_gradient
+	velocity = Vector2.ZERO
+	var vfx := get_node_or_null("VFX") as AnimationPlayer
+	if vfx:
+		vfx.speed_scale = 1.0
+		vfx.play(&"RESET")
+		vfx.advance(0.0)
+		vfx.stop()
+	if now_HP > 0.0 and can_process() and not _opening_locked and not _offering_locked:
+		move_state_machine.change_state("idle")
+		ani_move.play(&"idle")
+	SignalBus.Chapter5Cancelled.emit(source)

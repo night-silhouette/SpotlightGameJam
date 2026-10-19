@@ -51,6 +51,7 @@ func _physics_process(delta: float) -> void:
 	if not obj or obj.get("offering_locked") == true:
 		return
 
+	obj.RefreshWallContacts()
 	if not dash_control_flag and obj.is_on_floor() and dash_span_flag:
 		dash_control_flag = true
 

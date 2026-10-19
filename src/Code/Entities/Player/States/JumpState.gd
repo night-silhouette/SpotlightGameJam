@@ -4,6 +4,7 @@ signal s_fall
 
 var temp: float = 1440.0
 var frame: float = 0.0
+var _jump_started: bool = false
 
 func _fall() -> void:
 	change_use_all(true)
@@ -21,37 +22,23 @@ func enter() -> void:
 	if not s_fall.is_connected(_fall):
 		s_fall.connect(_fall, CONNECT_ONE_SHOT)
 
+	_jump_started = false
 	if obj.is_on_floor() or gameInputControl.is_jump:
 		obj.velocity.y = -obj.jump_speed
 		if obj.has_method("PlayJumpFirstSFX"):
 			obj.PlayJumpFirstSFX()
-	elif not obj.is_back_has_rigid and not obj.is_front_has_rigid:
-		# 空中二段跳
-		if "double_jump_count" in obj and obj.double_jump_count > 0:
-			obj.double_jump_count -= 1
-			var d_speed = obj.double_jump_speed if "double_jump_speed" in obj else obj.jump_speed
-			obj.velocity.y = -d_speed
-			obj.PlayDoubleJumpRing()
-			if obj.has_method("PlayJumpSecondSFX"):
-				obj.PlayJumpSecondSFX()
-		else:
-			obj.velocity.y = -obj.jump_speed
-			if obj.has_method("PlayJumpFirstSFX"):
-				obj.PlayJumpFirstSFX()
+	elif obj.enable_double_jump and obj.double_jump_count > 0:
+		obj.double_jump_count -= 1
+		obj.velocity.y = -obj.double_jump_speed
+		obj.PlayDoubleJumpRing()
+		if obj.has_method("PlayJumpSecondSFX"):
+			obj.PlayJumpSecondSFX()
 	else:
-		obj.velocity.y = -obj.jump_speed
-		if obj.has_method("PlayJumpFirstSFX"):
-			obj.PlayJumpFirstSFX()
+		# 无资源的进入请求不能借贴墙、背墙或后续长按修正获得向上速度。
+		return
 
+	_jump_started = true
 	gameInputControl.ConsumeGroundJump()
-	if obj.is_back_has_rigid and not gameInputControl.is_double_jump:
-		var back_wall_dir = -obj.face_dir
-		if obj.wall_jump_lock_dir != back_wall_dir:
-			obj.wall_jump_lock_dir = back_wall_dir
-			obj.velocity.y = -obj.climb_ability
-			obj.velocity.x = obj.climb_ability * 0.9 * obj.face_dir
-			if obj.has_method("PlayWallJumpSFX"):
-				obj.PlayWallJumpSFX()
 
 	if animation_player:
 		animation_player.play("jump_start")
@@ -79,6 +66,9 @@ func exit() -> void:
 	frame = 0.0
 
 func physics_process(delta: float) -> void:
+	if not _jump_started:
+		_fall()
+		return
 	# 必须先结束已经下落的跳跃；贴墙时通用下落判定不会代为切换。
 	if obj.velocity.y >= 0.0:
 		s_fall.emit()

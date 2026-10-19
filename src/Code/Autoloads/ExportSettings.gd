@@ -1,5 +1,31 @@
 extends Node
 
+@export_group("Chapter 5", "chapter5_")
+## 地面位移相对当前脚下坐标和真实湖中心，单位世界像素。
+@export var chapter5_approach_distance: float = 18.0
+@export var chapter5_retreat_distance: float = 48.0
+@export var chapter5_step_duration: float = 1.2
+@export var chapter5_ascent_height: float = 460.0
+@export var chapter5_ascent_duration: float = 7.5
+@export var chapter5_rain_duration: float = 6.0
+@export var chapter5_rain_build_duration: float = 12.0
+@export_range(0.01, 0.25, 0.01) var chapter5_rain_initial_intensity: float = 0.08
+@export var chapter5_rain_count: int = 180
+@export var chapter5_rain_color: Color = Color(0.72, 0.86, 0.94, 0.5)
+@export var chapter5_overflow_radius: float = 115.0
+@export var chapter5_overflow_color: Color = Color(0.64, 0.82, 0.88, 0.5)
+@export var chapter5_vapor_color: Color = Color(0.76, 0.9, 1.0, 0.8)
+@export var chapter5_text_size: int = 25
+@export var chapter5_beat_duration: float = 2.4
+@export var chapter5_stele_wet_duration: float = 2.0
+@export var chapter5_surge_duration: float = 3.0
+@export var chapter5_surge_volume_db: float = -8.0
+@export var chapter5_black_fade_duration: float = 1.4
+@export var chapter5_black_hold_duration: float = 0.6
+@export var chapter5_thunder_volume_db: float = -12.0
+@export var chapter5_thunder_fade_duration: float = 3.0
+@export var chapter5_rain_volume_db: float = -10.0
+
 const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Credits", "credits_")
@@ -130,6 +156,9 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。
 @export var level2_scenery_enabled: bool = true
+## 横向远中景的小幅收色；1 保留原图，前景柱子不受影响。
+@export_range(0.5, 1.0, 0.01) var level2_scenery_background_contrast: float = 0.85
+@export_range(0.5, 1.0, 0.01) var level2_scenery_background_brightness: float = 0.86
 ## 横向分层原画在世界中的显示高度；保持每张图片原始宽高比。
 @export var level2_scenery_artwork_height: float = 800.0
 ## 远景相对镜头的移动比例。
@@ -160,6 +189,20 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.0, 1.0) var level2_scenery_vertical_middle_speed: float = 0.35
 ## 竖井右侧阴影柱的纵向移动比例；大于 1 时比地形滚动更快。
 @export_range(1.0, 2.0) var level2_scenery_vertical_foreground_speed: float = 1.6
+
+@export_group("Level 2 - Readability", "level2_readability_")
+## 角色与可站立书本的柔和补光；离开第二关随环境光淡出。
+@export var level2_readability_enabled: bool = true
+@export var level2_readability_fill_color: Color = Color(0.72, 0.83, 1.0, 1.0)
+@export_range(0.0, 1.0, 0.01) var level2_readability_player_energy: float = 0.50
+@export_range(0.0, 1.0, 0.01) var level2_readability_book_energy: float = 0.42
+## 人物左上方的局部柔光，使用原法线显出耳朵、肩部和衣服的体积。
+@export_range(0.0, 1.0, 0.01) var level2_readability_rim_energy: float = 0.35
+@export var level2_readability_rim_offset: Vector2 = Vector2(-25.0, -35.0)
+@export_range(40.0, 240.0, 1.0) var level2_readability_rim_radius: float = 110.0
+## 仅在书本透明轮廓内提亮朝上的边缘，宽度为世界像素，不增加发光外圈。
+@export_range(0.0, 0.5, 0.01) var level2_readability_book_edge_strength: float = 0.38
+@export_range(0.0, 2.0, 0.1) var level2_readability_book_edge_width: float = 1.2
 
 @export_group("Level 2 - Camera", "level2_camera_")
 ## 窄屏时限制可见高度，避免露出上下相邻房间；不改项目全局分辨率。
@@ -577,6 +620,9 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_camera_box_fraction: Vector2 = Vector2(0.05, 0.25)
 
 @export_group("Camera Gate", "camera_gate_")
+## 设置了 scope_origin_path 的永久边界，仅在玩家处于所属关卡的此局部 Y 范围时启用。
+## 当前用于第三关 CameraGate5；覆盖绿洲路线及跳跃余量，排除地下第二关。
+@export var camera_gate_scope_y_range: Vector2 = Vector2(-1600.0, 2300.0)
 ## 镜头门边界沿禁止露出方向向内收缩的距离（世界像素）。
 @export_range(0.0, 1000.0, 1.0) var camera_gate_margin: float = 0.0
 ## 非一次性镜头门允许画面移动一个视口宽/高所需的秒数。
