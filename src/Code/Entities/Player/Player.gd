@@ -8,6 +8,12 @@ class_name Player
 @onready var dash_afterimages: Node2D = $DashAfterimages
 @onready var dash_afterimage_material: ShaderMaterial = $DashAfterimages.material as ShaderMaterial
 var _opening_locked: bool = false
+var offering_locked: bool = false
+var _offering_source: Node
+var _offering_relic: StringName
+var _offering_animation: StringName
+var _offering_elapsed: float = 0.0
+var _offering_prepared: bool = false
 var _opening_playing: bool = false
 var _opening_previous_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
 var _opening_previous_animation_process_mode: Node.ProcessMode = Node.PROCESS_MODE_INHERIT
@@ -346,6 +352,9 @@ func _ready() -> void:
 		SignalBus.PlayerRelicStateRequested.connect(_emit_relic_state)
 		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consume_requested)
 		SignalBus.PlayerOpeningHoldRequested.connect(_on_opening_hold_requested)
+		SignalBus.PlayerOfferingRequested.connect(_on_offering_requested)
+		SignalBus.PlayerOfferingReleaseRequested.connect(_on_offering_release_requested)
+		ani_move.animation_finished.connect(_on_offering_animation_finished)
 		SignalBus.PlayerOpeningStandUpRequested.connect(_on_opening_stand_up_requested)
 		SignalBus.PlayerOpeningReleaseRequested.connect(_on_opening_release_requested)
 		SignalBus.PlayerHealthChanged.emit(now_HP, Max_HP)
@@ -353,20 +362,27 @@ func _ready() -> void:
 		_emit_relic_state()
 
 func _on_crown_unlocked() -> void:
+	if not has_sunken_crown:
+		Util.PlaySFX(preload("res://Music/SFX/InteractiveLV3/PickUp.wav"))
 	has_sunken_crown = true
 	_emit_relic_state()
 
 func _on_codex_unlocked() -> void:
+	if not has_starseekers_codex:
+		Util.PlaySFX(preload("res://Music/SFX/InteractiveLV3/PickUp.wav"))
 	has_starseekers_codex = true
 	_emit_relic_state()
 
 func _on_bones_unlocked() -> void:
+	if not has_scarred_bones:
+		Util.PlaySFX(preload("res://Music/SFX/InteractiveLV3/PickUp.wav"))
 	has_scarred_bones = true
 	_emit_relic_state()
 
 func _on_player_died(player: Node2D) -> void:
 	if player != self:
 		return
+	_cancel_offering()
 	has_sunken_crown = false
 	has_starseekers_codex = false
 	has_scarred_bones = false
@@ -460,7 +476,85 @@ func _on_opening_release_requested() -> void:
 	move_state_machine.change_state("idle")
 	ani_move.play("idle")
 
+func _on_offering_requested(player: Node2D, source: Node, relic: StringName) -> void:
+	if player != self:
+		return
+	if now_HP <= 0.0 or not can_process() or not gameInputControl.is_physics_processing() or _opening_locked or (offering_locked and _offering_source != source):
+		SignalBus.PlayerOfferingCancelled.emit(self, source)
+		return
+	var animations := {&"crown": &"掏皇冠", &"codex": &"掏卷纸", &"bones": &"掏骨头"}
+	if not animations.has(relic) or not ani_move.has_animation(animations[relic]):
+		SignalBus.PlayerOfferingCancelled.emit(self, source)
+		return
+	# 先释放旧动作，再加独立锁；不禁用 Player 子树、ani_move 或 HUD。
+	rope_controller.ReleaseRope(false)
+	gameInputControl.InterruptDash()
+	offering_locked = true
+	_offering_source = source
+	_offering_relic = relic
+	_offering_animation = animations[relic]
+	_offering_elapsed = 0.0
+	_offering_prepared = false
+	velocity = Vector2.ZERO
+	gameInputControl.row_dir = 0.0
+	gameInputControl.column_dir = 0.0
+	gameInputControl.is_jump = false
+	gameInputControl.is_double_jump = false
+	gameInputControl.is_dash = false
+	# 原图末两帧已收手；仅本次播放的库副本保持第7帧，确保接出时手中确有遗物。
+	var animation := ani_move.get_animation(_offering_animation)
+	var track := animation.find_track(NodePath("sprite/Action:frame"), Animation.TYPE_VALUE)
+	for key in range(animation.track_get_key_count(track)):
+		if animation.track_get_key_time(track, key) >= 1.05:
+			animation.track_set_key_value(track, key, 7)
+	ani_move.play(_offering_animation)
+	ani_move.advance(0.0)
+
+func _on_offering_animation_finished(animation_name: StringName) -> void:
+	if not offering_locked or animation_name != _offering_animation or _offering_prepared:
+		return
+	_offering_prepared = true
+	var marker: Marker2D = get_node("sprite/Action/Offering" + String(_offering_relic).capitalize())
+	var action: Sprite2D = $sprite/Action
+	var sizes: Dictionary = ExportSettings.lake_relic_held_sizes
+	var held: Vector2 = sizes[String(_offering_relic)]
+	var visual_scale := action.global_transform.get_scale().abs()
+	SignalBus.PlayerOfferingPrepared.emit(self, _offering_source, _offering_relic, marker.to_global(ExportSettings.lake_hand_offset), held * visual_scale, ExportSettings.lake_player_visual_height * visual_scale.y)
+	# 回到空手姿态，避免飞出后原图中的遗物还停在手里；状态机仍被演出锁挡住。
+	if offering_locked:
+		ani_move.play(&"idle")
+		ani_move.advance(0.0)
+
+func _on_offering_release_requested(player: Node2D, source: Node) -> void:
+	if player == self and offering_locked and _offering_source == source:
+		_release_offering()
+
+func _release_offering() -> void:
+	offering_locked = false
+	_offering_source = null
+	velocity = Vector2.ZERO
+	if now_HP > 0.0 and can_process() and not _opening_locked:
+		move_state_machine.state_map["idle"].is_use = true
+		move_state_machine.change_state("idle")
+		ani_move.play(&"idle")
+
+func _cancel_offering() -> void:
+	if not offering_locked:
+		return
+	var source := _offering_source
+	_release_offering()
+	SignalBus.PlayerOfferingCancelled.emit(self, source)
+
+func _exit_tree() -> void:
+	_cancel_offering()
+
 func _process(delta: float) -> void:
+	if offering_locked:
+		_offering_elapsed += delta
+		if not is_instance_valid(_offering_source) or now_HP <= 0.0 or not gameInputControl.is_physics_processing():
+			_cancel_offering()
+		elif not _offering_prepared and (ani_move.current_animation != _offering_animation or _offering_elapsed > ani_move.get_animation(_offering_animation).length + 2.0):
+			_cancel_offering()
 	if is_hp_draining and now_HP > 0.0:
 		now_HP -= hp_drain_rate * delta
 	_update_low_water_effect(delta)
@@ -549,6 +643,9 @@ func _update_low_water_effect(delta: float) -> void:
 		low_water_outline_material.set_shader_parameter("outline_strength", _low_water_effect_strength)
 
 func _physics_process(delta: float) -> void:
+	if offering_locked:
+		velocity = Vector2.ZERO
+		return
 	if hp_label:
 		hp_label.text = "%d hp" % int(now_HP)
 	if debug:
@@ -1059,6 +1156,7 @@ func ExportSaveData() -> Dictionary:
 ## 实体数据加载
 ## @param data 存档字典
 func LoadSaveData(data: Dictionary) -> void:
+	_cancel_offering()
 	if data.has("position_x") and data.has("position_y"):
 		global_position = Vector2(data["position_x"], data["position_y"])
 	if data.has("max_hp"):

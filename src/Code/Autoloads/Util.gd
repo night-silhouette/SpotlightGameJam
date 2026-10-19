@@ -14,6 +14,13 @@ var _audio_buses: Dictionary = {}
 var _audio_base_db: Dictionary = {}
 
 func _ready() -> void:
+	var cursor_image: Image = preload("res://Art/New/component/移动端/IMG_9839_切割/04_指针.png").get_image()
+	for y in range(cursor_image.get_height()):
+		for x in range(cursor_image.get_width()):
+			cursor_image.set_pixel(x, y, Color(1.0, 1.0, 1.0, cursor_image.get_pixel(x, y).a))
+	var cursor_texture: ImageTexture = ImageTexture.create_from_image(cursor_image)
+	Input.set_custom_mouse_cursor(cursor_texture, Input.CURSOR_ARROW, Vector2.ZERO)
+	Input.set_custom_mouse_cursor(cursor_texture, Input.CURSOR_POINTING_HAND, Vector2.ZERO)
 	call_deferred("_start_game_audio")
 
 func _start_game_audio() -> void:

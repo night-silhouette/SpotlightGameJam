@@ -210,15 +210,29 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Relics & Lake")
 ## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
-@export var sunken_crown_texture: Texture2D
+@export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.png")
 ## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
-@export var starseekers_codex_texture: Texture2D
+@export var starseekers_codex_texture: Texture2D = preload("res://Art/New/component/extracted/prop_paper_scroll_rolled_1.png")
 ## The Scarred Bones 贴图；留空时使用程序生成的临时图标。
-@export var scarred_bones_texture: Texture2D
+@export var scarred_bones_texture: Texture2D = preload("res://Code/Entities/InteractiveComponent/Lake/OfferingBone.tres")
 ## 湖第一次交互后的水量比例。
 @export_range(0.0, 1.0, 0.01) var lake_first_fill_ratio: float = 0.5
 ## 遗物飞入湖泊的动画时长（秒）。
 @export_range(0.1, 3.0, 0.05) var lake_relic_flight_duration: float = 0.65
+## 湖泊流水图集的循环播放帧率（帧/秒）。
+@export_range(1.0, 30.0, 0.5) var lake_stream_animation_fps: float = 6.0
+## 第7帧持物包围尺寸（Action 局部像素，骨头旋转前）。
+@export var lake_relic_held_sizes: Dictionary = {"crown": Vector2(44, 22), "codex": Vector2(65, 18), "bones": Vector2(13, 66)}
+## 故障超时；正常时序依赖动画完成信号而非该时长。
+@export_range(2.0, 30.0, 0.1) var lake_take_timeout: float = 8.0
+@export_range(0.0, 5.0, 0.05) var lake_relic_hold_duration: float = 0.55
+@export_range(0.1, 5.0, 0.05) var lake_relic_dissolve_duration: float = 0.7
+@export_range(0.1, 1.5, 0.01) var lake_relic_height_ratio: float = 0.6667
+## 人物第7帧非透明像素高度，与 Action 世界缩放相乘。
+@export var lake_player_visual_height: float = 175.0
+## 预置手部 Marker 的附加局部偏移；Marker 也可逐种在场景手调。
+@export var lake_hand_offset: Vector2 = Vector2.ZERO
+
 
 func _ready() -> void:
 	if sunken_crown_texture == null:
@@ -272,7 +286,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
-@export var player_hp_drain_rate: float = 200.0 / 300.0
+@export var player_hp_drain_rate: float = 200.0 / 300.0 * 1.3
 ## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
 @export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
 ## 缺水时主角最终呈现的沙土色

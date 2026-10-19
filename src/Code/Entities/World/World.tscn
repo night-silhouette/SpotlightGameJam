@@ -532,10 +532,6 @@ z_index = -30
 [node name="06" parent="Camp" index="3" unique_id=646416155]
 visible = true
 
-[node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
-position = Vector2(-8.8567505, -56.68327)
-scale = Vector2(1.0168765, 0.68783075)
-
 [node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
 z_index = -1
 scale = Vector2(0.51655513, 0.51655513)
