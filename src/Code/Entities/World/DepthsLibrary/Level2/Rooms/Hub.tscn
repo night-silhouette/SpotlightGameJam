@@ -85,12 +85,12 @@ position = Vector2(0, -21)
 scale = Vector2(0.13, 0.13)
 texture = ExtResource("codex_art")
 
-[node name="FountainStream" type="Sprite2D" parent="." unique_id=1624418422]
+[node name="FountainStream" type="Sprite2D" parent="Fountain" unique_id=1624418422]
 visible = false
 z_index = 1
 texture_repeat = 2
 material = SubResource("FountainStreamMaterial")
-position = Vector2(990, -1357.5)
+position = Vector2(0.76, -1844.5)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("fountain_column")
 region_enabled = true
