@@ -25,6 +25,8 @@ var _reveal_elapsed: float = 0.0
 var _next_character_delay: float = 0.0
 
 func _ready() -> void:
+	Finished.connect(func(): SignalBus.DialogPresentationFinished.emit())
+	SignalBus.Chapter5DialogueCancelled.connect(Dismiss)
 	_box.hide()
 	_narration.hide()
 	SignalBus.DialogBox.connect(_on_dialog_box)

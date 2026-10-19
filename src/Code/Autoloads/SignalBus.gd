@@ -1,5 +1,20 @@
 extends Node
 
+## 章节卡隐藏后通知；channel 为章节请求通道。
+signal ChapterCardFinished(channel: StringName)
+## 第五章玩家命令；目标player、导演source、begin/pose/conceal/release命令（conceal在终景黑幕下隐藏人物但保持剧情锁）及动作data。
+signal Chapter5PlayerRequested(player: Node2D, source: Node, command: StringName, data: Dictionary)
+## 第五章玩家锁请求结果。
+signal Chapter5PlayerAcknowledged(player: Node2D, source: Node, accepted: bool)
+## 玩家锁取消；source 为原导演。
+signal Chapter5Cancelled(source: Node)
+## 对话队列自然关闭后通知演出导演，无参数。
+signal DialogPresentationFinished
+## 第五章取消时清除其仍在播放的对话。
+signal Chapter5DialogueCancelled
+## 第五章单次动作实际结束；animation 为 ani_move 动作名。
+signal Chapter5PoseFinished(player: Node2D, source: Node, animation: StringName)
+
 ## 玩家应用本帧重力后、移动碰撞前发出；区域可在此限制速度，delta 为物理帧秒数。
 signal PlayerBeforeMotion(player: CharacterBody2D, delta: float)
 ## 第二关下落背景速度更新；level 为地图实例，speed 为额外向上滚动的像素/秒，0 表示停止。

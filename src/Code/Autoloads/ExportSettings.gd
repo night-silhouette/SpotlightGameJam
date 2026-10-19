@@ -1,5 +1,31 @@
 extends Node
 
+@export_group("Chapter 5", "chapter5_")
+## 地面位移相对当前脚下坐标和真实湖中心，单位世界像素。
+@export var chapter5_approach_distance: float = 18.0
+@export var chapter5_retreat_distance: float = 48.0
+@export var chapter5_step_duration: float = 1.2
+@export var chapter5_ascent_height: float = 460.0
+@export var chapter5_ascent_duration: float = 7.5
+@export var chapter5_rain_duration: float = 6.0
+@export var chapter5_rain_build_duration: float = 12.0
+@export_range(0.01, 0.25, 0.01) var chapter5_rain_initial_intensity: float = 0.08
+@export var chapter5_rain_count: int = 180
+@export var chapter5_rain_color: Color = Color(0.72, 0.86, 0.94, 0.5)
+@export var chapter5_overflow_radius: float = 115.0
+@export var chapter5_overflow_color: Color = Color(0.64, 0.82, 0.88, 0.5)
+@export var chapter5_vapor_color: Color = Color(0.76, 0.9, 1.0, 0.8)
+@export var chapter5_text_size: int = 25
+@export var chapter5_beat_duration: float = 2.4
+@export var chapter5_stele_wet_duration: float = 2.0
+@export var chapter5_surge_duration: float = 3.0
+@export var chapter5_surge_volume_db: float = -8.0
+@export var chapter5_black_fade_duration: float = 1.4
+@export var chapter5_black_hold_duration: float = 0.6
+@export var chapter5_thunder_volume_db: float = -12.0
+@export var chapter5_thunder_fade_duration: float = 3.0
+@export var chapter5_rain_volume_db: float = -10.0
+
 const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Credits", "credits_")

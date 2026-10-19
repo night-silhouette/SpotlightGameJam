@@ -1,5 +1,7 @@
 [gd_scene format=4 uid="uid://bucqdek8jih77"]
 
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5/Chapter5.tscn" id="chapter5_performance"]
+
 [ext_resource type="PackedScene" uid="uid://ddv5by5318t3e" path="res://Code/Entities/World/Camp/Camp.tscn" id="1_camp"]
 [ext_resource type="PackedScene" uid="uid://bhbabjwum4cyl" path="res://Code/Entities/PlayerWithCamera/PlayerWithCamera.tscn" id="1_sk8ge"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="2_mkscu"]
@@ -522,7 +524,6 @@ scale = Vector2(1.0168765, 0.68783075)
 
 [node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
 z_index = -1
-scale = Vector2(0.51655513, 0.51655513)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
 position = Vector2(2679, -355)
@@ -1001,6 +1002,10 @@ display_duration = 12.0
 trigger_relic = &"bones"
 finished_chapter_channel = &"chapter5_after_enemy_definition"
 metadata/_editor_description_ = "第四章尾声；本卡淡出隐藏后的 Finished 请求第五章卡。"
+
+[node name="Chapter5" parent="." instance=ExtResource("chapter5_performance")]
+lake_anchor = NodePath("../Camp/Lake/OfferingTarget")
+stele_path = NodePath("../Camp/Chapter1/SteleStory_1_12_to_1_14/BrokenStele")
 
 [node name="第五章_万物流转" parent="story" instance=ExtResource("10_mvgin")]
 act_text = "第五章："
