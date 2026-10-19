@@ -19,7 +19,7 @@ centered = false
 
 [node name="LowerLedge" type="Sprite2D" parent="BlueDepth" unique_id=1789618049]
 z_index = 20
-position = Vector2(0, 256)
+position = Vector2(0, 28)
 texture = ExtResource("tex2")
 centered = false
 

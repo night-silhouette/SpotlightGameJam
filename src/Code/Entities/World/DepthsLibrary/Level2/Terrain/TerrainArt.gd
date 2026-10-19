@@ -98,7 +98,11 @@ func _draw() -> void:
 		SURFACE.Draw(self, _mesh, 32.0 * float(_setting(&"level2_terrain_art_border_ratio")))
 
 func _terrain_bounds(terrain: TileMapLayer) -> Rect2:
+	if terrain == null or terrain.tile_set == null:
+		return Rect2()
 	var cells := terrain.get_used_rect()
+	if not cells.has_area():
+		return Rect2()
 	var tile_size := Vector2(terrain.tile_set.tile_size)
 	var rect := Rect2(terrain.map_to_local(cells.position) - tile_size * 0.5, Vector2(cells.size) * tile_size)
 	return global_transform.affine_inverse() * terrain.global_transform * rect
@@ -112,6 +116,12 @@ func _death_rectangles() -> Array[Rect2]:
 		var collider := child as CollisionShape2D
 		if collider == null or collider.disabled or not collider.shape is RectangleShape2D:
 			continue
+		if collider.name == &"WeaveArchiveDeathWater" and not bool(_setting(&"level2_death_boundary_weave_visual_enabled")):
+			continue
+		if collider.name == &"SunStacksDeathWater" and not bool(_setting(&"level2_death_boundary_sun_visual_enabled")):
+			continue
+		if collider.name == &"MoonAqueductDeathWater" and not bool(_setting(&"level2_death_boundary_moon_visual_enabled")):
+			continue
 		var size := (collider.shape as RectangleShape2D).size
 		var rect := Rect2(-size * 0.5, size)
 		if collider.name == &"MoonAqueductDeathWater":
@@ -123,7 +133,7 @@ func _build_exterior(rooms: Node) -> Array[Rect2]:
 	var result: Array[Rect2] = []
 	var descent := rooms.get_node_or_null("DescentShaft/Terrain") as TileMapLayer
 	var fountain := rooms.get_node_or_null("FountainShaft/Terrain") as TileMapLayer
-	if bool(_setting(&"level2_terrain_art_shaft_exterior_enabled")) and descent != null and fountain != null:
+	if bool(_setting(&"level2_terrain_art_shaft_exterior_enabled")) and _terrain_bounds(descent).has_area() and _terrain_bounds(fountain).has_area():
 		var fall_bounds := _terrain_bounds(descent)
 		var rise_bounds := _terrain_bounds(fountain)
 		var width := maxf(0.0, float(_setting(&"level2_terrain_art_shaft_exterior_width")))
@@ -131,29 +141,33 @@ func _build_exterior(rooms: Node) -> Array[Rect2]:
 		var bottom := minf(fall_bounds.end.y, rise_bounds.end.y)
 		if width > 0.0:
 			result.append(Rect2(fall_bounds.position - Vector2(width, 0), Vector2(width, fall_bounds.size.y)))
-			result.append(Rect2(rise_bounds.end.x, top, width, bottom - top))
+			if bottom > top:
+				result.append(Rect2(rise_bounds.end.x, top, width, bottom - top))
 		var gap := rise_bounds.position.x - fall_bounds.end.x
 		if gap > 0.0 and bottom > top:
 			result.append(Rect2(fall_bounds.end.x, top, gap, bottom - top))
 	# 填满三个掉落区域周围的地图外侧；从死亡面高度开始，向下延伸供镜头取景。
 	var death := _death_rectangles()
 	var depth := maxf(0.0, float(_setting(&"level2_terrain_art_bottom_fill_depth")))
-	if not death.is_empty() and depth > 0.0 and not _sources.is_empty():
-		var extent := _terrain_bounds(_sources[0])
-		for terrain in _sources:
-			if terrain.is_visible_in_tree():
-				extent = extent.merge(_terrain_bounds(terrain))
+	var extent := Rect2()
+	for terrain in _sources:
+		var bounds := _terrain_bounds(terrain)
+		if terrain.is_visible_in_tree() and bounds.has_area():
+			extent = extent.merge(bounds) if extent.has_area() else bounds
+	if not death.is_empty() and depth > 0.0 and extent.has_area():
 		var top := death[0].position.y
 		for rect in death:
 			top = minf(top, rect.position.y)
 		var margin := maxf(0.0, float(_setting(&"level2_terrain_art_shaft_exterior_width")))
-		result.append(Rect2(extent.position.x - margin, top, extent.size.x + margin * 2.0, extent.end.y + depth - top))
+		if extent.end.y + depth > top:
+			result.append(Rect2(extent.position.x - margin, top, extent.size.x + margin * 2.0, extent.end.y + depth - top))
 		var upper_height := maxf(0.0, float(_setting(&"level2_terrain_art_room_exterior_height")))
 		var hub := rooms.get_node_or_null("Hub/Terrain") as TileMapLayer
-		if upper_height > 0.0 and hub != null:
+		if upper_height > 0.0 and _terrain_bounds(hub).has_area():
 			var ceiling := _terrain_bounds(hub).position.y
-			result.append(Rect2(extent.position.x - margin, ceiling - upper_height,
-				extent.size.x + margin * 2.0, top - ceiling + upper_height))
+			if top > ceiling - upper_height:
+				result.append(Rect2(extent.position.x - margin, ceiling - upper_height,
+					extent.size.x + margin * 2.0, top - ceiling + upper_height))
 	# 避让实际房间，不再用包含远处附属平台的地形包围盒挖空整片墙体。
 	for room in rooms.get_children():
 		var width := float(room.get_meta("width", 0.0))
@@ -162,7 +176,7 @@ func _build_exterior(rooms: Node) -> Array[Rect2]:
 		# 封闭房间按实际地板收口，避免地板下到死亡面之间留出一条灰带。
 		if room.name in [&"RestArchive", &"ArchivePassage", &"WestPassage", &"EastPassage"]:
 			var floor_terrain := room.get_node_or_null("Terrain") as TileMapLayer
-			if floor_terrain != null:
+			if _terrain_bounds(floor_terrain).has_area():
 				var floor_bottom: float = room.to_local(to_global(_terrain_bounds(floor_terrain).end)).y
 				bounds.size.y = minf(bounds.size.y, floor_bottom - bounds.position.y)
 		if not bounds.has_area():
@@ -171,7 +185,7 @@ func _build_exterior(rooms: Node) -> Array[Rect2]:
 		# 折返井背景比左墙内侧偏左几像素，填墙边界跟随砖墙，避免平台边出现小台阶。
 		if room.name == &"LowerStairwell":
 			var stair_terrain := room.get_node_or_null("Terrain") as TileMapLayer
-			if stair_terrain != null:
+			if _terrain_bounds(stair_terrain).has_area():
 				var wall_end := stair_terrain.get_used_rect().position
 				while stair_terrain.get_cell_source_id(wall_end) >= 0:
 					wall_end.x += 1
@@ -191,7 +205,7 @@ func _build_exterior(rooms: Node) -> Array[Rect2]:
 		result = clipped
 	# 入口与下落井右墙相差一格；补在房间避让之后，消除外观上的台阶与背景接缝。
 	var entry := rooms.get_node_or_null("EntryCollapse/Terrain") as TileMapLayer
-	if bool(_setting(&"level2_terrain_art_entry_wall_aligned")) and entry != null and descent != null:
+	if bool(_setting(&"level2_terrain_art_entry_wall_aligned")) and _terrain_bounds(entry).has_area() and _terrain_bounds(descent).has_area():
 		var entry_bounds := _terrain_bounds(entry)
 		var descent_bounds := _terrain_bounds(descent)
 		var tile_width := float(descent.tile_set.tile_size.x)
@@ -203,6 +217,12 @@ func _build_exterior(rooms: Node) -> Array[Rect2]:
 
 func _subtract_rect(rect: Rect2, cut: Rect2) -> Array[Rect2]:
 	var pieces: Array[Rect2] = []
+	# 编辑过程中空图层或分离的井道不应生成反向填充；不要用 abs() 把它变成额外墙面。
+	if not rect.has_area():
+		return pieces
+	if not cut.has_area():
+		pieces.append(rect)
+		return pieces
 	var overlap := rect.intersection(cut)
 	if not overlap.has_area():
 		pieces.append(rect)

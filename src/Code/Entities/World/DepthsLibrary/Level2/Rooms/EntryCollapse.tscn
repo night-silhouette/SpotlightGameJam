@@ -2,9 +2,6 @@
 
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
 
-[sub_resource type="RectangleShape2D" id="EntryPitShape"]
-size = Vector2(240, 40)
-
 [node name="EntryCollapse" type="Node2D" unique_id=1966376624]
 metadata/width = 860
 metadata/title = "左侧井口 · 二段跳与塌陷"
@@ -25,15 +22,6 @@ offset_right = 815.0
 offset_bottom = 138.0
 theme_override_font_sizes/font_size = 18
 text = "从主城左口落入；二段跳跃过断层，踩上裂纹平台进入竖井。"
-
-[node name="EntryFallReset" type="Area2D" parent="." unique_id=1582447420]
-position = Vector2(440, 420)
-collision_layer = 0
-collision_mask = 2
-metadata/fall_reset = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EntryFallReset" unique_id=507234731]
-shape = SubResource("EntryPitShape")
 
 [node name="CityEntrance" type="Marker2D" parent="." unique_id=278157676]
 position = Vector2(160, -80)

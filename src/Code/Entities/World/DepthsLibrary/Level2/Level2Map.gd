@@ -52,8 +52,10 @@ func _ready() -> void:
 	for platform in find_children("*", "AnimatableBody2D", true, false):
 		platform.set("movement_speed", ExportSettings.level2_platform_speed)
 	for room in $Rooms.get_children():
-		room.get_node("RoomTitle").hide()
-		room.get_node("RoomHint").hide()
+		for label_name in ["RoomTitle", "RoomHint"]:
+			var label := room.get_node_or_null(NodePath(label_name)) as CanvasItem
+			if label != null:
+				label.hide()
 	_refresh(false)
 
 func _physics_process(delta: float) -> void:
@@ -168,6 +170,9 @@ func _end_fountain_return_fall() -> void:
 ## 返回指定世界坐标所属房间；找不到时返回 null。
 func GetRoomAt(point: Vector2) -> Node2D:
 	for room in $Rooms.get_children():
+		# Rooms 也允许放置手动外观层；只有声明房间尺寸的节点参与区域判定。
+		if not room is Node2D or not room.has_meta("width"):
+			continue
 		var bounds := Rect2(Vector2(0, -80), Vector2(float(room.get_meta("width", 2200)), float(room.get_meta("height", 900)) + 80.0))
 		if bounds.has_point(room.to_local(point)):
 			return room

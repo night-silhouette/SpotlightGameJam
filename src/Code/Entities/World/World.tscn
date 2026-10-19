@@ -29,6 +29,10 @@
 [ext_resource type="Texture2D" uid="uid://dw8g0j7ceq8e2" path="res://Art/New/component/game1/IMG_1495.PNG" id="28_o2yww"]
 [ext_resource type="Texture2D" uid="uid://bhr7e4fieem42" path="res://Art/New/component/IMG_1456.PNG" id="29_l2oj5"]
 [ext_resource type="Script" uid="uid://cic3virsi3v0h" path="res://Code/Entities/World/OpeningFade.gd" id="30_opening_fade"]
+[ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="32_hehhy"]
+[ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
+[ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
+[ext_resource type="Texture2D" uid="uid://bdqe2o5arwlue" path="res://Art/New/component/extracted/prop_paper_manuscript.png" id="35_1og5t"]
 [ext_resource type="Texture2D" uid="uid://cfrgqi60o3h13" path="res://Art/New/component/game1/2.PNG" id="31_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
@@ -194,6 +198,39 @@ shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_15xio"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u3ot4"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m0d35"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pw4kg"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -507,49 +544,50 @@ scale = Vector2(0.51655513, 0.51655513)
 position = Vector2(2678, -361)
 metadata/_edit_lock_ = true
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="0"]
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="1"]
 position = Vector2(5310, -65)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_hehhy")
-
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
-position = Vector2(5395, -62)
-
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
-position = Vector2(4164.031, -1232.1624)
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
-material = SubResource("ShaderMaterial_vqyf3")
-
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
-position = Vector2(4207.031, -1255.1624)
-
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="0"]
-position = Vector2(4310.6597, -2677)
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
-material = SubResource("ShaderMaterial_2flee")
-
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
-position = Vector2(4353.6597, -2700)
-
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0"]
-position = Vector2(3389, -3375.9998)
-
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6"]
 material = SubResource("ShaderMaterial_1og5t")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
-position = Vector2(3432, -3398.9998)
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="7" unique_id=424886505]
+position = Vector2(5395, -62)
+scale = Vector2(0.7676052, -0.7676052)
 
-[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="0"]
-position = Vector2(1675.5127, -2562.0002)
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="1"]
+position = Vector2(4164.031, -1232.1624)
 
-[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="5"]
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6"]
 material = SubResource("ShaderMaterial_15xio")
 
-[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6" unique_id=424886505]
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="7" unique_id=424886505]
+position = Vector2(4207.031, -1255.1624)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="1"]
+position = Vector2(4310.6597, -2677)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6"]
+material = SubResource("ShaderMaterial_u3ot4")
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="7" unique_id=424886505]
+position = Vector2(4353.6597, -2700)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="1"]
+position = Vector2(3389, -3375.9998)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6"]
+material = SubResource("ShaderMaterial_m0d35")
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="7" unique_id=424886505]
+position = Vector2(3432, -3398.9998)
+
+[node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="1"]
+position = Vector2(1675.5127, -2562.0002)
+
+[node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="6"]
+material = SubResource("ShaderMaterial_pw4kg")
+
+[node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" parent_id_path=PackedInt32Array(1497400001, 1594472404) index="7" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
 
 [node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="4" unique_id=208978342]
@@ -583,7 +621,7 @@ player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate4" parent="CameraNode" unique_id=256393181 instance=ExtResource("7_hfiwn")]
-position = Vector2(1082.9999, 3803.0002)
+position = Vector2(1264.9999, 3929)
 rotation = -1.5707964
 scale = Vector2(0.452, 100)
 blocked_side = 1
@@ -930,6 +968,26 @@ content = "《敌人的定义》
 display_duration = 12.0
 trigger_relic = &"bones"
 metadata/_editor_description_ = "第四章尾声；使用 GradualTextTrigger，位置与离场路径需在编辑器确认。"
+
+[node name="PropBookStackTwo" type="Sprite2D" parent="." unique_id=995955917]
+position = Vector2(-3462, 3762)
+scale = Vector2(0.14, 0.154)
+texture = ExtResource("32_hehhy")
+
+[node name="PropBookHorizontal3" type="Sprite2D" parent="." unique_id=1715462420]
+position = Vector2(-3567, 3776)
+scale = Vector2(0.14, 0.174)
+texture = ExtResource("33_vqyf3")
+
+[node name="PropDeskScholarStandalone" type="Sprite2D" parent="." unique_id=1551741024]
+position = Vector2(-3695, 3721.9998)
+scale = Vector2(0.14, 0.14)
+texture = ExtResource("34_2flee")
+
+[node name="PropPaperManuscript" type="Sprite2D" parent="." unique_id=1374298095]
+position = Vector2(-3689, 3617)
+scale = Vector2(0.14, 0.14)
+texture = ExtResource("35_1og5t")
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]

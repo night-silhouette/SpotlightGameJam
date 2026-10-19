@@ -96,6 +96,10 @@ func _refresh() -> void:
 		for path: NodePath in _sources:
 			var node := get_node_or_null(path)
 			if node is Sprite2D:
+				# Pillars are placed/scaled per room in the scene. Their parent
+				# still supplies parallax and repetition; fitting must not reset them.
+				if node.get_parent() == get_node_or_null("ForegroundLoop"):
+					continue
 				node.position = _sources[path]["position"] * factor + Vector2(0.0, bounds.position.y)
 				node.scale = _sources[path]["scale"] * factor
 			elif node is Parallax2D:
