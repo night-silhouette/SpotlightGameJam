@@ -12,6 +12,7 @@ const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const SettingScene = preload("res://Code/Entities/Setting/Setting.tscn")
 const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
+const MENU_REVEAL_SFX = preload("res://Music/SFX/InteractiveLV3/UIClick.wav")
 
 @onready var btn_start: Button = %BtnStart
 @onready var btn_setting: Button = %BtnSetting
@@ -76,6 +77,7 @@ func _input(event: InputEvent) -> void:
 func _reveal_menu() -> void:
 	_awaiting_menu_input = false
 	_revealing_menu = true
+	Util.PlaySFX(MENU_REVEAL_SFX)
 	$BackgroundLayers/Sky.hide()
 	$BackgroundLayers/CleanBackground.show()
 	$MainUI.modulate.a = 0.0

@@ -5,8 +5,10 @@ const WALL_RELEASE_GRACE_TIME: float = 0.12
 var is_wall_kicking: bool = false
 var wall_dir: int = 0
 var wall_release_grace_remaining: float = 0.0
+var _wall_jump_consumed: bool = false
 
 func enter() -> void:
+	_wall_jump_consumed = false
 	is_wall_kicking = false
 	wall_release_grace_remaining = 0.0
 	wall_dir = obj.face_dir
@@ -47,7 +49,10 @@ func physics_process(delta: float) -> void:
 			return
 	if obj.velocity.y > obj.max_fall_speed:
 		obj.velocity.y = obj.max_fall_speed
-	if gameInputControl.is_physics_processing() and Input.is_action_just_pressed("jump"):
+	if not _wall_jump_consumed and gameInputControl.is_physics_processing() and Input.is_action_just_pressed("jump"):
+		# 宽限期也消耗同一次蹬墙跳机会，不允许绕到普通跳或二段跳。
+		_wall_jump_consumed = true
+		wall_release_grace_remaining = 0.0
 		obj.velocity.y = -obj.climb_ability
 		obj.velocity.x = -obj.climb_ability * 0.9 * wall_dir
 		if obj.has_method("PlayWallJumpSFX"):

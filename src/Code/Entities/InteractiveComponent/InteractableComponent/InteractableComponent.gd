@@ -155,6 +155,8 @@ func TryTouchInteract(world_pos: Vector2, interactor: Node2D) -> bool:
 func Interact(interactor: Node2D) -> bool:
 	if not enable_interaction or _dispatching or not is_instance_valid(interactor):
 		return false
+	if interactor.get("offering_locked") == true:
+		return false
 	_dispatching = true
 	var is_description: bool = not _description_requested
 	_description_requested = true

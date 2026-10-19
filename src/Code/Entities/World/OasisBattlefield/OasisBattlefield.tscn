@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="4_lv1pm"]
 [ext_resource type="PackedScene" uid="uid://be0yr2uqfbi41" path="res://Code/Entities/World/OasisBattlefield/return_phase.tscn" id="4_return_phase"]
 [ext_resource type="Shader" uid="uid://cxke4sshjkdxe" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="5_7p3u0"]
+[ext_resource type="Script" path="res://Code/Entities/World/world_bgm.gd" id="5_world_bgm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_lv1pm"]
 resource_local_to_scene = true
@@ -50,6 +51,9 @@ material = SubResource("ShaderMaterial_7p3u0")
 
 [node name="ReturnPhase" parent="." unique_id=1083308710 instance=ExtResource("4_return_phase")]
 visible = false
+
+[node name="WorldBgm" type="Node" parent="."]
+script = ExtResource("5_world_bgm")
 
 [node name="PhaseTransition" type="CanvasLayer" parent="." unique_id=2045760254]
 layer = 130

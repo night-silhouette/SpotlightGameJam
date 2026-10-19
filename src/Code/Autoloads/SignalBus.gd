@@ -27,6 +27,9 @@ signal DialogBox(type: StringName, content: String)
 ## 请求显示非模态教学字幕；text 为完整文案，空字符串清除当前字幕，不锁定玩家操作。
 signal TutorialSubtitleRequested(text: String)
 
+## 渐显文字黑幕的整体播放状态变化时触发；active 为是否至少有一张 GradualTextCard 正在播放。
+signal GradualTextActiveChanged(active: bool)
+
 ## 交互组件被触发时触发；component 为发起交互的组件节点，interactor 为交互主体（通常是玩家）。
 signal ComponentInteracted(component: Node2D, interactor: Node2D)
 ## 请求展示第一阶段描述文本；lines 为按顺序展示的文本数组。
@@ -144,6 +147,14 @@ signal PlayerRelicStateRequested
 signal PlayerRelicsChanged(crown: bool, codex: bool, bones: bool)
 ## 湖泊请求消耗一件遗物时触发；relic 为 crown、codex 或 bones。
 signal PlayerRelicConsumeRequested(relic: StringName)
+## 湖泊请求目标玩家锁定运动并播放掏物；source 为本次演出所有者，relic 为 crown/codex/bones。
+signal PlayerOfferingRequested(player: Node2D, source: Node, relic: StringName)
+## 掏物实际结束时应答；hand_position 为世界手部中心，held_size 为遗物世界尺寸，visual_height 为人物视觉高度。
+signal PlayerOfferingPrepared(player: Node2D, source: Node, relic: StringName, hand_position: Vector2, held_size: Vector2, visual_height: float)
+## 所有者结束/取消演出，只释放自身的运动锁，不改变其他剧情的处理开关。
+signal PlayerOfferingReleaseRequested(player: Node2D, source: Node)
+## 掏物被死亡、读档或其他动作打断；source 为需要取消的演出所有者。
+signal PlayerOfferingCancelled(player: Node2D, source: Node)
 ## 玩家真正死亡时触发；player 为死亡的角色，而非即死请求。
 signal PlayerDied(player: Node2D)
 ## 刻痕枯骨投入湖泊、进入大结局时触发；无参数。
@@ -377,6 +388,25 @@ const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const START_MENU_SCENE_PATH = "res://Code/Entities/StartMenu/StartMenu.tscn"
 
 var _returning_to_main_menu: bool = false
+var _active_gradual_text_cards: Dictionary = {}
+
+
+## 登记或释放渐显文字播放状态；source 为卡片自身，active 为是否播放，重复登记不会累计。
+func SetGradualTextActive(source: Node, active: bool) -> void:
+	var was_active := IsGradualTextActive()
+	var source_id := source.get_instance_id()
+	if active:
+		_active_gradual_text_cards[source_id] = true
+	else:
+		_active_gradual_text_cards.erase(source_id)
+	var is_active := IsGradualTextActive()
+	if was_active != is_active:
+		GradualTextActiveChanged.emit(is_active)
+
+
+## 返回是否至少有一张渐显文字卡正在播放，供晚初始化的监听者查询当前状态。
+func IsGradualTextActive() -> bool:
+	return not _active_gradual_text_cards.is_empty()
 
 func _ready() -> void:
 	get_tree().auto_accept_quit = false

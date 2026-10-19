@@ -1,0 +1,8 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://Art/Archived/bones/bone.png" id="1_bone"]
+
+[resource]
+atlas = ExtResource("1_bone")
+region = Rect2(193, 66, 118, 444)
+filter_clip = true

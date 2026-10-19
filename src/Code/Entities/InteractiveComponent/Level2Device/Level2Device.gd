@@ -61,5 +61,5 @@ func _contains_world_point(world_pos: Vector2) -> bool:
 	return _visual.is_visible_in_tree() and Geometry2D.is_point_in_polygon(_visual.to_local(world_pos), _visual.polygon)
 
 func _request() -> void:
-	if available and is_instance_valid(_player) and global_position.distance_to(_player.global_position) <= ExportSettings.level2_interact_radius:
+	if available and is_instance_valid(_player) and _player.get("offering_locked") != true and global_position.distance_to(_player.global_position) <= ExportSettings.level2_interact_radius:
 		SignalBus.Level2InteractionRequested.emit(self, _player)

@@ -12,6 +12,15 @@
 
 [ext_resource type="Shader" path="res://Code/Entities/Player/playerUi/HpUi/LowHealthSand.gdshader" id="10_low_health_sand"]
 
+[ext_resource type="Texture2D" path="res://Art/New/component/移动端/IMG_9839_切割/01_空心外框.png" id="11_joystick_frame"]
+[ext_resource type="Texture2D" path="res://Art/New/component/移动端/IMG_9839_切割/03_独立图案.png" id="12_joystick_tip"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_joystick_frame"]
+texture = ExtResource("11_joystick_frame")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_joystick_tip"]
+texture = ExtResource("12_joystick_tip")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_low_health_sand"]
 resource_local_to_scene = true
 shader = ExtResource("10_low_health_sand")
@@ -81,7 +90,7 @@ visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.4, 0.4, 1)
 theme_override_font_sizes/font_size = 12
-text = "生命流失中..."
+text = ""
 
 [node name="SettingButton" type="TextureButton" parent="Control" unique_id=987162535]
 layout_mode = 1
@@ -260,6 +269,10 @@ anchors_preset = 0
 anchor_top = 0.5
 anchor_right = 0.35
 anchor_bottom = 1.0
+theme_override_styles/normal_joystick = SubResource("StyleBoxTexture_joystick_frame")
+theme_override_styles/normal_tip = SubResource("StyleBoxTexture_joystick_tip")
+theme_override_styles/pressed_joystick = SubResource("StyleBoxTexture_joystick_frame")
+theme_override_styles/pressed_tip = SubResource("StyleBoxTexture_joystick_tip")
 joystick_mode = 1
 visibility_mode = 1
 action_left = "move_l"

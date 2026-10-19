@@ -27,7 +27,7 @@ func ResetCooldown() -> void:
 
 ## 尝试切换指定流水区域；target_area 为鼠标点中的区域，返回是否成功激活。
 func TryActivateTargetArea(target_area: WaterFlowArea) -> bool:
-	if not is_instance_valid(target_area):
+	if get_parent().get("offering_locked") == true or not is_instance_valid(target_area):
 		return false
 
 	target_area.ToggleRuneFluid()

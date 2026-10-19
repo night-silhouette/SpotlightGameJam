@@ -1,9 +1,219 @@
 [gd_scene format=3 uid="uid://begpdtx5e6uy8"]
 
 [ext_resource type="Script" uid="uid://c0mbjdm1fjpuf" path="res://Code/Entities/InteractiveComponent/Lake/Lake.gd" id="1_lake"]
+[ext_resource type="Texture2D" uid="uid://c507vy0qw5vni" path="res://Art/New/component/lake/静态lake.png" id="2_static"]
+[ext_resource type="Texture2D" uid="uid://btj8w86qy3nni" path="res://Art/New/component/lake/流水1.png" id="3_flow1"]
+[ext_resource type="Texture2D" uid="uid://dmbitmagbbm4v" path="res://Art/New/component/lake/流水2.png" id="4_flow2"]
+[ext_resource type="Shader" path="res://Code/Entities/InteractiveComponent/Lake/OfferingDissolve.gdshader" id="5_offering"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_offering"]
+resource_local_to_scene = true
+shader = ExtResource("5_offering")
+shader_parameter/progress = 0.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lake"]
-size = Vector2(193.09201, 84)
+resource_local_to_scene = true
+size = Vector2(169.84523, 144.98253)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_3"]
+atlas = ExtResource("3_flow1")
+region = Rect2(4995, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_4"]
+atlas = ExtResource("3_flow1")
+region = Rect2(6660, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_5"]
+atlas = ExtResource("3_flow1")
+region = Rect2(8325, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_6"]
+atlas = ExtResource("3_flow1")
+region = Rect2(9990, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_1"]
+atlas = ExtResource("4_flow2")
+region = Rect2(1704, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_2"]
+atlas = ExtResource("4_flow2")
+region = Rect2(3408, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_3"]
+atlas = ExtResource("4_flow2")
+region = Rect2(5112, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_9"]
+atlas = ExtResource("4_flow2")
+region = Rect2(15336, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_4"]
+atlas = ExtResource("4_flow2")
+region = Rect2(6816, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_5"]
+atlas = ExtResource("4_flow2")
+region = Rect2(8520, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow2_0"]
+atlas = ExtResource("4_flow2")
+region = Rect2(0, 0, 1704, 1456)
+margin = Rect2(150, 50, 299, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_0"]
+atlas = ExtResource("3_flow1")
+region = Rect2(0, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_1"]
+atlas = ExtResource("3_flow1")
+region = Rect2(1665, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_flow1_2"]
+atlas = ExtResource("3_flow1")
+region = Rect2(3330, 0, 1665, 1456)
+margin = Rect2(179, 50, 338, 152)
+filter_clip = true
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_stream"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_6")
+}],
+"loop": 1,
+"name": &"Static2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_3")
+}],
+"loop": 1,
+"name": &"Static3",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_9")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow2_2")
+}],
+"loop": 0,
+"name": &"bones_flow",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_flow1_6")
+}],
+"loop": 0,
+"name": &"crown_flow",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_static")
+}],
+"loop": 0,
+"name": &"static",
+"speed": 1.0
+}]
+
+[sub_resource type="Gradient" id="Gradient_orb"]
+offsets = PackedFloat32Array(0, 0.18, 0.35, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.8, 1, 1, 1, 0.22, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_orb"]
+gradient = SubResource("Gradient_orb")
+width = 512
+height = 512
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_orb_glow"]
+blend_mode = 1
+light_mode = 1
 
 [node name="Lake" type="Area2D" unique_id=1583188393]
 z_index = -1
@@ -12,10 +222,12 @@ collision_mask = 2
 script = ExtResource("1_lake")
 
 [node name="Bank" type="Polygon2D" parent="." unique_id=1903510240]
+visible = false
 color = Color(0.14, 0.28, 0.32, 0.8)
 polygon = PackedVector2Array(-100, -9, -80, -17, 80, -17, 100, -9, 91, 15, -91, 15)
 
 [node name="Water" type="ColorRect" parent="." unique_id=666097979]
+visible = false
 offset_left = -88.0
 offset_top = 9.88
 offset_right = 88.0
@@ -25,10 +237,75 @@ mouse_filter = 2
 color = Color(0.19, 0.72, 0.87, 0.78)
 
 [node name="Surface" type="Polygon2D" parent="." unique_id=1132815667]
+visible = false
 color = Color(0.58, 0.91, 0.98, 0.92)
 polygon = PackedVector2Array(-82, -13, -40, -15, 12, -13, 65, -15, 82, -13, 65, -11, -40, -11)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1216154260]
-position = Vector2(1, -48)
-scale = Vector2(1.450086, 1.450086)
+position = Vector2(0.19970044, -67.87568)
 shape = SubResource("RectangleShape2D_lake")
+
+[node name="Stream" type="AnimatedSprite2D" parent="." unique_id=1723886991]
+position = Vector2(0, 15)
+scale = Vector2(0.09985022, 0.09985022)
+sprite_frames = SubResource("SpriteFrames_stream")
+animation = &"static"
+centered = false
+offset = Vector2(-1001.5, -1608)
+
+[node name="OrbLights" type="Node2D" parent="Stream" unique_id=1941100508]
+z_index = 1
+
+[node name="LeftOrbLight" type="PointLight2D" parent="Stream/OrbLights" unique_id=1455170451]
+visible = false
+enabled = false
+position = Vector2(-455.5, -1463)
+color = Color(1, 0.96, 0.84, 1)
+energy = 1.8
+texture = SubResource("GradientTexture2D_orb")
+texture_scale = 1.15
+
+[node name="Glow" type="Sprite2D" parent="Stream/OrbLights/LeftOrbLight" unique_id=2134206750]
+self_modulate = Color(1, 0.96, 0.84, 1)
+material = SubResource("CanvasItemMaterial_orb_glow")
+scale = Vector2(0.65, 0.65)
+texture = SubResource("GradientTexture2D_orb")
+
+[node name="FrontOrbLight" type="PointLight2D" parent="Stream/OrbLights" unique_id=1408468123]
+visible = false
+enabled = false
+position = Vector2(-250.37498, -1071.605)
+scale = Vector2(0.9538465, 0.9630945)
+color = Color(1, 0.96, 0.84, 1)
+energy = 1.8
+texture = SubResource("GradientTexture2D_orb")
+texture_scale = 1.15
+
+[node name="Glow" type="Sprite2D" parent="Stream/OrbLights/FrontOrbLight" unique_id=1169793109]
+self_modulate = Color(1, 0.96, 0.84, 1)
+material = SubResource("CanvasItemMaterial_orb_glow")
+scale = Vector2(0.65, 0.65)
+texture = SubResource("GradientTexture2D_orb")
+
+[node name="RightOrbLight" type="PointLight2D" parent="Stream/OrbLights" unique_id=1537709080]
+visible = false
+enabled = false
+position = Vector2(366, -1329.5)
+color = Color(1, 0.96, 0.84, 1)
+energy = 1.8
+texture = SubResource("GradientTexture2D_orb")
+texture_scale = 1.15
+
+[node name="Glow" type="Sprite2D" parent="Stream/OrbLights/RightOrbLight" unique_id=612470862]
+self_modulate = Color(1, 0.96, 0.84, 1)
+material = SubResource("CanvasItemMaterial_orb_glow")
+scale = Vector2(0.65, 0.65)
+texture = SubResource("GradientTexture2D_orb")
+
+[node name="OfferingVisual" type="Sprite2D" parent="."]
+visible = false
+z_index = 3
+material = SubResource("ShaderMaterial_offering")
+
+[node name="OfferingTarget" type="Marker2D" parent="."]
+position = Vector2(0, -65.27958)

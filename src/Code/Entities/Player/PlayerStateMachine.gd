@@ -55,6 +55,11 @@ func _resume_movement() -> void:
 
 ## 兼容状态机基类的状态迁移接口；next_state_name 为已有状态名，受伤/死亡优先于绳索动作。
 func change_state(next_state_name: String) -> void:
+	if obj and obj.offering_locked:
+		if next_state_name in ["hurt", "died"]:
+			obj._cancel_offering()
+		else:
+			return
 	if cur_state_name == "died" and obj and obj.now_HP <= 0.0:
 		return
 	if next_state_name in ["hurt", "died"]:
@@ -66,6 +71,21 @@ func change_state(next_state_name: String) -> void:
 		current_state.enter()
 		return
 	super.change_state(next_state_name)
+
+func _process(delta: float) -> void:
+	if obj and obj.offering_locked:
+		return
+	super._process(delta)
+
+func _physics_process(delta: float) -> void:
+	if obj and obj.offering_locked:
+		return
+	super._physics_process(delta)
+
+func _unhandled_input(event: InputEvent) -> void:
+	if obj and obj.offering_locked:
+		return
+	super._unhandled_input(event)
 
 func phy_middleware() -> void:
 	if not gameInputControl:
@@ -94,9 +114,9 @@ func phy_middleware() -> void:
 			change_state("idle")
 		if gameInputControl.is_run:
 			change_state("run")
-	if gameInputControl.is_jump:
+	if gameInputControl.is_jump and cur_state_name != "climb":
 		change_state("jump")
-	if "is_double_jump" in gameInputControl and gameInputControl.is_double_jump:
+	if "is_double_jump" in gameInputControl and gameInputControl.is_double_jump and cur_state_name != "climb":
 		# 如果已经在 jump 状态中，先 exit 或再次进入以赋二段跳速度
 		if cur_state_name == "jump":
 			var jump_state = state_map.get("jump")
@@ -108,6 +128,6 @@ func phy_middleware() -> void:
 	if gameInputControl.is_dash:
 		change_state("dash")
 	var holding_toward_wall: bool = obj != null and int(sign(gameInputControl.row_dir)) == obj.face_dir
-	# 二段跳不改变墙面方向锁；仅扒住另一方向的墙或落地后才能再次扒原方向。
-	if obj and not obj.is_on_floor() and obj.is_front_has_rigid and holding_toward_wall and (cur_state_name == "climb" or obj.wall_jump_lock_dir != obj.face_dir):
+	# 只有实际墙面方向改变后才能重新扒墙；不能因为转身重新进入 climb，从而刷新二段跳。
+	if obj and not obj.is_on_floor() and obj.is_front_has_rigid and holding_toward_wall and obj.wall_jump_lock_dir != obj.face_dir:
 		change_state("climb")
