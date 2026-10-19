@@ -46,9 +46,13 @@ var _bodies_in_water: Array[CharacterBody2D] = []
 var _has_applied_state: bool = false
 var _last_applied_fluid: bool = false
 var _impact_tween: Tween
+var _before_visual_position_offset: Vector2 = Vector2.ZERO
+var _before_sprite_visuals_position_offset: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	add_to_group("touch_interactables")
+	_capture_top_level_visual_offsets()
+	_sync_top_level_visual_positions()
 	_sync_from_export_settings()
 	_update_dimensions()
 	_apply_state(is_fluid)
@@ -57,10 +61,35 @@ func _ready() -> void:
 	fluid_area.body_exited.connect(_on_fluid_area_body_exited)
 
 func _process(_delta: float) -> void:
+	_sync_top_level_visual_positions()
 	if is_fluid and not _bodies_in_water.is_empty():
 		var player_body := _bodies_in_water[0]
 		if is_instance_valid(player_body):
 			_set_water_curtain_impact_position(player_body.global_position)
+
+func _capture_top_level_visual_offsets() -> void:
+	if before_visual:
+		_before_visual_position_offset = _get_configured_visual_offset(before_visual)
+	if before_sprite_visuals:
+		_before_sprite_visuals_position_offset = _get_configured_visual_offset(before_sprite_visuals)
+
+func _get_configured_visual_offset(visual: Node2D) -> Vector2:
+	# Scene inheritance stores top-level visual positions in the scene's local
+	# coordinate space. When that scene is instanced below another translated
+	# parent, the visual position must not be treated as a world-space offset.
+	# A position equal to this component's local position (or the base default
+	# zero) means the visual is anchored to the component; any other position is
+	# an intentional visual offset that should be preserved.
+	if visual.position.is_zero_approx() or visual.position.is_equal_approx(position):
+		return Vector2.ZERO
+	return visual.global_position - global_position
+
+func _sync_top_level_visual_positions() -> void:
+	var component_position := global_position
+	if before_visual:
+		before_visual.global_position = component_position + _before_visual_position_offset
+	if before_sprite_visuals:
+		before_sprite_visuals.global_position = component_position + _before_sprite_visuals_position_offset
 
 func _sync_from_export_settings() -> void:
 	if ExportSettings:
