@@ -495,8 +495,7 @@ horizontal_alignment = 1
 [node name="Sec3Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/ThanksSection" unique_id=1001045]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "Spotlight Game Jam 2026
-所有参与体验测试的玩家"
+text = "Spotlight Game Jam 2026"
 horizontal_alignment = 1
 autowrap_mode = 2
 

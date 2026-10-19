@@ -2,6 +2,10 @@ extends Node
 
 const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
+@export_group("Credits", "credits_")
+## 参与早期版本测试游玩的玩家名单，可在数组中继续添加。
+@export var credits_early_playtesters: PackedStringArray = ["YBBBY"]
+
 @export_group("Tutorial Subtitle", "tutorial_")
 ## 跳跃教学区域每次重新进入时请求的文案。
 @export var tutorial_jump_hint_text: String = "长按跳跃以达到更高高度"

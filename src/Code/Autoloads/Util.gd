@@ -8,6 +8,9 @@ const GAME_BGMS = [
 const LEVEL3_BGM: AudioStreamWAV = preload("res://Music/bgm/MUSLv3.wav")
 const BGM_CROSSFADE_DURATION: float = 2.5
 
+# 仅保存本次运行的接近骸骨解锁；死亡及场景重载不清除，不写入存档。
+var level3_bgm_unlocked: bool = false
+
 var _bgm_player: AudioStreamPlayer
 var _bgm_index: int = 0
 var _bgm_mode: StringName = &"normal"
@@ -72,6 +75,9 @@ func _switch_bgm(music: AudioStreamWAV, loop: bool) -> void:
 		add_child(next_player)
 		_bgm_tracks[next_player] = music
 	var stream := next_player.stream as AudioStreamWAV
+	if loop:
+		stream.loop_begin = 0
+		stream.loop_end = int(round(stream.get_length() * stream.mix_rate))
 	stream.loop_mode = AudioStreamWAV.LOOP_FORWARD if loop else AudioStreamWAV.LOOP_DISABLED
 	_bgm_player = next_player
 	if not next_player.playing:

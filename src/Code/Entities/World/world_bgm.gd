@@ -10,12 +10,15 @@ const EXIT_MARGIN := 32.0
 var _mode: StringName = &""
 var _oasis: Node2D
 var _camp: Node2D
+var _bone: Node2D
 
 
 func _ready() -> void:
 	var scope: Node = self if name == &"World" else get_parent()
 	_oasis = scope as Node2D if scope.name == &"OasisBattlefield" else scope.get_node_or_null("OasisBattlefield") as Node2D
 	_camp = scope as Node2D if scope.name == &"Camp" else scope.get_node_or_null("Camp") as Node2D
+	if _oasis != null:
+		_bone = _oasis.get_node_or_null("OutwardPhase/InteractableComponent") as Node2D
 	_refresh.call_deferred()
 
 
@@ -28,17 +31,26 @@ func _refresh() -> void:
 	if self != get_tree().current_scene and get_parent() != get_tree().current_scene:
 		return
 	var player := get_tree().get_first_node_in_group(&"player") as Node2D
+	var audio := get_node("/root/Util")
 	var next_mode: StringName = &"normal"
 	if player != null:
+		if not audio.level3_bgm_unlocked and is_instance_valid(_bone):
+			var viewport := player.get_viewport()
+			var camera := viewport.get_camera_2d()
+			if camera != null:
+				# 用实际视口逻辑宽度及宿主相机实时缩放，避免把窗口/stretch像素当成世界单位。
+				var radius: float = viewport.get_visible_rect().size.x / absf(camera.zoom.x) * (2.0 / 3.0)
+				if player.global_position.distance_squared_to(_bone.global_position) <= radius * radius:
+					audio.level3_bgm_unlocked = true
 		if _contains(_camp, CAMP_BOUNDS, player.global_position, &"camp"):
 			next_mode = &"camp"
-		elif _contains(_oasis, OASIS_BOUNDS, player.global_position, &"level3"):
+		elif audio.level3_bgm_unlocked and _contains(_oasis, OASIS_BOUNDS, player.global_position, &"level3"):
 			next_mode = &"level3"
 	elif _camp == get_parent():
 		next_mode = &"camp"
 	if next_mode != _mode:
 		_mode = next_mode
-		get_node("/root/Util").SetBgmMode(_mode)
+		audio.SetBgmMode(_mode)
 
 
 func _contains(region: Node2D, bounds: Rect2, world_position: Vector2, mode: StringName) -> bool:
