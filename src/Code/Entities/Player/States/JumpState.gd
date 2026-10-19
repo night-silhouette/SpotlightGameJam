@@ -79,6 +79,10 @@ func exit() -> void:
 	frame = 0.0
 
 func physics_process(delta: float) -> void:
+	# 必须先结束已经下落的跳跃；贴墙时通用下落判定不会代为切换。
+	if obj.velocity.y >= 0.0:
+		s_fall.emit()
+		return
 	frame += delta * obj.jump_ability
 	temp = (1.0 - ease(frame, 0.32)) * GlobalValue.gravity
 	if gameInputControl.is_physics_processing() and Input.is_action_pressed("jump"):

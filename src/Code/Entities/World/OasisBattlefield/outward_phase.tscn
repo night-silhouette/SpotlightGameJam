@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="10_qrymx"]
 [ext_resource type="Texture2D" uid="uid://cclwelgra0j74" path="res://Art/New/component/extracted/mechanism_pin_lever_4.png" id="11_vwl1e"]
 [ext_resource type="PackedScene" uid="uid://blpltt0tkgjce" path="res://Code/Entities/InteractiveComponent/SlowWaterArea/SlowWaterArea.tscn" id="12_ueiw8"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="13_ufgvw"]
 [ext_resource type="PackedScene" uid="uid://cff62entx013e" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisWaterFlowArea.tscn" id="14_efes3"]
 [ext_resource type="PackedScene" uid="uid://dkw1ajux37wt4" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.tscn" id="15_bmeg8"]
 [ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="16_02f1c"]
@@ -110,7 +109,7 @@ scale = Vector2(4.291459, 7.029553)
 target_area = NodePath("../VanishingArea")
 
 [node name="BeforeVisual" parent="VanishingBlockerComponent" index="0"]
-position = Vector2(6917.9873, 1336.3796)
+position = Vector2(6905, 1318)
 scale = Vector2(0.14, 0.14)
 tile_map_data = PackedByteArray("AAD///3/BwACAAEAAAD+//3/CQABAAEAAAAAAP3/CAADAAEAAAD+//7/CQABAAIAAAD+////CQABAAMAAAAAAP7/CAADAAIAAAAAAP//CAADAAMAAAD/////CAACAAMAAAD///7/CAACAAIAAAATAPf/CAADAAIAAAATAPj/CAADAAIAAAATAPn/CAADAAIAAAATAPr/CAADAAIAAAATAPv/CAADAAIAAAATAPz/CAADAAIAAAATAP3/CAADAAIAAAATAP7/CAADAAMAAAASAP7/CAACAAMAAAARAP7/CAACAAMAAAAQAP7/CAABAAMAAAAQAP3/CAABAAIAAAAQAPz/CAABAAIAAAAQAPv/CAABAAIAAAAQAPr/CAABAAIAAAAQAPn/CAABAAIAAAAQAPj/CAABAAIAAAAQAPf/CAABAAIAAAAQAPb/CAABAAEAAAARAPb/CAACAAEAAAASAPb/CAACAAEAAAATAPb/CAADAAEAAAARAPf/CAACAAIAAAARAPj/CAACAAIAAAARAPn/CAACAAIAAAARAPr/CAACAAIAAAARAPv/CAACAAIAAAARAPz/CAACAAIAAAARAP3/CAACAAIAAAASAPf/CAACAAIAAAASAPj/CAACAAIAAAASAPn/CAACAAIAAAASAPr/CAACAAIAAAASAPv/CAACAAIAAAASAPz/CAACAAIAAAASAP3/CAACAAIAAAAOAPX/CAACAAEAAAANAPX/CAACAAEAAAAMAPX/CAACAAEAAAALAPX/CAACAAEAAAAKAPX/CAACAAEAAAAPAPX/CAADAAEAAAAPAPb/CAADAAMAAAAOAPb/CAACAAMAAAANAPb/CAACAAMAAAAMAPb/CAACAAMAAAALAPb/CAACAAMAAAAKAPb/CQACAAMAAAAJAPb/CQACAAMAAAAIAPb/CQACAAMAAAAHAPb/CQABAAMAAAAHAPX/CQABAAIAAAAHAPT/CQABAAIAAAAHAPP/CQABAAIAAAAHAPL/CQABAAIAAAAIAO//CAACAAEAAAAJAO//CAADAAEAAAAJAPD/CAADAAIAAAAJAPH/CAADAAIAAAAJAPL/CAADAAIAAAAJAPP/CAADAAIAAAAJAPT/CAADAAIAAAAHAO//CAABAAEAAAAHAPH/CAABAAIAAAAHAPD/CAABAAIAAAAIAPD/CAACAAIAAAAIAPH/CAACAAIAAAAIAPL/CAACAAIAAAAIAPP/CAACAAIAAAAIAPT/CAACAAIAAAAIAPX/CAACAAIAAAAJAPX/CAAEAAEAACA=")
 tile_set = ExtResource("3_gc2m3")
@@ -241,13 +240,6 @@ position = Vector2(605.00006, -439)
 scale = Vector2(59.535408, 63.50667)
 shape = SubResource("CircleShape2D_lvx6x")
 
-[node name="CameraGate" parent="." unique_id=1141271304 instance=ExtResource("13_ufgvw")]
-position = Vector2(7643.8643, 1336.2325)
-scale = Vector2(346.38565, 0.7378685)
-blocked_side = 3
-player_path = NodePath("../../../PlayerWithCamera/Player")
-one_shot = false
-
 [node name="WaterFlowArea6" parent="." unique_id=854148023 instance=ExtResource("14_efes3")]
 position = Vector2(8600, 826)
 scale = Vector2(1.7722821, 8.140048)
@@ -298,9 +290,6 @@ texture = ExtResource("16_02f1c")
 position = Vector2(104.269516, 331.19766)
 scale = Vector2(0.26248184, 0.26248184)
 texture = ExtResource("16_02f1c")
-
-[node name="BeforeSpriteVisualsTransform" parent="WaterFlowArea6" index="7" unique_id=1195621893]
-visible = true
 
 [node name="OutwardScenery" parent="." unique_id=1852138962 instance=ExtResource("15_bmeg8")]
 position = Vector2(8146.2695, 461.17313)

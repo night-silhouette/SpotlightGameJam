@@ -7,6 +7,10 @@ class_name PlayerUI
 ## =============================================================================
 
 const TouchLayoutManagerRef = preload("res://Code/Entities/Setting/TouchLayoutManager.gd")
+const TOUCH_JUMP_ICON = preload("res://Art/New/component/移动端/IMG_9839_切割/05_右上图标_左.png")
+const TOUCH_DASH_ICON = preload("res://Art/New/component/移动端/IMG_9839_切割/07_右下图标_左.png")
+const TOUCH_INTERACT_ICON = preload("res://Art/New/component/移动端/IMG_9839_切割/06_右上图标_右.png")
+const TOUCH_GRAPPLE_ICON = preload("res://Art/New/component/移动端/IMG_9839_切割/08_右下图标_右.png")
 
 const HEALTH_FRAME_X = [25, 146, 258, 379, 503, 626]
 
@@ -28,7 +32,6 @@ const HEALTH_FRAME_X = [25, 146, 258, 379, 503, 626]
 @onready var sun_key_icon: TextureRect = $Control/KeyIcons/Sun
 @onready var moon_key_icon: TextureRect = $Control/KeyIcons/Moon
 @onready var weave_key_icon: TextureRect = $Control/KeyIcons/Weave
-@onready var ending_overlay: ColorRect = $Control/EndingOverlay
 
 @onready var right_action_buttons: Control = $Control/RightActionButtons
 @onready var btn_jump: TouchActionButton = $Control/RightActionButtons/BtnJump
@@ -88,6 +91,9 @@ func _clear_sand_overlay() -> void:
 	low_health_sand.hide()
 
 func _ready() -> void:
+	btn_jump.button_icon = TOUCH_JUMP_ICON
+	btn_dash.button_icon = TOUCH_DASH_ICON
+	_update_touch_interaction_icon()
 	_sync_mobile_ui_sizes()
 	_apply_touch_layout()
 	$Control.resized.connect(_apply_touch_layout)
@@ -102,7 +108,6 @@ func _ready() -> void:
 		SignalBus.PlayerDebugFlightChanged.connect(_on_debug_flight_changed)
 		SignalBus.PlayerRelicsChanged.connect(_on_player_relics_changed)
 		SignalBus.Level2StateChanged.connect(_on_level2_state_changed)
-		SignalBus.LakeEndingTriggered.connect(_on_lake_ending_triggered)
 	
 	if ExportSettings:
 		_max_hp = ExportSettings.player_max_hp
@@ -158,9 +163,6 @@ func _on_level2_state_changed(level: Node2D) -> void:
 	moon_key_icon.visible = "moon" in carried and not "moon" in submitted
 	weave_key_icon.visible = "weave" in carried and not "weave" in submitted
 
-func _on_lake_ending_triggered() -> void:
-	ending_overlay.visible = true
-
 func _on_setting_button_pressed() -> void:
 	if SignalBus:
 		SignalBus.SettingVisibilityRequested.emit(true)
@@ -168,8 +170,11 @@ func _on_setting_button_pressed() -> void:
 
 func _toggle_touch_interaction_mode() -> void:
 	touch_interaction_mode = not touch_interaction_mode
+	_update_touch_interaction_icon()
+
+func _update_touch_interaction_icon() -> void:
 	btn_interact.button_text = "钩" if touch_interaction_mode else "交"
-	btn_interact.queue_redraw()
+	btn_interact.button_icon = TOUCH_GRAPPLE_ICON if touch_interaction_mode else TOUCH_INTERACT_ICON
 
 func _sync_mobile_ui_sizes() -> void:
 	if not ExportSettings:

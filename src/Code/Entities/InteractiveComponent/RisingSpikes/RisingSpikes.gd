@@ -193,7 +193,7 @@ func _extend_spikes() -> void:
 	_active_tween.tween_property(spike_moving_root, "position:y", -_travel_height, transition_time)
 	_active_tween.finished.connect(func():
 		_is_extended = true
-		Util.PlaySFX2D(RISING_SPIKES_SFX, global_position, &"SFX_Interact", 6.0)
+		Util.PlaySFX2D(RISING_SPIKES_SFX, global_position, &"SFX_Interact", 2.0)
 		if SignalBus:
 			SignalBus.SpikesExtended.emit(self)
 		# 伸出保持时长后缩回

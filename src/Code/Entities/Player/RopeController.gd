@@ -130,7 +130,7 @@ func _ready() -> void:
 	line_2d.visible = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not player or player.now_HP <= 0.0 or not player.gameInputControl.is_physics_processing():
+	if not player or player.offering_locked or player.now_HP <= 0.0 or not player.gameInputControl.is_physics_processing():
 		return
 
 	# 移动端触屏事件拦截与处理
@@ -213,7 +213,11 @@ func _is_rope_shoot_held() -> bool:
 	return player.gameInputControl.is_physics_processing() and (Input.is_action_pressed("rope_shoot") or touch_screen_pressed)
 
 func _physics_process(delta: float) -> void:
-	if not player:
+	if player and player.offering_locked:
+		active_touch_index = -1
+		touch_screen_pressed = false
+		touch_screen_hold_timer = 0.0
+	if not player or player.offering_locked:
 		return
 
 	if player.is_on_floor():
@@ -248,12 +252,12 @@ func ShootRope() -> bool:
 
 ## 触发拉向勾中点的公共调用接口
 func TriggerPull() -> void:
-	if current_state == RopeState.LATCHED:
+	if not player.offering_locked and current_state == RopeState.LATCHED:
 		_start_pull()
 
 ## 触发摆动荡绳的公共调用接口
 func TriggerSwing() -> void:
-	if current_state == RopeState.LATCHED:
+	if not player.offering_locked and current_state == RopeState.LATCHED:
 		_start_swing()
 
 ## 释放并收回绳索的公共调用接口
@@ -302,7 +306,7 @@ func _on_jump_pressed() -> void:
 		_finish_swing(true)
 
 func _shoot_rope() -> bool:
-	if not player or player.now_HP <= 0.0 or not player.enable_rope:
+	if not player or player.offering_locked or player.now_HP <= 0.0 or not player.enable_rope:
 		return false
 
 	# 检查下一次钩索消耗血量是否足够，扣除后若导致死亡（<= 0）则禁止使用绳索

@@ -1,6 +1,8 @@
 extends StaticBody2D
 class_name SignalVanishBlocker
 
+const SHATTER_SHADER := preload("res://Code/Entities/InteractiveComponent/SignalVanishBlocker/SignalVanishBlockerShatter.gdshader")
+
 enum ListenMode {
 	NATIVE_SIGNAL,
 	MECHANISM_CHANNEL,
@@ -28,13 +30,44 @@ signal Vanished
 @export_range(0.0, 10.0, 0.05) var fade_duration: float = 0.5
 ## 淡出完成后是否释放节点；默认仅隐藏，便于存档系统保留节点路径。
 @export var free_after_vanish: bool = false
+## 与本挡板同步碎裂并隐藏的画面节点；可指向同级 TileMapLayer。
+@export_node_path("CanvasItem") var visual_target_path: NodePath
 
 var _is_vanished: bool = false
+var _visual_target: CanvasItem
+var _shatter_material: ShaderMaterial
 
 func _ready() -> void:
 	if use_export_settings:
 		fade_duration = maxf(ExportSettings.vanishing_blocker_fade_duration, 0.0)
+	_resolve_visual_target()
+	_prepare_visual_effect()
 	_connect_trigger()
+
+func _resolve_visual_target() -> void:
+	if not visual_target_path.is_empty():
+		_visual_target = get_node_or_null(visual_target_path) as CanvasItem
+		if not is_instance_valid(_visual_target):
+			push_warning("SignalVanishBlocker could not find visual target: %s" % visual_target_path)
+	if not is_instance_valid(_visual_target):
+		_visual_target = get_node_or_null(^"Visual") as CanvasItem
+	if is_instance_valid(_visual_target) and _visual_target != self:
+		var fallback_visual := get_node_or_null(^"Visual") as CanvasItem
+		if is_instance_valid(fallback_visual) and fallback_visual != _visual_target:
+			fallback_visual.hide()
+
+func _prepare_visual_effect() -> void:
+	if not ExportSettings.vanishing_blocker_shatter_enabled or not is_instance_valid(_visual_target):
+		return
+	_shatter_material = ShaderMaterial.new()
+	_shatter_material.shader = SHATTER_SHADER
+	_shatter_material.set_shader_parameter(&"progress", 0.0)
+	_shatter_material.set_shader_parameter(&"shard_size", ExportSettings.vanishing_blocker_shard_size)
+	_shatter_material.set_shader_parameter(&"scatter_distance", ExportSettings.vanishing_blocker_scatter_distance)
+	_shatter_material.set_shader_parameter(&"fall_distance", ExportSettings.vanishing_blocker_fall_distance)
+	_shatter_material.set_shader_parameter(&"edge_width", ExportSettings.vanishing_blocker_edge_width)
+	_shatter_material.set_shader_parameter(&"edge_color", ExportSettings.vanishing_blocker_edge_color)
+	_visual_target.material = _shatter_material
 
 func _connect_trigger() -> void:
 	if listen_mode == ListenMode.MECHANISM_CHANNEL:
@@ -69,15 +102,22 @@ func Vanish() -> bool:
 		return false
 	_is_vanished = true
 	_set_collisions_disabled(self)
+	_set_visual_collision_disabled()
 	VanishStarted.emit()
 	SignalBus.BlockerVanishStarted.emit(self)
 
 	var duration := fade_duration if fade_enabled else 0.0
 	if duration <= 0.0:
+		_set_vanish_progress(1.0)
 		_finish_vanish()
 		return true
 	var tween := create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, duration)
+	if is_instance_valid(_shatter_material):
+		tween.tween_method(_set_vanish_progress, 0.0, 1.0, duration).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	elif is_instance_valid(_visual_target):
+		tween.tween_property(_visual_target, "modulate:a", 0.0, duration)
+	else:
+		tween.tween_property(self, "modulate:a", 0.0, duration)
 	tween.tween_callback(_finish_vanish)
 	return true
 
@@ -87,9 +127,22 @@ func _set_collisions_disabled(node: Node) -> void:
 			child.set_deferred("disabled", true)
 		_set_collisions_disabled(child)
 
+func _set_visual_collision_disabled() -> void:
+	if not is_instance_valid(_visual_target):
+		return
+	if _visual_target is TileMapLayer:
+		(_visual_target as TileMapLayer).set_deferred(&"collision_enabled", false)
+	_set_collisions_disabled(_visual_target)
+
+func _set_vanish_progress(value: float) -> void:
+	if is_instance_valid(_shatter_material):
+		_shatter_material.set_shader_parameter(&"progress", clampf(value, 0.0, 1.0))
+
 func _finish_vanish() -> void:
 	Vanished.emit()
 	SignalBus.BlockerVanished.emit(self)
+	if is_instance_valid(_visual_target):
+		_visual_target.hide()
 	if free_after_vanish:
 		queue_free()
 	else:
@@ -106,5 +159,9 @@ func LoadSaveData(data: Dictionary) -> void:
 	if bool(data.get("vanished", false)):
 		_is_vanished = true
 		_set_collisions_disabled(self)
+		_set_visual_collision_disabled()
+		_set_vanish_progress(1.0)
 		modulate.a = 0.0
+		if is_instance_valid(_visual_target):
+			_visual_target.hide()
 		hide()

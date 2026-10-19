@@ -152,6 +152,8 @@ func _update_player_range() -> void:
 		_update_visual_state(is_available)
 
 func _drink_chalice(player: Node2D) -> void:
+	if player.get("offering_locked") == true:
+		return
 	is_available = false
 	_update_visual_state(false)
 

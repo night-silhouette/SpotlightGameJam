@@ -48,7 +48,7 @@ func ConsumeGroundJump() -> void:
 	_ground_jump_consumed = true
 
 func _physics_process(delta: float) -> void:
-	if not obj:
+	if not obj or obj.get("offering_locked") == true:
 		return
 
 	if not dash_control_flag and obj.is_on_floor() and dash_span_flag:
@@ -73,7 +73,7 @@ func _physics_process(delta: float) -> void:
 		_coyote_time_left = 0.0
 	if state_machine and state_machine.cur_state_name in ["hurt", "died", "dash", "rope_send", "fly", "climb"]:
 		_coyote_time_left = 0.0
-	is_jump = (obj.is_on_floor() or _coyote_time_left > 0.0) and normal_jump_pressed
+	is_jump = (obj.is_on_floor() or _coyote_time_left > 0.0) and normal_jump_pressed and (obj.is_on_floor() or not obj.is_front_has_rigid)
 	is_double_jump = (
 		not obj.is_on_floor()
 		and not is_jump

@@ -16,12 +16,14 @@ func _ready() -> void:
 	else:
 		hide()
 
+## 播放当前 content，按 display_duration 淡入、停留、淡出；重复调用会重启而不重复登记活动状态。
 func Play() -> void:
 	if _tween and _tween.is_valid():
 		_tween.kill()
 	_label.text = content
 	modulate.a = 0.0
 	show()
+	SignalBus.SetGradualTextActive(self, true)
 	var duration := maxf(display_duration, 0.1)
 	_tween = create_tween()
 	_tween.tween_property(self, "modulate:a", 1.0, duration * 0.25)
@@ -31,4 +33,10 @@ func Play() -> void:
 
 func _finish() -> void:
 	hide()
+	SignalBus.SetGradualTextActive(self, false)
 	Finished.emit()
+
+func _exit_tree() -> void:
+	if _tween and _tween.is_valid():
+		_tween.kill()
+	SignalBus.SetGradualTextActive(self, false)

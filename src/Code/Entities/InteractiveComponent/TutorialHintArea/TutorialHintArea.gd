@@ -12,12 +12,15 @@ func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("player") or _players_inside.has(body):
 		return
 	_players_inside.append(body)
+	var mobile_controls: bool = OS.get_name() in ["Android", "iOS"] or ExportSettings.mobile_debug_force_touch_controls
 	var text: String = ExportSettings.tutorial_jump_hint_text
 	match hint_kind:
 		"dash":
+			if mobile_controls:
+				return
 			text = ExportSettings.tutorial_dash_hint_text
 		"water_wall":
-			text = ExportSettings.tutorial_water_wall_hint_text
+			text = ExportSettings.tutorial_mobile_water_wall_hint_text if mobile_controls else ExportSettings.tutorial_water_wall_hint_text
 	SignalBus.TutorialSubtitleRequested.emit(text)
 
 func _on_body_exited(body: Node2D) -> void:

@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 		var player := body as CharacterBody2D
 		if player == null or not player.is_in_group("player"):
 			continue
-		if not player.is_on_floor() or _dropping_players.has(player):
+		if player.get("offering_locked") == true or not player.is_on_floor() or _dropping_players.has(player):
 			continue
 		_begin_drop(player)
 

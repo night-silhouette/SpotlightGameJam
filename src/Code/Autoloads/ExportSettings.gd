@@ -2,6 +2,10 @@ extends Node
 
 const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
+@export_group("Credits", "credits_")
+## 参与早期版本测试游玩的玩家名单，可在数组中继续添加。
+@export var credits_early_playtesters: PackedStringArray = ["YBBBY"]
+
 @export_group("Tutorial Subtitle", "tutorial_")
 ## 跳跃教学区域每次重新进入时请求的文案。
 @export var tutorial_jump_hint_text: String = "长按跳跃以达到更高高度"
@@ -9,6 +13,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var tutorial_dash_hint_text: String = "Shift键冲刺"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
+## 手机版第一处水墙前的交互教学文案。
+@export var tutorial_mobile_water_wall_hint_text: String = "切换钩锁和交互模式，点击屏幕交互水墙"
 ## 字幕淡入、全显停留和淡出的时长，单位秒。
 @export_range(0.0, 5.0, 0.05) var tutorial_fade_in_duration: float = 0.7
 @export_range(0.0, 20.0, 0.1) var tutorial_hold_duration: float = 4.0
@@ -212,15 +218,29 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Relics & Lake")
 ## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
-@export var sunken_crown_texture: Texture2D
+@export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.png")
 ## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
-@export var starseekers_codex_texture: Texture2D
+@export var starseekers_codex_texture: Texture2D = preload("res://Art/New/component/extracted/rune_circle_emblem.png")
 ## The Scarred Bones 贴图；留空时使用程序生成的临时图标。
-@export var scarred_bones_texture: Texture2D
+@export var scarred_bones_texture: Texture2D = preload("res://Code/Entities/InteractiveComponent/Lake/OfferingBone.tres")
 ## 湖第一次交互后的水量比例。
 @export_range(0.0, 1.0, 0.01) var lake_first_fill_ratio: float = 0.5
 ## 遗物飞入湖泊的动画时长（秒）。
 @export_range(0.1, 3.0, 0.05) var lake_relic_flight_duration: float = 0.65
+## 湖泊流水图集的循环播放帧率（帧/秒）。
+@export_range(1.0, 30.0, 0.5) var lake_stream_animation_fps: float = 6.0
+## 第7帧持物包围尺寸（Action 局部像素，骨头旋转前）；残卷保留交接宽度并按471×457原图等比显示。
+@export var lake_relic_held_sizes: Dictionary = {"crown": Vector2(44, 22), "codex": Vector2(65, 63.06794), "bones": Vector2(13, 66)}
+## 故障超时；正常时序依赖动画完成信号而非该时长。
+@export_range(2.0, 30.0, 0.1) var lake_take_timeout: float = 8.0
+@export_range(0.0, 5.0, 0.05) var lake_relic_hold_duration: float = 0.55
+@export_range(0.1, 5.0, 0.05) var lake_relic_dissolve_duration: float = 0.7
+@export_range(0.1, 1.5, 0.01) var lake_relic_height_ratio: float = 0.6667
+## 人物第7帧非透明像素高度，与 Action 世界缩放相乘。
+@export var lake_player_visual_height: float = 175.0
+## 预置手部 Marker 的附加局部偏移；Marker 也可逐种在场景手调。
+@export var lake_hand_offset: Vector2 = Vector2.ZERO
+
 
 func _ready() -> void:
 	if sunken_crown_texture == null:
@@ -274,7 +294,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
-@export var player_hp_drain_rate: float = 200.0 / 300.0
+@export var player_hp_drain_rate: float = 200.0 / 300.0 * 1.3
 ## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
 @export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
 ## 缺水时主角最终呈现的沙土色
@@ -797,6 +817,18 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Vanishing Blocker", "vanishing_blocker_")
 @export var vanishing_blocker_zone_group: StringName = &"VanishZone"
 @export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5
+## 信号消失挡板是否使用碎裂 shader；关闭时回退为普通透明淡出。
+@export var vanishing_blocker_shatter_enabled: bool = true
+## 碎块在目标 CanvasItem 本地坐标中的尺寸；TileMap 缩放会同步缩放视觉块大小。
+@export_range(16.0, 512.0, 1.0) var vanishing_blocker_shard_size: float = 180.0
+## 碎块横向散开的本地坐标距离。
+@export_range(0.0, 512.0, 1.0) var vanishing_blocker_scatter_distance: float = 90.0
+## 碎块下落的本地坐标距离。
+@export_range(0.0, 1024.0, 1.0) var vanishing_blocker_fall_distance: float = 240.0
+## 碎块裂缝亮边宽度，取值范围 0 到 0.25。
+@export_range(0.0, 0.25, 0.005) var vanishing_blocker_edge_width: float = 0.08
+## 碎裂过程中的裂缝亮边颜色与强度（Alpha）。
+@export var vanishing_blocker_edge_color: Color = Color(0.94, 0.72, 0.39, 1.0)
 
 @export_group("Oasis Boat", "oasis_boat_")
 ## 第三关七个停靠点的航线进度，按递增顺序配置，起点为 0、终点为 1。
@@ -871,6 +903,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
 ## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
 @export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
+## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
+@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 72.0
+## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。
+@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 56.0
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。

@@ -12,6 +12,11 @@ signal pressed_once
 @export var action_name: String = ""
 ## 按钮显示的文本提示
 @export var button_text: String = ""
+## 可选按钮图标；设置后替代圆形背景、边框和文字
+@export var button_icon: Texture2D:
+	set(value):
+		button_icon = value
+		queue_redraw()
 ## 按钮基础半径（像素）
 @export var button_radius: float = 40.0
 ## 按钮底色
@@ -90,6 +95,13 @@ func _set_pressed_state(pressed: bool) -> void:
 
 func _draw() -> void:
 	var center = size * 0.5
+	if button_icon:
+		var icon_size: Vector2 = button_icon.get_size()
+		var icon_scale: float = button_radius * 2.0 / maxf(icon_size.x, icon_size.y)
+		var draw_size: Vector2 = icon_size * icon_scale
+		var icon_modulate := Color(0.75, 0.75, 0.75, 1.0) if is_pressed else Color.WHITE
+		draw_texture_rect(button_icon, Rect2(center - draw_size * 0.5, draw_size), false, icon_modulate)
+		return
 	var draw_col = pressed_color if is_pressed else bg_color
 	# 绘制圆形背景
 	draw_circle(center, button_radius, draw_col)

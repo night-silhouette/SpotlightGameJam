@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://751t8dwsf2eq" path="res://Art/New/ui/main_button_quit.png" id="10_menu_quit"]
 [ext_resource type="Texture2D" uid="uid://bqo7kavvguag1" path="res://Art/New/ui/main_settings.png" id="11_menu_settings"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_clean_background"]
+atlas = ExtResource("3_bg_clean")
+region = Rect2(0, 0, 1917.5, 1073.5)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_menu_button"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal_panel"]
@@ -75,7 +79,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = ExtResource("3_bg_clean")
+texture = SubResource("AtlasTexture_clean_background")
 expand_mode = 1
 stretch_mode = 6
 
@@ -491,8 +495,7 @@ horizontal_alignment = 1
 [node name="Sec3Detail" type="Label" parent="CreditsModal/PanelContainer/Margin/VBox/CreditsScroll/CreditsContent/ThanksSection" unique_id=1001045]
 layout_mode = 2
 theme_override_font_sizes/font_size = 16
-text = "Spotlight Game Jam 2026
-所有参与体验测试的玩家"
+text = "Spotlight Game Jam 2026"
 horizontal_alignment = 1
 autowrap_mode = 2
 
