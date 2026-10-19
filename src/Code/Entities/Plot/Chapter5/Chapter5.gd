@@ -158,7 +158,8 @@ func _build_steps() -> Array[Dictionary]:
 		{"text": "原本不成意义的图案，连成了一幅完整的画。画中既有日族，也有月族，他们的身影似乎正缓缓升向天空，最终与云层融为一体。"},
 		{"text": "水珠顺着石刻的纹路缓缓滑落，汇成一道细流，顺着水流看去，自己的双脚已悄然浮起。石碑上那些渐渐淡去的身影，与眼前正在发生的一切，终于重叠在了一起。"},
 		{"type": &"独白", "text": "那是……雨……那些竖线，是雨！这就是使者的归宿……直到……直到最后一场雨落下。"},
-		{"type": &"独白", "text": "难怪……蓄水池里的水，地下的水脉，还有那片湖，都没有在那次极昼灾难中干涸。\n幻化成云，留在这片天空里，又一次次化作雨，落回这片土地。这就是使者的归宿。\n他们都走过相似的道路，又都在这里作出了自己的选择，尽管永远都无法知道，自己的选择究竟会带来什么，甚至不确定这场雨会落在何处。"},
+		{"type": &"独白", "text": "难怪……蓄水池里的水，地下的水脉，还有那片湖，都没有在那次极昼灾难中干涸。\n幻化成云，留在这片天空里，又一次次化作雨，落回这片土地。这就是使者的归宿。"},
+		{"type": &"独白", "text": "他们都走过相似的道路，又都在这里作出了自己的选择，尽管永远都无法知道，自己的选择究竟会带来什么，甚至不确定这场雨会落在何处。"},
 		{"type": &"独白", "text": "一滴雨或许微不足道，可千万滴雨落下，就足以让一个世界重新生长。"},
 		{"type": &"独白", "text": "我一直都弄错了，我不是一个等待被找到的答案，我是曾经存在过的、即将要消失的、仍在未来等待的，所有的选择交织在一起，我是这些痕迹的一部分。我是我们。"},
 		{"op": "choose", "duration": ExportSettings.chapter5_step_duration, "text": "想到这便不再试图抓住正在消散的身体，最后一缕犹豫随着叹气散去。向前迈出一步，水汽从脚下升起，托起越来越轻的身躯，向上飘去。"},
@@ -336,6 +337,7 @@ func _loop_audio(audio: AudioStreamPlayer) -> void:
 func _start_ending() -> void:
 	_ending_stage = "surge"
 	_ending_time = 0.0
+	_black.color.a = 0.0
 	_surge.material.set_shader_parameter("water_color", ExportSettings.chapter5_overflow_color)
 	_surge.material.set_shader_parameter("progress", 0.0)
 	_surge.material.set_shader_parameter("elapsed", 0.0)
@@ -375,15 +377,14 @@ func _process_ending(delta: float) -> void:
 	var fade: float = maxf(ExportSettings.chapter5_black_fade_duration, 0.01)
 	match _ending_stage:
 		"surge":
-			var progress := minf(_ending_time / maxf(ExportSettings.chapter5_surge_duration, 0.01), 1.0)
+			var duration := maxf(ExportSettings.chapter5_surge_duration, 0.01)
+			var overlap := minf(fade, duration)
+			var progress := minf(_ending_time / duration, 1.0)
 			_surge.material.set_shader_parameter("progress", progress)
-			_surge.material.set_shader_parameter("elapsed", minf(_ending_time, maxf(ExportSettings.chapter5_surge_duration, 0.01)))
+			_surge.material.set_shader_parameter("elapsed", minf(_ending_time, duration))
+			_black.color.a = clampf((_ending_time - (duration - overlap)) / overlap, 0.0, 1.0)
 			if progress >= 1.0:
-				_ending_stage = "black"
-				_ending_time = 0.0
-		"black":
-			_black.color.a = minf(_ending_time / fade, 1.0)
-			if _black.color.a >= 1.0:
+				_black.color.a = 1.0
 				_ending_stage = "lake"
 				_ending_time = 0.0
 				_lake_wait = true

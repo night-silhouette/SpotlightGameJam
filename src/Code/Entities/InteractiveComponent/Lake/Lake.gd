@@ -114,13 +114,18 @@ func _can_submit_relics() -> bool:
 	return not is_instance_valid(state_machine) or state_machine.get("cur_state_name") != "died"
 
 
+func _is_player_input_locked() -> bool:
+	var input_control = _player_inside.get("gameInputControl")
+	return is_instance_valid(input_control) and not input_control.is_physics_processing()
+
+
 func _try_submit_relics() -> void:
 	if not _relic_submission_pending or _presenting:
 		return
 	if not _can_submit_relics():
 		_relic_submission_pending = false
 		return
-	if SignalBus.IsGradualTextActive() or not (_player_inside is CharacterBody2D) or not _player_inside.is_on_floor():
+	if SignalBus.IsGradualTextActive() or not (_player_inside is CharacterBody2D) or not _player_inside.is_on_floor() or _is_player_input_locked():
 		return
 	_relic_submission_pending = false
 	_awaiting_relic_state = true
@@ -153,7 +158,7 @@ func _on_player_relics_changed(crown: bool, codex: bool, bones: bool) -> void:
 	_awaiting_relic_state = false
 	if not _can_submit_relics():
 		return
-	if SignalBus.IsGradualTextActive() or not (_player_inside is CharacterBody2D) or not _player_inside.is_on_floor():
+	if SignalBus.IsGradualTextActive() or not (_player_inside is CharacterBody2D) or not _player_inside.is_on_floor() or _is_player_input_locked():
 		_relic_submission_pending = true
 		return
 	var queue: Array[StringName] = []

@@ -742,8 +742,7 @@ func _physics_process(delta: float) -> void:
 		wall_jump_lock_dir = 0
 		ResetDoubleJump()
 
-	is_front_has_rigid = _check_wall_climbable(front_head) or _check_wall_climbable(front_body) or _check_wall_climbable(front_upper_body) or _check_wall_climbable(front_lower_body)
-	is_back_has_rigid = _check_wall_climbable(back_head) or _check_wall_climbable(back_body) or _check_wall_climbable(back_upper_body) or _check_wall_climbable(back_lower_body)
+	RefreshWallContacts()
 
 	_handle_footstep_audio(delta)
 	_handle_continuous_move_audio(delta)
@@ -808,6 +807,37 @@ func SetFacingDirection(direction: int) -> void:
 			ray.scale.x *= -1
 	face_dir = direction
 	sprite.scale.x = abs(sprite.scale.x) * direction
+	RefreshWallContacts()
+
+## 同步当前物理位置与朝向的前后墙接触；无参数，不消耗或补充跳跃次数。
+func RefreshWallContacts() -> void:
+	is_front_has_rigid = HasClimbableWall(face_dir)
+	is_back_has_rigid = HasClimbableWall(-face_dir)
+
+## 查询世界侧的可攀墙；direction 只接受 -1（世界左）或 1（世界右），返回当前真实命中。
+func HasClimbableWall(direction: int) -> bool:
+	if direction != -1 and direction != 1:
+		return false
+	for ray: RayCast2D in [front_head, front_body, front_upper_body, front_lower_body,
+			back_head, back_body, back_upper_body, back_lower_body]:
+		if not ray:
+			continue
+		var world_direction := ray.to_global(ray.target_position) - ray.global_position
+		if int(sign(world_direction.x)) != direction:
+			continue
+		ray.force_raycast_update()
+		if _check_wall_climbable(ray) and ray.get_collision_normal().x * direction < -0.5:
+			return true
+	return false
+
+## 尝试消耗一次真实扒墙机会；direction 为世界左 -1 / 右 1，成功才锁定该侧并补充二段跳。
+## 同侧必须落地或成功扒住反向墙后才能再用，转身和射线节点名称不改变墙侧身份。
+func TryGrabWall(direction: int) -> bool:
+	if is_on_floor() or wall_jump_lock_dir == direction or not HasClimbableWall(direction):
+		return false
+	wall_jump_lock_dir = direction
+	ResetDoubleJump()
+	return true
 
 ## 初始化加载动作音频资源
 func _init_move_sounds() -> void:

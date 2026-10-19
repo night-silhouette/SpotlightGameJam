@@ -127,7 +127,9 @@ func phy_middleware() -> void:
 			change_state("jump")
 	if gameInputControl.is_dash:
 		change_state("dash")
-	var holding_toward_wall: bool = obj != null and int(sign(gameInputControl.row_dir)) == obj.face_dir
-	# 只有实际墙面方向改变后才能重新扒墙；不能因为转身重新进入 climb，从而刷新二段跳。
-	if obj and not obj.is_on_floor() and obj.is_front_has_rigid and holding_toward_wall and obj.wall_jump_lock_dir != obj.face_dir:
+	var wall_direction := int(sign(gameInputControl.row_dir))
+	if obj and not obj.is_on_floor() and obj.wall_jump_lock_dir != wall_direction and obj.HasClimbableWall(wall_direction):
+		# 基类拦截同状态进入；只有真实切换世界墙侧时才显式结束旧扒墙。
+		if cur_state_name == "climb" and current_state.wall_dir != wall_direction:
+			change_state("fall")
 		change_state("climb")

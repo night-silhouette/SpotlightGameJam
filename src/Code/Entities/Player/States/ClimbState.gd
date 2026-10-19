@@ -8,13 +8,13 @@ var wall_release_grace_remaining: float = 0.0
 var _wall_jump_consumed: bool = false
 
 func enter() -> void:
-	_wall_jump_consumed = false
 	is_wall_kicking = false
 	wall_release_grace_remaining = 0.0
-	wall_dir = obj.face_dir
-	obj.wall_jump_lock_dir = wall_dir
-	# 仅成功扒住允许的墙面时补回二段跳，射线碰墙本身不刷新。
-	obj.ResetDoubleJump()
+	wall_dir = int(sign(gameInputControl.row_dir)) if gameInputControl else 0
+	_wall_jump_consumed = not obj.TryGrabWall(wall_dir)
+	if _wall_jump_consumed:
+		wall_dir = 0
+		return
 	if animation_player:
 		animation_player.play("wall_grab")
 
@@ -23,6 +23,9 @@ func exit() -> void:
 	wall_release_grace_remaining = 0.0
 
 func physics_process(delta: float) -> void:
+	if wall_dir == 0:
+		finished.emit("fall")
+		return
 	if is_wall_kicking:
 		if not animation_player or animation_player.current_animation != "jump_start" or not animation_player.is_playing():
 			is_wall_kicking = false
@@ -36,7 +39,7 @@ func physics_process(delta: float) -> void:
 		return
 	# 松开、反向或短暂丢失墙面时保留 0.12 秒宽限；期间停在墙边且仍可蹬墙跳。
 	var holding_toward_wall: bool = gameInputControl != null and int(sign(gameInputControl.row_dir)) == wall_dir
-	var wall_hold_valid: bool = obj.is_front_has_rigid and holding_toward_wall
+	var wall_hold_valid: bool = obj.HasClimbableWall(wall_dir) and holding_toward_wall
 	if wall_hold_valid:
 		wall_release_grace_remaining = 0.0
 	else:
