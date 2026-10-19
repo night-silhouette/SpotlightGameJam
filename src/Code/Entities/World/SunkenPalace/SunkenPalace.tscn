@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://cddcd2odxcuvu" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout1.tscn" id="2_rune1"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout2.tscn" id="2_rune2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout3.tscn" id="2_rune3"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout4.tscn" id="2_rune4"]
+[ext_resource type="PackedScene" uid="uid://dhss5q0cb803" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout4.tscn" id="2_rune4"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout5.tscn" id="2_rune5"]
 [ext_resource type="PackedScene" uid="uid://5alqmt1n0ve8" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="3_2lsnt"]
 [ext_resource type="PackedScene" uid="uid://bgmsq6p2vupnu" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="3_ovobq"]
@@ -13,20 +13,18 @@
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="6_es0s6"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/PressureButton/PressureButton.tscn" id="7_es0s6"]
 [ext_resource type="Texture2D" uid="uid://d1l7p0nqflvhk" path="res://Art/New/component/extracted/platform_floating_rock_lower.png" id="8_kkdgi"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/SignalDoor/SignalDoor.tscn" id="8_sccv2"]
+[ext_resource type="PackedScene" uid="uid://chlvh0u1t0maf" path="res://Code/Entities/InteractiveComponent/SignalDoor/SignalDoor.tscn" id="8_sccv2"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/LiftVisual.tscn" id="8_swing"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/SignalVanishBlocker/SignalVanishBlocker.tscn" id="9_es0s6"]
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="10_nmvff"]
 [ext_resource type="Script" uid="uid://b1d7drhgx7ra0" path="res://Code/Entities/World/SunkenPalace/SunkenPalace.gd" id="10_sunken_palace"]
 [ext_resource type="TileSet" uid="uid://erbpx3namsju" path="res://Art/New/map1/map1.tres" id="11_flekk"]
 [ext_resource type="Texture2D" uid="uid://d3bf24qa1bt4b" path="res://Art/New/component/game1/ancient_crown.PNG" id="13_nmvff"]
-[ext_resource type="Texture2D" uid="uid://0c0k3kdvns3u" path="res://Art/New/component/extracted/architecture_door_carved_wood.png" id="16_nmvff"]
+[ext_resource type="Texture2D" uid="uid://b711vnqjhdo21" path="res://Art/New/component/game1/door(1)/2.PNG" id="21_m3c1b"]
 [ext_resource type="Texture2D" uid="uid://b3fm7ie3n1tab" path="res://Art/New/map1/back/back1.png" id="22_k6gi6"]
 [ext_resource type="Texture2D" uid="uid://cy544kd1nxd0a" path="res://Art/New/map1/back/back2.png" id="23_pvafd"]
-[ext_resource type="Texture2D" uid="uid://dlj06f35t0tbs" path="res://Art/New/dessert/bg_dunes_mid.png" id="24_7cx4m"]
 [ext_resource type="Texture2D" uid="uid://cmij6cyuvd76s" path="res://Art/New/map1/back/back3.JPG" id="24_oiahc"]
 [ext_resource type="Texture2D" uid="uid://bc8tsbrv5gfie" path="res://Art/New/map1/back/back4.JPG" id="25_m3c1b"]
-[ext_resource type="Texture2D" uid="uid://cwig3hjhtg6q3" path="res://Art/New/dessert/bg_desert_silhouette.png" id="25_rv2kr"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/TutorialHintArea/TutorialHintArea.tscn" id="26_jump_hint"]
 [ext_resource type="Script" uid="uid://djufa4qn7ycva" path="res://Code/Entities/World/SunkenPalace/VisualPlayerEdgeFade.gd" id="27_visual_fade_script"]
 [ext_resource type="Shader" uid="uid://byxee7lh2t3o7" path="res://Code/Entities/World/SunkenPalace/VisualPlayerEdgeFade.gdshader" id="28_visual_fade_shader"]
@@ -55,7 +53,7 @@ sources/1 = SubResource("TileSetAtlasSource_7nnfa")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_1"]
 size = Vector2(176.65958, 197.3826)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m3c1b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mxtox"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -69,7 +67,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_2"]
 size = Vector2(210, 180)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mxtox"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ltlc"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -83,7 +81,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_3"]
 size = Vector2(918.9211, 190.14851)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_7ltlc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2284"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -97,7 +95,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_4"]
 size = Vector2(166.99808, 933.1192)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r2284"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b6ipw"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -111,7 +109,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_5"]
 size = Vector2(63.317383, 591.8553)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b6ipw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ysst7"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -359,7 +357,7 @@ shape = SubResource("RectangleShape2D_water_1")
 shape = SubResource("RectangleShape2D_water_1")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea" index="5"]
-material = SubResource("ShaderMaterial_m3c1b")
+material = SubResource("ShaderMaterial_mxtox")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea" index="6" unique_id=424886505]
 z_index = 6
@@ -386,7 +384,7 @@ shape = SubResource("RectangleShape2D_water_2")
 shape = SubResource("RectangleShape2D_water_2")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea2" index="5"]
-material = SubResource("ShaderMaterial_mxtox")
+material = SubResource("ShaderMaterial_7ltlc")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea2" index="6" unique_id=424886505]
 position = Vector2(1533, -904)
@@ -424,7 +422,7 @@ shape = SubResource("RectangleShape2D_water_3")
 shape = SubResource("RectangleShape2D_water_3")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea3" index="5"]
-material = SubResource("ShaderMaterial_7ltlc")
+material = SubResource("ShaderMaterial_r2284")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea3" index="6" unique_id=424886505]
 position = Vector2(1670, -2286)
@@ -450,7 +448,7 @@ shape = SubResource("RectangleShape2D_water_4")
 shape = SubResource("RectangleShape2D_water_4")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea4" index="5"]
-material = SubResource("ShaderMaterial_r2284")
+material = SubResource("ShaderMaterial_b6ipw")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea4" index="6" unique_id=424886505]
 position = Vector2(754, -3037.9998)
@@ -476,7 +474,7 @@ shape = SubResource("RectangleShape2D_water_5")
 shape = SubResource("RectangleShape2D_water_5")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea5" index="5"]
-material = SubResource("ShaderMaterial_b6ipw")
+material = SubResource("ShaderMaterial_ysst7")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(-959.48737, -2224.0002)
@@ -496,19 +494,6 @@ position = Vector2(1656.9999, -3531)
 scale = Vector2(2.74, 2.74)
 
 [node name="InterRa" type="Node2D" parent="collisionlayer" unique_id=2044761266]
-
-[node name="InteractableComponent" parent="collisionlayer/InterRa" unique_id=1947902516 instance=ExtResource("6_es0s6")]
-position = Vector2(2433, -1032)
-
-[node name="InteractableComponent2" parent="collisionlayer/InterRa" unique_id=607167618 instance=ExtResource("6_es0s6")]
-position = Vector2(3280, -1027)
-
-[node name="InteractableComponent4" parent="collisionlayer/InterRa" unique_id=1873725937 instance=ExtResource("6_es0s6")]
-position = Vector2(2452, -3551)
-
-[node name="InteractableComponent3" parent="collisionlayer/InterRa" unique_id=401556413 instance=ExtResource("6_es0s6")]
-position = Vector2(2048, -896.99994)
-scale = Vector2(0.81438094, 0.95797414)
 
 [node name="Crown" parent="collisionlayer/InterRa" unique_id=208978342 instance=ExtResource("6_es0s6")]
 z_index = 1
@@ -543,15 +528,18 @@ position = Vector2(329, -1579)
 scale = Vector2(1.7870677, 2.352593)
 
 [node name="SignalDoor" parent="collisionlayer/Door" unique_id=174711162 node_paths=PackedStringArray("bound_buttons") instance=ExtResource("8_sccv2")]
-position = Vector2(-205.92393, -23.378439)
-scale = Vector2(1.2364123, 1.9180615)
+position = Vector2(-184.05878, -31.96941)
+scale = Vector2(2.6978264, 1.8848112)
 bound_buttons = [NodePath("../../button/2"), NodePath("../../button/3"), NodePath("../../button/4")]
 
 [node name="Sprite2D" type="Sprite2D" parent="collisionlayer/Door/SignalDoor" unique_id=1949673062]
-position = Vector2(13.901209, -3.363161)
-scale = Vector2(0.2531407, 0.092822194)
-texture = ExtResource("16_nmvff")
+z_index = -1
+position = Vector2(5.945159, -0.47534466)
+scale = Vector2(-0.11580496, -0.11580496)
+texture = ExtResource("21_m3c1b")
 flip_h = true
+region_enabled = true
+region_rect = Rect2(715, 143, 213, 1308)
 
 [node name="OneWayDropPlatformComponent" parent="collisionlayer" unique_id=2104634833 instance=ExtResource("3_ovobq")]
 position = Vector2(2700, -1193)
@@ -586,6 +574,7 @@ tile_map_data = PackedByteArray("AAD+//z/AAABAAAAAAD///z/AAABAAAAAAA=")
 tile_set = SubResource("TileSet_ggdgi")
 
 [node name="TileMapLayer2" type="TileMapLayer" parent="visualplayer" unique_id=76637689]
+z_index = -2
 position = Vector2(0.0003299713, 514.5658)
 scale = Vector2(1.5, 1.5)
 tile_map_data = PackedByteArray("AAD+//z/AAAAAAAAAAD///z/AAAAAAAAAAD+//3/AAAAAAAAAAD///3/AAAAAAAAAAAAAPz/AAAAAAAAAAD9//3/AAAAAAAAAAD9//7/AAAAAAAAAAD9////AAAAAAAAAAD9//z/AAAAAAAAAAD9//v/AAAAAAAAAAD9//r/AAAAAAAAAAD+//r/AAAAAAAAAAD///v/AAAAAAAAAAD+//v/AAAAAAAAAAD+//7/AAAAAAAAAAD///7/AAAAAAAAAAD+////AAAAAAAAAAD/////AAAAAAAAAAAAAP//AAAAAAAAAAABAP//AAAAAAAAAAACAP//AAAAAAAAAAADAP//AAAAAAAAAAACAP7/AAAAAAAAAAABAP3/AAAAAAAAAAABAPz/AAAAAAAAAAABAP7/AAAAAAAAAAAAAP7/AAAAAAAAAAACAPz/AAAAAAAAAAACAPv/AAAAAAAAAAACAP3/AAAAAAAAAAAAAPv/AAAAAAAAAAABAPv/AAAAAAAAAAACAPr/AAAAAAAAAAAAAPn/AAAAAAAAAAD///j/AAAAAAAAAAAAAPj/AAAAAAAAAAABAPj/AAAAAAAAAAACAPj/AAAAAAAAAAADAPn/AAAAAAAAAAAEAPn/AAAAAAAAAAACAPn/AAAAAAAAAAADAPr/AAAAAAAAAAADAPj/AAAAAAAAAAADAPf/AAAAAAAAAAAEAPf/AAAAAAAAAAAEAPj/AAAAAAAAAAAEAPr/AAAAAAAAAAAEAPv/AAAAAAAAAAAAAPf/AAAAAAAAAAD///f/AAAAAAAAAAABAPf/AAAAAAAAAAACAPf/AAAAAAAAAAD+//j/AAAAAAAAAAD9//j/AAAAAAAAAAD8//j/AAAAAAAAAAD7//j/AAAAAAAAAAD9//n/AAAAAAAAAAD8//n/AAAAAAAAAAD7//n/AAAAAAAAAAD8//r/AAAAAAAAAAD8//v/AAAAAAAAAAD8//z/AAAAAAAAAAD8//3/AAAAAAAAAAD7//z/AAAAAAAAAAD7//v/AAAAAAAAAAD7//r/AAAAAAAAAAD8//7/AAAAAAAAAAD7//3/AAAAAAAAAAD7//7/AAAAAAAAAAD6//v/AAAAAAAAAAD6//z/AAAAAAAAAAD6//3/AAAAAAAAAAD6//7/AAAAAAAAAAAEAP//AAAAAAAAAAD+/wAAAAAAAAAAAAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAD7/wAAAAAAAAAAAAD8/wAAAAAAAAAAAAD9/wAAAAAAAAAAAAD7////AAAAAAAAAAD6////AAAAAAAAAAAAAPr/AAAAAAAAAAD///r/AAAAAAAAAAABAPr/AAAAAAAAAAABAPn/AAAAAAAAAAD///n/AAAAAAAAAAD+//n/AAAAAAAAAAD6//j/AAAAAAAAAAD9//f/AAAAAAAAAAD9//b/AAAAAAAAAAD9//T/AAAAAAAAAAD9//P/AAAAAAAAAAD9//L/AAAAAAAAAAD+//P/AAAAAAAAAAD///P/AAAAAAAAAAAAAPP/AAAAAAAAAAABAPP/AAAAAAAAAAACAPP/AAAAAAAAAAADAPP/AAAAAAAAAAAEAPP/AAAAAAAAAAD+//L/AAAAAAAAAAD8//L/AAAAAAAAAAD7//L/AAAAAAAAAAACAPT/AAAAAAAAAAABAPT/AAAAAAAAAAAAAPT/AAAAAAAAAAD///T/AAAAAAAAAAD+//T/AAAAAAAAAAD8//T/AAAAAAAAAAD7//T/AAAAAAAAAAD6//T/AAAAAAAAAAD8//P/AAAAAAAAAAD7//P/AAAAAAAAAAD6//L/AAAAAAAAAAAAAPX/AAAAAAAAAAD///X/AAAAAAAAAAD+//X/AAAAAAAAAAABAPX/AAAAAAAAAAABAPb/AAAAAAAAAAAAAPb/AAAAAAAAAAD///b/AAAAAAAAAAD+//b/AAAAAAAAAAACAPb/AAAAAAAAAAACAPX/AAAAAAAAAAAAAP3/AAAAAAAAAAD8//f/AAAAAAAAAAD9//X/AAAAAAAAAAD+//f/AAAAAAAAAAADAPz/AAAAAAAAAAADAP3/AAAAAAAAAAADAPv/AAAAAAAAAAADAP7/AAAAAAAAAAACAAEAAAAAAAAAAAADAAEAAAAAAAAAAAA=")
@@ -593,55 +582,11 @@ tile_set = SubResource("TileSet_ggdgi")
 
 [node name="TileMapLayer3" type="TileMapLayer" parent="visualplayer" unique_id=2012768587]
 self_modulate = Color(0.77023655, 0.77023655, 0.77023643, 0.7490196)
-z_index = -1
+z_index = -2
 position = Vector2(10.089855, 443.93912)
 scale = Vector2(1.5, 1.5)
 tile_map_data = PackedByteArray("AAADAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAADAAIAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAADAAUAAAAAAAAAAAD9////AAAAAAAAAAD+////AAAAAAAAAAD+//7/AAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAACAAEAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_ggdgi")
-
-[node name="DunesMid" type="Node2D" parent="." unique_id=1361401322]
-z_index = -10
-position = Vector2(-637, -142)
-scale = Vector2(1.2438569, 1.0435393)
-metadata/_editor_description_ = "中景沙丘以原图和水平镜像图组成 3200 像素无缝循环单元；纵向属于关卡世界，不固定在镜头上。"
-
-[node name="Sprite" type="Sprite2D" parent="DunesMid" unique_id=398358687]
-position = Vector2(-4.5261054, -230.82872)
-texture = ExtResource("24_7cx4m")
-centered = false
-
-[node name="Sprite2" type="Sprite2D" parent="DunesMid" unique_id=1685854202]
-position = Vector2(3193.2932, -229.98654)
-texture = ExtResource("24_7cx4m")
-centered = false
-
-[node name="SpriteMirrored" type="Sprite2D" parent="DunesMid" unique_id=290336486]
-position = Vector2(1595.4739, -230.82872)
-texture = ExtResource("24_7cx4m")
-centered = false
-flip_h = true
-
-[node name="DesertSilhouette" type="Node2D" parent="." unique_id=245001437]
-z_index = 1
-position = Vector2(-637, -142)
-scale = Vector2(1.2438569, 1.0435393)
-metadata/_editor_description_ = "最近剪影层；原图和水平镜像图无缝衔接，纵向属于关卡世界，不固定在镜头上。"
-
-[node name="Sprite" type="Sprite2D" parent="DesertSilhouette" unique_id=704655285]
-position = Vector2(-4.5261054, -230.82872)
-texture = ExtResource("25_rv2kr")
-centered = false
-
-[node name="Sprite2" type="Sprite2D" parent="DesertSilhouette" unique_id=133051436]
-position = Vector2(3130.585, -230.82872)
-texture = ExtResource("25_rv2kr")
-centered = false
-
-[node name="SpriteMirrored" type="Sprite2D" parent="DesertSilhouette" unique_id=1674658498]
-position = Vector2(1595.4739, -230.82872)
-texture = ExtResource("25_rv2kr")
-centered = false
-flip_h = true
 
 [node name="visuallayer" type="Node2D" parent="." unique_id=1387624181]
 

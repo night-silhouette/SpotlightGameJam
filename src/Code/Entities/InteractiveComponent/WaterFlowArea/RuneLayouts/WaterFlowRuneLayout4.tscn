@@ -1,102 +1,111 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://dhss5q0cb803"]
 
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://c7t8r2m4vy3p1" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.tscn" id="1_base"]
+[ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="2_ilq7k"]
 [ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="2_rune"]
 
-[node name="WaterFlowRuneLayout4" instance=ExtResource("1_base")]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i75k1"]
+resource_local_to_scene = true
+shader = ExtResource("2_ilq7k")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
 
-[node name="Sprite2D" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="WaterFlowRuneLayout4" unique_id=1739965484 instance=ExtResource("1_base")]
+
+[node name="WaterCurtain" parent="." index="5"]
+material = SubResource("ShaderMaterial_i75k1")
+
+[node name="Sprite2D" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="0" unique_id=766198954]
 position = Vector2(-50.259953, 425.18048)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D2" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D2" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="1" unique_id=2038721021]
 position = Vector2(22.340023, 365.02618)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D3" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D3" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="2" unique_id=1549048990]
 position = Vector2(-48.185673, 302.10626)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D4" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D4" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="3" unique_id=2138660806]
 position = Vector2(29.945736, 246.1004)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D5" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D5" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="4" unique_id=666658244]
 position = Vector2(-44.037052, 185.2547)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D6" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D6" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="5" unique_id=1700602874]
 position = Vector2(11.968563, 125.79181)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D7" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D7" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="6" unique_id=541508443]
 position = Vector2(-43.345768, 28.300354)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D8" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D8" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="7" unique_id=532015807]
 position = Vector2(34.78558, -3.50531)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D9" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D9" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="8" unique_id=764319334]
 position = Vector2(-26.060123, -73.33978)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D10" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D10" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="9" unique_id=1435402018]
 position = Vector2(30.077694, -199.41962)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D11" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D11" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="10" unique_id=1898665998]
 position = Vector2(-56.429813, -397.2824)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D12" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D12" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="11" unique_id=1386600897]
 position = Vector2(43.881954, -403.72455)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D13" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D13" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="12" unique_id=1007040856]
 position = Vector2(40.73773, -316.29706)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D14" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D14" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="13" unique_id=1137814763]
 position = Vector2(-47.610294, -192.05756)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")
 
-[node name="Sprite2D15" type="Sprite2D" parent="BeforeSpriteVisuals"]
+[node name="Sprite2D15" type="Sprite2D" parent="BeforeSpriteVisuals" parent_id_path=PackedInt32Array(424886505) index="14" unique_id=1736903518]
 position = Vector2(42.31653, 434.14337)
-rotation = -3.0297391
-scale = Vector2(0.122056335, 0.122056335)
-texture = ExtResource("2_rune")
-
-[node name="Sprite2D16" type="Sprite2D" parent="BeforeSpriteVisuals"]
-position = Vector2(-306.17206, 556.3914)
 rotation = -3.0297391
 scale = Vector2(0.122056335, 0.122056335)
 texture = ExtResource("2_rune")

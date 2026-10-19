@@ -1,14 +1,17 @@
 extends StaticBody2D
 class_name VanishingBlockerComponent
 
-## 当障碍物开始清除碰撞并淡出时触发一次。
+## 当障碍物开始清除碰撞并下沉时触发一次。
 signal VanishStarted
-## 当障碍物淡出完成、即将调用 queue_free 前触发一次。
+## 当障碍物下沉完成、即将调用 queue_free 前触发一次。
 signal Vanished
 
 @export var target_area: Area2D
+## 随障碍物一起下沉的危险区；下沉开始时会立即禁用其伤害与碰撞。
+@export var sink_follower: Node2D
 @export var vanish_zone_group: StringName = &"VanishZone"
 @export_range(0.0, 10.0, 0.05) var fade_duration: float = 0.5
+@export_range(0.0, 2048.0, 1.0) var sink_distance: float = 240.0
 @export var use_export_settings: bool = true
 
 var _vanishing: bool = false
@@ -17,6 +20,7 @@ func _ready() -> void:
 	if use_export_settings:
 		vanish_zone_group = ExportSettings.vanishing_blocker_zone_group
 		fade_duration = ExportSettings.vanishing_blocker_fade_duration
+		sink_distance = ExportSettings.vanishing_blocker_sink_distance
 	if not is_instance_valid(target_area) and not vanish_zone_group.is_empty():
 		target_area = get_tree().get_first_node_in_group(vanish_zone_group) as Area2D
 	if is_instance_valid(target_area):
@@ -52,14 +56,25 @@ func Vanish() -> bool:
 		return false
 	_vanishing = true
 	set_physics_process(false)
-	for child in get_children():
-		if child is CollisionShape2D or child is CollisionPolygon2D:
-			child.set_deferred("disabled", true)
+	_disable_collision_tree(self, false)
+	if is_instance_valid(sink_follower):
+		# 在物理查询刷新前先封锁 Area2D 的信号，避免下沉帧仍触发尖刺伤害。
+		_disable_collision_tree(sink_follower, true)
 	VanishStarted.emit()
 	SignalBus.BlockerVanishStarted.emit(self)
-	var tween := create_tween()
-	tween.tween_property(self, "modulate:a", 0.0, maxf(fade_duration, 0.0))
-	tween.tween_callback(_finish_vanish)
+	var duration := maxf(fade_duration, 0.0)
+	var offset := Vector2.DOWN * maxf(sink_distance, 0.0)
+	var tween := create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.set_parallel(true)
+	tween.tween_property(self, "global_position", global_position + offset, duration)
+	if is_instance_valid(sink_follower):
+		tween.tween_property(
+			sink_follower,
+			"global_position",
+			sink_follower.global_position + offset,
+			duration
+		)
+	tween.chain().tween_callback(_finish_vanish)
 	return true
 
 ## 导出障碍物持久化存档数据。
@@ -80,4 +95,24 @@ func LoadSaveData(data: Dictionary) -> void:
 func _finish_vanish() -> void:
 	Vanished.emit()
 	SignalBus.BlockerVanished.emit(self)
+	if is_instance_valid(sink_follower) and not is_ancestor_of(sink_follower):
+		sink_follower.queue_free()
 	queue_free()
+
+
+func _disable_collision_tree(node: Node, block_collision_signals: bool) -> void:
+	if node is CollisionObject2D:
+		var collision_object := node as CollisionObject2D
+		if block_collision_signals:
+			collision_object.set_block_signals(true)
+		collision_object.set_deferred("collision_layer", 0)
+		collision_object.set_deferred("collision_mask", 0)
+		if collision_object is Area2D:
+			collision_object.set_deferred("monitoring", false)
+			collision_object.set_deferred("monitorable", false)
+	elif node is TileMapLayer:
+		node.set_deferred("collision_enabled", false)
+	elif node is CollisionShape2D or node is CollisionPolygon2D:
+		node.set_deferred("disabled", true)
+	for child in node.get_children():
+		_disable_collision_tree(child, block_collision_signals)
