@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b01trvnhhpuhx" path="res://Code/Entities/World/DepthsLibrary/DepthsLibrary.tscn" id="3_library"]
 [ext_resource type="PackedScene" uid="uid://ug5w2x0ysuo6" path="res://Code/Entities/World/OasisBattlefield/OasisBattlefield.tscn" id="4_oasis"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="5_acpp2"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
+[ext_resource type="PackedScene" uid="uid://coqapohckmmsd" path="res://Code/Entities/InteractiveComponent/CameraGate/CameraGate.tscn" id="7_hfiwn"]
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="7_l2oj5"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/PermanentCameraBoundary/PermanentCameraBoundary.tscn" id="7_permanent_boundary"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/FootstepSurfaceArea/FootstepSurfaceArea.tscn" id="8_35sqx"]
@@ -22,10 +22,14 @@
 [ext_resource type="Texture2D" uid="uid://pjfw3kxc63bm" path="res://Art/New/component/game2/IMG_1496.PNG" id="18_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://b7m1livmw8npo" path="res://Art/New/component/extracted/proverb_stele.svg" id="18_proverb_stele"]
 [ext_resource type="Texture2D" uid="uid://c7tamaotdei3v" path="res://Art/New/component/game2/IMG_9862.PNG" id="18_vqyf3"]
+[ext_resource type="PackedScene" uid="uid://5clbbbebaxpi" path="res://Code/Entities/World/视觉装饰组件/LevelTransitionVisual/LevelTransitionBlack.tscn" id="19_4ei61"]
 [ext_resource type="Texture2D" uid="uid://wxlchat6tecv" path="res://Art/New/component/game2/IMG_9854.PNG" id="20_hehhy"]
 [ext_resource type="PackedScene" path="res://Code/Entities/Plot/chapter/GradualTextTrigger.tscn" id="20_m8xep"]
+[ext_resource type="Shader" uid="uid://bkxnpyyjno1vs" path="res://Code/Entities/World/视觉装饰组件/LevelTransitionVisual/LevelTransitionBlack.gdshader" id="20_mid21"]
 [ext_resource type="Texture2D" uid="uid://daiwax240goed" path="res://Art/New/component/game2/IMG_9861.PNG" id="20_vqyf3"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/视觉装饰组件/LevelTransitionVisual/LevelTransitionGlow.tscn" id="21_5kn67"]
 [ext_resource type="Texture2D" uid="uid://l7l1mk7tvqvi" path="res://Art/AI/pottery.svg" id="21_pottery"]
+[ext_resource type="Shader" uid="uid://blqh0link62x6" path="res://Code/Entities/World/视觉装饰组件/LevelTransitionVisual/LevelTransitionGlow.gdshader" id="22_gcgcm"]
 [ext_resource type="Texture2D" uid="uid://db3isch3a43c7" path="res://Art/New/component/game2/IMG_9867.PNG" id="23_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://cq5dxd8fa1uon" path="res://Art/New/component/game1/tool.PNG" id="26_l2oj5"]
 [ext_resource type="Texture2D" uid="uid://lgoxfr44l36l" path="res://Art/New/component/game1/mural.JPG" id="27_m5q0i"]
@@ -37,10 +41,10 @@
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="32_hehhy"]
+[ext_resource type="Script" uid="uid://dumyuory5gub6" path="res://Code/Entities/World/world_bgm.gd" id="32_world_bgm"]
 [ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
 [ext_resource type="Texture2D" uid="uid://ds3r00oipjgsn" path="res://Art/New/component/game2/IMG_9866.PNG" id="36_2flee"]
-[ext_resource type="Script" uid="uid://dumyuory5gub6" path="res://Code/Entities/World/world_bgm.gd" id="32_world_bgm"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -50,7 +54,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m0d35"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ei61"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -102,7 +106,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pw4kg"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mid21"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -141,7 +145,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6xeld"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5kn67"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -158,60 +162,60 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_7iiyn"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gcgcm"]
 resource_local_to_scene = true
 size = Vector2(169.84523, 144.98253)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4ei61"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5q427"]
 resource_local_to_scene = true
 shader = ExtResource("8_u3ot4")
 shader_parameter/progress = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mid21"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5kn67"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gcgcm"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_5q427"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3lcmj"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsxhb"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gurr7"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m60ys"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o3wgv"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -232,13 +236,13 @@ dialog_type = "独白"
 text = "这似乎不是普通的装饰。它被如此郑重地安置在这里，还散发着一种说不清道不明的力量……
 先带走吧，说不定之后会用得到。"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsxhb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8apt3"]
 resource_local_to_scene = true
 shader = ExtResource("13_m0d35")
 shader_parameter/fade_width_pixels = 72.0
 shader_parameter/fade_height_pixels = 56.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gurr7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1eeg"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -249,7 +253,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m60ys"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sakf5"]
 resource_local_to_scene = true
 shader = ExtResource("13_2flee")
 shader_parameter/repeat_width = 4831.0
@@ -481,6 +485,56 @@ size = Vector2(858.2285, 829.8208)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k318m"]
 size = Vector2(143.94089, 192.96324)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3c750"]
+resource_local_to_scene = true
+shader = ExtResource("20_mid21")
+shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
+shader_parameter/opacity = 0.72
+shader_parameter/edge_softness = 0.22
+shader_parameter/fog_amount = 0.12
+shader_parameter/fog_scale = 4.0
+shader_parameter/fog_speed = 0.08
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cyga3"]
+resource_local_to_scene = true
+shader = ExtResource("22_gcgcm")
+shader_parameter/glow_color = Color(1, 0.92, 0.72, 1)
+shader_parameter/core_opacity = 1.0
+shader_parameter/halo_opacity = 0.72
+shader_parameter/edge_softness = 0.28
+shader_parameter/pulse_strength = 0.08
+shader_parameter/pulse_speed = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o7spd"]
+resource_local_to_scene = true
+shader = ExtResource("20_mid21")
+shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
+shader_parameter/opacity = 0.72
+shader_parameter/edge_softness = 0.22
+shader_parameter/fog_amount = 0.12
+shader_parameter/fog_scale = 4.0
+shader_parameter/fog_speed = 0.08
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6my6a"]
+resource_local_to_scene = true
+shader = ExtResource("22_gcgcm")
+shader_parameter/glow_color = Color(1, 0.92, 0.72, 1)
+shader_parameter/core_opacity = 1.0
+shader_parameter/halo_opacity = 0.72
+shader_parameter/edge_softness = 0.28
+shader_parameter/pulse_strength = 0.08
+shader_parameter/pulse_speed = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlrmx"]
+resource_local_to_scene = true
+shader = ExtResource("20_mid21")
+shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
+shader_parameter/opacity = 0.72
+shader_parameter/edge_softness = 0.22
+shader_parameter/fog_amount = 0.12
+shader_parameter/fog_scale = 4.0
+shader_parameter/fog_speed = 0.08
+
 [node name="World" type="Node2D" unique_id=2146248688]
 script = ExtResource("32_world_bgm")
 
@@ -512,22 +566,21 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_m0d35")
+material = SubResource("ShaderMaterial_4ei61")
 
 [node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
-material = SubResource("ShaderMaterial_pw4kg")
+material = SubResource("ShaderMaterial_mid21")
 
 [node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
-material = SubResource("ShaderMaterial_6xeld")
+material = SubResource("ShaderMaterial_5kn67")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_6xeld")
+material = SubResource("ShaderMaterial_5kn67")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_6xeld")
+material = SubResource("ShaderMaterial_5kn67")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
-physics_interpolation_mode = 2
 position = Vector2(1701, 0)
 scale = Vector2(1.2, 1.2)
 
@@ -556,10 +609,10 @@ scale = Vector2(375.14157, 66.18482)
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
-shape = SubResource("RectangleShape2D_7iiyn")
+shape = SubResource("RectangleShape2D_gcgcm")
 
 [node name="OfferingVisual" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="5"]
-material = SubResource("ShaderMaterial_4ei61")
+material = SubResource("ShaderMaterial_5q427")
 
 [node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
 z_index = -1
@@ -575,17 +628,16 @@ tile_map_data = PackedByteArray("AAD5/wQABQACAAAAAAD6/wQABQACAAAAAAD7/wQABQACAAA
 position = Vector2(5397, -60)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_mid21")
+material = SubResource("ShaderMaterial_3lcmj")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
-position = Vector2(5456.259, 41.143944)
-rotation = -3.6580007
+position = Vector2(5397.757, -45.70826)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="0"]
 position = Vector2(4164, -1261.9999)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="5"]
-material = SubResource("ShaderMaterial_5kn67")
+material = SubResource("ShaderMaterial_dsxhb")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" parent_id_path=PackedInt32Array(1497400001, 2092660331) index="6" unique_id=424886505]
 position = Vector2(4211, -1265)
@@ -594,17 +646,17 @@ position = Vector2(4211, -1265)
 position = Vector2(4345, -2640)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="5"]
-material = SubResource("ShaderMaterial_gcgcm")
+material = SubResource("ShaderMaterial_gurr7")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" parent_id_path=PackedInt32Array(1497400001, 1155138509) index="6" unique_id=424886505]
 position = Vector2(4348, -2647)
 
 [node name="BeforeVisual" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="0"]
 position = Vector2(3442, -3411)
-tile_map_data = PackedByteArray("AAD///v/BgACAAAAAAAAAPv/BgACAAAAAAD///z/BgACAAEAAAD///3/BgACAAEAAAD///7/BgACAAEAAAD/////BgACAAEAAAD//wAABgACAAEAAAD//wEABgACAAEAAAD//wIABgACAAEAAAD//wMABgACAAEAAAD//wQABgACAAIAAAAAAAQABgACAAIAAAAAAAMABgACAAEAAAAAAAIABgADAAYAABAAAAEABgADAAEAAAAAAAAABgADAAEAAAAAAP//BgADAAEAAAAAAP7/BgADAAYAADAAAP3/BgACAAEAAAAAAPz/BgACAAEAAAA=")
+tile_map_data = PackedByteArray("AAD///v/BgACAAAAAAAAAPv/BgACAAAAAAD///z/BgACAAEAAAD///3/BgACAAEAAAD///7/BgACAAEAAAD/////BgACAAEAAAD//wAABgACAAEAAAD//wEABgACAAEAAAD//wIABgACAAEAAAD//wMABgACAAEAAAD//wQABgACAAIAAAAAAAQABgACAAIAAAAAAAMABgACAAEAAAAAAAIABgADAAYAABAAAAEABgADAAEAAAAAAAAABgADAAEAAAAAAP//BgADAAEAAAAAAP7/BgADAAYAADAAAP3/BgACAAEAAAAAAPz/BgACAAEAAAD+//v/BgACAAAAAAD+//z/BgACAAEAAAD+//3/BgACAAEAAAD+//7/BgACAAEAAAD+////BgACAAEAAAD+/wAABgACAAEAAAD+/wEABgACAAEAAAD+/wIABgACAAEAAAD+/wMABgACAAEAAAD+/wQABgACAAIAAAABAPv/BgACAAAAAAABAPz/BgACAAEAAAABAP3/BgACAAEAAAABAP7/BgACAAIAAAABAAIABgACAAAAAAABAAMABgACAAEAAAABAAQABgADAAQAAAA=")
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
-material = SubResource("ShaderMaterial_5q427")
+material = SubResource("ShaderMaterial_m60ys")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
 position = Vector2(3432, -3398.9998)
@@ -616,12 +668,12 @@ scale = Vector2(1.7469953, -0.9010272)
 position = Vector2(1667.9999, -2574.0002)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" index="5"]
-material = SubResource("ShaderMaterial_3lcmj")
+material = SubResource("ShaderMaterial_o3wgv")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
 
-[node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="4" unique_id=208978342]
+[node name="Crown" parent="SunkenPalace/collisionlayer/InterRa" parent_id_path=PackedInt32Array(1497400001, 2044761266) index="0" unique_id=208978342]
 position = Vector2(-1081, -1401)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_20"), SubResource("C3_2_21")])
@@ -630,7 +682,7 @@ first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_20"), SubR
 texture = ExtResource("27_sun_crown")
 
 [node name="visualplayer" parent="SunkenPalace" index="16" unique_id=1788018380]
-material = SubResource("ShaderMaterial_dsxhb")
+material = SubResource("ShaderMaterial_8apt3")
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-118, 3250)
@@ -648,33 +700,31 @@ tile_map_data = PackedByteArray("AADJAAYACAABAAIAAADJAAUACAABAAIAAADJAAQACAABAAI
 position = Vector2(-12240, 53)
 tile_map_data = PackedByteArray("AAD///3/BwACAAEAAAD+//3/CQABAAEAAAAAAP3/CAADAAEAAAD+//7/CQABAAIAAAD+////CQABAAMAAAAAAP7/CAADAAIAAAAAAP//CAADAAMAAAD/////CAACAAMAAAD///7/CAACAAIAAAA=")
 
-[node name="BeforeVisual" parent="OasisBattlefield/OutwardPhase/WaterFlowArea6" parent_id_path=PackedInt32Array(958829481, 135291713, 854148023) index="0"]
-visible = true
-position = Vector2(8625, 821)
-scale = Vector2(0.14, 0.14)
-tile_map_data = PackedByteArray("AAAw/+7/CAABAAEAAAAz/+7/CAADAAEAAAAx/+7/CAACAAEAAAAy/+7/CAACAAEAAAAw/+//CAABAAIAAAAw//D/CAABAAIAAAAw//H/CAABAAIAAAAw//L/CAABAAIAAAAw//P/CAABAAIAAAAw//T/CAABAAIAAAAw//X/CAABAAIAAAAx//X/CAACAAIAAAAw//b/CAABAAMAAAAx//b/CAACAAMAAAAy//b/CAACAAMAAAAz//b/CAADAAMAAAAz//X/CAADAAIAAAAz//T/CAADAAIAAAAz//P/CAADAAIAAAAz//L/CAADAAIAAAAz//H/CAADAAIAAAAz//D/CAADAAIAAAAz/+//CAADAAIAAAAx/+//CAACAAIAAAAy/+//CAACAAIAAAAy//D/CAACAAIAAAAy//H/CAACAAIAAAAx//H/CAACAAIAAAAx//D/CAACAAIAAAAx//L/CAACAAIAAAAx//P/CAACAAIAAAAx//T/CAACAAIAAAAy//X/CAACAAIAAAAy//T/CAACAAIAAAAy//P/CAACAAIAAAAy//L/CAACAAIAAAA=")
+[node name="Sprite2D" parent="OasisBattlefield/OutwardPhase/InteractableComponent" parent_id_path=PackedInt32Array(958829481, 135291713, 1366914613) index="2" unique_id=169295950]
+position = Vector2(-0.5776968, 1.8656788)
 
 [node name="AfterVisual" parent="OasisBattlefield/OutwardPhase/WaterFlowArea6" parent_id_path=PackedInt32Array(958829481, 135291713, 854148023) index="1"]
 visible = true
 
 [node name="WaterCurtain" parent="OasisBattlefield/OutwardPhase/WaterFlowArea6" parent_id_path=PackedInt32Array(958829481, 135291713, 854148023) index="5"]
-material = SubResource("ShaderMaterial_gurr7")
+material = SubResource("ShaderMaterial_x1eeg")
 
 [node name="GreenDecoration" parent="OasisBattlefield/OutwardPhase/OutwardScenery/ForegroundLoop" parent_id_path=PackedInt32Array(958829481, 135291713, 1852138962, 1710055464) index="0" unique_id=625607659]
-material = SubResource("ShaderMaterial_m60ys")
+material = SubResource("ShaderMaterial_sakf5")
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
 [node name="CameraGate2" parent="CameraNode" unique_id=1274666655 instance=ExtResource("7_hfiwn")]
-position = Vector2(2046.0002, -562)
+position = Vector2(2066.3345, -561.00684)
 scale = Vector2(0.7298663, 10.17604)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
 
 [node name="CameraGate6" parent="CameraNode" unique_id=136577472 instance=ExtResource("7_hfiwn")]
-position = Vector2(2691, -1995)
-scale = Vector2(1.1658801, 4.5547748)
+position = Vector2(2627.9456, -2037.045)
+rotation = -0.005727157
+scale = Vector2(0.7796068, 1.1084107)
 blocked_side = 0
 player_path = NodePath("../../PlayerWithCamera/Player")
 one_shot = false
@@ -709,7 +759,9 @@ scale = Vector2(0.6545826, 145.11647)
 player_path = NodePath("../../PlayerWithCamera/Player")
 
 [node name="MiniChaliceStation" parent="." unique_id=78567387 instance=ExtResource("11_a4q47")]
-position = Vector2(-18736, -371)
+z_index = -1
+position = Vector2(-18748.592, -445.14063)
+scale = Vector2(3.2578104, 3.2578104)
 
 [node name="MusicNode" type="Node2D" parent="." unique_id=1909380459]
 
@@ -1020,7 +1072,7 @@ region_rect = Rect2(442, 887, 1126, 605)
 metadata/_editor_description_ = "仅视觉提示，不新增拾取或骨头逻辑。"
 
 [node name="刻痕枯骨前置观察_4_8至4_9" parent="story/c4" unique_id=1906082788 instance=ExtResource("12_terh4")]
-position = Vector2(-18658, -518)
+position = Vector2(-18651.559, -582.4204)
 scale = Vector2(3.9478683, 4.6546264)
 disable_movement_during_dialog = true
 show_enter_dialog = true
@@ -1061,7 +1113,7 @@ trigger_relic = &"bones"
 finished_chapter_channel = &"chapter5_after_enemy_definition"
 metadata/_editor_description_ = "第四章尾声；本卡淡出隐藏后的 Finished 请求第五章卡。"
 
-[node name="第五章_万物流转" parent="story" instance=ExtResource("10_mvgin")]
+[node name="第五章_万物流转" parent="story" unique_id=1415179639 instance=ExtResource("10_mvgin")]
 act_text = "第五章："
 chapter_text = "万物流转"
 subtitle_text = "苍穹以无言送别每片云朵远去"
@@ -1202,6 +1254,57 @@ rotation = -1.5707964
 scale = Vector2(0.9375154, 46.052975)
 blocked_side = 1
 player_path = NodePath("../../PlayerWithCamera/Player")
+
+[node name="mask" type="Control" parent="." unique_id=620182813]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LevelTransitionBlack3" parent="mask" unique_id=47024789 instance=ExtResource("19_4ei61")]
+material = SubResource("ShaderMaterial_3c750")
+layout_mode = 0
+offset_left = 2039.0781
+offset_top = -1462.7448
+offset_right = 2551.0781
+offset_bottom = -1206.7448
+scale = Vector2(0.11266449, 5.486389)
+
+[node name="LevelTransitionGlow" parent="mask" unique_id=139142780 instance=ExtResource("21_5kn67")]
+material = SubResource("ShaderMaterial_cyga3")
+layout_mode = 0
+offset_left = -321.02695
+offset_top = -618.724
+offset_right = 190.97305
+offset_bottom = -362.724
+scale = Vector2(1.0188323, 1.0174156)
+
+[node name="LevelTransitionBlack2" parent="mask" unique_id=400412874 instance=ExtResource("19_4ei61")]
+material = SubResource("ShaderMaterial_o7spd")
+layout_mode = 0
+offset_left = -136.64584
+offset_top = -506.72998
+offset_right = 375.35416
+offset_bottom = -250.72998
+scale = Vector2(0.17020535, 3.670147)
+
+[node name="LevelTransitionGlow2" parent="mask" unique_id=1069617235 instance=ExtResource("21_5kn67")]
+material = SubResource("ShaderMaterial_6my6a")
+layout_mode = 0
+offset_left = 1918.5626
+offset_top = -101.40076
+offset_right = 2430.5625
+offset_bottom = 154.59924
+scale = Vector2(0.6034397, 0.71148044)
+
+[node name="LevelTransitionBlack" parent="mask" unique_id=893587310 instance=ExtResource("19_4ei61")]
+material = SubResource("ShaderMaterial_tlrmx")
+layout_mode = 0
+offset_left = -141.93881
+offset_top = -1382.0851
+offset_right = 370.0612
+offset_bottom = -1126.0851
+scale = Vector2(0.17020535, 3.670147)
 
 [editable path="PlayerWithCamera"]
 [editable path="PlayerWithCamera/Player"]

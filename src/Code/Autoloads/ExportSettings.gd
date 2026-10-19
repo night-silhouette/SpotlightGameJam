@@ -590,6 +590,32 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 镜头门黑幕淡出秒数。
 @export_range(0.0, 5.0, 0.01) var camera_gate_fade_out: float = 0.25
 
+@export_group("Level Transition Visual", "level_transition_visual_")
+## 关卡接缝黑雾的颜色；该组件位于世界空间，不依赖摄像头或镜头门。
+@export var level_transition_visual_black_color: Color = Color(0.19, 0.13, 0.075, 1.0)
+## 关卡接缝黑雾中心的不透明度。
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_black_opacity: float = 0.72
+## 黑雾矩形边缘的柔化比例，越大过渡越宽。
+@export_range(0.01, 0.5, 0.01) var level_transition_visual_black_edge_softness: float = 0.22
+## 黑雾内部明暗扰动强度，只制造雾感，不采样或模糊游戏画面。
+@export_range(0.0, 0.5, 0.01) var level_transition_visual_black_fog_amount: float = 0.12
+## 黑雾纹理密度。
+@export_range(0.5, 16.0, 0.1) var level_transition_visual_black_fog_scale: float = 4.0
+## 黑雾流动速度；0 为静止。
+@export_range(0.0, 2.0, 0.01) var level_transition_visual_black_fog_speed: float = 0.08
+## 关卡出口白光的主色。
+@export var level_transition_visual_glow_color: Color = Color(1.0, 0.92, 0.72, 1.0)
+## 白光出口中心的最大不透明度。
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_glow_core_opacity: float = 1.0
+## 白光出口外围光晕的不透明度。
+@export_range(0.0, 1.0, 0.01) var level_transition_visual_glow_halo_opacity: float = 0.72
+## 白光矩形边缘的柔化比例，越大过渡越宽。
+@export_range(0.01, 0.5, 0.01) var level_transition_visual_glow_edge_softness: float = 0.28
+## 白光呼吸幅度；0 为稳定常亮。
+@export_range(0.0, 0.5, 0.01) var level_transition_visual_glow_pulse_strength: float = 0.08
+## 白光呼吸速度；0 为静止。
+@export_range(0.0, 5.0, 0.05) var level_transition_visual_glow_pulse_speed: float = 0.7
+
 @export_group("Camera Director", "camera_")
 ## 镜头间的平滑切换秒数，由 Phantom Camera 执行。
 @export var camera_transition_duration: float = 1.2
@@ -817,6 +843,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Vanishing Blocker", "vanishing_blocker_")
 @export var vanishing_blocker_zone_group: StringName = &"VanishZone"
 @export_range(0.0, 10.0, 0.05) var vanishing_blocker_fade_duration: float = 0.5
+## 区域触发的消失挡板向下沉入地形的世界坐标距离。
+@export_range(0.0, 2048.0, 1.0) var vanishing_blocker_sink_distance: float = 240.0
 ## 信号消失挡板是否使用碎裂 shader；关闭时回退为普通透明淡出。
 @export var vanishing_blocker_shatter_enabled: bool = true
 ## 碎块在目标 CanvasItem 本地坐标中的尺寸；TileMap 缩放会同步缩放视觉块大小。
