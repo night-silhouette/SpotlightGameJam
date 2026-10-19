@@ -346,7 +346,7 @@ func _refresh(animate_gate: bool = true) -> void:
 	_update_archive_gate(animate_gate)
 	$Rooms/WeaveArchive/SequenceStatus.text = "闸门开启" if puzzle_solved else "共鸣进度 %d / %d" % [rune_progress, _rune_order.size()]
 	$Rooms/Hub/Fountain/Caption.text = "逆流水柱已开启" if fountain_active else "提交钥匙  %d/3" % submitted_keys.size()
-	$Rooms/Hub/FountainStream.visible = fountain_active
+	$Rooms/Hub/Fountain/FountainStream.visible = fountain_active
 	# 已按顺序激活的符文保持发光；输错重置，读档时同步恢复。
 	for rune in $Rooms/WeaveArchive.get_children():
 		if str(rune.get_meta("kind", "")) != "rune":
