@@ -74,15 +74,25 @@ func _capture_top_level_visual_offsets() -> void:
 		_before_sprite_visuals_position_offset = _get_configured_visual_offset(before_sprite_visuals)
 
 func _get_configured_visual_offset(visual: Node2D) -> Vector2:
-	# Scene inheritance stores top-level visual positions in the scene's local
-	# coordinate space. When that scene is instanced below another translated
-	# parent, the visual position must not be treated as a world-space offset.
-	# A position equal to this component's local position (or the base default
-	# zero) means the visual is anchored to the component; any other position is
-	# an intentional visual offset that should be preserved.
-	if visual.position.is_zero_approx() or visual.position.is_equal_approx(position):
-		return Vector2.ZERO
-	return visual.global_position - global_position
+	# Top-level canvas nodes keep the coordinate space of whichever inherited
+	# scene last edited them. Compare every nested scene coordinate space and
+	# retain the nearest one, so merging a room into World cannot turn the
+	# room's origin into an unintended visual offset.
+	var configured_position := visual.position
+	var closest_offset := configured_position
+	var closest_distance_squared := INF
+	var ancestor: Node = self
+	while ancestor:
+		if ancestor is Node2D and not ancestor.scene_file_path.is_empty():
+			var scene_root := ancestor as Node2D
+			var component_position_in_scene := scene_root.to_local(global_position)
+			var candidate_offset := configured_position - component_position_in_scene
+			var candidate_distance_squared := candidate_offset.length_squared()
+			if candidate_distance_squared < closest_distance_squared:
+				closest_offset = candidate_offset
+				closest_distance_squared = candidate_distance_squared
+		ancestor = ancestor.get_parent()
+	return closest_offset
 
 func _sync_top_level_visual_positions() -> void:
 	var component_position := global_position

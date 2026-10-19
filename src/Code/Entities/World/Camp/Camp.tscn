@@ -9,7 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://bgmsq6p2vupnu" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="6_wx588"]
 [ext_resource type="Texture2D" uid="uid://nrl4kscecxca" path="res://Art/New/component/lake/lake.png" id="8_wx588"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="10_na041"]
-[ext_resource type="PackedScene" uid="uid://cmpisbh3nkxan" path="res://Code/Entities/World/Camp/Scenery/CampScenery.tscn" id="CampScenery"]
+[ext_resource type="Texture2D" uid="uid://c1pt0dl15p118" path="res://Art/New/map0/well_back.png" id="12_a07x8"]
+[ext_resource type="Texture2D" uid="uid://dcej284deuq0a" path="res://Art/New/map0/well_fore(1).png" id="13_v13fp"]
 [ext_resource type="Texture2D" uid="uid://b8iqkq7jndigg" path="res://Code/Entities/World/Camp/残碑_右.png" id="SteleRight"]
 
 [sub_resource type="Resource" id="Resource_68lmy"]
@@ -91,13 +92,6 @@ offset_bottom = 1596.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="CampScenery" parent="." unique_id=305596168 instance=ExtResource("CampScenery")]
-visible = false
-z_index = -3
-position = Vector2(759.00006, 1008)
-scale = Vector2(0.37382057, 0.37382057)
-metadata/_editor_description_ = "Camp 分层视觉总成。各层拆为独立场景，保持 Sky/FarBackground/MiddleBackground/Foreground 原节点路径和统一构图。"
-
 [node name="06" type="Sprite2D" parent="." unique_id=646416155]
 visible = false
 position = Vector2(1228, 698)
@@ -174,6 +168,15 @@ enter_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_k8pln"
 enter_dialog_once = true
 
 [node name="visual_layer" type="Node2D" parent="." unique_id=598225606]
+
+[node name="WellBack" type="Sprite2D" parent="." unique_id=702116934]
+position = Vector2(973.8051, 1668.0074)
+texture = ExtResource("12_a07x8")
+
+[node name="WellFore(1)" type="Sprite2D" parent="." unique_id=383244715]
+z_index = 1
+position = Vector2(971.82007, 1669.1897)
+texture = ExtResource("13_v13fp")
 
 [editable path="Lake"]
 [editable path="Chapter1"]

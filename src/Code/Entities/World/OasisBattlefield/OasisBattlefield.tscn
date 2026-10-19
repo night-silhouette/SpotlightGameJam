@@ -31,7 +31,7 @@ chase_respawn_point = NodePath("OutwardPhase/ChaseRespawnPoint")
 metadata/_edit_lock_ = true
 
 [node name="InstantKillArea" parent="." unique_id=403203110 instance=ExtResource("1_instant_kill")]
-position = Vector2(7133, 1599)
+position = Vector2(7244.3267, 1695.6383)
 scale = Vector2(182.4564, -14.813491)
 
 [node name="OutwardPhase" parent="." unique_id=135291713 instance=ExtResource("3_outward_phase")]

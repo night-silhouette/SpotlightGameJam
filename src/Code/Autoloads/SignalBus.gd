@@ -107,7 +107,7 @@ signal CameraGateChanged(player: Node2D, gate: Area2D, active: bool, side: int, 
 signal CameraGateSideChanged(player: Node2D, gate: Area2D, side: int, boundary: float, reset: bool)
 ## 非一次性镜头门退出场景；移除该门的当前及待切换约束。
 signal CameraGateSideRemoved(player: Node2D, gate: Area2D)
-## 目标玩家实际进入镜头门碰撞区域时请求黑幕；player 为该门配置的玩家，gate 为触发的门实例，已解锁的一次性门不发送。
+## 目标玩家完整越过镜头门滞回区域、镜头侧别确认切换时请求黑幕；player 为该门配置的玩家，gate 为触发的门实例。
 signal CameraGateFadeRequested(player: Node2D, gate: Area2D)
 
 ## =============================================================================

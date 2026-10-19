@@ -4,7 +4,7 @@ extends Area2D
 @export_enum("左:0", "上:1", "右:2", "下:3") var blocked_side: int = SIDE_RIGHT
 ## 仅此路径所指的 Player 能开启本门；关卡实例中显式指定。
 @export var player_path: NodePath
-## 开启时进入后永久解锁；关闭时越过检测区域远端边缘才平滑切换，区域内保持原侧。
+## 开启时完整越过检测区域后永久解锁；关闭时越过检测区域远端边缘才平滑切换，区域内保持原侧。
 @export var one_shot: bool = true
 
 var _unlocked: bool = false
@@ -12,7 +12,6 @@ var _side: int = -1
 
 
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
 	SignalBus.SaveSlotLoaded.connect(_on_save_slot_loaded)
 	call_deferred("_broadcast_state")
 
@@ -26,7 +25,7 @@ func _exit_tree() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	if one_shot or _side == -1:
+	if _side == -1 or (one_shot and _unlocked):
 		return
 	var player: Node2D = get_node_or_null(player_path) as Node2D
 	if not is_instance_valid(player):
@@ -45,8 +44,14 @@ func _physics_process(_delta: float) -> void:
 	elif coordinate > maximum:
 		side = SIDE_TOP if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else SIDE_LEFT
 	if side != _side:
-		_side = side
-		SignalBus.CameraGateSideChanged.emit(player, self, side, boundary, false)
+		SignalBus.CameraGateFadeRequested.emit(player, self)
+		if one_shot:
+			_unlocked = true
+			_side = -1
+			SignalBus.CameraGateChanged.emit(player, self, false, blocked_side, boundary)
+		else:
+			_side = side
+			SignalBus.CameraGateSideChanged.emit(player, self, side, boundary, false)
 
 
 func _get_detection_bounds() -> Rect2:
@@ -77,28 +82,17 @@ func _broadcast_state() -> void:
 		push_warning("CameraGate: configure player_path to the target Player node.")
 		return
 	var boundary: float = global_position.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else global_position.x
+	var coordinate: float = player.global_position.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else player.global_position.x
 	if not one_shot:
-		var coordinate: float = player.global_position.y if blocked_side in [SIDE_TOP, SIDE_BOTTOM] else player.global_position.x
 		_side = _side_for_player(coordinate, boundary)
 		SignalBus.CameraGateSideChanged.emit(player, self, _side, boundary, true)
 	else:
+		_side = -1 if _unlocked else _side_for_player(coordinate, boundary)
 		SignalBus.CameraGateChanged.emit(player, self, not _unlocked, blocked_side, boundary)
 
 
-func _on_body_entered(body: Node2D) -> void:
-	if body != get_node_or_null(player_path):
-		return
-	if one_shot and _unlocked:
-		return
-	SignalBus.CameraGateFadeRequested.emit(body, self)
-	if one_shot:
-		_unlocked = true
-		_broadcast_state()
-
-
 func _on_save_slot_loaded(_slot_index: int) -> void:
-	if not one_shot:
-		_broadcast_state()
+	_broadcast_state()
 
 
 ## 导出门的一次性解锁状态；返回字典供 SaveManager 按场景节点路径保存。
