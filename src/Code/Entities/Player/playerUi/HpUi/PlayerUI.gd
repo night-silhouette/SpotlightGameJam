@@ -91,6 +91,7 @@ func _clear_sand_overlay() -> void:
 	low_health_sand.hide()
 
 func _ready() -> void:
+	$Control/DebugPanel.visible = ExportSettings.debug_panel_enabled
 	btn_jump.button_icon = TOUCH_JUMP_ICON
 	btn_dash.button_icon = TOUCH_DASH_ICON
 	_update_touch_interaction_icon()
