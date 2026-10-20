@@ -355,7 +355,7 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Relics & Lake")
 ## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
-@export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.png")
+@export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.PNG")
 ## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
 @export var starseekers_codex_texture: Texture2D = preload("res://Art/New/component/extracted/rune_circle_emblem.png")
 ## The Scarred Bones 贴图；留空时使用程序生成的临时图标。
