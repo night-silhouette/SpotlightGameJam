@@ -106,6 +106,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.0, 30.0, 0.1) var camp_background_smoothing_speed: float = 8.0
 ## Camp 本地边界；镜头取样和背景像素都会限制在此范围内。
 @export var camp_background_local_bounds: Rect2 = Rect2(0.0, 0.0, 2160.0, 1700.0)
+## Camp 背景图顶部继续向上衔接的天空高度；使用原图天空片段镜像拼接，不重复地面。
+@export_range(0.0, 3600.0, 100.0) var camp_background_sky_extension_height: float = 3500.0
 
 @export_group("Level 2 - Blockout", "level2_")
 ## 物品提示出现距离，像素。
@@ -797,8 +799,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Interactive - Signal Door", "signal_door_")
 ## 信号门默认碰撞宽高（像素）。
 @export var signal_door_size: Vector2 = Vector2(32.0, 128.0)
-## 三个按钮全部按下后的门板总视觉升程（门板局部坐标）；默认每次只上升 8 像素。
-@export var signal_door_open_offset: Vector2 = Vector2(0.0, -24.0)
+## 所有按钮全部按下后的门板总视觉升程（门板局部坐标）。
+@export var signal_door_open_offset: Vector2 = Vector2(0.0, -40.0)
+## 尚未全部完成时，每个已按下按钮贡献的门板提示升程（像素）；最终按钮改用完整升程。
+@export_range(0.0, 128.0, 0.5) var signal_door_partial_step_distance: float = 8.0
 ## 信号门开关移动速度（像素/秒）。
 @export_range(1.0, 2000.0, 1.0) var signal_door_move_speed: float = 180.0
 ## 每次门板收到新的开启进度时抖动的总时长（秒）。

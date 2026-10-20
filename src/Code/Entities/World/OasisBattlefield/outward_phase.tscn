@@ -36,7 +36,7 @@ height = 32.59961
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lvx6x"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rans"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4l4s"]
 resource_local_to_scene = true
 shader = ExtResource("16_g4l4s")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -47,7 +47,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_31pws"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rans"]
 resource_local_to_scene = true
 shader = ExtResource("18_ueiw8")
 shader_parameter/repeat_width = 4831.0
@@ -257,7 +257,7 @@ tile_map_data = PackedByteArray("AAD+//z/CAABAAEAAAABAPz/CAADAAEAAAD///z/CAACAAE
 tile_set = ExtResource("3_gc2m3")
 
 [node name="WaterCurtain" parent="WaterFlowArea6" index="5"]
-material = SubResource("ShaderMaterial_6rans")
+material = SubResource("ShaderMaterial_g4l4s")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea6" index="6" unique_id=424886505]
 position = Vector2(8600, 826)
@@ -305,7 +305,7 @@ position = Vector2(-1253.1809, -669.5981)
 
 [node name="GreenDecoration" parent="OutwardScenery/ForegroundLoop" index="0" unique_id=625607659]
 visible = false
-material = SubResource("ShaderMaterial_31pws")
+material = SubResource("ShaderMaterial_6rans")
 position = Vector2(13599.693, 777.1195)
 scale = Vector2(0.60270095, 0.60270095)
 
@@ -395,7 +395,7 @@ region_rect = Rect2(0, 0, 4831, 1296)
 region_filter_clip_enabled = true
 
 [node name="BlackCurtain" parent="." unique_id=1021218863 instance=ExtResource("21_g4l4s")]
-position = Vector2(310.09912, 1130.1462)
+position = Vector2(340.06445, 1474.7517)
 scale = Vector2(14.0775175, 3.1636434)
 
 [node name="BlackCurtain2" parent="." unique_id=1837272059 instance=ExtResource("21_g4l4s")]

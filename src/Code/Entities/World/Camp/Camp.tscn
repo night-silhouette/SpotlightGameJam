@@ -33,6 +33,11 @@ resource_local_to_scene = true
 shader = ExtResource("7_v13fp")
 shader_parameter/progress = 0.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_camp_sky_extension"]
+atlas = ExtResource("13_a07x8")
+region = Rect2(0, 0, 2100, 700)
+filter_clip = true
+
 [sub_resource type="Resource" id="Line_1_1"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
@@ -177,6 +182,44 @@ position = Vector2(1080.0348, 857.2057)
 scale = Vector2(1.0352961, 1.0352961)
 texture = ExtResource("13_a07x8")
 script = ExtResource("CampBackgroundParallax")
+
+[node name="SkyExtension1" type="Sprite2D" parent="Sprite2D2"]
+show_behind_parent = true
+texture = SubResource("AtlasTexture_camp_sky_extension")
+position = Vector2(-1050, -1550)
+centered = false
+flip_v = true
+use_parent_material = true
+
+[node name="SkyExtension2" type="Sprite2D" parent="Sprite2D2"]
+show_behind_parent = true
+texture = SubResource("AtlasTexture_camp_sky_extension")
+position = Vector2(-1050, -2250)
+centered = false
+use_parent_material = true
+
+[node name="SkyExtension3" type="Sprite2D" parent="Sprite2D2"]
+show_behind_parent = true
+texture = SubResource("AtlasTexture_camp_sky_extension")
+position = Vector2(-1050, -2950)
+centered = false
+flip_v = true
+use_parent_material = true
+
+[node name="SkyExtension4" type="Sprite2D" parent="Sprite2D2"]
+show_behind_parent = true
+texture = SubResource("AtlasTexture_camp_sky_extension")
+position = Vector2(-1050, -3650)
+centered = false
+use_parent_material = true
+
+[node name="SkyExtension5" type="Sprite2D" parent="Sprite2D2"]
+show_behind_parent = true
+texture = SubResource("AtlasTexture_camp_sky_extension")
+position = Vector2(-1050, -4350)
+centered = false
+flip_v = true
+use_parent_material = true
 
 [node name="WorldBgm" type="Node" parent="." unique_id=1313303911]
 script = ExtResource("WorldBgm")

@@ -19,6 +19,7 @@ class_name SignalDoor
 
 var _door_size: Vector2 = Vector2(32.0, 128.0)
 var _move_speed: float = 180.0
+var _partial_step_distance: float = 8.0
 var _shake_duration: float = 0.24
 var _shake_amount: float = 1.2
 var _active_sources: Dictionary = {}
@@ -49,7 +50,7 @@ func _on_bound_button_changed(_is_pressed: bool) -> void:
 		_play_lift_feedback()
 
 func _physics_process(delta: float) -> void:
-	var target_offset := open_offset * _open_progress
+	var target_offset := _get_target_visual_offset()
 	if not _should_open:
 		_set_collision_disabled(false)
 	var visuals_arrived := true
@@ -80,12 +81,23 @@ func _sync_from_export_settings() -> void:
 		maxf(ExportSettings.signal_door_size.y, 4.0)
 	)
 	_move_speed = maxf(ExportSettings.signal_door_move_speed, 1.0)
+	_partial_step_distance = maxf(ExportSettings.signal_door_partial_step_distance, 0.0)
 	_shake_duration = maxf(ExportSettings.signal_door_shake_duration, 0.0)
 	_shake_amount = maxf(ExportSettings.signal_door_shake_offset, 0.0)
 	_dust_particles.amount = maxi(ExportSettings.signal_door_dust_amount, 1)
 	_dust_particles.lifetime = maxf(ExportSettings.signal_door_dust_lifetime, 0.1)
 	if open_offset == Vector2(0.0, -128.0):
 		open_offset = ExportSettings.signal_door_open_offset
+
+func _get_target_visual_offset() -> Vector2:
+	if bound_buttons.is_empty() or _should_open or open_offset.is_zero_approx():
+		return open_offset * _open_progress
+	var completed_steps := int(round(_open_progress * float(bound_buttons.size())))
+	var partial_distance := minf(
+		_partial_step_distance * float(completed_steps),
+		open_offset.length()
+	)
+	return open_offset.normalized() * partial_distance
 
 func _update_dimensions() -> void:
 	var door_shape := RectangleShape2D.new()
@@ -182,7 +194,7 @@ func ExportSaveData() -> Dictionary:
 func LoadSaveData(_data: Dictionary) -> void:
 	_active_sources.clear()
 	_refresh_open_state()
-	var target_offset := open_offset * _open_progress
+	var target_offset := _get_target_visual_offset()
 	for visual_node in _visual_nodes:
 		if not is_instance_valid(visual_node):
 			continue

@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 		return
 	var camera_world := _get_camera_world_position()
 	var camera_local := camp.to_local(camera_world)
-	var bounds: Rect2 = ExportSettings.camp_background_local_bounds.abs()
+	var bounds := _get_background_bounds()
 	var bounded_camera := Vector2(
 		clampf(camera_local.x, bounds.position.x, bounds.end.x),
 		clampf(camera_local.y, bounds.position.y, bounds.end.y)
@@ -65,7 +65,7 @@ func _update_clip_bounds() -> void:
 	var camp := get_parent() as Node2D
 	if camp == null:
 		return
-	var bounds: Rect2 = ExportSettings.camp_background_local_bounds.abs()
+	var bounds := _get_background_bounds()
 	var first := camp.to_global(bounds.position)
 	var second := camp.to_global(Vector2(bounds.end.x, bounds.position.y))
 	var third := camp.to_global(bounds.end)
@@ -80,6 +80,15 @@ func _update_clip_bounds() -> void:
 	)
 	_clip_material.set_shader_parameter(&"clip_min", clip_min)
 	_clip_material.set_shader_parameter(&"clip_max", clip_max)
+
+
+func _get_background_bounds() -> Rect2:
+	var bounds: Rect2 = ExportSettings.camp_background_local_bounds.abs()
+	var sky_top := minf(bounds.position.y, -maxf(ExportSettings.camp_background_sky_extension_height, 0.0))
+	return Rect2(
+		Vector2(bounds.position.x, sky_top),
+		Vector2(bounds.size.x, bounds.end.y - sky_top)
+	)
 
 
 func _reset_reference() -> void:

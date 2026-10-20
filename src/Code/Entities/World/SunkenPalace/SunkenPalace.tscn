@@ -410,12 +410,12 @@ position = Vector2(26, 32.999924)
 position = Vector2(-38, -43.000076)
 
 [node name="WaterFlowArea3" parent="collisionlayer/WaterFl" unique_id=1155138509 instance=ExtResource("2_rune3")]
-position = Vector2(1670, -2286)
+position = Vector2(1670, -2266)
 area_size = Vector2(918.9211, 190.14851)
 
 [node name="BeforeVisual" parent="collisionlayer/WaterFl/WaterFlowArea3" index="0"]
 visible = true
-position = Vector2(1670, -2286)
+position = Vector2(1670, -2266)
 scale = Vector2(0.14, 0.14)
 tile_map_data = PackedByteArray("AAD7////BgABAAAAAAD8////BgACAAAAAAD7/wAABgABAAIAAAD9////BgACAAAAAAD+////BgACAAAAAAD/////BgACAAAAAAAAAP//BgACAAAAAAABAP//BgACAAAAAAACAP//BgACAAAAAAADAP//BgACAAAAAAD8/wAABgACAAIAAAD9/wAABgACAAIAAAD+/wAABgACAAIAAAD//wAABgACAAIAAAAAAAAABgACAAIAAAABAAAABgACAAIAAAACAAAABgACAAIAAAADAAAABgACAAIAAAAEAP//BgADAAAAAAAEAAAABgADAAIAAAA=")
 tile_set = ExtResource("11_flekk")
@@ -433,7 +433,7 @@ shape = SubResource("RectangleShape2D_water_3")
 material = SubResource("ShaderMaterial_n1l0m")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea3" index="6" unique_id=424886505]
-position = Vector2(1670, -2286)
+position = Vector2(1670, -2266)
 
 [node name="WaterFlowArea4" parent="collisionlayer/WaterFl" unique_id=1223072001 instance=ExtResource("2_rune4")]
 position = Vector2(754, -3037.9998)
@@ -625,7 +625,9 @@ scale = Vector2(0.31806934, 0.31806934)
 texture = ExtResource("33_ysst7")
 
 [node name="Sprite2D4" type="Sprite2D" parent="visuallayer" unique_id=1231657952]
-position = Vector2(1362.915, -2269.9746)
+position = Vector2(1107.9716, -2938.636)
+rotation = -0.32789078
+scale = Vector2(0.46122548, 0.46122548)
 texture = ExtResource("34_n1l0m")
 
 [editable path="collisionlayer/OnwayPl/OneWayDropPlatformComponent2"]

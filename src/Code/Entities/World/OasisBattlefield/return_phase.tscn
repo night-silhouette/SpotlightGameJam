@@ -19,6 +19,17 @@
 [ext_resource type="PackedScene" uid="uid://mq6hissr3y35" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisRisingSpikes.tscn" id="12_t0c8r"]
 [ext_resource type="PackedScene" uid="uid://lltd8w7jtyho" path="res://Code/Entities/World/视觉装饰组件/BlackCurtain.tscn" id="18_jmc82"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jmc82"]
+resource_local_to_scene = true
+shader = ExtResource("5_wvvne")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sqjdk"]
 resource_local_to_scene = true
 shader = ExtResource("5_wvvne")
@@ -65,23 +76,12 @@ shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t0c8r"]
 resource_local_to_scene = true
-shader = ExtResource("5_wvvne")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nline"]
-resource_local_to_scene = true
 shader = ExtResource("8_ndq2u")
 shader_parameter/repeat_width = 4831.0
 shader_parameter/blend_width = 256.0
 shader_parameter/seam_y_offset = 40.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_71bq2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nline"]
 resource_local_to_scene = true
 shader = ExtResource("8_ndq2u")
 shader_parameter/repeat_width = 4831.0
@@ -142,7 +142,7 @@ tile_set = ExtResource("2_vulhe")
 visible = true
 
 [node name="WaterCurtain" parent="WaterFlowArea" index="5"]
-material = SubResource("ShaderMaterial_sqjdk")
+material = SubResource("ShaderMaterial_jmc82")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea" index="6" unique_id=424886505]
 position = Vector2(5704.99, 682.2955)
@@ -198,7 +198,7 @@ tile_set = ExtResource("2_vulhe")
 visible = true
 
 [node name="WaterCurtain" parent="WaterFlowArea2" index="5"]
-material = SubResource("ShaderMaterial_po3q4")
+material = SubResource("ShaderMaterial_sqjdk")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea2" index="6" unique_id=424886505]
 position = Vector2(8160.1113, 658.0962)
@@ -281,7 +281,7 @@ tile_map_data = PackedByteArray("AAD///f/BgAEAAIAAAD///j/BgAGAAMAABD///n/BgAGAAM
 tile_set = ExtResource("2_vulhe")
 
 [node name="WaterCurtain" parent="WaterFlowArea6" index="5"]
-material = SubResource("ShaderMaterial_xlhhw")
+material = SubResource("ShaderMaterial_po3q4")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea6" index="6" unique_id=424886505]
 position = Vector2(15387.842, 514.06006)
@@ -363,7 +363,7 @@ tile_map_data = PackedByteArray("AAD6//7/BgAEAAIAAAD6/wEABgAEAAQAAAD6/wAABgAEAAM
 tile_set = ExtResource("2_vulhe")
 
 [node name="WaterCurtain" parent="WaterFlowArea3" index="5"]
-material = SubResource("ShaderMaterial_r782m")
+material = SubResource("ShaderMaterial_xlhhw")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea3" index="6" unique_id=424886505]
 position = Vector2(9738.9795, 1101.6602)
@@ -516,7 +516,7 @@ tile_set = ExtResource("2_vulhe")
 visible = true
 
 [node name="WaterCurtain" parent="WaterFlowArea5" index="5"]
-material = SubResource("ShaderMaterial_t0c8r")
+material = SubResource("ShaderMaterial_r782m")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(9733.284, 661.81775)
@@ -745,7 +745,7 @@ script = ExtResource("7_return_scenery")
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" parent="ParallaxScenery/NearBackground" parent_id_path=PackedInt32Array(381839512, 1982365568) index="0" unique_id=1303641309]
-material = SubResource("ShaderMaterial_nline")
+material = SubResource("ShaderMaterial_t0c8r")
 
 [node name="SkyBase" parent="ParallaxScenery/Sky" parent_id_path=PackedInt32Array(381839512, 1087840546) index="0" unique_id=678388926]
 metadata/_edit_lock_ = true
@@ -754,7 +754,7 @@ metadata/_edit_lock_ = true
 scroll_offset = Vector2(-4569.266, 1911.9421)
 
 [node name="GreenDecoration" parent="ParallaxScenery/ForegroundLoop" index="0" unique_id=1150958719]
-material = SubResource("ShaderMaterial_71bq2")
+material = SubResource("ShaderMaterial_nline")
 
 [node name="MovingPlatform" parent="." unique_id=920986103 instance=ExtResource("7_jmc82")]
 position = Vector2(3178, 1211)
@@ -1071,7 +1071,7 @@ position = Vector2(-0.027284654, -0.06751483)
 shape = SubResource("CapsuleShape2D_ak84r")
 
 [node name="BlackCurtain" parent="." unique_id=1021218863 instance=ExtResource("18_jmc82")]
-position = Vector2(5830.0903, 1392.5687)
+position = Vector2(5860.791, 1341.4012)
 scale = Vector2(41.1212, 2.225298)
 
 [editable path="WaterFlowArea"]

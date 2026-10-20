@@ -143,14 +143,14 @@ func _test_progressive_door_visual_and_collision() -> void:
 	_expect(is_equal_approx(door.GetOpenProgress(), 1.0 / 3.0), "First button must request one third visual progress.")
 	_expect(dust.emitting, "Each new door lift step must emit falling dust.")
 	await _wait_physics_frames(20)
-	_expect(visual.position.is_equal_approx(door.open_offset / 3.0), "First button must lift the door visual by one third.")
-	_expect(door_art.position.is_equal_approx(art_closed_position + door.open_offset / 3.0), "First button must lift the authored door art without reparenting it.")
+	_expect(visual.position.is_equal_approx(Vector2(0.0, -8.0)), "First button must keep the small 8px visual lift.")
+	_expect(door_art.position.is_equal_approx(art_closed_position + Vector2(0.0, -8.0)), "First button must lift the authored door art without reparenting it.")
 	_expect(not collision.disabled, "Partial visual progress must keep the door collision closed.")
 
 	buttons[1].is_pressed = true
 	_expect(is_equal_approx(door.GetOpenProgress(), 2.0 / 3.0), "Second button must request two thirds visual progress.")
 	await _wait_physics_frames(20)
-	_expect(visual.position.is_equal_approx(door.open_offset * (2.0 / 3.0)), "Second button must lift the door visual by two thirds.")
+	_expect(visual.position.is_equal_approx(Vector2(0.0, -16.0)), "Second button must keep the accumulated 16px visual lift.")
 	_expect(not collision.disabled, "Two thirds visual progress must keep the door collision closed.")
 
 	buttons[2].is_pressed = true
