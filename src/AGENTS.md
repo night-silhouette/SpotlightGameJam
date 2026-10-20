@@ -78,6 +78,10 @@ Code/
 
 ### 10.2 启动、全局基础与参数
 
+2026-10-20 第二关手动柱子遮挡：`L2/Level2Map.tscn` 的 `Rooms/SunStacks/Img9875`、`Rooms/SunStacks/Img9876`、根级 `Img9875` 的 `z_index` 从 -1 改为 10，使普通角色层位于柱子后面。仅调整绘制层级，保持原位置、缩放和纹理，无新增碰撞。已通过 Godot 编辑器写入、保存并回读文件确认；未进行角色实际穿过柱子的运行画面验收。
+
+2026-10-20 第二关格内藏书已按用户要求撤回：移除新增藏书组件、场景实例及专用参数，恢复原窗格背景；保留原始 IMG_9887.PNG 素材及柱子前景层级调整。
+
 | 功能 | 文件与关键行号 | 实现锚点 / 阅读注意 |
 | --- | --- | --- |
 | 启动与 Autoload | `project.godot:11-29,50-99` | 主场景为 `E/StartMenu/StartMenu.tscn`；单例为 Util、SignalBus、GlobalValue、PhantomCameraManager、ExportSettings、_mcp_game_helper。此处输入是默认值，会被改键文件覆盖。配置及插件只读。 |

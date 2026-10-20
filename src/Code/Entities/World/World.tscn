@@ -939,9 +939,11 @@ show_repeat_dialog = true
 repeat_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_m8xep")])
 
 [node name="月相刻盘贴图" type="Sprite2D" parent="story/c2/月相刻盘" unique_id=1287020260]
-position = Vector2(51.037125, 3.4770622)
+position = Vector2(2.3659668, -6.699562e-05)
 scale = Vector2(0.3592362, 0.3536396)
 texture = ExtResource("20_hehhy")
+region_enabled = true
+region_rect = Rect2(21, 55, 268, 297)
 
 [node name="残缺的绘本" parent="story/c2" unique_id=1763227010 instance=ExtResource("12_terh4")]
 position = Vector2(-4096, 3645)
