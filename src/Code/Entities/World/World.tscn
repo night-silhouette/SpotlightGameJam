@@ -40,6 +40,7 @@
 [ext_resource type="Texture2D" uid="uid://cfrgqi60o3h13" path="res://Art/New/component/game1/2.PNG" id="31_m5q0i"]
 [ext_resource type="Texture2D" uid="uid://d06r0rbfn7xoo" path="res://Art/New/component/game3/IMG_1493.PNG" id="31_s2vhm"]
 [ext_resource type="PackedScene" path="res://Code/Entities/TutorialSubtitle/TutorialSubtitle.tscn" id="31_tutorial_subtitle"]
+[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/TutorialHintArea/TutorialHintArea.tscn" id="31_tutorial_hint"]
 [ext_resource type="Texture2D" uid="uid://4mprnj7sx2i7" path="res://Art/New/component/extracted/prop_book_stack_two.png" id="32_hehhy"]
 [ext_resource type="Script" uid="uid://dumyuory5gub6" path="res://Code/Entities/World/world_bgm.gd" id="32_world_bgm"]
 [ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
@@ -1067,6 +1068,12 @@ scale = Vector2(1.2472755, 1.2472755)
 texture = ExtResource("31_s2vhm")
 region_enabled = true
 region_rect = Rect2(1718, 564, 910, 866)
+
+[node name="LookDownHint" parent="story/c4" instance=ExtResource("31_tutorial_hint")]
+position = Vector2(-1429, -760)
+scale = Vector2(1, 0.4)
+hint_kind = "look_down"
+metadata/_editor_description_ = "骸骨植物独立柱顶；240×80提示区域仅覆盖柱顶上方，不覆盖柱下路线。"
 
 [node name="枯骨与发光植物_4_6至4_7" parent="story/c4" unique_id=1081844673 instance=ExtResource("12_terh4")]
 z_index = -1

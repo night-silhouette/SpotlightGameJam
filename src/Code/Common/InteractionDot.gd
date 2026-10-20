@@ -41,7 +41,15 @@ func _update_dot() -> void:
 		return
 	var source: Node2D = _entity
 	var bounds := Rect2()
-	if "area_size" in _entity:
+	if _entity is MiniChaliceStation:
+		if not _entity.is_node_ready():
+			visible = false
+			return
+		var art := _entity.get_node("AnimatedSprite2D") as AnimatedSprite2D
+		source = art
+		bounds = _entity.GetInteractionRect()
+		visible = art.is_visible_in_tree() and bounds.has_area()
+	elif "area_size" in _entity:
 		bounds = Rect2(-_entity.area_size * 0.5, _entity.area_size)
 	else:
 		var sprite := _find_sprite(_entity)

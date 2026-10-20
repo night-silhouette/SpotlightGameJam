@@ -394,7 +394,7 @@ signal SaveSlotDeleted(slot_index: int)
 ## 菜单确认退出游戏时触发；无参数，窗口关闭同样走退出存档流程。
 signal GameQuitRequested
 
-## 游戏内设置请求返回主菜单时触发；无参数，正式世界会先自动保存当前槽位。
+## 游戏内设置请求返回主菜单时触发；无参数，游戏场景会先自动保存当前槽位。
 signal ReturnToMainMenuRequested
 
 ## 返回主菜单失败、保留当前场景时触发；message 为供设置界面显示的错误提示。
@@ -442,9 +442,8 @@ func _return_to_main_menu() -> void:
 		_returning_to_main_menu = false
 		ReturnToMainMenuFailed.emit("主菜单加载失败，已留在当前游戏。")
 		return
-	if scene.scene_file_path == ExportSettings.start_menu_world_scene_path:
-		var slot = SaveManagerRef.GetActiveSlot()
-		if SaveManagerRef.HasSlot(slot) and not SaveManagerRef.AutoSave(tree):
+	if scene.scene_file_path == ExportSettings.start_menu_world_scene_path or tree.get_first_node_in_group(&"player") != null:
+		if not SaveManagerRef.AutoSave(tree):
 			_returning_to_main_menu = false
 			ReturnToMainMenuFailed.emit("自动保存失败，已取消返回主菜单，请重试或手动保存。")
 			return

@@ -314,11 +314,14 @@ func _apply_new_keybind(event: InputEvent) -> void:
 		_cancel_rebinding()
 		return
 
-	KeybindManagerRef.RebindAction(_rebinding_action, event, true)
+	var save_error = KeybindManagerRef.RebindAction(_rebinding_action, event, true)
 	if is_instance_valid(_rebind_button_ref):
 		_rebind_button_ref.text = KeybindManagerRef.GetEventText(event)
 
-	_show_status("【%s】已重新绑定为: %s" % [KeybindManagerRef.GetActionDisplayName(_rebinding_action), KeybindManagerRef.GetEventText(event)])
+	if save_error == OK:
+		_show_status("【%s】已重新绑定为: %s" % [KeybindManagerRef.GetActionDisplayName(_rebinding_action), KeybindManagerRef.GetEventText(event)])
+	else:
+		_show_status("【%s】按键绑定已生效但保存失败，重启后可能丢失" % KeybindManagerRef.GetActionDisplayName(_rebinding_action), true)
 	_cancel_rebinding()
 
 func _cancel_rebinding() -> void:

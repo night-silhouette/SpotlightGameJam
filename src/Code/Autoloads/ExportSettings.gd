@@ -34,13 +34,15 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Credits", "credits_")
 ## 参与早期版本测试游玩的玩家名单，可在数组中继续添加。
-@export var credits_early_playtesters: PackedStringArray = ["YBBBY"]
+@export var credits_early_playtesters: PackedStringArray = ["YBBBY", "君问归期未有期"]
 
 @export_group("Tutorial Subtitle", "tutorial_")
 ## 跳跃教学区域每次重新进入时请求的文案。
 @export var tutorial_jump_hint_text: String = "长按跳跃以达到更高高度"
 ## 横木平台冲刺教学区域每次重新进入时请求的文案。
 @export var tutorial_dash_hint_text: String = "Shift键冲刺"
+## 绿洲骸骨植物柱顶的向下观察教学文案。
+@export var tutorial_look_down_hint_text: String = "长按s键向下观察"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
 ## 手机版第一处水墙前的交互教学文案。
@@ -341,7 +343,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
-@export var player_hp_drain_rate: float = 200.0 / 300.0 * 1.3
+@export var player_hp_drain_rate: float = 200.0 / 300.0 * 1.3 * 0.9
 ## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
 @export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
 ## 缺水时主角最终呈现的沙土色
@@ -622,6 +624,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_camera_damping: Vector2 = Vector2(0.12, 0.18)
 ## 防抖方框大小（占视口的比例，1.0=整个视口宽/高）。角色在框内移动不推动镜头，顶到框边才推动镜头。
 @export var player_camera_box_fraction: Vector2 = Vector2(0.05, 0.25)
+## 物理 W/S 持续同方向按住后开始观察的秒数。
+@export_range(0.0, 2.0, 0.05) var player_camera_look_hold_delay: float = 0.5
+## 上下观察相对原构图的距离（世界像素），仍受所有现有限位钳制。
+@export_range(0.0, 800.0, 1.0) var player_camera_look_distance: float = 180.0
+## 观察和松手恢复的指数平滑速率（每秒），越大越快。
+@export_range(0.1, 30.0, 0.1) var player_camera_look_smooth_speed: float = 8.0
 
 @export_group("Camera Gate", "camera_gate_")
 ## 设置了 scope_origin_path 的永久边界，仅在玩家处于所属关卡的此局部 Y 范围时启用。
@@ -815,7 +823,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_save_path_prefix: String = "user://Saves/save_slot_"
 
 ## 按键绑定持久化文件路径 (独立于存档槽位)
-@export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
+@export var setting_keybinds_path: String = "user://custom_keybinds.json"
 ## 设置界面背景透明度
 @export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
 ## 设置和读档共用面板的设计尺寸；小屏等比缩小，内容最小尺寸优先。

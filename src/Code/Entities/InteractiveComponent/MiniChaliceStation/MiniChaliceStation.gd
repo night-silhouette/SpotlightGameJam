@@ -1,7 +1,7 @@
 extends Area2D
 class_name MiniChaliceStation
 
-## 微光小圣杯补水站：玩家靠近后可右键点击圣杯或提示按钮补满水量。
+## 微光小圣杯补水站：玩家靠近后可交互补满水量。
 ## 使用后圣杯光芒隐去。支持单次使用或配置定时刷新重置。
 
 @export_category("Chalice Settings")
@@ -17,6 +17,7 @@ class_name MiniChaliceStation
 ## 补水比例 (1.0 代表回满至 100%)
 @export var heal_ratio: float = 1.0
 
+@onready var interaction_art: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var chalice_base: ColorRect = $ChaliceBase
 @onready var glow_cup: ColorRect = $GlowCup
@@ -128,25 +129,44 @@ func _update_visual_state(available: bool) -> void:
 			if cooldown_label:
 				cooldown_label.visible = false
 
+func GetInteractionRect() -> Rect2:
+	var frames := interaction_art.sprite_frames
+	if frames == null or not frames.has_animation(interaction_art.animation):
+		return Rect2()
+	if interaction_art.frame < 0 or interaction_art.frame >= frames.get_frame_count(interaction_art.animation):
+		return Rect2()
+	var texture := frames.get_frame_texture(interaction_art.animation, interaction_art.frame)
+	if texture == null:
+		return Rect2()
+	var size := texture.get_size()
+	var origin := interaction_art.offset
+	if interaction_art.centered:
+		origin -= size * 0.5
+	if interaction_art.flip_h:
+		origin.x = -origin.x - size.x
+	if interaction_art.flip_v:
+		origin.y = -origin.y - size.y
+	return Rect2(origin, size)
+
 func _contains_world_point(world_pos: Vector2) -> bool:
-	var art := $Sprite2D as Sprite2D
-	return art.is_visible_in_tree() and art.get_rect().has_point(art.to_local(world_pos))
+	var rect := GetInteractionRect()
+	return interaction_art.is_visible_in_tree() and rect.has_area() and rect.has_point(interaction_art.to_local(world_pos))
 
 func _update_player_range() -> void:
 	var previous_in_range := _player_in_range
 	_cached_player = null
-	var art := $Sprite2D as Sprite2D
-	var rect := art.get_rect()
-	var nearest_distance := ExportSettings.chalice_interact_distance
-	for candidate in get_tree().get_nodes_in_group("player"):
-		if not candidate is Node2D:
-			continue
-		var local_point := art.to_local(candidate.global_position)
-		var closest := local_point.clamp(rect.position, rect.end)
-		var distance: float = candidate.global_position.distance_to(art.to_global(closest))
-		if distance <= nearest_distance:
-			nearest_distance = distance
-			_cached_player = candidate
+	var rect := GetInteractionRect()
+	var nearest_distance: float = ExportSettings.chalice_interact_distance
+	if interaction_art.is_visible_in_tree() and rect.has_area():
+		for candidate in get_tree().get_nodes_in_group("player"):
+			if not candidate is Node2D:
+				continue
+			var local_point := interaction_art.to_local(candidate.global_position)
+			var closest := local_point.clamp(rect.position, rect.end)
+			var distance: float = candidate.global_position.distance_to(interaction_art.to_global(closest))
+			if distance <= nearest_distance:
+				nearest_distance = distance
+				_cached_player = candidate
 	_player_in_range = is_instance_valid(_cached_player)
 	if previous_in_range != _player_in_range:
 		_update_visual_state(is_available)
