@@ -216,6 +216,16 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 主层房间上方与两端外侧填墙的高度；0 关闭这部分外观，不改变通道碰撞。
 @export_range(0.0, 4096.0, 32.0) var level2_terrain_art_room_exterior_height: float = 1024.0
 
+@export_group("Level 2 - Wall Torch", "level2_wall_torch_")
+## 书房出口砖柱旁的火把；位置直接移动地图中的 WallTorch 节点。
+@export var level2_wall_torch_enabled: bool = true
+@export_range(1.0, 20.0, 1.0) var level2_wall_torch_fps: float = 8.0
+@export_range(0.1, 1.5, 0.01) var level2_wall_torch_art_scale: float = 0.48
+@export var level2_wall_torch_color: Color = Color(1.0, 0.76, 0.46, 1.0)
+@export_range(0.0, 2.0, 0.05) var level2_wall_torch_energy: float = 0.8
+@export_range(30.0, 300.0, 5.0) var level2_wall_torch_radius: float = 220
+@export_range(0.0, 0.3, 0.01) var level2_wall_torch_glow_opacity: float = 0.12
+
 @export_group("Level 2 - Atmosphere", "level2_atmosphere_")
 ## 局部水雾、书桌浮尘和机关柔光总开关；可独立关闭本次动效。
 @export var level2_atmosphere_enabled: bool = true

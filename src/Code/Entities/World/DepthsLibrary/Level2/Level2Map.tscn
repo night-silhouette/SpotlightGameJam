@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://cggv7104awm2l" path="res://Art/New/map2/IMG_1503.PNG" id="31_xlvjv"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Props/WolfStatue.tscn" id="33_r2dul"]
 [ext_resource type="Texture2D" uid="uid://bfbt2snwxbiqf" path="res://Art/New/component/game2/IMG_1545.PNG" id="34_uhtjq"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/WallTorch/WallTorch.tscn" id="35_ulmcl"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/ArchivePassage.tscn" id="ArchivePassage"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/DeathBoundary/DeathBoundary.tscn" id="DeathBoundary"]
 [ext_resource type="PackedScene" uid="uid://dfoa06wbpiqx8" path="res://Code/Entities/World/DepthsLibrary/Level2/Rooms/DescentShaft.tscn" id="DescentShaft"]
@@ -57,7 +58,7 @@ size = Vector2(132, 49)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bufyr"]
 size = Vector2(96, 31.5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_uhtjq"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ulmcl"]
 resource_local_to_scene = true
 size = Vector2(1395, 650)
 
@@ -69,20 +70,6 @@ blend_mode = 1
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8botp"]
 blend_mode = 1
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ulmcl"]
-shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
-shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
-shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
-shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = false
-shader_parameter/opacity = 1.0
-shader_parameter/background_contrast = 0.85
-shader_parameter/background_brightness = 0.86
-shader_parameter/player_world = Vector2(-100000, -100000)
-shader_parameter/clear_radius = 100.0
-shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c5enj"]
 shader = ExtResource("20_pairm")
@@ -118,7 +105,7 @@ shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = true
+shader_parameter/foreground = false
 shader_parameter/opacity = 1.0
 shader_parameter/background_contrast = 0.85
 shader_parameter/background_brightness = 0.86
@@ -128,11 +115,11 @@ shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hxuls"]
 shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(0, -3080, 860, -2560)
+shader_parameter/world_bounds = Vector4(-4300, -80, 4100, 720)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = false
+shader_parameter/foreground = true
 shader_parameter/opacity = 1.0
 shader_parameter/background_contrast = 0.85
 shader_parameter/background_brightness = 0.86
@@ -142,7 +129,7 @@ shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dmpls"]
 shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(0, -3080, 860, -2560)
+shader_parameter/world_bounds = Vector4(0, -3180, 860, -2560)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
@@ -156,7 +143,7 @@ shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dt4rk"]
 shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(0, -3080, 860, -2560)
+shader_parameter/world_bounds = Vector4(0, -3180, 860, -2560)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
@@ -170,11 +157,11 @@ shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_matvp"]
 shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(0, -3080, 860, -2560)
+shader_parameter/world_bounds = Vector4(0, -3180, 860, -2560)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = true
+shader_parameter/foreground = false
 shader_parameter/opacity = 1.0
 shader_parameter/background_contrast = 0.85
 shader_parameter/background_brightness = 0.86
@@ -184,11 +171,11 @@ shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_owvqp"]
 shader = ExtResource("20_pairm")
-shader_parameter/world_bounds = Vector4(1668, 1320, 3868, 2120)
+shader_parameter/world_bounds = Vector4(0, -3180, 860, -2560)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = false
+shader_parameter/foreground = true
 shader_parameter/opacity = 1.0
 shader_parameter/background_contrast = 0.85
 shader_parameter/background_brightness = 0.86
@@ -230,7 +217,7 @@ shader_parameter/world_bounds = Vector4(1668, 1320, 3868, 2120)
 shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
 shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
 shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
-shader_parameter/foreground = true
+shader_parameter/foreground = false
 shader_parameter/opacity = 1.0
 shader_parameter/background_contrast = 0.85
 shader_parameter/background_brightness = 0.86
@@ -239,16 +226,18 @@ shader_parameter/clear_radius = 100.0
 shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_s3rje"]
-resource_local_to_scene = true
-shader = ExtResource("16_aevo3")
-shader_parameter/vertical_layout = true
-shader_parameter/artwork_height = 800.0
-shader_parameter/shaft_width = 180.0
-shader_parameter/scroll_pixels = Vector2(0, 0)
+shader = ExtResource("20_pairm")
+shader_parameter/world_bounds = Vector4(1668, 1320, 3868, 2120)
+shader_parameter/descent_bounds = Vector4(560, -2940, 840, -80)
+shader_parameter/stairwell_bounds = Vector4(1056, 600, 1664, 1976)
+shader_parameter/fountain_bounds = Vector4(900, -3080, 1080, -80)
+shader_parameter/foreground = true
 shader_parameter/opacity = 1.0
-shader_parameter/foreground = false
-shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/background_contrast = 0.85
+shader_parameter/background_brightness = 0.86
+shader_parameter/player_world = Vector2(-100000, -100000)
 shader_parameter/clear_radius = 100.0
+shader_parameter/vertical_loop_fade = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_84gfx"]
 resource_local_to_scene = true
@@ -281,8 +270,8 @@ shader_parameter/vertical_layout = true
 shader_parameter/artwork_height = 800.0
 shader_parameter/shaft_width = 180.0
 shader_parameter/scroll_pixels = Vector2(0, 0)
-shader_parameter/opacity = 0.35
-shader_parameter/foreground = true
+shader_parameter/opacity = 1.0
+shader_parameter/foreground = false
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
@@ -298,7 +287,19 @@ shader_parameter/foreground = true
 shader_parameter/player_pixels = Vector2(-10000, -10000)
 shader_parameter/clear_radius = 100.0
 
-[sub_resource type="Resource" id="Resource_ndp4i"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ndp4i"]
+resource_local_to_scene = true
+shader = ExtResource("16_aevo3")
+shader_parameter/vertical_layout = true
+shader_parameter/artwork_height = 800.0
+shader_parameter/shaft_width = 180.0
+shader_parameter/scroll_pixels = Vector2(0, 0)
+shader_parameter/opacity = 0.35
+shader_parameter/foreground = true
+shader_parameter/player_pixels = Vector2(-10000, -10000)
+shader_parameter/clear_radius = 100.0
+
+[sub_resource type="Resource" id="Resource_vfnmm"]
 resource_local_to_scene = true
 script = ExtResource("theirs_25_24a00")
 
@@ -561,7 +562,7 @@ tile_map_data = PackedByteArray()
 
 [node name="TriggerShape" parent="Rooms/RestArchive/RoomCameraZone" index="0"]
 position = Vector2(697.5, 275)
-shape = SubResource("RectangleShape2D_uhtjq")
+shape = SubResource("RectangleShape2D_ulmcl")
 
 [node name="ViewTopLeft" parent="Rooms/RestArchive/RoomCameraZone" index="1"]
 position = Vector2(-20, -30)
@@ -1755,11 +1756,11 @@ scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="BlueBase" parent="Scenery/HorizontalMain/Sky" index="0"]
-material = SubResource("ShaderMaterial_ulmcl")
+material = SubResource("ShaderMaterial_c5enj")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="BlueBaseRight" parent="Scenery/HorizontalMain/Sky" index="1"]
-material = SubResource("ShaderMaterial_ulmcl")
+material = SubResource("ShaderMaterial_c5enj")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -1768,29 +1769,29 @@ scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="GlassColors" parent="Scenery/HorizontalMain/FarBackground" index="0"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_abmis")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="GlassColorsRight" parent="Scenery/HorizontalMain/FarBackground" index="1"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_abmis")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGrid" parent="Scenery/HorizontalMain/FarBackground" index="2"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_abmis")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGridRight" parent="Scenery/HorizontalMain/FarBackground" index="3"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_abmis")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Arches" parent="Scenery/HorizontalMain/FarBackground" index="4"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_abmis")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="ArchesRight" parent="Scenery/HorizontalMain/FarBackground" index="5"]
-material = SubResource("ShaderMaterial_c5enj")
+material = SubResource("ShaderMaterial_abmis")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -1799,47 +1800,47 @@ scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="WindowGlow" parent="Scenery/HorizontalMain/NearBackground" index="0"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGlowRight" parent="Scenery/HorizontalMain/NearBackground" index="1"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShade" parent="Scenery/HorizontalMain/NearBackground" index="2"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShadeRight" parent="Scenery/HorizontalMain/NearBackground" index="3"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRock" parent="Scenery/HorizontalMain/NearBackground" index="4"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRockRight" parent="Scenery/HorizontalMain/NearBackground" index="5"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Sparkles" parent="Scenery/HorizontalMain/NearBackground" index="6"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="SparklesRight" parent="Scenery/HorizontalMain/NearBackground" index="7"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridge" parent="Scenery/HorizontalMain/NearBackground" index="8"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridgeRight" parent="Scenery/HorizontalMain/NearBackground" index="9"]
-material = SubResource("ShaderMaterial_abmis")
+material = SubResource("ShaderMaterial_mohoi")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -1851,122 +1852,131 @@ repeat_size = Vector2(3200, 0)
 [node name="LeftPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="0"]
 visible = false
 z_index = -2
-material = SubResource("ShaderMaterial_mohoi")
+material = SubResource("ShaderMaterial_hxuls")
 position = Vector2(-161, -46)
 scale = Vector2(0.54647434, 0.71937454)
 
 [node name="RightPillar" parent="Scenery/HorizontalMain/ForegroundLoop" index="1"]
 visible = false
-material = SubResource("ShaderMaterial_mohoi")
+material = SubResource("ShaderMaterial_hxuls")
 position = Vector2(2139, 13.000002)
 scale = Vector2(0.5753208, 0.6681147)
 
 [node name="Sky" parent="Scenery/HorizontalEntry" parent_id_path=PackedInt32Array(346300600, 2073498070) index="0"]
 scroll_scale = Vector2(0.85, 1)
-repeat_size = Vector2(2080, 0)
+repeat_size = Vector2(2480, 0)
 
 [node name="BlueBase" parent="Scenery/HorizontalEntry/Sky" index="0"]
-material = SubResource("ShaderMaterial_hxuls")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dmpls")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="BlueBaseRight" parent="Scenery/HorizontalEntry/Sky" index="1"]
-material = SubResource("ShaderMaterial_hxuls")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dmpls")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="FarBackground" parent="Scenery/HorizontalEntry" parent_id_path=PackedInt32Array(346300600, 2073498070) index="1"]
 scroll_scale = Vector2(0.85, 1)
-repeat_size = Vector2(2080, 0)
+repeat_size = Vector2(2480, 0)
 
 [node name="GlassColors" parent="Scenery/HorizontalEntry/FarBackground" index="0"]
-material = SubResource("ShaderMaterial_dmpls")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dt4rk")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="GlassColorsRight" parent="Scenery/HorizontalEntry/FarBackground" index="1"]
-material = SubResource("ShaderMaterial_dmpls")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dt4rk")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="WindowGrid" parent="Scenery/HorizontalEntry/FarBackground" index="2"]
-material = SubResource("ShaderMaterial_dmpls")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dt4rk")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="WindowGridRight" parent="Scenery/HorizontalEntry/FarBackground" index="3"]
-material = SubResource("ShaderMaterial_dmpls")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dt4rk")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="Arches" parent="Scenery/HorizontalEntry/FarBackground" index="4"]
-material = SubResource("ShaderMaterial_dmpls")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dt4rk")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="ArchesRight" parent="Scenery/HorizontalEntry/FarBackground" index="5"]
-material = SubResource("ShaderMaterial_dmpls")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_dt4rk")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="NearBackground" parent="Scenery/HorizontalEntry" parent_id_path=PackedInt32Array(346300600, 2073498070) index="2"]
 scroll_scale = Vector2(0.85, 1)
-repeat_size = Vector2(2080, 0)
+repeat_size = Vector2(2480, 0)
 
 [node name="WindowGlow" parent="Scenery/HorizontalEntry/NearBackground" index="0"]
-material = SubResource("ShaderMaterial_dt4rk")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="WindowGlowRight" parent="Scenery/HorizontalEntry/NearBackground" index="1"]
-material = SubResource("ShaderMaterial_dt4rk")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="UpperShade" parent="Scenery/HorizontalEntry/NearBackground" index="2"]
-material = SubResource("ShaderMaterial_dt4rk")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="UpperShadeRight" parent="Scenery/HorizontalEntry/NearBackground" index="3"]
-material = SubResource("ShaderMaterial_dt4rk")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="CeilingRock" parent="Scenery/HorizontalEntry/NearBackground" index="4"]
-material = SubResource("ShaderMaterial_dt4rk")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="CeilingRockRight" parent="Scenery/HorizontalEntry/NearBackground" index="5"]
-material = SubResource("ShaderMaterial_dt4rk")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="Sparkles" parent="Scenery/HorizontalEntry/NearBackground" index="6"]
-material = SubResource("ShaderMaterial_dt4rk")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="SparklesRight" parent="Scenery/HorizontalEntry/NearBackground" index="7"]
-material = SubResource("ShaderMaterial_dt4rk")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="DistantBridge" parent="Scenery/HorizontalEntry/NearBackground" index="8"]
-material = SubResource("ShaderMaterial_dt4rk")
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(0, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="DistantBridgeRight" parent="Scenery/HorizontalEntry/NearBackground" index="9"]
-material = SubResource("ShaderMaterial_dt4rk")
-position = Vector2(1040, 0)
-scale = Vector2(0.5078125, 0.5078125)
+material = SubResource("ShaderMaterial_matvp")
+position = Vector2(1240, -100)
+scale = Vector2(0.60546875, 0.60546875)
 
 [node name="ForegroundLoop" parent="Scenery/HorizontalEntry" parent_id_path=PackedInt32Array(346300600, 2073498070) index="3"]
 scroll_scale = Vector2(1.03, 1)
-repeat_size = Vector2(2080, 0)
+repeat_size = Vector2(2480, 0)
 
 [node name="LeftPillar" parent="Scenery/HorizontalEntry/ForegroundLoop" index="0"]
 visible = false
-material = SubResource("ShaderMaterial_matvp")
+material = SubResource("ShaderMaterial_owvqp")
 position = Vector2(260, -33)
 scale = Vector2(0.40384614, 0.5047784)
 
 [node name="RightPillar" parent="Scenery/HorizontalEntry/ForegroundLoop" index="1"]
 visible = false
-material = SubResource("ShaderMaterial_matvp")
+material = SubResource("ShaderMaterial_owvqp")
 position = Vector2(1165.4297, 0)
 scale = Vector2(0.45178106, 0.45178106)
 
@@ -1978,11 +1988,11 @@ scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="BlueBase" parent="Scenery/HorizontalLower/Sky" index="0"]
-material = SubResource("ShaderMaterial_owvqp")
+material = SubResource("ShaderMaterial_4l00f")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="BlueBaseRight" parent="Scenery/HorizontalLower/Sky" index="1"]
-material = SubResource("ShaderMaterial_owvqp")
+material = SubResource("ShaderMaterial_4l00f")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -1991,29 +2001,29 @@ scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="GlassColors" parent="Scenery/HorizontalLower/FarBackground" index="0"]
-material = SubResource("ShaderMaterial_4l00f")
+material = SubResource("ShaderMaterial_sxsrm")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="GlassColorsRight" parent="Scenery/HorizontalLower/FarBackground" index="1"]
-material = SubResource("ShaderMaterial_4l00f")
+material = SubResource("ShaderMaterial_sxsrm")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGrid" parent="Scenery/HorizontalLower/FarBackground" index="2"]
-material = SubResource("ShaderMaterial_4l00f")
+material = SubResource("ShaderMaterial_sxsrm")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGridRight" parent="Scenery/HorizontalLower/FarBackground" index="3"]
-material = SubResource("ShaderMaterial_4l00f")
+material = SubResource("ShaderMaterial_sxsrm")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Arches" parent="Scenery/HorizontalLower/FarBackground" index="4"]
-material = SubResource("ShaderMaterial_4l00f")
+material = SubResource("ShaderMaterial_sxsrm")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="ArchesRight" parent="Scenery/HorizontalLower/FarBackground" index="5"]
-material = SubResource("ShaderMaterial_4l00f")
+material = SubResource("ShaderMaterial_sxsrm")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -2022,47 +2032,47 @@ scroll_scale = Vector2(0.85, 1)
 repeat_size = Vector2(3200, 0)
 
 [node name="WindowGlow" parent="Scenery/HorizontalLower/NearBackground" index="0"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="WindowGlowRight" parent="Scenery/HorizontalLower/NearBackground" index="1"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShade" parent="Scenery/HorizontalLower/NearBackground" index="2"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="UpperShadeRight" parent="Scenery/HorizontalLower/NearBackground" index="3"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRock" parent="Scenery/HorizontalLower/NearBackground" index="4"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="CeilingRockRight" parent="Scenery/HorizontalLower/NearBackground" index="5"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="Sparkles" parent="Scenery/HorizontalLower/NearBackground" index="6"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="SparklesRight" parent="Scenery/HorizontalLower/NearBackground" index="7"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridge" parent="Scenery/HorizontalLower/NearBackground" index="8"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 scale = Vector2(0.78125, 0.78125)
 
 [node name="DistantBridgeRight" parent="Scenery/HorizontalLower/NearBackground" index="9"]
-material = SubResource("ShaderMaterial_sxsrm")
+material = SubResource("ShaderMaterial_fdb77")
 position = Vector2(1600, 0)
 scale = Vector2(0.78125, 0.78125)
 
@@ -2072,30 +2082,30 @@ repeat_size = Vector2(3200, 0)
 
 [node name="LeftPillar" parent="Scenery/HorizontalLower/ForegroundLoop" index="0"]
 visible = false
-material = SubResource("ShaderMaterial_fdb77")
+material = SubResource("ShaderMaterial_s3rje")
 position = Vector2(471, -95.99995)
 scale = Vector2(0.64262813, 0.7410946)
 
 [node name="RightPillar" parent="Scenery/HorizontalLower/ForegroundLoop" index="1"]
 visible = false
-material = SubResource("ShaderMaterial_fdb77")
+material = SubResource("ShaderMaterial_s3rje")
 position = Vector2(2129.0002, -37.999996)
 scale = Vector2(0.69391, 0.75586444)
 
 [node name="ShaftDepth" parent="Scenery/FountainShaft/Backdrop" parent_id_path=PackedInt32Array(346300600, 54398264, 789636461) index="0" unique_id=1683389892]
-material = SubResource("ShaderMaterial_s3rje")
-
-[node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" parent_id_path=PackedInt32Array(346300600, 54398264, 789636461) index="1" unique_id=2095988122]
 material = SubResource("ShaderMaterial_84gfx")
 
-[node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" parent_id_path=PackedInt32Array(346300600, 54398264, 789636461) index="2" unique_id=183616009]
+[node name="LeftColumns" parent="Scenery/FountainShaft/Backdrop" parent_id_path=PackedInt32Array(346300600, 54398264, 789636461) index="1" unique_id=2095988122]
 material = SubResource("ShaderMaterial_vqv0c")
 
-[node name="NearColumn" parent="Scenery/FountainShaft/Foreground" parent_id_path=PackedInt32Array(346300600, 54398264, 710374611) index="0" unique_id=321569642]
+[node name="RightColumns" parent="Scenery/FountainShaft/Backdrop" parent_id_path=PackedInt32Array(346300600, 54398264, 789636461) index="2" unique_id=183616009]
 material = SubResource("ShaderMaterial_61kgo")
 
-[node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" parent_id_path=PackedInt32Array(346300600, 54398264, 710374611) index="1" unique_id=687332941]
+[node name="NearColumn" parent="Scenery/FountainShaft/Foreground" parent_id_path=PackedInt32Array(346300600, 54398264, 710374611) index="0" unique_id=321569642]
 material = SubResource("ShaderMaterial_rbqwv")
+
+[node name="DarkEdges" parent="Scenery/FountainShaft/Foreground" parent_id_path=PackedInt32Array(346300600, 54398264, 710374611) index="1" unique_id=687332941]
+material = SubResource("ShaderMaterial_ndp4i")
 
 [node name="TerrainArt" parent="." unique_id=1368075065 instance=ExtResource("TerrainArt")]
 
@@ -2181,7 +2191,7 @@ autowrap_mode = 3
 
 [node name="ShaftOcclusion" parent="." unique_id=1439753509 instance=ExtResource("theirs_24_ek66h")]
 position = Vector2(578, -2938)
-settings = SubResource("Resource_ndp4i")
+settings = SubResource("Resource_vfnmm")
 
 [node name="RegionA" parent="ShaftOcclusion" index="0" unique_id=442132825]
 polygon = PackedVector2Array(-4, -2, 253, -2, 254, 2896, -3, 2897)
@@ -2236,6 +2246,38 @@ z_index = -5
 position = Vector2(-2735, 233)
 scale = Vector2(0.48279372, 0.5638256)
 texture = ExtResource("34_uhtjq")
+
+[node name="WallTorch" parent="ManualBackground" unique_id=304017725 instance=ExtResource("35_ulmcl")]
+z_index = -3
+position = Vector2(-2689, 238)
+rotation = -0.5235988
+
+[node name="WallBracket" parent="ManualBackground/WallTorch" index="0"]
+visible = false
+
+[node name="WallTorch3" parent="ManualBackground" unique_id=687522152 instance=ExtResource("35_ulmcl")]
+z_index = -3
+position = Vector2(4055, 229.00006)
+rotation = -0.5235988
+
+[node name="WallBracket" parent="ManualBackground/WallTorch3" index="0"]
+visible = false
+
+[node name="WallTorch4" parent="ManualBackground" unique_id=1603581635 instance=ExtResource("35_ulmcl")]
+z_index = -3
+position = Vector2(3824.9998, 1630.9999)
+rotation = -0.5235988
+
+[node name="WallBracket" parent="ManualBackground/WallTorch4" index="0"]
+visible = false
+
+[node name="WallTorch2" parent="ManualBackground" unique_id=433002369 instance=ExtResource("35_ulmcl")]
+z_index = -5
+position = Vector2(-4229.0005, 300.00012)
+rotation = 0.7853982
+
+[node name="WallBracket" parent="ManualBackground/WallTorch2" index="0"]
+visible = false
 
 [node name="书本" type="StaticBody2D" parent="." unique_id=342572270]
 position = Vector2(-4498, 138)
@@ -2340,3 +2382,7 @@ texture = ExtResource("10_10p2q")
 [editable path="Scenery/FountainShaft"]
 [editable path="DeathBoundary"]
 [editable path="ShaftOcclusion"]
+[editable path="ManualBackground/WallTorch"]
+[editable path="ManualBackground/WallTorch3"]
+[editable path="ManualBackground/WallTorch4"]
+[editable path="ManualBackground/WallTorch2"]

@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/WallTorch/WallTorch.gd" id="script"]
+[ext_resource type="Texture2D" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/WallTorch/Flame01.png" id="frame0"]
+[ext_resource type="Texture2D" path="res://Art/New/component/game2/IMG_9892.PNG" id="frame1"]
+[ext_resource type="Texture2D" path="res://Art/New/component/game2/IMG_9893.PNG" id="frame2"]
+[ext_resource type="Texture2D" path="res://Art/New/component/game2/IMG_9894.PNG" id="frame3"]
+[ext_resource type="Texture2D" path="res://Art/New/component/game2/IMG_9895.PNG" id="frame4"]
+[ext_resource type="Texture2D" path="res://Art/New/component/game2/IMG_9896.PNG" id="frame5"]
+
+[sub_resource type="SpriteFrames" id="Frames"]
+animations = [{
+"frames": [{"duration": 1.0, "texture": ExtResource("frame0")}, {"duration": 1.0, "texture": ExtResource("frame1")}, {"duration": 1.0, "texture": ExtResource("frame2")}, {"duration": 1.0, "texture": ExtResource("frame3")}, {"duration": 1.0, "texture": ExtResource("frame4")}, {"duration": 1.0, "texture": ExtResource("frame5")}],
+"loop": true,
+"name": &"burn",
+"speed": 8.0
+}]
+
+[sub_resource type="Gradient" id="Falloff"]
+offsets = PackedFloat32Array(0, 0.22, 0.65, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.65, 1, 1, 1, 0.12, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="LightTexture"]
+gradient = SubResource("Falloff")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="CanvasItemMaterial" id="Unshaded"]
+light_mode = 1
+
+[node name="WallTorch" type="Node2D"]
+z_index = 1
+script = ExtResource("script")
+editor_description = "书房出口墙上火把。整体拖动此节点，火焰、支架、暖光一起移动；无碰撞、无视差。强度与动画速度在 ExportSettings 的 Level 2 - Wall Torch 调节。"
+
+[node name="WallBracket" type="Polygon2D" parent="."]
+color = Color(0.17, 0.19, 0.22, 1)
+polygon = PackedVector2Array(1, 29, 38, 29, 38, 34, 4, 34, 1, 32)
+
+[node name="Flame" type="AnimatedSprite2D" parent="."]
+material = SubResource("Unshaded")
+scale = Vector2(0.48, 0.48)
+sprite_frames = SubResource("Frames")
+animation = &"burn"
+autoplay = "burn"
+offset = Vector2(-41, 58)
+
+[node name="WarmLight" type="PointLight2D" parent="."]
+color = Color(1, 0.76, 0.46, 1)
+energy = 0.8
+texture = SubResource("LightTexture")
+texture_scale = 1.1328125
+range_item_cull_mask = 1
+
+[node name="SoftGlow" type="Sprite2D" parent="."]
+material = SubResource("Unshaded")
+modulate = Color(1, 0.76, 0.46, 0.12)
+scale = Vector2(0.33, 0.33)
+texture = SubResource("LightTexture")
