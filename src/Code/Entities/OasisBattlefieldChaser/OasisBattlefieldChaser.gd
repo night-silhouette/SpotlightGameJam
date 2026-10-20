@@ -13,6 +13,7 @@ class_name OasisBattlefieldChaser
 
 @onready var _movement_component: DirectionalChaseMover = $DirectionalChaseMover
 @onready var _chase_backdrop: ColorRect = get_node_or_null("ChaseBackdrop")
+@onready var _corruption_visual: CanvasGroup = $DirectionalChaseMover/CorruptionVisual
 
 var _target: Node2D = null
 var _chase_finished: bool = false
@@ -20,6 +21,7 @@ var _initial_global_position: Vector2
 var _chase_origin_x: float = 0.0
 
 func _ready() -> void:
+	_configure_corruption_visual()
 	_initial_global_position = global_position
 	_chase_origin_x = global_position.x
 	if not target_path.is_empty():
@@ -29,6 +31,18 @@ func _ready() -> void:
 	if is_instance_valid(_target):
 		_movement_component.SetTarget(_target)
 	_update_chase_backdrop()
+
+func _configure_corruption_visual() -> void:
+	var corruption_material := _corruption_visual.material as ShaderMaterial
+	if corruption_material == null:
+		return
+	var strength := ExportSettings.oasis_boss_corruption_strength if ExportSettings.oasis_boss_corruption_enabled else 0.0
+	corruption_material.set_shader_parameter(&"effect_strength", strength)
+	corruption_material.set_shader_parameter(&"distortion_pixels", ExportSettings.oasis_boss_distortion_pixels)
+	corruption_material.set_shader_parameter(&"flow_speed", ExportSettings.oasis_boss_flow_speed)
+	corruption_material.set_shader_parameter(&"vein_strength", ExportSettings.oasis_boss_vein_strength)
+	corruption_material.set_shader_parameter(&"tint_strength", ExportSettings.oasis_boss_tint_strength)
+	corruption_material.set_shader_parameter(&"corruption_color", ExportSettings.oasis_boss_corruption_color)
 
 func _physics_process(delta: float) -> void:
 	if not is_instance_valid(_target):

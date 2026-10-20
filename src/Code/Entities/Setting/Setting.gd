@@ -293,6 +293,16 @@ func _build_keybind_rows() -> void:
 
 		keybinds_list.add_child(row)
 
+	var reset_button = Button.new()
+	reset_button.text = "恢复默认按键"
+	reset_button.custom_minimum_size = Vector2(0, 34)
+	reset_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	reset_button.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	reset_button.focus_mode = Control.FOCUS_NONE
+	reset_button.pressed.connect(_play_confirm)
+	reset_button.pressed.connect(_on_keybind_reset_pressed)
+	keybinds_list.add_child(reset_button)
+
 func _refresh_keybind_labels() -> void:
 	for row in keybinds_list.get_children():
 		for child in row.get_children():
@@ -300,6 +310,15 @@ func _refresh_keybind_labels() -> void:
 				var action = child.get_meta("action_name")
 				var ev = KeybindManagerRef.GetPrimaryEventForAction(action)
 				child.text = KeybindManagerRef.GetEventText(ev)
+
+func _on_keybind_reset_pressed() -> void:
+	_cancel_rebinding()
+	var save_error = KeybindManagerRef.ResetToDefaults()
+	_refresh_keybind_labels()
+	if save_error == OK:
+		_show_status("已恢复默认按键设置")
+	else:
+		_show_status("默认按键已生效但保存失败，重启后可能丢失", true)
 
 func _on_keybind_button_pressed(action: StringName, btn: Button) -> void:
 	_rebinding_action = action
@@ -314,11 +333,14 @@ func _apply_new_keybind(event: InputEvent) -> void:
 		_cancel_rebinding()
 		return
 
-	KeybindManagerRef.RebindAction(_rebinding_action, event, true)
+	var save_error = KeybindManagerRef.RebindAction(_rebinding_action, event, true)
 	if is_instance_valid(_rebind_button_ref):
 		_rebind_button_ref.text = KeybindManagerRef.GetEventText(event)
 
-	_show_status("【%s】已重新绑定为: %s" % [KeybindManagerRef.GetActionDisplayName(_rebinding_action), KeybindManagerRef.GetEventText(event)])
+	if save_error == OK:
+		_show_status("【%s】已重新绑定为: %s" % [KeybindManagerRef.GetActionDisplayName(_rebinding_action), KeybindManagerRef.GetEventText(event)])
+	else:
+		_show_status("【%s】按键绑定已生效但保存失败，重启后可能丢失" % KeybindManagerRef.GetActionDisplayName(_rebinding_action), true)
 	_cancel_rebinding()
 
 func _cancel_rebinding() -> void:

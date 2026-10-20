@@ -1,6 +1,5 @@
 [gd_scene format=4 uid="uid://ddv5by5318t3e"]
 
-[ext_resource type="Texture2D" uid="uid://bjjswrqfgptg0" path="res://Art/Archived/Camp/06.png" id="1_xf26i"]
 [ext_resource type="PackedScene" uid="uid://c7mxy8v3k1q1w" path="res://Code/Entities/InteractiveComponent/Tent/Tent.tscn" id="2_rjnff"]
 [ext_resource type="PackedScene" uid="uid://begpdtx5e6uy8" path="res://Code/Entities/InteractiveComponent/Lake/Lake.tscn" id="4_bci5y"]
 [ext_resource type="TileSet" uid="uid://erbpx3namsju" path="res://Art/New/map1/map1.tres" id="4_map1"]
@@ -14,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dcej284deuq0a" path="res://Art/New/map0/well_fore(1).png" id="13_v13fp"]
 [ext_resource type="Texture2D" uid="uid://b8iqkq7jndigg" path="res://Code/Entities/World/Camp/残碑_右.png" id="SteleRight"]
 [ext_resource type="Script" uid="uid://dumyuory5gub6" path="res://Code/Entities/World/world_bgm.gd" id="WorldBgm"]
+[ext_resource type="Script" uid="uid://dxhhve3qpu2qi" path="res://Code/Entities/World/Camp/CampBackgroundParallax.gd" id="CampBackgroundParallax"]
 
 [sub_resource type="Resource" id="Resource_68lmy"]
 script = ExtResource("6_qv0jn")
@@ -21,11 +21,11 @@ dialog_type = "独白"
 text = "这帐篷……是用无数片颜色各异的碎布料拼凑缝补的。有人在这里生活过？"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_oslkj"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a07x8"]
 resource_local_to_scene = true
 size = Vector2(169.84523, 144.98253)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_fdr8k"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v13fp"]
 resource_local_to_scene = true
 shader = ExtResource("7_v13fp")
 shader_parameter/progress = 0.0
@@ -86,28 +86,6 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
-[node name="ColorRect" type="ColorRect" parent="." unique_id=791088076]
-visible = false
-offset_left = 14.0
-offset_top = -61.999992
-offset_right = 2114.0
-offset_bottom = 1638.0
-mouse_filter = 2
-
-[node name="ColorRect2" type="ColorRect" parent="." unique_id=509544559]
-visible = false
-offset_left = 271.0
-offset_top = 646.0
-offset_right = 1871.0
-offset_bottom = 1596.0
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="06" type="Sprite2D" parent="." unique_id=646416155]
-visible = false
-position = Vector2(1228, 698)
-texture = ExtResource("1_xf26i")
-
 [node name="collision_layer" type="Node2D" parent="." unique_id=679345708]
 metadata/_edit_lock_ = true
 
@@ -139,15 +117,10 @@ position = Vector2(1289, 1593)
 scale = Vector2(1.6936214, 1.6936214)
 
 [node name="CollisionShape2D" parent="Lake" index="3" unique_id=1216154260]
-shape = SubResource("RectangleShape2D_oslkj")
+shape = SubResource("RectangleShape2D_a07x8")
 
 [node name="OfferingVisual" parent="Lake" index="5"]
-material = SubResource("ShaderMaterial_fdr8k")
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1733413255]
-visible = false
-position = Vector2(1265, 1447)
-scale = Vector2(1.1663244, 1.1663244)
+material = SubResource("ShaderMaterial_v13fp")
 
 [node name="Chapter1" parent="." unique_id=257404343 instance=ExtResource("5_chapter")]
 position = Vector2(-116, 4)
@@ -198,12 +171,7 @@ z_index = -2
 position = Vector2(1080.0348, 857.2057)
 scale = Vector2(1.0352961, 1.0352961)
 texture = ExtResource("13_a07x8")
-
-[node name="Sprite2D3" type="Sprite2D" parent="." unique_id=1439140043]
-visible = false
-z_index = -2
-position = Vector2(1100.3456, 2450.6436)
-texture = ExtResource("13_a07x8")
+script = ExtResource("CampBackgroundParallax")
 
 [node name="WorldBgm" type="Node" parent="." unique_id=1313303911]
 script = ExtResource("WorldBgm")

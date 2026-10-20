@@ -42,6 +42,12 @@ var _target_velocity_y: float = 0.0
 var _camera_bounds: Dictionary = {}
 var _gate_limits: Dictionary = {}
 var _pending_gate_limits: Dictionary = {}
+var _look_direction: int = 0
+var _look_hold_time: float = 0.0
+var _look_offset: float = 0.0
+var _look_framed: bool = false
+var _look_frame_origin: float = 0.0
+var _look_dead_zone_height: float = 0.0
 @onready var _player: CharacterBody2D = $Player
 @onready var _base: PhantomCamera2D = $PhantomCamera2D
 @onready var _presentation: CanvasLayer = $CameraPresentation
@@ -90,6 +96,7 @@ func _ready() -> void:
 	SignalBus.CameraGateSideChanged.connect(_on_camera_gate_side_changed)
 	SignalBus.CameraGateSideRemoved.connect(_on_camera_gate_side_removed)
 	SignalBus.PlayerRespawned.connect(_on_player_respawned)
+	SignalBus.SaveSlotLoaded.connect(_reset_look)
 	if is_hp_draining:
 		SignalBus.StartPlayerHpDrain.emit(_player.hp_drain_rate)
 
@@ -127,6 +134,71 @@ func _physics_process(delta: float) -> void:
 		if current_mode == &"descent":
 			# 以插件实际的阻尼延迟做速度前馈，保持高速下落时的底部构图。
 			_active.follow_offset.y += _target_velocity_y * _active.follow_damping_value.y * ExportSettings.camera_descent_velocity_compensation
+	_update_look(delta)
+
+
+func _can_look() -> bool:
+	if current_mode not in [&"normal", &"desert"] or _target != _player or input_locked or not _active.is_active():
+		return false
+	if _player.now_HP <= 0.0 or _player.offering_locked or not _player.can_process() or not _player.is_physics_processing():
+		return false
+	var control: Node = _player.gameInputControl
+	if not control.can_process() or not control.is_physics_processing():
+		return false
+	var settings: Control = _player.get_node_or_null("PlayerUI/Setting/RootControl")
+	return get_viewport().gui_get_focus_owner() == null and (settings == null or not settings.is_visible_in_tree()) and get_window().has_focus()
+
+
+func _update_look(delta: float) -> void:
+	var direction: int = 0
+	if _can_look():
+		var down: bool = Input.is_physical_key_pressed(KEY_S) or Input.is_action_pressed(&"down")
+		var up: bool = Input.is_physical_key_pressed(KEY_W) or Input.is_action_pressed(&"up")
+		direction = int(down) - int(up)
+	if direction != _look_direction:
+		_look_direction = direction
+		_look_hold_time = 0.0
+	if direction != 0:
+		_look_hold_time += delta
+	else:
+		_look_hold_time = 0.0
+	var goal: float = 0.0
+	if direction != 0 and _look_hold_time >= ExportSettings.player_camera_look_hold_delay:
+		goal = direction * maxf(0.0, ExportSettings.player_camera_look_distance)
+		if current_mode == &"normal" and not _look_framed:
+			# FRAMED 会吞掉死区内的 offset，松手后也不会主动回中。
+			# 仅暂时消除纵向死区，并保留观察前构图；横向跟随完全不变。
+			_look_framed = true
+			_look_dead_zone_height = _active.dead_zone_height
+			_look_frame_origin = _active.global_position.y - _player.global_position.y - ExportSettings.player_camera_offset.y
+			_active.dead_zone_height = 0.0
+	_look_offset = lerpf(_look_offset, goal, 1.0 - exp(-maxf(0.01, ExportSettings.player_camera_look_smooth_speed) * delta))
+	if goal == 0.0 and absf(_look_offset) < 0.05:
+		_look_offset = 0.0
+		_restore_look_frame()
+	if current_mode == &"normal":
+		_active.follow_offset = ExportSettings.player_camera_offset + Vector2(0.0, _look_frame_origin + _look_offset)
+	elif current_mode == &"desert":
+		_active.follow_offset.y += _look_offset
+
+
+func _restore_look_frame() -> void:
+	if _look_framed:
+		_base.dead_zone_height = _look_dead_zone_height
+	_look_framed = false
+	_look_frame_origin = 0.0
+
+
+func _reset_look(_slot_index: int = 0) -> void:
+	_look_direction = 0
+	_look_hold_time = 0.0
+	_look_offset = 0.0
+	_restore_look_frame()
+	if is_instance_valid(_active):
+		if current_mode == &"normal":
+			_active.follow_offset = ExportSettings.player_camera_offset
+		elif current_mode == &"desert":
+			_active.follow_offset = _frame_offset(_active.zoom.x)
 
 
 func _process(delta: float) -> void:
@@ -223,6 +295,7 @@ func _on_shot_requested(player: Node2D, mode: StringName, options: Dictionary, i
 	if options.has("follow_target") and is_instance_valid(options.follow_target) and not options.follow_target is Node2D:
 		push_warning("Camera: follow_target must be a Node2D.")
 		return
+	_reset_look()
 	if mode == &"ritual" and current_mode != &"ritual":
 		_previous_mode = current_mode
 		_previous_options = _options.duplicate()
@@ -354,6 +427,7 @@ func _resolve_camera_interruption(camera: PhantomCamera2D, generation: int) -> v
 	# 其他系统的更高优先级镜头接管时，不能留下锁输入或过期字幕。
 	if generation != _generation or camera != _active or camera.is_active():
 		return
+	_reset_look()
 	_generation += 1
 	_pending = false
 	_phase = &""

@@ -40,42 +40,52 @@ func SetButtonRadius(radius: float) -> void:
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(button_radius * 2, button_radius * 2)
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-func _gui_input(event: InputEvent) -> void:
+func _input(event: InputEvent) -> void:
+	if not is_visible_in_tree() or not can_process():
+		return
 	if event is InputEventScreenTouch:
 		var touch = event as InputEventScreenTouch
-		if touch.pressed:
-			if not is_pressed and _is_point_inside(touch.position):
-				touch_index = touch.index
-				_set_pressed_state(true)
-				pressed_once.emit()
+		if touch.canceled or not touch.pressed:
+			if touch.index != touch_index:
+				return
+			touch_index = -1
+			_set_pressed_state(false)
+		elif touch_index == -1 and _is_point_inside(_local_position(touch.position)):
+			touch_index = touch.index
+			_set_pressed_state(true)
+			pressed_once.emit()
 		else:
-			if touch.index == touch_index:
-				touch_index = -1
-				_set_pressed_state(false)
-		accept_event()
+			return
+		get_viewport().set_input_as_handled()
 	elif event is InputEventScreenDrag:
 		var drag = event as InputEventScreenDrag
-		if drag.index == touch_index:
-			# 如果手指滑出了按钮范围过远，可视为松开；如果在内部则保持按下
-			var inside = _is_point_inside(drag.position)
-			if inside != is_pressed:
-				_set_pressed_state(inside)
-		accept_event()
+		if drag.index != touch_index:
+			return
+		# 滑出时释放动作，但保留触点归属，避免其他手指抢占按钮。
+		_set_pressed_state(_is_point_inside(_local_position(drag.position)))
+		get_viewport().set_input_as_handled()
 	elif event is InputEventMouseButton:
 		var mouse = event as InputEventMouseButton
-		if mouse.button_index == MOUSE_BUTTON_LEFT:
-			if mouse.pressed:
-				if not is_pressed and _is_point_inside(mouse.position):
-					touch_index = -99
-					_set_pressed_state(true)
-					pressed_once.emit()
-			else:
-				if touch_index == -99:
-					touch_index = -1
-					_set_pressed_state(false)
-		accept_event()
+		# 触摸产生的模拟鼠标事件不能改变真实触点的按住状态。
+		if mouse.device == InputEvent.DEVICE_ID_EMULATION or mouse.button_index != MOUSE_BUTTON_LEFT:
+			return
+		if mouse.pressed:
+			if touch_index != -1 or not _is_point_inside(_local_position(mouse.position)):
+				return
+			touch_index = -99
+			_set_pressed_state(true)
+			pressed_once.emit()
+		else:
+			if touch_index != -99:
+				return
+			touch_index = -1
+			_set_pressed_state(false)
+		get_viewport().set_input_as_handled()
+
+func _local_position(viewport_position: Vector2) -> Vector2:
+	return get_global_transform_with_canvas().affine_inverse() * viewport_position
 
 func _is_point_inside(pos: Vector2) -> bool:
 	var center = size * 0.5
@@ -118,6 +128,9 @@ func _draw() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED or what == NOTIFICATION_DISABLED:
-		if not is_visible_in_tree() and is_pressed:
+		if not is_visible_in_tree() or not can_process():
 			_set_pressed_state(false)
 			touch_index = -1
+	elif what == NOTIFICATION_APPLICATION_FOCUS_OUT or what == NOTIFICATION_EXIT_TREE:
+		_set_pressed_state(false)
+		touch_index = -1

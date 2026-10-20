@@ -41,6 +41,8 @@ func _on_body_entered(body: Node2D) -> void:
 		return
 	if active_in_outward_only and not _is_in_outward_phase():
 		return
+	if body.is_in_group(&"player"):
+		SignalBus.PlayerEnteredSlowWater.emit(body, self)
 
 	if "speed" in body:
 		if not _original_speeds.has(body):
