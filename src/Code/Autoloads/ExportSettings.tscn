@@ -1,9 +1,6 @@
 [gd_scene format=3 uid="uid://c311fu2k7fel3"]
 
 [ext_resource type="Script" uid="uid://bqckn4tk862os" path="res://Code/Autoloads/ExportSettings.gd" id="1_hob1f"]
-[ext_resource type="Texture2D" path="res://Art/New/component/game1/ancient_crown.png" id="2_crown"]
-[ext_resource type="Texture2D" path="res://Art/New/component/extracted/rune_circle_emblem.png" id="3_codex"]
-[ext_resource type="Texture2D" path="res://Code/Entities/InteractiveComponent/Lake/OfferingBone.tres" id="4_bones"]
 
 [node name="ExportSettings" type="Node2D" unique_id=636711994]
 script = ExtResource("1_hob1f")
@@ -13,10 +10,6 @@ player_footstep_interval = 0.36
 player_footstep_initial_delay = 0.15
 player_footstep_volume_db = 6.0
 sfx_move_volume_db = 15.0
-sunken_crown_texture = ExtResource("2_crown")
-starseekers_codex_texture = ExtResource("3_codex")
-scarred_bones_texture = ExtResource("4_bones")
 water_flow_speed_multiplier = 1.4
-audio_master_volume = 0.5
 setting_max_save_slots = 6
 setting_panel_opacity = 0.85

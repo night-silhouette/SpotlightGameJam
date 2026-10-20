@@ -223,7 +223,7 @@ func _present_relics(queue: Array[StringName]) -> void:
 					_cancel_presentation()
 					return
 				await get_tree().process_frame
-			stream.play(&"Static2")
+			stream.play(&"Static3" if relic == &"bones" else &"Static2")
 		if not _presentation_valid(generation):
 			return
 		# 表现全部完成才原子登记结果并消费；中途存档仍携带尚未完成的遗物。
@@ -322,7 +322,9 @@ func _exit_tree() -> void:
 
 func _reset_stream() -> void:
 	stream.stop()
-	if "crown" in _completed_relics or "bones" in _completed_relics or _legacy_light_count > 0:
+	if "bones" in _completed_relics or _ending_triggered:
+		stream.play(&"Static3")
+	elif "crown" in _completed_relics or _legacy_light_count > 0:
 		stream.play(&"Static2")
 	else:
 		stream.animation = &"static"

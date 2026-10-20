@@ -45,6 +45,7 @@
 [ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
 [ext_resource type="Texture2D" uid="uid://ds3r00oipjgsn" path="res://Art/New/component/game2/IMG_9866.PNG" id="36_2flee"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5/Chapter5.tscn" id="37_chapter5"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
 code = "shader_type canvas_item;
@@ -1122,6 +1123,10 @@ display_duration = 12.0
 trigger_relic = &"bones"
 finished_chapter_channel = &"chapter5_after_enemy_definition"
 metadata/_editor_description_ = "第四章尾声；本卡淡出隐藏后的 Finished 请求第五章卡。"
+
+[node name="Chapter5" parent="." instance=ExtResource("37_chapter5")]
+lake_anchor = NodePath("../Camp/Lake")
+stele_path = NodePath("../Camp/Chapter1/SteleStory_1_12_to_1_14/BrokenStele")
 
 [node name="第五章_万物流转" parent="story" unique_id=1415179639 instance=ExtResource("10_mvgin")]
 act_text = "第五章："
