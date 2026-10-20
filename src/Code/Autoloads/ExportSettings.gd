@@ -184,12 +184,24 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 正式世界竖井镜头跟随阻尼，越小跟随越紧。
 @export var level2_descent_camera_damping: Vector2 = Vector2(0.08, 0.08)
 
+@export_group("Level 2 - Entry Occlusion", "level2_entry_occlusion_")
+## 进入第二关隐藏入口内露出的营地黄砖，返回营地隐藏入口附近的蓝砖；不改碰撞。
+@export var level2_entry_occlusion_enabled: bool = true
+## 上层视角隐藏蓝砖时，入口背景范围向外扩展的余量，覆盖外侧墙沿（世界像素）。
+@export_range(0.0, 512.0, 8.0) var level2_entry_occlusion_lower_margin: float = 128.0
+## 跨过入口镜头边界时，黄砖局部显示／隐藏的渐变时长。
+@export_range(0.0, 1.0, 0.01) var level2_entry_occlusion_fade_duration: float = 0.18
+## 边界两侧的判断余量，避免停在交界时来回闪烁（世界像素）。
+@export_range(0.0, 100.0, 1.0) var level2_entry_occlusion_hysteresis: float = 12.0
+## 复活／传送的大位移直接同步显示状态，避免旧状态残留（世界像素）。
+@export var level2_entry_occlusion_snap_distance: float = 800.0
+
 @export_group("Level 2 - Terrain Art", "level2_terrain_art_")
-## 第二关石砖外观总开关；关闭后恢复原有灰盒显示，碰撞不变。
+## 第二关石砖外观总开关；关闭后恢复原有灰盒及其碰撞，同时关闭折返井的额外补格碰撞。
 @export var level2_terrain_art_enabled: bool = true
 ## 石墙边缘宽度占一格的比例；包含蓝色石边与向黑色内层过渡的碎石。
 @export_range(0.15, 0.48, 0.01) var level2_terrain_art_border_ratio: float = 0.44
-## 折返阶梯竖井左墙向外增加的美术厚度（格）；0 恢复原宽，不改变碰撞。
+## 折返阶梯竖井最左列向外补出的厚度（格），外观和实体碰撞同步；0 恢复原宽。
 @export_range(0, 3, 1) var level2_terrain_art_stairwell_left_extra_columns: int = 1
 ## 入口右墙向左补齐到下落井右墙，让上下两段美术边缘保持一条直线。
 @export var level2_terrain_art_entry_wall_aligned: bool = true
@@ -201,6 +213,37 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.0, 8192.0, 32.0) var level2_terrain_art_bottom_fill_depth: float = 2048.0
 ## 主层房间上方与两端外侧填墙的高度；0 关闭这部分外观，不改变通道碰撞。
 @export_range(0.0, 4096.0, 32.0) var level2_terrain_art_room_exterior_height: float = 1024.0
+
+@export_group("Level 2 - Wall Torch", "level2_wall_torch_")
+## 书房出口砖柱旁的火把；位置直接移动地图中的 WallTorch 节点。
+@export var level2_wall_torch_enabled: bool = true
+@export_range(1.0, 20.0, 1.0) var level2_wall_torch_fps: float = 8.0
+@export_range(0.1, 1.5, 0.01) var level2_wall_torch_art_scale: float = 0.48
+@export var level2_wall_torch_color: Color = Color(1.0, 0.76, 0.46, 1.0)
+@export_range(0.0, 2.0, 0.05) var level2_wall_torch_energy: float = 0.8
+@export_range(30.0, 300.0, 5.0) var level2_wall_torch_radius: float = 220
+@export_range(0.0, 0.3, 0.01) var level2_wall_torch_glow_opacity: float = 0.12
+
+@export_group("Level 2 - Atmosphere", "level2_atmosphere_")
+## 局部水雾、书桌浮尘和机关柔光总开关；可独立关闭本次动效。
+@export var level2_atmosphere_enabled: bool = true
+## 范围相对第二关地图原点，水雾绘制在角色与平台后方。
+@export var level2_atmosphere_water_mist_bounds: Rect2 = Rect2(2180, 552, 1800, 100)
+@export var level2_atmosphere_fountain_mist_bounds: Rect2 = Rect2(830, 440, 340, 58)
+@export_range(0.0, 0.4, 0.01) var level2_atmosphere_mist_opacity: float = 0.26
+@export_range(0.0, 3.0, 0.1) var level2_atmosphere_mist_speed: float = 1.0
+@export var level2_atmosphere_mist_color: Color = Color(0.65, 0.77, 0.88, 1.0)
+## World 中存在绘本时，浮尘自动跟随它；否则使用下列预览范围。
+@export var level2_atmosphere_dust_bounds: Rect2 = Rect2(-4120, 273, 300, 130)
+@export_range(0, 40, 1) var level2_atmosphere_dust_count: int = 16
+@export var level2_atmosphere_dust_color: Color = Color(0.79, 0.85, 0.94, 0.32)
+## 正式 World 跟随月相盘和绘本贴图，以下为单独运行第二关的默认位置。
+@export var level2_atmosphere_dial_position: Vector2 = Vector2(-3984, 192)
+@export var level2_atmosphere_book_position: Vector2 = Vector2(-3970, 398)
+@export var level2_atmosphere_glow_color: Color = Color(0.65, 0.78, 1.0, 1.0)
+@export_range(0.0, 0.5, 0.01) var level2_atmosphere_glow_opacity: float = 0.20
+@export_range(20.0, 140.0, 1.0) var level2_atmosphere_glow_radius: float = 70.0
+@export_range(2.0, 16.0, 0.5) var level2_atmosphere_glow_period: float = 7.0
 
 @export_group("Level 2 - Scenery", "level2_scenery_")
 ## 第二关独立前后景开关；关闭后继续显示原灰盒背景。
@@ -244,14 +287,16 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var level2_readability_enabled: bool = true
 @export var level2_readability_fill_color: Color = Color(0.72, 0.83, 1.0, 1.0)
 @export_range(0.0, 1.0, 0.01) var level2_readability_player_energy: float = 0.50
-@export_range(0.0, 1.0, 0.01) var level2_readability_book_energy: float = 0.42
+@export_range(0.0, 1.0, 0.01) var level2_readability_book_energy: float = 0.50
+## 书桌、轮盘、绘本等室内陈设使用同色补光，略低于可站立书卷。
+@export_range(0.0, 1.0, 0.01) var level2_readability_prop_energy: float = 0.44
 ## 人物左上方的局部柔光，使用原法线显出耳朵、肩部和衣服的体积。
 @export_range(0.0, 1.0, 0.01) var level2_readability_rim_energy: float = 0.35
 @export var level2_readability_rim_offset: Vector2 = Vector2(-25.0, -35.0)
 @export_range(40.0, 240.0, 1.0) var level2_readability_rim_radius: float = 110.0
 ## 仅在书本透明轮廓内提亮朝上的边缘，宽度为世界像素，不增加发光外圈。
-@export_range(0.0, 0.5, 0.01) var level2_readability_book_edge_strength: float = 0.38
-@export_range(0.0, 2.0, 0.1) var level2_readability_book_edge_width: float = 1.2
+@export_range(0.0, 0.5, 0.01) var level2_readability_book_edge_strength: float = 0.28
+@export_range(0.0, 2.0, 0.1) var level2_readability_book_edge_width: float = 1.0
 
 @export_group("Level 2 - Camera", "level2_camera_")
 ## 窄屏时限制可见高度，避免露出上下相邻房间；不改项目全局分辨率。

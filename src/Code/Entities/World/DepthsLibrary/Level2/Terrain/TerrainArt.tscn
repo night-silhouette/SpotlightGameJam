@@ -4,3 +4,7 @@
 
 [node name="TerrainArt" type="Node2D"]
 script = ExtResource("script")
+
+[node name="StairwellLeftCollision" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 0

@@ -299,7 +299,7 @@ func _on_exit_reached(body: Node2D) -> void:
 	if body != _player or not fountain_active or completed:
 		return
 	completed = true
-	_toast("第二关路线完成：从另一个枯井回到地表。此处预留主城接入口。", 12.0)
+	_toast("", 12.0)
 	SignalBus.Level2Completed.emit(self, _player)
 	SignalBus.Level2StateChanged.emit(self)
 

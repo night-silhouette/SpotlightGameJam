@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/FittedVerticalComposition.tscn" id="4_3fftm"]
 [ext_resource type="Shader" uid="uid://bf1wd3p2e4du6" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/LibraryLayer.gdshader" id="4_3iuh0"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/HorizontalScenery.tscn" id="horizontal"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/Atmosphere/Atmosphere.tscn" id="atmosphere"]
 [ext_resource type="Script" uid="uid://mux543myva1c" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/Level2Scenery.gd" id="script"]
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/VerticalScenery.tscn" id="vertical"]
 
@@ -74,7 +75,7 @@ position = Vector2(0, -80)
 
 [node name="HorizontalEntry" parent="." unique_id=2073498070 instance=ExtResource("horizontal")]
 position = Vector2(0, -3080)
-metadata/coverage = Rect2(0, 0, 860, 520)
+metadata/coverage = Rect2(0, -100, 860, 620)
 
 [node name="HorizontalLower" parent="." unique_id=1123222901 instance=ExtResource("horizontal")]
 position = Vector2(0, 1320)
@@ -122,5 +123,7 @@ material = SubResource("ShaderMaterial_8s8yw")
 [node name="DarkEdges" parent="FountainShaft/Foreground" index="1"]
 visible = false
 material = SubResource("ShaderMaterial_fh5p2")
+
+[node name="Atmosphere" parent="." instance=ExtResource("atmosphere")]
 
 [editable path="FountainShaft"]
