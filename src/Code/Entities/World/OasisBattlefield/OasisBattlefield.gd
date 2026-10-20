@@ -25,6 +25,7 @@ var _bone_claimed: bool = false
 var _bone_offered: bool = false
 var _reset_chase_on_respawn: bool = false
 var _reset_boat_on_respawn: bool = false
+var _outward_blocker_cleared: bool = false
 var _phase_collision_states: Dictionary = {}
 var _phase_enabled_states: Dictionary = {}
 # 在子节点 _ready、存档恢复和机关运行之前保留完整布置，包含 World 的实例覆盖。
@@ -69,6 +70,8 @@ func _ready() -> void:
 		_set_phase_enabled(outward_phase, true)
 		_set_phase_enabled(return_phase, false)
 	_refresh_bone()
+	# World 中的剧情交互物晚于本节点进入树，延迟一帧补发初始阶段。
+	call_deferred(&"_broadcast_phase_state")
 
 
 ## 切换到返程/追逐阶段；use_black_transition 为 true 时，先淡入全黑再替换阶段，淡出后开始追逐。
@@ -128,6 +131,7 @@ func _activate_return_phase(start_chase: bool) -> void:
 	_set_phase_enabled(outward_phase, false)
 	return_phase.modulate.a = 1.0
 	_set_phase_enabled(return_phase, true)
+	_broadcast_phase_state()
 
 	if is_instance_valid(_chaser):
 		if _chaser.has_method(&"ResetChase"):
@@ -207,6 +211,7 @@ func ExportSaveData() -> Dictionary:
 ## 从存档还原第三关状态；data 为关卡字典，旧版检查点标记及坐标不再用于恢复玩家位置。
 func LoadSaveData(data: Dictionary) -> void:
 	_cancel_phase_transition()
+	_outward_blocker_cleared = false
 	_bone_offered = bool(data.get("bone_offered", false))
 	_bone_claimed = _bone_offered or bool(data.get("bone_claimed", false))
 	_refresh_bone()
@@ -221,10 +226,12 @@ func LoadSaveData(data: Dictionary) -> void:
 	_reset_boat_on_respawn = false
 	_set_phase_enabled(return_phase, false)
 	_set_phase_enabled(outward_phase, true)
+	_broadcast_phase_state()
 
 
 func _on_save_loaded(_slot: int) -> void:
 	_cancel_phase_transition()
+	_outward_blocker_cleared = false
 	# 子实体的旧存档可能恢复了下落、塌陷、移动位置，甚至排队删除节点。
 	# 全部实体加载完毕后统一丢弃瞬态，再按玩家的遗物状态恢复去返程。
 	_rebuild_phases()
@@ -236,6 +243,7 @@ func _on_save_loaded(_slot: int) -> void:
 	_reset_boat_on_respawn = false
 	_set_phase_enabled(return_phase, false)
 	_set_phase_enabled(outward_phase, true)
+	_broadcast_phase_state()
 	_chaser.call(&"ResetChase")
 	var player := get_tree().get_first_node_in_group(&"player")
 	if not is_instance_valid(player):
@@ -350,6 +358,7 @@ func _rebuild_phases() -> void:
 
 func _on_blocker_vanished(blocker: Node2D) -> void:
 	if not _in_return_phase and is_instance_valid(_boat) and blocker == _blocker:
+		_outward_blocker_cleared = true
 		_boat.SolvePuzzle("vanishing_blocker")
 
 
@@ -417,14 +426,26 @@ func _restore_phases_after_respawn() -> void:
 	# 切回去程 OutwardPhase 激活骨头交互，关闭 ReturnPhase
 	_set_phase_enabled(return_phase, false)
 	_set_phase_enabled(outward_phase, true)
+	_broadcast_phase_state()
 
 	_reset_outward_boat()
+
+
+func _broadcast_phase_state() -> void:
+	SignalBus.OasisReturnPhaseChanged.emit(self, _in_return_phase)
 
 
 func _reset_outward_boat() -> void:
 	if is_instance_valid(_boat):
 		_boat.ResetBoat()
 	_boat_departure_triggered = false
+	if not _outward_blocker_cleared:
+		return
+	# 已完成的一次性挡板不在复活后重播；新船恢复解锁，重建出的挡板直接恢复为消失态。
+	if is_instance_valid(_boat):
+		_boat.SolvePuzzle("vanishing_blocker")
+	if is_instance_valid(_blocker) and _blocker.has_method(&"LoadSaveData"):
+		_blocker.call(&"LoadSaveData", {"vanishing": true})
 
 
 func _get_chase_respawn_position() -> Vector2:

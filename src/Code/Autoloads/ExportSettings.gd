@@ -797,10 +797,18 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Interactive - Signal Door", "signal_door_")
 ## 信号门默认碰撞宽高（像素）。
 @export var signal_door_size: Vector2 = Vector2(32.0, 128.0)
-## 信号门默认开启位移；场景实例可用导出属性覆盖方向和距离。
-@export var signal_door_open_offset: Vector2 = Vector2(0.0, -128.0)
+## 三个按钮全部按下后的门板总视觉升程（门板局部坐标）；默认每次只上升 8 像素。
+@export var signal_door_open_offset: Vector2 = Vector2(0.0, -24.0)
 ## 信号门开关移动速度（像素/秒）。
 @export_range(1.0, 2000.0, 1.0) var signal_door_move_speed: float = 180.0
+## 每次门板收到新的开启进度时抖动的总时长（秒）。
+@export_range(0.0, 2.0, 0.01) var signal_door_shake_duration: float = 0.24
+## 门板抖动的最大局部偏移（像素），实际世界大小还会受到门实例缩放影响。
+@export_range(0.0, 16.0, 0.1) var signal_door_shake_offset: float = 1.2
+## 每次升门掉落的灰尘颗粒数量。
+@export_range(1, 128, 1) var signal_door_dust_amount: int = 18
+## 灰尘颗粒存活时间（秒）。
+@export_range(0.1, 5.0, 0.05) var signal_door_dust_lifetime: float = 0.7
 
 @export_group("Mobile & Android", "mobile_")
 ## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)
@@ -1035,6 +1043,16 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 240.0
 ## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。
 @export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 180.0
+
+@export_group("Sunken Palace - Wall Dirt", "sunken_wall_")
+## 第一关墙面灰尘的固定随机种子；修改后会生成另一套排列，同一种子每次进入关卡保持一致。
+@export var sunken_wall_decoration_seed: int = 104729
+## 每块背景墙生成 dirt1 或 dirt2 灰尘的概率。
+@export_range(0.0, 1.0, 0.01) var sunken_wall_detail_chance: float = 0.48
+## 灰尘相对原图的随机缩放范围，X 为最小值、Y 为最大值。
+@export var sunken_wall_detail_scale_range: Vector2 = Vector2(0.72, 1.08)
+## 灰尘可偏离墙格中心的比例，分别相对单格宽度和高度。
+@export var sunken_wall_detail_offset_ratio: Vector2 = Vector2(0.24, 0.2)
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。

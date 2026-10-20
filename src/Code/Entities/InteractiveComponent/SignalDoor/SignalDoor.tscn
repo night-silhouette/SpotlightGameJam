@@ -5,6 +5,13 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
 size = Vector2(32, 128)
 
+[sub_resource type="Curve" id="Curve_dust_scale"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.5, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_dust"]
+colors = PackedColorArray(0.43, 0.39, 0.31, 0.78, 0.25, 0.22, 0.17, 0)
+
 [node name="SignalDoor" type="AnimatableBody2D" unique_id=960675483 groups=["signal_door"]]
 collision_mask = 2
 script = ExtResource("1_door")
@@ -16,3 +23,23 @@ shape = SubResource("RectangleShape2D_door")
 visible = false
 color = Color(0.24, 0.34, 0.42, 1)
 polygon = PackedVector2Array(-16, -64, 16, -64, 16, 64, -16, 64)
+
+[node name="DustParticles" type="CPUParticles2D" parent="."]
+position = Vector2(0, -64)
+emitting = false
+amount = 18
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.82
+randomness = 0.55
+emission_shape = 3
+emission_rect_extents = Vector2(15, 3)
+direction = Vector2(0, 1)
+spread = 34.0
+gravity = Vector2(0, 170)
+initial_velocity_min = 10.0
+initial_velocity_max = 32.0
+scale_amount_min = 0.8
+scale_amount_max = 2.0
+scale_amount_curve = SubResource("Curve_dust_scale")
+color_ramp = SubResource("Gradient_dust")
