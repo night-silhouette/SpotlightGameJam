@@ -1,6 +1,8 @@
 extends CharacterBody2D
 class_name Player
 
+const HEAL_MIST: PackedScene = preload("res://Code/Entities/InteractiveComponent/InteractableComponent/InteractionHealMist.tscn")
+
 @onready var ani_move: AnimationPlayer = $ani_move
 @onready var move_state_machine: Node = $move_state_machine
 @onready var gameInputControl: Node = $GameInputControl
@@ -1067,6 +1069,7 @@ func _on_player_full_heal_requested(player: Node2D) -> void:
 		return
 	if now_HP < Max_HP:
 		now_HP = Max_HP
+	PlayHealMist()
 
 func _on_player_instant_death_requested(player_node: Node2D, _source_node: Node2D) -> void:
 	# 已死亡或正在死亡时忽略重复致死请求，避免同一物理帧的碰撞事件
@@ -1128,7 +1131,15 @@ func ApplyDamage(damage: float, knockback: Vector2 = Vector2.ZERO) -> void:
 ## 恢复生命值/水量的公共方法
 ## @param amount 恢复数值
 func Heal(amount: float) -> void:
+	var previous_hp := now_HP
 	now_HP += amount
+	if now_HP > previous_hp:
+		PlayHealMist()
+
+func PlayHealMist() -> void:
+	var mist := HEAL_MIST.instantiate() as CPUParticles2D
+	mist.finished.connect(mist.queue_free)
+	add_child(mist)
 
 ## 重置/刷新二段跳次数
 func ResetDoubleJump() -> void:

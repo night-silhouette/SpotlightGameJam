@@ -1207,6 +1207,7 @@ request_channel = &"chapter5_after_enemy_definition"
 
 [node name="Chapter5" parent="." unique_id=839960565 instance=ExtResource("37_chapter5")]
 lake_anchor = NodePath("../Camp/Lake")
+ending_horizon_anchor = NodePath("../Camp/EndingHorizon")
 stele_path = NodePath("../Camp/Chapter1/SteleStory_1_12_to_1_14/BrokenStele")
 stele_material = SubResource("ShaderMaterial_tlrmx")
 

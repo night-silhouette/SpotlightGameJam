@@ -5,6 +5,7 @@ const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
 const CHANNEL: StringName = &"chapter5_after_enemy_definition"
 
 @export_node_path("Node2D") var lake_anchor: NodePath
+@export_node_path("Marker2D") var ending_horizon_anchor: NodePath
 @export_node_path("Sprite2D") var stele_path: NodePath
 @export var stele_material: ShaderMaterial
 @onready var _rain: Control = $Presentation/Rain
@@ -398,7 +399,7 @@ func _process_ending(delta: float) -> void:
 				_lake_wait = true
 				_surge.hide()
 				SignalBus.Chapter5PlayerRequested.emit(_player, self, &"conceal", {})
-				SignalBus.CameraShotRequested.emit(_player, &"fixed", {"anchor": get_node(lake_anchor), "ignore_gate_limits": true})
+				SignalBus.CameraShotRequested.emit(_player, &"fixed", {"anchor": get_node(ending_horizon_anchor), "frame_bottom": true, "ignore_gate_limits": true})
 		"lake":
 			if not _lake_wait and _ending_time >= ExportSettings.chapter5_black_hold_duration:
 				_ending_stage = "reveal"

@@ -552,6 +552,12 @@ position = Vector2(2488, 354)
 hint_kind = "water_wall"
 metadata/_editor_description_ = "第一道水墙（本地 x=2717）左侧地面上的交互教学。"
 
+[node name="LookUpHint" parent="." instance=ExtResource("26_jump_hint")]
+position = Vector2(3156, 175)
+scale = Vector2(0.8333333, 0.5)
+hint_kind = "look_up"
+metadata/_editor_description_ = "第一道水墙右侧、农具上方小木平台的向上观察教学；世界中心 (5835, -180)，范围 200×100。"
+
 [node name="visualplayer" type="CanvasGroup" parent="." unique_id=1788018380]
 z_index = -1
 material = SubResource("ShaderMaterial_visual_player_fade")

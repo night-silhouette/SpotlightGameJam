@@ -68,6 +68,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var tutorial_dash_hint_text: String = "Shift键冲刺"
 ## 绿洲骸骨植物柱顶的向下观察教学文案。
 @export var tutorial_look_down_hint_text: String = "长按s键向下观察"
+## 第一处水墙右侧小木平台的向上观察教学文案。
+@export var tutorial_look_up_hint_text: String = "长按上键观察"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
 ## 手机版第一处水墙前的交互教学文案。
@@ -683,6 +685,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 800.0, 1.0) var player_camera_look_distance: float = 180.0
 ## 观察和松手恢复的指数平滑速率（每秒），越大越快。
 @export_range(0.1, 30.0, 0.1) var player_camera_look_smooth_speed: float = 8.0
+## 手机轮盘相对正上/正下允许触发观察的半角（度），不限制移动或键盘。
+@export_range(0.0, 89.0, 0.5) var player_camera_look_joystick_half_angle: float = 15.0
 
 @export_group("Camera Gate", "camera_gate_")
 ## 设置了 scope_origin_path 的永久边界，仅在玩家处于所属关卡的此局部 Y 范围时启用。

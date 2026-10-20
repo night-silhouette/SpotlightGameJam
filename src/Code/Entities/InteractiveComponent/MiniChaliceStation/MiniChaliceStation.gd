@@ -177,12 +177,8 @@ func _drink_chalice(player: Node2D) -> void:
 	is_available = false
 	_update_visual_state(false)
 
-	# 回复水量/生命值至 100%
-	if player.has_method("Heal"):
-		var max_hp = player.Max_HP if "Max_HP" in player else 200.0
-		player.Heal(max_hp * heal_ratio)
-	elif "now_HP" in player and "Max_HP" in player:
-		player.now_HP = player.Max_HP * heal_ratio
+	# 每次成功饮用都回满生命，并由角色播放补水特效。
+	SignalBus.PlayerFullHealRequested.emit(player)
 
 	# 通过 SignalBus 广播小圣杯被使用
 	if SignalBus:
