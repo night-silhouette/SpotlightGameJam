@@ -21,22 +21,18 @@
 [sub_resource type="Resource" id="Resource_68lmy"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "这帐篷……是用无数片颜色各异的碎布料拼凑缝补的。有人在这里生活过？"
+text = "这帐篷……是用无数片颜色各异的碎布料，拼凑缝补起来的。有人在这里生活过？
+"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_v13fp"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1sy50"]
 resource_local_to_scene = true
 size = Vector2(169.84523, 144.98253)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_oslkj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kogey"]
 resource_local_to_scene = true
 shader = ExtResource("7_v13fp")
 shader_parameter/progress = 0.0
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_camp_sky_extension"]
-atlas = ExtResource("13_a07x8")
-region = Rect2(0, 0, 2100, 700)
-filter_clip = true
 
 [sub_resource type="Resource" id="Line_1_1"]
 script = ExtResource("6_qv0jn")
@@ -55,31 +51,36 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_1khv5"]
 script = ExtResource("6_qv0jn")
-text = "残破的石碑，上方一行字，下方有刻痕形成的图案，经历了风吹日晒，还附着着很多沙土，均已有些模糊不清。图案是几个火柴人影，看起来像是高举手臂，整个身体向上延伸"
+text = "不远处有一块残破的石碑，似乎经历过长时间的风吹日晒，还布满尘土。仔细看去，碑面上有刻痕形成的图案，模糊不清。
+"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_wx588"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "这上面有字，“寻找，直到最后XXXXX。”好难辨认，后面几个字几乎看不清了"
+text = "他们在看什么？这些竖线又是什么意思？
+"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_na041"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "还有……这是一幅画吗？画上的人在干什么，好像在朝着远处挥手？这些竖道又是什么……"
+text = "还有行字……“找到自己，直到最后XXXXX”。
+"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_0yts4"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "这是谁留下的，为什么偏偏出现在这里？他似乎知道些什么……难道他也曾像我一样，不知何去何从……"
+text = "啧，好难辨认啊。不过，留下这画的人似乎知道些什么……他也曾像我一样，不知何去何从吗……
+"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_tf67n"]
 script = ExtResource("6_qv0jn")
 dialog_type = "独白"
-text = "不管怎样，看来我只能沿着这些线索继续走下去了。那么，先去画上人挥手的方向看看吧"
+text = "看来我只能沿着这些线索继续走下去了。先朝那方向去看看吧。
+"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_k8pln"]
@@ -91,6 +92,11 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 script = ExtResource("6_qv0jn")
 text = "慢慢找回呼吸的节奏了……虽然不知道为什么，但看来得一直保持身体里的水分才行。一旦缺水，恐怕行动都会成问题。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_camp_sky_extension"]
+atlas = ExtResource("13_a07x8")
+region = Rect2(0, 0, 2100, 700)
+filter_clip = true
 
 [node name="Camp" type="Node2D" unique_id=1903763566]
 
@@ -120,7 +126,7 @@ scale = Vector2(0.14, 0.14)
 tile_map_data = PackedByteArray("AAADABEACAAAAAQAAAAEABEACAABAAQAAAAFABEACAABAAQAAAAGABEACAABAAQAAAAHABEACAABAAQAAAAIABEACAABAAQAAAAJABEACAACAAQAAAAMABEACAABAAQAAAALABEACAAAAAQAAAANABEACAABAAQAAAAOABEACAABAAQAAAAPABEACAABAAQAAAAQABEACAABAAQAAAARABEACAABAAQAAAASABEACAABAAQAAAATABEACAABAAQAAAAUABEACAABAAQAAAAVABEACAABAAQAAAAWABEACAABAAQAAAAAABIACAAAAAUAABAAABEACAAAAAUAABAAABAACAAAAAUAABAAAA8ACAAAAAIAAFABAA8ACAABAAYAAAACAA8ACAACAAYAAAACAA4ACAACAAUAAAACAA0ACAACAAUAAAACAAwACAACAAQAAAABAAwACAABAAQAAAAAAAwACAABAAQAAAAAAA0ACAABAAUAAAABAA4ACAABAAUAAAABAA0ACAABAAUAAAAAAA4ACAABAAUAAAAAAAoACAABAAYAAAABAAoACAABAAYAAAACAAoACAABAAYAAAADAAoACAABAAYAAAAEAAoACAACAAYAAAAEAAkACAACAAUAAAAEAAgACAACAAUAAAAEAAcACAACAAUAAAADAAYACAABAAQAAAAEAAYACAACAAQAAAACAAYACAABAAQAAAABAAYACAABAAQAAAAAAAYACAABAAQAAAAAAAcACAABAAUAAAAAAAgACAABAAUAAAAAAAkACAABAAUAAAABAAcACAABAAUAAAABAAgACAABAAUAAAABAAkACAABAAUAAAACAAcACAABAAUAAAACAAgACAABAAUAAAACAAkACAABAAUAAAADAAcACAABAAUAAAADAAgACAABAAUAAAADAAkACAABAAUAAAALABIACAAAAAUAAAAMABIACAABAAUAAAANABIACAABAAUAAAAOABIACAABAAUAAAAPABIACAABAAUAAAAQABIACAABAAUAAAARABIACAABAAUAAAASABIACAABAAUAAAATABIACAABAAUAAAAUABIACAABAAUAAAAVABIACAABAAUAAAAWABIACAABAAUAAAAJABIACAACAAUAAAAGABIACAABAAUAAAAFABIACAABAAUAAAAEABIACAABAAUAAAADABIACAAAAAUAAAAHABIACAABAAUAAAAIABIACAABAAUAAAD//xIACAABAAUAAAD//xEACAABAAUAAAD//xAACAABAAUAAAD//w8ACAABAAUAAAD//w4ACAABAAUAAAD//w0ACAABAAUAAAD//wwACAABAAQAAAD//woACAABAAYAAAD//wkACAABAAUAAAD//wgACAABAAUAAAD//wcACAABAAUAAAD//wYACAABAAUAAAA=")
 tile_set = ExtResource("4_map1")
 
-[node name="EndingHorizon" type="Marker2D" parent="."]
+[node name="EndingHorizon" type="Marker2D" parent="." unique_id=327473534]
 position = Vector2(1289, 1596)
 metadata/placement_note = "终景底边：湖泊水平中心；TileMapLayer3 湖边地表碰撞顶面，非湖泊中心。"
 
@@ -129,17 +135,17 @@ position = Vector2(1289, 1593)
 scale = Vector2(1.6936214, 1.6936214)
 
 [node name="CollisionShape2D" parent="Lake" index="3" unique_id=1216154260]
-shape = SubResource("RectangleShape2D_v13fp")
+shape = SubResource("RectangleShape2D_1sy50")
 
 [node name="OfferingVisual" parent="Lake" index="5"]
-material = SubResource("ShaderMaterial_oslkj")
+material = SubResource("ShaderMaterial_kogey")
 
 [node name="Chapter1" parent="." unique_id=257404343 instance=ExtResource("5_chapter")]
 position = Vector2(-116, 4)
 opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResource("Line_1_2"), SubResource("Resource_yo42o")])
 
 [node name="SteleStory_1_12_to_1_14" parent="Chapter1" index="0" unique_id=28622851]
-position = Vector2(1676, 1640.09367)
+position = Vector2(1676, 1640.0936)
 enable_interaction = true
 disable_movement_during_dialog = true
 show_first_dialog = true
@@ -188,43 +194,43 @@ scale = Vector2(1.0352961, 1.0352961)
 texture = ExtResource("13_a07x8")
 script = ExtResource("CampBackgroundParallax")
 
-[node name="SkyExtension1" type="Sprite2D" parent="Sprite2D2"]
+[node name="SkyExtension1" type="Sprite2D" parent="Sprite2D2" unique_id=811514772]
 show_behind_parent = true
-texture = SubResource("AtlasTexture_camp_sky_extension")
+use_parent_material = true
 position = Vector2(-1050, -1550)
+texture = SubResource("AtlasTexture_camp_sky_extension")
 centered = false
 flip_v = true
-use_parent_material = true
 
-[node name="SkyExtension2" type="Sprite2D" parent="Sprite2D2"]
+[node name="SkyExtension2" type="Sprite2D" parent="Sprite2D2" unique_id=623598570]
 show_behind_parent = true
-texture = SubResource("AtlasTexture_camp_sky_extension")
+use_parent_material = true
 position = Vector2(-1050, -2250)
-centered = false
-use_parent_material = true
-
-[node name="SkyExtension3" type="Sprite2D" parent="Sprite2D2"]
-show_behind_parent = true
 texture = SubResource("AtlasTexture_camp_sky_extension")
+centered = false
+
+[node name="SkyExtension3" type="Sprite2D" parent="Sprite2D2" unique_id=464252169]
+show_behind_parent = true
+use_parent_material = true
 position = Vector2(-1050, -2950)
+texture = SubResource("AtlasTexture_camp_sky_extension")
 centered = false
 flip_v = true
-use_parent_material = true
 
-[node name="SkyExtension4" type="Sprite2D" parent="Sprite2D2"]
+[node name="SkyExtension4" type="Sprite2D" parent="Sprite2D2" unique_id=1455656129]
 show_behind_parent = true
-texture = SubResource("AtlasTexture_camp_sky_extension")
+use_parent_material = true
 position = Vector2(-1050, -3650)
-centered = false
-use_parent_material = true
-
-[node name="SkyExtension5" type="Sprite2D" parent="Sprite2D2"]
-show_behind_parent = true
 texture = SubResource("AtlasTexture_camp_sky_extension")
+centered = false
+
+[node name="SkyExtension5" type="Sprite2D" parent="Sprite2D2" unique_id=1817622179]
+show_behind_parent = true
+use_parent_material = true
 position = Vector2(-1050, -4350)
+texture = SubResource("AtlasTexture_camp_sky_extension")
 centered = false
 flip_v = true
-use_parent_material = true
 
 [node name="WorldBgm" type="Node" parent="." unique_id=1313303911]
 script = ExtResource("WorldBgm")
