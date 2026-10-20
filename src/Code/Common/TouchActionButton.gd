@@ -103,6 +103,7 @@ func _set_pressed_state(pressed: bool) -> void:
 		else:
 			Input.action_release(action_name)
 
+
 func _draw() -> void:
 	var center = size * 0.5
 	if button_icon:
