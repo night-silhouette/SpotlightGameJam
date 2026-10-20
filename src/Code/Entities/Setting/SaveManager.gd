@@ -92,6 +92,15 @@ static func GetAllSlotsInfo() -> Array[Dictionary]:
 		list.append(GetSlotInfo(i))
 	return list
 
+## 检查全部有效槽位的第五章实体完成状态；遵循删除标记，不依赖活跃槽或永久全局标记。
+static func HasCompletedSlot() -> bool:
+	for slot_index in range(1, MAX_SLOTS + 1):
+		var data := _read_slot(slot_index)
+		for path in data.get("entities", {}):
+			if String(path).get_file() == "Chapter5" and data.entities[path].get("completed") == true:
+				return true
+	return false
+
 static func _make_save_data(slot_index: int, scene_path: String, entities: Dictionary) -> Dictionary:
 	return {"slot_index": slot_index, "timestamp": Time.get_datetime_string_from_system(false, true), "scene_path": scene_path, "entities": entities}
 

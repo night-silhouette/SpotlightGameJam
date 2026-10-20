@@ -4,6 +4,8 @@ extends Area2D
 @onready var stream: AnimatedSprite2D = $Stream
 @onready var relic_visual: Sprite2D = $OfferingVisual
 @onready var offering_target: Marker2D = $OfferingTarget
+@onready var sun_leap_card: CanvasLayer = $SunLeapAcquireCard
+@onready var tide_hook_card: CanvasLayer = $TideHookAcquireCard
 
 var _ending_triggered: bool = false
 var _fill_stage: int = 0
@@ -28,9 +30,12 @@ var _hand_position: Vector2
 var _held_size: Vector2
 var _player_visual_height: float
 var _stream_finished: bool = false
+var _acquire_finished: bool = false
 
 
 func _ready() -> void:
+	sun_leap_card.Finished.connect(_on_acquire_finished)
+	tide_hook_card.Finished.connect(_on_acquire_finished)
 	stream.speed_scale = maxf(ExportSettings.lake_stream_animation_fps, 1.0) / stream.sprite_frames.get_animation_speed(&"crown_flow")
 	stream.animation_finished.connect(_on_stream_animation_finished)
 	_first_fill_ratio = clampf(ExportSettings.lake_first_fill_ratio, 0.0, 1.0)
@@ -241,8 +246,34 @@ func _present_relics(queue: Array[StringName]) -> void:
 		SignalBus.PlayerRelicConsumeRequested.emit(relic)
 		if trigger_ending:
 			SignalBus.LakeEndingTriggered.emit()
+		if relic in [&"crown", &"codex"]:
+			if not await _present_acquire_card(relic, generation):
+				return
 	if generation == _generation:
 		_finish_presentation()
+
+
+func _present_acquire_card(relic: StringName, generation: int) -> bool:
+	# 消费信号已同步通知全部监听者；等黑幕真正隐藏并释放活动登记后再展示。
+	while SignalBus.IsGradualTextActive():
+		if not _presentation_valid(generation):
+			return false
+		await get_tree().process_frame
+	if not _presentation_valid(generation):
+		return false
+	var card := sun_leap_card if relic == &"crown" else tide_hook_card
+	_acquire_finished = false
+	card.Play()
+	# 不直接 await Finished：取消不发该信号，沿用 generation 门控及时退出等待。
+	while not _acquire_finished:
+		if not _presentation_valid(generation):
+			return false
+		await get_tree().process_frame
+	return _presentation_valid(generation)
+
+
+func _on_acquire_finished() -> void:
+	_acquire_finished = true
 
 
 func _show_relic(relic: StringName) -> void:
@@ -302,6 +333,8 @@ func _cancel_presentation() -> void:
 	if _offering_tween and _offering_tween.is_valid():
 		_offering_tween.kill()
 	if is_node_ready():
+		sun_leap_card.Cancel()
+		tide_hook_card.Cancel()
 		_finish_presentation()
 		_reset_stream()
 

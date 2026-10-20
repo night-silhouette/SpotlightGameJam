@@ -1,5 +1,24 @@
 extends Node
 
+@export_group("Ability Acquire Card", "ability_acquire_")
+## 能力展示淡入、停留和淡出时长，单位秒；不暂停世界或锁定输入。
+@export_range(0.0, 10.0, 0.05) var ability_acquire_fade_in: float = 0.7
+@export_range(0.0, 20.0, 0.05) var ability_acquire_hold: float = 3.0
+@export_range(0.0, 10.0, 0.05) var ability_acquire_fade_out: float = 0.8
+## 设计画布等比缩放适配窗口；内容边距为画布内侧留白。
+@export var ability_acquire_design_size: Vector2 = Vector2(1152, 648)
+@export_range(0.0, 120.0, 1.0) var ability_acquire_margin: float = 32.0
+## 上方人物图标框和底部章节装饰框，均保持原图完整比例。
+@export var ability_acquire_icon_size: Vector2 = Vector2(250, 285)
+@export var ability_acquire_decoration_size: Vector2 = Vector2(370, 47)
+@export_range(0, 64, 1) var ability_acquire_spacing: int = 16
+@export_range(8, 96, 1) var ability_acquire_obtained_font_size: int = 24
+@export_range(8, 160, 1) var ability_acquire_title_font_size: int = 60
+## 沿用章节纸色、暖金与设置深墨；背景为轻度遮罩。
+@export var ability_acquire_paper_color: Color = Color("e4d8b9")
+@export var ability_acquire_title_color: Color = Color("d8b779")
+@export var ability_acquire_background_color: Color = Color(0.094118, 0.098039, 0.078431, 0.48)
+
 @export_group("Debug", "debug_")
 ## 是否显示玩家界面的调试能力面板。
 @export var debug_panel_enabled: bool = true
@@ -26,6 +45,12 @@ extends Node
 @export var chapter5_surge_volume_db: float = -8.0
 @export var chapter5_black_fade_duration: float = 1.4
 @export var chapter5_black_hold_duration: float = 0.6
+## 水涌在此进度已全黑并切湖泊镜头；必须小于1。
+@export_range(0.5, 0.99, 0.01) var chapter5_black_complete_progress: float = 0.94
+## 宁静镜头完全揭示后才计时；到时淡入提示并接收新按下。
+@export var chapter5_return_delay: float = 10.0
+@export var chapter5_return_prompt_fade: float = 1.0
+@export var chapter5_return_prompt_text: String = "任意键返回主菜单"
 @export var chapter5_thunder_volume_db: float = -12.0
 @export var chapter5_thunder_fade_duration: float = 3.0
 @export var chapter5_rain_volume_db: float = -10.0

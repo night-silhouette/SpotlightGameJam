@@ -516,6 +516,12 @@ func _apply_gate_limits() -> void:
 		var top: int = bounds.y
 		var right: int = bounds.z
 		var bottom: int = bounds.w
+		if camera != _base and current_mode == &"fixed" and bool(_options.get("ignore_gate_limits", false)):
+			camera.limit_left = left
+			camera.limit_top = top
+			camera.limit_right = right
+			camera.limit_bottom = bottom
+			continue
 		for gate: Area2D in _gate_limits:
 			var limit: Vector2 = _gate_limits[gate]
 			if not _gate_overlaps_view(gate, int(limit.x), view):

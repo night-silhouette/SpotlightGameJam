@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://btj8w86qy3nni" path="res://Art/New/component/lake/流水1.png" id="3_flow1"]
 [ext_resource type="Texture2D" uid="uid://dmbitmagbbm4v" path="res://Art/New/component/lake/流水2.png" id="4_flow2"]
 [ext_resource type="Shader" path="res://Code/Entities/InteractiveComponent/Lake/OfferingDissolve.gdshader" id="5_offering"]
+[ext_resource type="PackedScene" path="res://Code/Common/AbilityAcquireCard/SunLeapAcquireCard.tscn" id="6_sun_leap"]
+[ext_resource type="PackedScene" path="res://Code/Common/AbilityAcquireCard/TideHookAcquireCard.tscn" id="7_tide_hook"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_offering"]
 resource_local_to_scene = true
@@ -309,3 +311,9 @@ material = SubResource("ShaderMaterial_offering")
 
 [node name="OfferingTarget" type="Marker2D" parent="."]
 position = Vector2(0, -65.27958)
+
+[node name="SunLeapAcquireCard" parent="." instance=ExtResource("6_sun_leap")]
+auto_play = false
+
+[node name="TideHookAcquireCard" parent="." instance=ExtResource("7_tide_hook")]
+auto_play = false
