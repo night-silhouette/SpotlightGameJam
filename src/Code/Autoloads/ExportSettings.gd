@@ -168,9 +168,9 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 远景相对镜头的移动比例。
 @export_range(0.0, 1.0) var level2_scenery_far_speed: float = 0.25
 ## 窗格、拱廊等中景移动比例，同组保持原图对齐。
-@export_range(0.0, 1.0) var level2_scenery_middle_speed: float = 0.65
+@export_range(0.0, 1.0) var level2_scenery_middle_speed: float = 0.85
 ## 前景柱移动比例。
-@export_range(1.0, 1.5) var level2_scenery_foreground_speed: float = 1.08
+@export_range(1.0, 1.5) var level2_scenery_foreground_speed: float = 1.03
 ## 横向前景实体柱透明度，默认完整显示裁切素材。
 @export_range(0.0, 1.0) var level2_scenery_foreground_opacity: float = 1.0
 ## 玩家附近前景进一步淡出的半径，世界像素。

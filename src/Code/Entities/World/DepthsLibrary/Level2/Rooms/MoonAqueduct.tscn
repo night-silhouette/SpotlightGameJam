@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://i5te8jqrrblq" path="res://Art/New/component/extracted/mechanism_pin_lever_2.png" id="3_o56vj"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/Level2Device/Level2Device.tscn" id="device"]
 [ext_resource type="TileSet" uid="uid://dj13ebd6hvs5a" path="res://Code/Entities/World/DepthsLibrary/Level2/Terrain/Level2CollisionTileSet.tres" id="L2Terrain"]
-[ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
+[ext_resource type="PackedScene" uid="uid://5alqmt1n0ve8" path="res://Code/Entities/InteractiveComponent/MovingPlatform/MovingPlatform.tscn" id="moving"]
 
 [sub_resource type="Gradient" id="PlatformLightGradient"]
 offsets = PackedFloat32Array(0, 0.4, 1)
@@ -40,62 +40,47 @@ theme_override_font_sizes/font_size = 18
 text = "等移动平台靠岸再上去。取得钥匙后沿平台返回，注意下方蓝色死亡边界。"
 
 [node name="FerryA" parent="." unique_id=1024085281 instance=ExtResource("moving")]
-position = Vector2(365, 505)
+position = Vector2(483, 490)
 platform_size = Vector2(140, 20)
-movement_offset = Vector2(380, 0)
+movement_offset = Vector2(400, 0)
 movement_speed = 85.0
 show_path_preview = false
-
-[node name="VisualRect" parent="FerryA" index="1"]
-visible = false
-
-[node name="TopHighlight" parent="FerryA" index="2"]
-visible = false
 
 [node name="ItemArt" type="Sprite2D" parent="FerryA" unique_id=87604469]
 position = Vector2(3.9999998, 3.9999995)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("2_k2d0o")
 
-[node name="PlatformLight" type="PointLight2D" parent="FerryA"]
+[node name="PlatformLight" type="PointLight2D" parent="FerryA" unique_id=362429992]
 position = Vector2(4, 4)
 color = Color(0.58, 0.8, 1, 1)
 energy = 0.34
-texture = SubResource("PlatformLightTexture")
-texture_scale = 0.8203125
 range_z_min = -30
 range_z_max = 10
-range_layer_min = 0
-range_layer_max = 0
+texture = SubResource("PlatformLightTexture")
+texture_scale = 0.8203125
 
 [node name="FerryB" parent="." unique_id=1659212721 instance=ExtResource("moving")]
 position = Vector2(1140, 460)
 platform_size = Vector2(150, 20)
 movement_offset = Vector2(410, -100)
 movement_speed = 85.0
+start_from_end = true
 show_path_preview = false
-
-[node name="VisualRect" parent="FerryB" index="1"]
-visible = false
-
-[node name="TopHighlight" parent="FerryB" index="2"]
-visible = false
 
 [node name="ItemArt" type="Sprite2D" parent="FerryB" unique_id=2028990964]
 position = Vector2(-6.055832e-05, 4)
 scale = Vector2(0.25464597, 0.2)
 texture = ExtResource("3_almxt")
 
-[node name="PlatformLight" type="PointLight2D" parent="FerryB"]
+[node name="PlatformLight" type="PointLight2D" parent="FerryB" unique_id=1227869471]
 position = Vector2(0, 4)
 color = Color(0.58, 0.8, 1, 1)
 energy = 0.34
-texture = SubResource("PlatformLightTexture")
-texture_scale = 0.8203125
 range_z_min = -30
 range_z_max = 10
-range_layer_min = 0
-range_layer_max = 0
+texture = SubResource("PlatformLightTexture")
+texture_scale = 0.8203125
 
 [node name="MoonKey" parent="." unique_id=1522929699 instance=ExtResource("device")]
 position = Vector2(1980, 380)
@@ -103,10 +88,10 @@ metadata/kind = "key"
 metadata/label = "月族银钥匙"
 metadata/key_id = "moon"
 
-[node name="Visual" parent="MoonKey" index="0"]
+[node name="Visual" parent="MoonKey" index="2"]
 visible = false
 
-[node name="Caption" parent="MoonKey" index="1"]
+[node name="Caption" parent="MoonKey" index="3"]
 offset_left = -108.0
 offset_top = -111.0
 offset_right = 122.0
