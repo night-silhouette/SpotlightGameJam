@@ -36,6 +36,7 @@
 [ext_resource type="Texture2D" uid="uid://dmtkjump3pg6c" path="res://Art/New/front_sence/map1/chair_2.png" id="33_ysst7"]
 [ext_resource type="Texture2D" uid="uid://ds0v2mw0ml8fn" path="res://Art/New/front_sence/map1/chair_1.png" id="34_n1l0m"]
 [ext_resource type="PackedScene" uid="uid://j6f2cmlwpbjt" path="res://Code/Entities/InteractiveComponent/fire/fire.tscn" id="35_ysst7"]
+[ext_resource type="PackedScene" uid="uid://dt3r42d5q12e6" path="res://Code/Entities/World/SunkenPalace/biglake.tscn" id="36_n1l0m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7nnfa"]
 texture = ExtResource("5_7nnfa")
@@ -57,7 +58,7 @@ sources/1 = SubResource("TileSetAtlasSource_7nnfa")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_1"]
 size = Vector2(176.65958, 197.3826)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_b6ipw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n1l0m"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -71,7 +72,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_2"]
 size = Vector2(210, 180)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ysst7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r83ap"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -85,7 +86,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_3"]
 size = Vector2(918.9211, 190.14851)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_n1l0m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_r0dhj"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -99,7 +100,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_4"]
 size = Vector2(166.99808, 933.1192)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r83ap"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4onqo"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -113,7 +114,7 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_water_5"]
 size = Vector2(63.317383, 591.8553)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_r0dhj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6ywoy"]
 resource_local_to_scene = true
 shader = ExtResource("10_nmvff")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -361,7 +362,7 @@ shape = SubResource("RectangleShape2D_water_1")
 shape = SubResource("RectangleShape2D_water_1")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea" index="5"]
-material = SubResource("ShaderMaterial_b6ipw")
+material = SubResource("ShaderMaterial_n1l0m")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea" index="6" unique_id=424886505]
 z_index = 6
@@ -388,7 +389,7 @@ shape = SubResource("RectangleShape2D_water_2")
 shape = SubResource("RectangleShape2D_water_2")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea2" index="5"]
-material = SubResource("ShaderMaterial_ysst7")
+material = SubResource("ShaderMaterial_r83ap")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea2" index="6" unique_id=424886505]
 position = Vector2(1533, -904)
@@ -426,7 +427,7 @@ shape = SubResource("RectangleShape2D_water_3")
 shape = SubResource("RectangleShape2D_water_3")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea3" index="5"]
-material = SubResource("ShaderMaterial_n1l0m")
+material = SubResource("ShaderMaterial_r0dhj")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea3" index="6" unique_id=424886505]
 position = Vector2(1670, -2266)
@@ -452,7 +453,7 @@ shape = SubResource("RectangleShape2D_water_4")
 shape = SubResource("RectangleShape2D_water_4")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea4" index="5"]
-material = SubResource("ShaderMaterial_r83ap")
+material = SubResource("ShaderMaterial_4onqo")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea4" index="6" unique_id=424886505]
 position = Vector2(754, -3037.9998)
@@ -478,7 +479,7 @@ shape = SubResource("RectangleShape2D_water_5")
 shape = SubResource("RectangleShape2D_water_5")
 
 [node name="WaterCurtain" parent="collisionlayer/WaterFl/WaterFlowArea5" index="5"]
-material = SubResource("ShaderMaterial_r0dhj")
+material = SubResource("ShaderMaterial_6ywoy")
 
 [node name="BeforeSpriteVisuals" parent="collisionlayer/WaterFl/WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(-959.48737, -2224.0002)
@@ -562,7 +563,7 @@ position = Vector2(2488, 354)
 hint_kind = "water_wall"
 metadata/_editor_description_ = "第一道水墙（本地 x=2717）左侧地面上的交互教学。"
 
-[node name="LookUpHint" parent="." instance=ExtResource("26_jump_hint")]
+[node name="LookUpHint" parent="." unique_id=165663366 instance=ExtResource("26_jump_hint")]
 position = Vector2(3156, 175)
 scale = Vector2(0.8333333, 0.5)
 hint_kind = "look_up"
@@ -678,6 +679,13 @@ position = Vector2(-1818.4246, 869.71387)
 position = Vector2(3291.5647, 264.19995)
 
 [node name="CrownFlood" parent="." instance=ExtResource("36_crown_flood")]
+
+[node name="biglake" parent="." unique_id=762146871 instance=ExtResource("36_n1l0m")]
+z_index = -1
+position = Vector2(1411.8013, -3733.5537)
+scale = Vector2(1.3156402, 1.3156402)
+autoplay = "default"
+frame_progress = 0.30270052
 
 [editable path="collisionlayer/OnwayPl/OneWayDropPlatformComponent2"]
 [editable path="collisionlayer/WaterFl/WaterFlowArea"]
