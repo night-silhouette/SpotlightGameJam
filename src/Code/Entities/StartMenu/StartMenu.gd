@@ -34,6 +34,9 @@ var _setting_instance: SettingUI = null
 var _starting_new_game := false
 var _awaiting_menu_input := true
 var _revealing_menu := false
+var _menu_rain_time := 0.0
+@onready var _menu_rain: ColorRect = $CompletedWeather/Rain
+@onready var _ordinary_background: Texture2D = $BackgroundLayers/Sky.texture
 
 func _ready() -> void:
 	saves_modal.theme = SettingsSkin.CreateTheme()
@@ -59,6 +62,22 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_resize_intro_text)
 	_resize_intro_text()
 	_sync_setting_shortcut()
+	SignalBus.SaveSlotSaved.connect(_refresh_completed_background)
+	SignalBus.SaveSlotDeleted.connect(_refresh_completed_background)
+	_refresh_completed_background()
+
+func _refresh_completed_background(_slot: int = 0) -> void:
+	var completed := SaveManagerRef.HasCompletedSlot()
+	$BackgroundLayers/Sky.texture = $BackgroundLayers/CompletedBackground.texture if completed else _ordinary_background
+	_menu_rain.visible = completed
+	_menu_rain.material.set_shader_parameter("intensity", 1.0)
+	_menu_rain.material.set_shader_parameter("rain_color", ExportSettings.chapter5_rain_color)
+	_menu_rain.material.set_shader_parameter("drop_count", float(ExportSettings.chapter5_rain_count))
+
+func _process(delta: float) -> void:
+	if _menu_rain.visible:
+		_menu_rain_time += delta
+		_menu_rain.material.set_shader_parameter("elapsed", _menu_rain_time)
 
 func _input(event: InputEvent) -> void:
 	if not _awaiting_menu_input and not _revealing_menu:

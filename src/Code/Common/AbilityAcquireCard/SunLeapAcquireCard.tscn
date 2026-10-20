@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://Code/Common/AbilityAcquireCard/AbilityAcquireCard.tscn" id="1_base"]
+[ext_resource type="Texture2D" path="res://Art/New/component/技能图标/IMG_9889_left.png" id="2_icon"]
+
+[node name="SunLeapAcquireCard" instance=ExtResource("1_base")]
+ability_name = "逐日跃"
+ability_icon = ExtResource("2_icon")

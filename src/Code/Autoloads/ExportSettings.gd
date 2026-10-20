@@ -1,5 +1,24 @@
 extends Node
 
+@export_group("Ability Acquire Card", "ability_acquire_")
+## 能力展示淡入、停留和淡出时长，单位秒；不暂停世界或锁定输入。
+@export_range(0.0, 10.0, 0.05) var ability_acquire_fade_in: float = 0.7
+@export_range(0.0, 20.0, 0.05) var ability_acquire_hold: float = 3.0
+@export_range(0.0, 10.0, 0.05) var ability_acquire_fade_out: float = 0.8
+## 设计画布等比缩放适配窗口；内容边距为画布内侧留白。
+@export var ability_acquire_design_size: Vector2 = Vector2(1152, 648)
+@export_range(0.0, 120.0, 1.0) var ability_acquire_margin: float = 32.0
+## 上方人物图标框和底部章节装饰框，均保持原图完整比例。
+@export var ability_acquire_icon_size: Vector2 = Vector2(250, 285)
+@export var ability_acquire_decoration_size: Vector2 = Vector2(370, 47)
+@export_range(0, 64, 1) var ability_acquire_spacing: int = 16
+@export_range(8, 96, 1) var ability_acquire_obtained_font_size: int = 24
+@export_range(8, 160, 1) var ability_acquire_title_font_size: int = 60
+## 沿用章节纸色、暖金与设置深墨；背景为轻度遮罩。
+@export var ability_acquire_paper_color: Color = Color("e4d8b9")
+@export var ability_acquire_title_color: Color = Color("d8b779")
+@export var ability_acquire_background_color: Color = Color(0.094118, 0.098039, 0.078431, 0.48)
+
 @export_group("Debug", "debug_")
 ## 是否显示玩家界面的调试能力面板。
 @export var debug_panel_enabled: bool = true
@@ -26,6 +45,12 @@ extends Node
 @export var chapter5_surge_volume_db: float = -8.0
 @export var chapter5_black_fade_duration: float = 1.4
 @export var chapter5_black_hold_duration: float = 0.6
+## 水涌在此进度已全黑并切湖泊镜头；必须小于1。
+@export_range(0.5, 0.99, 0.01) var chapter5_black_complete_progress: float = 0.94
+## 宁静镜头完全揭示后才计时；到时淡入提示并接收新按下。
+@export var chapter5_return_delay: float = 10.0
+@export var chapter5_return_prompt_fade: float = 1.0
+@export var chapter5_return_prompt_text: String = "任意键返回主菜单"
 @export var chapter5_thunder_volume_db: float = -12.0
 @export var chapter5_thunder_fade_duration: float = 3.0
 @export var chapter5_rain_volume_db: float = -10.0
@@ -34,13 +59,15 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Credits", "credits_")
 ## 参与早期版本测试游玩的玩家名单，可在数组中继续添加。
-@export var credits_early_playtesters: PackedStringArray = ["YBBBY"]
+@export var credits_early_playtesters: PackedStringArray = ["YBBBY", "君问归期未有期", "LongDaling", "atomo_muzic"]
 
 @export_group("Tutorial Subtitle", "tutorial_")
 ## 跳跃教学区域每次重新进入时请求的文案。
 @export var tutorial_jump_hint_text: String = "长按跳跃以达到更高高度"
 ## 横木平台冲刺教学区域每次重新进入时请求的文案。
 @export var tutorial_dash_hint_text: String = "Shift键冲刺"
+## 绿洲骸骨植物柱顶的向下观察教学文案。
+@export var tutorial_look_down_hint_text: String = "长按s键向下观察"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
 ## 手机版第一处水墙前的交互教学文案。
@@ -186,9 +213,9 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 远景相对镜头的移动比例。
 @export_range(0.0, 1.0) var level2_scenery_far_speed: float = 0.25
 ## 窗格、拱廊等中景移动比例，同组保持原图对齐。
-@export_range(0.0, 1.0) var level2_scenery_middle_speed: float = 0.65
+@export_range(0.0, 1.0) var level2_scenery_middle_speed: float = 0.85
 ## 前景柱移动比例。
-@export_range(1.0, 1.5) var level2_scenery_foreground_speed: float = 1.08
+@export_range(1.0, 1.5) var level2_scenery_foreground_speed: float = 1.03
 ## 横向前景实体柱透明度，默认完整显示裁切素材。
 @export_range(0.0, 1.0) var level2_scenery_foreground_opacity: float = 1.0
 ## 玩家附近前景进一步淡出的半径，世界像素。
@@ -359,7 +386,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 受伤后的无敌免伤时间 (秒)
 @export var player_unbeatable_time: float = 0.3
 ## 随时间自然掉血速率 (每秒掉血量)
-@export var player_hp_drain_rate: float = 200.0 / 300.0 * 1.3
+@export var player_hp_drain_rate: float = 200.0 / 300.0 * 1.3 * 0.9
 ## 触发缺水视觉效果的水量比例 (0.15 即低于 15%)
 @export_range(0.0, 1.0, 0.01) var player_low_water_threshold: float = 0.15
 ## 缺水时主角最终呈现的沙土色
@@ -662,6 +689,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var player_camera_damping: Vector2 = Vector2(0.12, 0.18)
 ## 防抖方框大小（占视口的比例，1.0=整个视口宽/高）。角色在框内移动不推动镜头，顶到框边才推动镜头。
 @export var player_camera_box_fraction: Vector2 = Vector2(0.05, 0.25)
+## 物理 W/S 持续同方向按住后开始观察的秒数。
+@export_range(0.0, 2.0, 0.05) var player_camera_look_hold_delay: float = 0.5
+## 上下观察相对原构图的距离（世界像素），仍受所有现有限位钳制。
+@export_range(0.0, 800.0, 1.0) var player_camera_look_distance: float = 180.0
+## 观察和松手恢复的指数平滑速率（每秒），越大越快。
+@export_range(0.1, 30.0, 0.1) var player_camera_look_smooth_speed: float = 8.0
 
 @export_group("Camera Gate", "camera_gate_")
 ## 设置了 scope_origin_path 的永久边界，仅在玩家处于所属关卡的此局部 Y 范围时启用。
@@ -865,7 +898,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_save_path_prefix: String = "user://Saves/save_slot_"
 
 ## 按键绑定持久化文件路径 (独立于存档槽位)
-@export var setting_keybinds_path: String = "res://Code/Entities/Setting/Saves/custom_keybinds.json"
+@export var setting_keybinds_path: String = "user://custom_keybinds.json"
 ## 设置界面背景透明度
 @export_range(0.0, 1.0, 0.05) var setting_panel_opacity: float = 0.92
 ## 设置和读档共用面板的设计尺寸；小屏等比缩小，内容最小尺寸优先。

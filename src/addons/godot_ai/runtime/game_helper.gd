@@ -14,10 +14,9 @@ extends Node
 ## This autoload solves that by replying to "mcp:take_screenshot" debug
 ## messages with a PNG of Viewport.get_texture() from inside the game.
 ##
-## No-ops in the editor (Engine.is_editor_hint) and silently sits idle
-## when the debugger channel is inactive (e.g. exported release builds)
-## — register_message_capture is safe to call either way, it's
-## send_message that requires an active channel.
+## No-ops in the editor (Engine.is_editor_hint) and non-debug builds.
+## Debug builds retain the capture while the debugger channel is inactive,
+## but discard queued logs until the channel is available again.
 
 const CAPTURE_PREFIX := "mcp"
 ## Cap per-frame flush so a runaway print loop can't blow the debugger's
@@ -109,7 +108,8 @@ func _ready() -> void:
 	## the runtime-context check: true only inside the editor GUI, false
 	## in play-from-editor. The earlier has_feature check was causing us
 	## to skip registration in the game and time out every capture.
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() or not OS.is_debug_build():
+		set_process(false)
 		return
 	## Keep ticking while the tree is paused: _process both ferries game logs
 	## and timestamps main-loop liveness for the stalled-loop screenshot
@@ -158,6 +158,8 @@ func _process(_delta: float) -> void:
 	if not _logger_attached or _logger == null:
 		return
 	if not EngineDebugger.is_active():
+		_pending_outbound.clear()
+		_logger.drain()
 		return
 	if _pending_outbound.is_empty():
 		if not _logger.has_pending():

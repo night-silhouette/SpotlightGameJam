@@ -23,6 +23,10 @@ extends Logger
 ## ("Internals … skip class_name entirely and load via const preload").
 const _LogBacktrace := preload("res://addons/godot_ai/utils/log_backtrace.gd")
 
+## Bound memory even when the host cannot drain (e.g. a stopped main loop).
+## Drop new entries at capacity; script-error tracking remains independent.
+const MAX_PENDING_ENTRIES := 1000
+
 var _pending: Array = []
 var _mutex := Mutex.new()
 ## #490: a monotonic sequence + a small ring of recent GDScript runtime
@@ -89,6 +93,9 @@ func _log_error(
 
 func _append(level: String, text: String, details: Dictionary = {}) -> void:
 	_mutex.lock()
+	if _pending.size() >= MAX_PENDING_ENTRIES:
+		_mutex.unlock()
+		return
 	if details.is_empty():
 		_pending.append([level, text])
 	else:

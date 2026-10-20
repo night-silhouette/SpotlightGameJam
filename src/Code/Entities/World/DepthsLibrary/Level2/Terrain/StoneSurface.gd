@@ -51,10 +51,10 @@ static func Build(rectangles: Array[Rect2]) -> Dictionary:
 				edges.append([1, levels[index + 1], exposed])
 			edges.append([2, span.x, Vector2(levels[index], levels[index + 1])])
 			edges.append([3, span.y, Vector2(levels[index], levels[index + 1])])
-	return {"fills": fills, "edges": edges, "corners": _build_corners(fills, edges)}
+	return {"fills": fills, "edges": edges, "corners": _build_corners(levels, bands, edges)}
 
 
-static func _build_corners(fills: Array[Rect2], edges: Array) -> Array:
+static func _build_corners(levels: Array[float], bands: Array, edges: Array) -> Array:
 	# 只在外轮廓转向处补原画转角；水平带之间的直线接点不重复加角。
 	var vertices: Dictionary = {}
 	for edge: Array in edges:
@@ -68,10 +68,8 @@ static func _build_corners(fills: Array[Rect2], edges: Array) -> Array:
 		var mask := 0
 		for quadrant in range(4):
 			var probe: Vector2 = point + directions[quadrant] * 0.01
-			for rect in fills:
-				if rect.has_point(probe):
-					mask |= 1 << quadrant
-					break
+			if _contains_point(probe, levels, bands):
+				mask |= 1 << quadrant
 		match mask:
 			1, 2, 4, 8:
 				# 凸角：唯一实心象限使用面向该拐点的完整转角。
@@ -89,6 +87,29 @@ static func _build_corners(fills: Array[Rect2], edges: Array) -> Array:
 					if mask & (1 << quadrant):
 						corners.append([point, quadrant])
 	return corners
+
+static func _contains_point(point: Vector2, levels: Array[float], bands: Array) -> bool:
+	var low := 0
+	var high := levels.size()
+	while low < high:
+		var middle := (low + high) >> 1
+		if levels[middle] <= point.y:
+			low = middle + 1
+		else:
+			high = middle
+	var band_index := low - 1
+	if band_index < 0 or band_index >= bands.size():
+		return false
+	var spans: Array = bands[band_index]
+	low = 0
+	high = spans.size()
+	while low < high:
+		var middle := (low + high) >> 1
+		if spans[middle].x <= point.x:
+			low = middle + 1
+		else:
+			high = middle
+	return low > 0 and point.x < spans[low - 1].y
 
 static func _subtract_spans(span: Vector2, cuts: Array) -> Array[Vector2]:
 	var remaining: Array[Vector2] = [span]

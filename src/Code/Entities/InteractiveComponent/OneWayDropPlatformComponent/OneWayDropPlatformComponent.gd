@@ -39,6 +39,17 @@ func _ready() -> void:
 		return
 	process_physics_priority = 100
 
+func CanDropPlayer(player: CharacterBody2D) -> bool:
+	if player.get("offering_locked") == true or not player.is_on_floor() or _dropping_players.has(player):
+		return false
+	if not _sensor.overlaps_body(player):
+		return false
+	for index in player.get_slide_collision_count():
+		var collision := player.get_slide_collision(index)
+		if collision.get_collider() == self and collision.get_normal().dot(player.up_direction) >= cos(player.floor_max_angle):
+			return true
+	return false
+
 func _physics_process(delta: float) -> void:
 	_update_dropping_players(delta)
 	if not Input.is_action_pressed("down") or not Input.is_action_just_pressed("jump"):
@@ -47,7 +58,7 @@ func _physics_process(delta: float) -> void:
 		var player := body as CharacterBody2D
 		if player == null or not player.is_in_group("player"):
 			continue
-		if player.get("offering_locked") == true or not player.is_on_floor() or _dropping_players.has(player):
+		if not CanDropPlayer(player):
 			continue
 		_begin_drop(player)
 
