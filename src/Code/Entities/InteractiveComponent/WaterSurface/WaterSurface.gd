@@ -28,6 +28,16 @@ func _update_size() -> void:
 	var tr = get_node_or_null("TextureRect") as TextureRect
 	if tr:
 		tr.size = Vector2(width, height)
+		_update_shader_parameters(tr)
+
+func _update_shader_parameters(tr: TextureRect) -> void:
+	var shader_material := tr.material as ShaderMaterial
+	if shader_material == null:
+		return
+	shader_material.set_shader_parameter(&"surface_width", width)
+	shader_material.set_shader_parameter(&"side_fade_width", ExportSettings.water_surface_side_fade_width)
+	shader_material.set_shader_parameter(&"side_blur_radius", ExportSettings.water_surface_side_blur_radius)
+	shader_material.set_shader_parameter(&"side_blur_strength", ExportSettings.water_surface_side_blur_strength)
 
 func _process(delta: float) -> void:
 	var tr = get_node_or_null("TextureRect") as TextureRect

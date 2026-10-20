@@ -618,6 +618,14 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 穿过流水区域音效所使用的音频总线
 @export var water_flow_audio_bus: StringName = &"SFX_Interact"
 
+@export_group("Interactive - Water Surface", "water_surface_")
+## 水面左右两侧从完全透明过渡到正常显示的宽度，单位为水面组件的本地像素；不会影响上、下边缘。
+@export_range(0.0, 256.0, 1.0) var water_surface_side_fade_width: float = 96.0
+## 水面左右边缘的横向模糊采样半径，单位为原始纹理像素。
+@export_range(0.0, 32.0, 0.5) var water_surface_side_blur_radius: float = 8.0
+## 水面左右边缘的模糊混合强度；0 为关闭模糊，1 为完整模糊。
+@export_range(0.0, 1.0, 0.05) var water_surface_side_blur_strength: float = 1.0
+
 @export_group("Interactive - Spikes", "spikes_")
 ## 通用地刺基础伤害值
 @export var spikes_damage: float = 40.0
@@ -642,7 +650,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
 ## 玩家距圣杯图像边缘的最大交互距离（世界像素），不要求身体进入点击区域。
-@export_range(0.0, 300.0, 1.0) var chalice_interact_distance: float = 85.0
+@export_range(0.0, 300.0, 1.0) var chalice_interact_distance: float = 160.0
 
 @export_group("Interactive - Tent", "tent_")
 ## 帐篷重生延迟时长 (秒，玩家死亡后多久在帐篷重生)

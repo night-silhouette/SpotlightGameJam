@@ -148,6 +148,10 @@ func GetInteractionRect() -> Rect2:
 		origin.y = -origin.y - size.y
 	return Rect2(origin, size)
 
+## 返回当前是否有玩家进入圣水池的有效交互距离；仅用于同步交互提示表现。
+func IsPlayerInRange() -> bool:
+	return _player_in_range
+
 func _contains_world_point(world_pos: Vector2) -> bool:
 	var rect := GetInteractionRect()
 	return interaction_art.is_visible_in_tree() and rect.has_area() and rect.has_point(interaction_art.to_local(world_pos))

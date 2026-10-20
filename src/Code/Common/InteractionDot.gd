@@ -45,10 +45,11 @@ func _update_dot() -> void:
 		if not _entity.is_node_ready():
 			visible = false
 			return
+		visible = visible and _entity.IsPlayerInRange()
 		var art := _entity.get_node("AnimatedSprite2D") as AnimatedSprite2D
 		source = art
 		bounds = _entity.GetInteractionRect()
-		visible = art.is_visible_in_tree() and bounds.has_area()
+		visible = visible and art.is_visible_in_tree() and bounds.has_area()
 	elif "area_size" in _entity:
 		bounds = Rect2(-_entity.area_size * 0.5, _entity.area_size)
 	else:

@@ -21,6 +21,20 @@
 [ext_resource type="PackedScene" uid="uid://lltd8w7jtyho" path="res://Code/Entities/World/视觉装饰组件/BlackCurtain.tscn" id="21_g4l4s"]
 [ext_resource type="Texture2D" uid="uid://5fj0oxvvmm0a" path="res://Art/Archived/Oldhuntt/OutPath/05.png" id="21_vwl1e"]
 [ext_resource type="Texture2D" uid="uid://dubum4rsamhhc" path="res://Art/Archived/Oldhuntt/OutPath/04.png" id="25_bmeg8"]
+[ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="26_dialog"]
+
+[sub_resource type="Resource" id="OasisBone_4_10_1"]
+script = ExtResource("26_dialog")
+text = "一阵低沉的震颤碾过大地，林间骤然响起纷杂的低语与兵刃相击声，由远及近。"
+
+[sub_resource type="Resource" id="OasisBone_4_10_2"]
+script = ExtResource("26_dialog")
+text = "低语声也骤然拔高，尖锐得近乎凄厉。平静的水面泛起涟漪，原本温和的微风陡然变得狂乱。"
+
+[sub_resource type="Resource" id="OasisBone_4_10_3"]
+script = ExtResource("26_dialog")
+dialog_type = "独白"
+text = "怎么回事？！风……风变大了！有什么东西醒过来了！"
 
 [sub_resource type="Curve2D" id="Curve2D_1ev11"]
 _data = {
@@ -206,6 +220,9 @@ position = Vector2(3069, 857)
 [node name="InteractableComponent" parent="." unique_id=1366914613 instance=ExtResource("10_qrymx")]
 position = Vector2(281, 769)
 scale = Vector2(1.4397812, 2.0326293)
+disable_movement_during_dialog = true
+show_first_dialog = true
+first_dialog_lines = Array[ExtResource("26_dialog")]([SubResource("OasisBone_4_10_1"), SubResource("OasisBone_4_10_2"), SubResource("OasisBone_4_10_3")])
 metadata/_edit_lock_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="InteractableComponent" unique_id=169295950]

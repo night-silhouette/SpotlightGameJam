@@ -617,6 +617,11 @@ position = Vector2(795.5592, 343.39618)
 scale = Vector2(0.56367075, 0.56367075)
 texture = ExtResource("32_b6ipw")
 
+[node name="Sprite2D6" type="Sprite2D" parent="visuallayer" unique_id=1594811608]
+position = Vector2(1093.2241, -805.25446)
+scale = Vector2(0.7245028, 0.7245028)
+texture = ExtResource("32_b6ipw")
+
 [node name="Sprite2D3" type="Sprite2D" parent="visuallayer" unique_id=1869424030]
 position = Vector2(3252.9595, -1081.9736)
 rotation = -0.0921492
@@ -624,9 +629,15 @@ scale = Vector2(0.31806934, 0.31806934)
 texture = ExtResource("33_ysst7")
 
 [node name="Sprite2D4" type="Sprite2D" parent="visuallayer" unique_id=1231657952]
-position = Vector2(1107.9716, -2938.636)
+position = Vector2(3058.1504, -2554.3286)
 rotation = -0.32789078
 scale = Vector2(0.46122548, 0.46122548)
+texture = ExtResource("34_n1l0m")
+
+[node name="Sprite2D5" type="Sprite2D" parent="visuallayer" unique_id=1481293800]
+position = Vector2(1064.0216, -2875.9573)
+rotation = -2.260195
+scale = Vector2(0.34970903, 0.34970903)
 texture = ExtResource("34_n1l0m")
 
 [editable path="collisionlayer/OnwayPl/OneWayDropPlatformComponent2"]
