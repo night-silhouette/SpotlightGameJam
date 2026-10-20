@@ -2,6 +2,7 @@ extends Node2D
 ## 连续地下地图：房间通过实体通道相连，玩家能力与死亡复活由角色系统管理。
 const CONFIRM_SFX = preload("res://Music/SFX/UI/Confirm.wav")
 const FAILED_SFX = preload("res://Music/SFX/InteractiveLV3/Failed.wav")
+const ARCHIVE_GATE_SFX = preload("res://Music/SFX/InteractiveLV3/MechanismDoor.wav")
 const FOUNTAIN_ACTIVATE_SFX = preload("res://Music/SFX/Interactive-SFX_Interactive/Interact.wav")
 const FOUNTAIN_ENTER_SFX = preload("res://Music/SFX/Interactive-SFX_Interactive/HuaShui.wav")
 const FOUNTAIN_EXIT_SFX = preload("res://Music/SFX/Interactive-SFX_Interactive/YouShui.wav")
@@ -323,6 +324,8 @@ func _update_archive_gate(animate: bool) -> void:
 	if not animate:
 		_archive_gate.position = target
 		return
+	if puzzle_solved and target.y < _archive_gate.position.y:
+		Util.PlaySFX2D(ARCHIVE_GATE_SFX, _archive_gate.global_position, &"SFX_Interact")
 	_archive_gate_tween = create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
 	_archive_gate_tween.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	_archive_gate_tween.tween_property(_archive_gate, "position", target,

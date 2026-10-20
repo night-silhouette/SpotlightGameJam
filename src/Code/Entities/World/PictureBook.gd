@@ -10,6 +10,10 @@ const SettingsFrame = preload("res://Code/Entities/Setting/SettingsFrame.gd")
 	"最后一页，原本画的是在广场上一起庆祝节日的集会，但现在每个人的表情都被改了，全都是悲伤的表情。"
 ]
 @export var page_monologues: Array[String] = []
+## 按从0开始的页码配置独白头像，未配置的页使用正常表情。
+@export var page_monologue_expressions: Dictionary[int, String] = {}
+## 按关闭独白的数组下标配置头像，未配置的句子使用正常表情。
+@export var close_monologue_expressions: Dictionary[int, String] = {}
 @export var close_monologues: Array[String] = [
 	"这些月族人……有和我一样的耳朵和尾巴……",
 	"他们曾经毫无嫌隙地生活在一起。后来究竟发生了什么事情……"
@@ -71,7 +75,7 @@ func _read_current_page() -> void:
 		var current_page := _page_index
 		await RenderingServer.frame_post_draw
 		if _root.visible and _page_index == current_page:
-			_show_monologues([page_monologues[current_page]], false)
+			_show_monologues([page_monologues[current_page]], false, {0: page_monologue_expressions.get(current_page, "正常")})
 
 func _close_book() -> void:
 	if _waiting_for_dialog:
@@ -80,17 +84,21 @@ func _close_book() -> void:
 	if close_monologues.is_empty():
 		_on_monologue_finished(true)
 	else:
-		_show_monologues(close_monologues, true)
+		_show_monologues(close_monologues, true, close_monologue_expressions)
 
-func _show_monologues(lines: Array[String], closing: bool) -> void:
+func _show_monologues(lines: Array[String], closing: bool, expressions: Dictionary) -> void:
 	if closing:
 		_root.hide()
 	_waiting_for_dialog = true
 	var dialog_box: Node = _interactable._dialog_box
 	if dialog_box != null:
 		dialog_box.Finished.connect(_on_monologue_finished.bind(closing), CONNECT_ONE_SHOT)
-	for line in lines:
-		SignalBus.DialogBox.emit(&"独白", line)
+	for index in lines.size():
+		var line := PlotDialogLine.new()
+		line.dialog_type = "独白"
+		line.text = lines[index]
+		line.monologue_expression = expressions.get(index, "正常")
+		SignalBus.PlotDialogLineRequested.emit(line)
 	if dialog_box == null:
 		_on_monologue_finished(closing)
 

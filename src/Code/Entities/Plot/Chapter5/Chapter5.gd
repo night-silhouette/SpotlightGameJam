@@ -154,8 +154,8 @@ func _build_steps() -> Array[Dictionary]:
 		{"op": "approach", "text": "沙丘的尽头，那片熟悉的水面再次出现在眼前，仍旧安静地嵌在沙地之间。"},
 		{"text": "信物立刻沉入水中，水面荡开一圈涟漪。片刻之后，水底隐约浮现出了幽微的光，那光并不激烈，只在水中缓缓流动。"},
 		{"op": "change", "text": "指尖忽然传来一阵异样的感觉，这才猛然发觉，自己的身体边缘正变得模糊，细小的水汽不断从身上缓缓升起，悬浮在周围。"},
-		{"type": &"独白", "text": "怎么回事，是错觉吗？"},
-		{"op": "fear", "type": &"独白", "text": "不，不对，指尖已经没有感觉了，手掌的轮廓也快要看不清了！"},
+		{"type": &"独白", "expression": "惊讶", "text": "怎么回事，是错觉吗？"},
+		{"op": "fear", "type": &"独白", "expression": "惊讶", "text": "不，不对，指尖已经没有感觉了，手掌的轮廓也快要看不清了！"},
 		{"op": "retreat", "duration": ExportSettings.chapter5_step_duration, "type": &"独白", "text": "奇怪，变化停止了，不过水汽没有散去。"},
 		{"duration": ExportSettings.chapter5_beat_duration},
 		{"op": "phantom", "text": "水池边忽然浮现出一道模糊的身影。那身影低头看着水面，随后缓缓抬起头。主角看不清它的面容，只看见它的身体逐渐消散，升向天空。"},
@@ -164,11 +164,14 @@ func _build_steps() -> Array[Dictionary]:
 		{"op": "stele", "text": "水汽掠过残碑，附着在冰冷的石面上，凝成了细密的水珠。水珠沿着凹陷的刻痕缓缓滑落，模糊的线条逐渐变得清晰。"},
 		{"text": "原本不成意义的图案，连成了一幅完整的画。画中既有日族，也有月族，他们的身影似乎正缓缓升向天空，最终与云层融为一体。"},
 		{"text": "水珠顺着石刻的纹路缓缓滑落，汇成一道细流，顺着水流看去，自己的双脚已悄然浮起。石碑上那些渐渐淡去的身影，与眼前正在发生的一切，终于重叠在了一起。"},
-		{"type": &"独白", "text": "那是……雨……那些竖线，是雨！这就是使者的归宿……直到……直到最后一场雨落下。"},
+		{"type": &"独白", "expression": "惊讶", "text": "那是……雨……那些竖线，是雨！"},
+		{"type": &"独白", "text": "这就是使者的归宿……"},
+		{"type": &"独白", "expression": "平静", "text": "直到……直到最后一场雨落下。"},
 		{"type": &"独白", "text": "难怪……蓄水池里的水，地下的水脉，还有那片湖，都没有在那次极昼灾难中干涸。\n幻化成云，留在这片天空里，又一次次化作雨，落回这片土地。这就是使者的归宿。"},
 		{"type": &"独白", "text": "他们都走过相似的道路，又都在这里作出了自己的选择，尽管永远都无法知道，自己的选择究竟会带来什么，甚至不确定这场雨会落在何处。"},
 		{"type": &"独白", "text": "一滴雨或许微不足道，可千万滴雨落下，就足以让一个世界重新生长。"},
-		{"type": &"独白", "text": "我一直都弄错了，我不是一个等待被找到的答案，我是曾经存在过的、即将要消失的、仍在未来等待的，所有的选择交织在一起，我是这些痕迹的一部分。我是我们。"},
+		{"type": &"独白", "expression": "平静", "text": "我一直都弄错了，"},
+		{"type": &"独白", "text": "我不是一个等待被找到的答案，我是曾经存在过的、即将要消失的、仍在未来等待的，所有的选择交织在一起，我是这些痕迹的一部分。我是我们。"},
 		{"op": "choose", "duration": ExportSettings.chapter5_step_duration, "text": "想到这便不再试图抓住正在消散的身体，最后一缕犹豫随着叹气散去。向前迈出一步，水汽从脚下升起，托起越来越轻的身躯，向上飘去。"},
 		{"op": "turn", "duration": 0.6},
 		{"op": "ascend", "duration": ExportSettings.chapter5_ascent_duration},
@@ -227,7 +230,11 @@ func _next_step() -> void:
 		SignalBus.Chapter5PlayerRequested.emit(_player, self, &"pose", pose)
 	if beat.has("text"):
 		_dialog_wait = true
-		SignalBus.DialogBox.emit(beat.get("type", &"旁白"), beat.text)
+		var line := PlotDialogLine.new()
+		line.dialog_type = String(beat.get("type", &"旁白"))
+		line.text = beat.text
+		line.monologue_expression = beat.get("expression", "正常")
+		SignalBus.PlotDialogLineRequested.emit(line)
 
 func _on_pose_finished(player: Node2D, source: Node, animation: StringName) -> void:
 	if _active and player == _player and source == self and animation == &"turn_back":

@@ -34,6 +34,7 @@ text = "低语声也骤然拔高，尖锐得近乎凄厉。平静的水面泛起
 [sub_resource type="Resource" id="OasisBone_4_10_3"]
 script = ExtResource("26_dialog")
 dialog_type = "独白"
+monologue_expression = "惊讶"
 text = "怎么回事？！风……风变大了！有什么东西醒过来了！"
 
 [sub_resource type="Curve2D" id="Curve2D_1ev11"]

@@ -5,6 +5,11 @@ signal Finished
 
 const NARRATION: StringName = &"旁白"
 const MONOLOGUE: StringName = &"独白"
+const MONOLOGUE_PORTRAITS = {
+	"正常": preload("res://Art/New/component/头像/正常.png"),
+	"惊讶": preload("res://Art/New/component/头像/惊讶.png"),
+	"平静": preload("res://Art/New/component/头像/平静.png"),
+}
 const TALK_BEEP = preload("res://Music/SFX/UI/TalkBeep.wav")
 const PUNCTUATION = "，。！？；：、,.!?;:…—（）()“”‘’《》【】「」『』"
 const SETTINGS_ART = preload("res://Art/New/ui/设置底图.PNG")
@@ -12,6 +17,7 @@ const SETTINGS_ART = preload("res://Art/New/ui/设置底图.PNG")
 const ARROW_REGION := Rect2i(816, 127, 62, 38)
 
 @onready var _box: AspectRatioContainer = $Root/Box
+@onready var _portrait: TextureRect = $Root/Box/Margin/Portrait
 @onready var _title: Label = $Root/Box/Margin/Content/Title
 @onready var _content: Label = $Root/Box/Margin/Content/Text
 @onready var _close_button: TextureButton = $Root/Box/Margin/Close
@@ -30,6 +36,7 @@ func _ready() -> void:
 	_box.hide()
 	_narration.hide()
 	SignalBus.DialogBox.connect(_on_dialog_box)
+	SignalBus.PlotDialogLineRequested.connect(_on_plot_dialog_line_requested)
 	_close_button.pressed.connect(_on_close_pressed)
 	_narration_close.pressed.connect(_on_close_pressed)
 	_auto_close_timer.timeout.connect(_on_close_pressed)
@@ -88,20 +95,24 @@ func Dismiss() -> void:
 	_narration.hide()
 	Finished.emit()
 
-func _on_dialog_box(dialog_type: StringName, content: String) -> void:
+func _on_plot_dialog_line_requested(line: PlotDialogLine) -> void:
+	_on_dialog_box(StringName(line.dialog_type), line.text, line.monologue_expression)
+
+func _on_dialog_box(dialog_type: StringName, content: String, expression: String = "正常") -> void:
 	if dialog_type != NARRATION and dialog_type != MONOLOGUE:
 		return
 	if IsOpen():
-		_pending.append({"type": dialog_type, "content": content})
+		_pending.append({"type": dialog_type, "content": content, "expression": expression})
 		return
-	_show_dialog(dialog_type, content)
+	_show_dialog(dialog_type, content, expression)
 
-func _show_dialog(dialog_type: StringName, content: String) -> void:
+func _show_dialog(dialog_type: StringName, content: String, expression: String = "正常") -> void:
 	if dialog_type == NARRATION:
 		_narration_text.text = content
 		_narration.show()
 		_auto_close_timer.start(clampf(content.length() * ExportSettings.dialog_narration_seconds_per_character, ExportSettings.dialog_narration_min_duration, ExportSettings.dialog_narration_max_duration))
 	else:
+		_portrait.texture = MONOLOGUE_PORTRAITS[expression]
 		_title.text = String(dialog_type)
 		_title.add_theme_color_override("font_color", Color(0.72, 0.86, 1.0))
 		_content.text = content
@@ -126,4 +137,4 @@ func _on_close_pressed() -> void:
 	Closed.emit()
 	if not IsOpen() and not _pending.is_empty():
 		var next: Dictionary = _pending.pop_front()
-		_show_dialog(next["type"], next["content"])
+		_show_dialog(next["type"], next["content"], next["expression"])
