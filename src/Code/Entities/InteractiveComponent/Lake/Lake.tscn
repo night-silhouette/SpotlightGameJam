@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://c0mbjdm1fjpuf" path="res://Code/Entities/InteractiveComponent/Lake/Lake.gd" id="1_lake"]
 [ext_resource type="Texture2D" uid="uid://c507vy0qw5vni" path="res://Art/New/component/lake/静态lake.png" id="2_static"]
 [ext_resource type="Texture2D" uid="uid://btj8w86qy3nni" path="res://Art/New/component/lake/流水1.png" id="3_flow1"]
-[ext_resource type="Texture2D" uid="uid://dmbitmagbbm4v" path="res://Art/New/component/lake/流水2.png" id="4_flow2"]
+[ext_resource type="Texture2D" path="res://Art/New/component/lake/流水2_page1.png" id="4_flow2"]
+[ext_resource type="Texture2D" path="res://Art/New/component/lake/流水2_page2.png" id="4_flow2_page2"]
 [ext_resource type="Shader" path="res://Code/Entities/InteractiveComponent/Lake/OfferingDissolve.gdshader" id="5_offering"]
 [ext_resource type="PackedScene" path="res://Code/Common/AbilityAcquireCard/SunLeapAcquireCard.tscn" id="6_sun_leap"]
 [ext_resource type="PackedScene" path="res://Code/Common/AbilityAcquireCard/TideHookAcquireCard.tscn" id="7_tide_hook"]
@@ -60,8 +61,8 @@ margin = Rect2(150, 50, 299, 152)
 filter_clip = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_flow2_9"]
-atlas = ExtResource("4_flow2")
-region = Rect2(15336, 0, 1704, 1456)
+atlas = ExtResource("4_flow2_page2")
+region = Rect2(6816, 0, 1704, 1456)
 margin = Rect2(150, 50, 299, 152)
 filter_clip = true
 
@@ -72,8 +73,8 @@ margin = Rect2(150, 50, 299, 152)
 filter_clip = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_flow2_5"]
-atlas = ExtResource("4_flow2")
-region = Rect2(8520, 0, 1704, 1456)
+atlas = ExtResource("4_flow2_page2")
+region = Rect2(0, 0, 1704, 1456)
 margin = Rect2(150, 50, 299, 152)
 filter_clip = true
 
