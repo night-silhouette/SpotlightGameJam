@@ -4,10 +4,15 @@
 [ext_resource type="Script" uid="uid://b7oitni6r78l8" path="res://Code/Entities/OasisBattlefieldChaser/OasisBattlefieldChaser.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dy66lpd2f3gnj" path="res://Art/New/boss/boss.png" id="3_vksdr"]
 [ext_resource type="Shader" path="res://Code/Entities/OasisBattlefieldChaser/ChaserCorruption.gdshader" id="4_corruption"]
+[ext_resource type="Shader" path="res://Code/Entities/OasisBattlefieldChaser/ChaserBodyDissolve.gdshader" id="5_body_dissolve"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_corruption"]
 resource_local_to_scene = true
 shader = ExtResource("4_corruption")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_body_dissolve"]
+resource_local_to_scene = true
+shader = ExtResource("5_body_dissolve")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6mnh7"]
 atlas = ExtResource("3_vksdr")
@@ -88,6 +93,15 @@ visible = false
 material = SubResource("ShaderMaterial_corruption")
 fit_margin = 12.0
 clear_margin = 16.0
+
+[node name="ColorRect" type="ColorRect" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1168009893]
+material = SubResource("ShaderMaterial_body_dissolve")
+offset_left = -566.8805
+offset_top = -897.73413
+offset_right = -526.8805
+offset_bottom = -857.73413
+scale = Vector2(15.274931, 45.68152)
+color = Color(0.13725491, 0.12941177, 0.12941177, 1)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1992068783]
 position = Vector2(136.05711, -412.3118)
@@ -195,13 +209,5 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.49953458
 flip_h = true
-
-[node name="ColorRect" type="ColorRect" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1168009893]
-offset_left = -566.8805
-offset_top = -897.73413
-offset_right = -526.8805
-offset_bottom = -857.73413
-scale = Vector2(15.274931, 45.68152)
-color = Color(0.13725491, 0.12941177, 0.12941177, 1)
 
 [editable path="DirectionalChaseMover"]

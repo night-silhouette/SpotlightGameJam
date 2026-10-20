@@ -1,0 +1,107 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Code/Common/AbilityAcquireCard/AbilityAcquireCard.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://Art/Archived/Font/1 汇文明朝体-名称【Huiwen-mincho】.ttf" id="2_font"]
+[ext_resource type="Texture2D" path="res://Art/New/ui/章节标题.PNG" id="3_decoration"]
+[ext_resource type="Texture2D" path="res://Art/New/component/技能图标/IMG_9889_left.png" id="4_icon"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_decoration"]
+atlas = ExtResource("3_decoration")
+region = Rect2(206, 187, 740, 93)
+
+[sub_resource type="Shader" id="Shader_paper"]
+code = "shader_type canvas_item;
+render_mode unshaded;
+uniform vec4 paper_color : source_color = vec4(0.894118, 0.847059, 0.72549, 1.0);
+varying vec4 tint;
+void vertex() {
+	tint = COLOR;
+}
+void fragment() {
+	COLOR = vec4(paper_color.rgb, texture(TEXTURE, UV).a * paper_color.a) * tint;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_paper"]
+resource_local_to_scene = true
+shader = SubResource("Shader_paper")
+
+[node name="AbilityAcquireCard" type="CanvasLayer"]
+layer = 90
+script = ExtResource("1_script")
+
+[node name="Root" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Background" type="ColorRect" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.094118, 0.098039, 0.078431, 0.48)
+
+[node name="Design" type="Control" parent="Root"]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+
+[node name="Layout" type="VBoxContainer" parent="Root/Design"]
+layout_mode = 0
+offset_left = 391.0
+offset_top = 80.0
+offset_right = 761.0
+offset_bottom = 568.0
+mouse_filter = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Root/Design/Layout"]
+material = SubResource("ShaderMaterial_paper")
+custom_minimum_size = Vector2(250, 285)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("4_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Obtained" type="Label" parent="Root/Design/Layout"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.894118, 0.847059, 0.72549, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 24
+text = "已获得"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Title" type="Label" parent="Root/Design/Layout"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.847059, 0.717647, 0.47451, 1)
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 60
+text = "逐日跃"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Decoration" type="TextureRect" parent="Root/Design/Layout"]
+material = SubResource("ShaderMaterial_paper")
+custom_minimum_size = Vector2(370, 47)
+layout_mode = 2
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = SubResource("AtlasTexture_decoration")
+expand_mode = 1
+stretch_mode = 5

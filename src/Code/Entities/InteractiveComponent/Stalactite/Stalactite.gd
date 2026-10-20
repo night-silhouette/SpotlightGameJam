@@ -37,6 +37,8 @@ var current_state: StalactiteState = StalactiteState.HANGING
 var _vertical_velocity: float = 0.0
 var _original_visual_pos: Vector2 = Vector2.ZERO
 var _shake_tween: Tween = null
+var _fall_collision_armed: bool = false
+var _initial_overlap_body_ids: Dictionary = {}
 
 @onready var detect_ray: RayCast2D = $DetectRay
 @onready var hit_area: Area2D = $HitArea
@@ -53,6 +55,7 @@ func _ready() -> void:
 
 	if hit_area:
 		hit_area.body_entered.connect(_on_hit_area_body_entered)
+		hit_area.body_exited.connect(_on_hit_area_body_exited)
 		# 悬挂阶段关闭伤害检测区域，下落时才开启
 		hit_collision.set_deferred("disabled", true)
 
@@ -137,7 +140,28 @@ func _start_fall() -> void:
 
 	current_state = StalactiteState.FALLING
 	_vertical_velocity = 80.0
+	_begin_fall_collision_monitoring()
+
+func _begin_fall_collision_monitoring() -> void:
+	_fall_collision_armed = false
+	_initial_overlap_body_ids.clear()
 	hit_collision.set_deferred("disabled", false)
+	_arm_fall_collision_after_sync()
+
+func _arm_fall_collision_after_sync() -> void:
+	await get_tree().physics_frame
+	# physics_frame 在本帧区域重叠刷新之前发出；再等待一帧，确保首次
+	# body_entered 已被上面的未武装分支登记为初始重叠。
+	await get_tree().physics_frame
+	if current_state != StalactiteState.FALLING or not is_instance_valid(hit_area):
+		return
+
+	# 钟乳石通常贴着或略嵌入洞顶。碰撞框首次启用时，Godot 会把这些
+	# 初始重叠报告为 body_entered；先忽略它们，离开后再次命中才算撞击。
+	for body in hit_area.get_overlapping_bodies():
+		if is_instance_valid(body):
+			_initial_overlap_body_ids[body.get_instance_id()] = true
+	_fall_collision_armed = true
 
 func _process_falling(delta: float) -> void:
 	_vertical_velocity = min(_vertical_velocity + gravity * delta, max_fall_speed)
@@ -145,6 +169,11 @@ func _process_falling(delta: float) -> void:
 
 func _on_hit_area_body_entered(body: Node2D) -> void:
 	if current_state != StalactiteState.FALLING:
+		return
+	if not _fall_collision_armed:
+		_initial_overlap_body_ids[body.get_instance_id()] = true
+		return
+	if _initial_overlap_body_ids.has(body.get_instance_id()):
 		return
 
 	# 命中玩家：造成伤害并击退（向两侧斜上方挑飞弹开，避免直接向下压进地面）
@@ -176,11 +205,16 @@ func _on_hit_area_body_entered(body: Node2D) -> void:
 			SignalBus.StalactiteHit.emit(self, body)
 		_shatter()
 
+func _on_hit_area_body_exited(body: Node2D) -> void:
+	_initial_overlap_body_ids.erase(body.get_instance_id())
+
 func _shatter() -> void:
 	if current_state == StalactiteState.SHATTERED:
 		return
 
 	current_state = StalactiteState.SHATTERED
+	_fall_collision_armed = false
+	_initial_overlap_body_ids.clear()
 	hit_collision.set_deferred("disabled", true)
 	visual_root.visible = false
 
@@ -218,5 +252,5 @@ func LoadSaveData(data: Dictionary) -> void:
 			queue_free()
 		elif state_val == StalactiteState.FALLING:
 			current_state = StalactiteState.FALLING
-			hit_collision.set_deferred("disabled", false)
 			detect_ray.enabled = false
+			_begin_fall_collision_monitoring()

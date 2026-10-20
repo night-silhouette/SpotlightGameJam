@@ -1,6 +1,6 @@
 extends Area2D
 
-@export_enum("jump", "dash", "water_wall", "look_down") var hint_kind: String = "jump"
+@export_enum("jump", "dash", "water_wall", "look_down", "look_up") var hint_kind: String = "jump"
 
 var _players_inside: Array[Node2D] = []
 
@@ -23,6 +23,8 @@ func _on_body_entered(body: Node2D) -> void:
 			if mobile_controls:
 				return
 			text = ExportSettings.tutorial_look_down_hint_text
+		"look_up":
+			text = ExportSettings.tutorial_look_up_hint_text
 		"water_wall":
 			text = ExportSettings.tutorial_mobile_water_wall_hint_text if mobile_controls else ExportSettings.tutorial_water_wall_hint_text
 	SignalBus.TutorialSubtitleRequested.emit(text)

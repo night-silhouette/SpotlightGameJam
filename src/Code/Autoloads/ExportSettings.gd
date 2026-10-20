@@ -1,5 +1,24 @@
 extends Node
 
+@export_group("Ability Acquire Card", "ability_acquire_")
+## 能力展示淡入、停留和淡出时长，单位秒；不暂停世界或锁定输入。
+@export_range(0.0, 10.0, 0.05) var ability_acquire_fade_in: float = 0.7
+@export_range(0.0, 20.0, 0.05) var ability_acquire_hold: float = 3.0
+@export_range(0.0, 10.0, 0.05) var ability_acquire_fade_out: float = 0.8
+## 设计画布等比缩放适配窗口；内容边距为画布内侧留白。
+@export var ability_acquire_design_size: Vector2 = Vector2(1152, 648)
+@export_range(0.0, 120.0, 1.0) var ability_acquire_margin: float = 32.0
+## 上方人物图标框和底部章节装饰框，均保持原图完整比例。
+@export var ability_acquire_icon_size: Vector2 = Vector2(250, 285)
+@export var ability_acquire_decoration_size: Vector2 = Vector2(370, 47)
+@export_range(0, 64, 1) var ability_acquire_spacing: int = 16
+@export_range(8, 96, 1) var ability_acquire_obtained_font_size: int = 24
+@export_range(8, 160, 1) var ability_acquire_title_font_size: int = 60
+## 沿用章节纸色、暖金与设置深墨；背景为轻度遮罩。
+@export var ability_acquire_paper_color: Color = Color("e4d8b9")
+@export var ability_acquire_title_color: Color = Color("d8b779")
+@export var ability_acquire_background_color: Color = Color(0.094118, 0.098039, 0.078431, 0.48)
+
 @export_group("Debug", "debug_")
 ## 是否显示玩家界面的调试能力面板。
 @export var debug_panel_enabled: bool = true
@@ -26,6 +45,12 @@ extends Node
 @export var chapter5_surge_volume_db: float = -8.0
 @export var chapter5_black_fade_duration: float = 1.4
 @export var chapter5_black_hold_duration: float = 0.6
+## 水涌在此进度已全黑并切湖泊镜头；必须小于1。
+@export_range(0.5, 0.99, 0.01) var chapter5_black_complete_progress: float = 0.94
+## 宁静镜头完全揭示后才计时；到时淡入提示并接收新按下。
+@export var chapter5_return_delay: float = 10.0
+@export var chapter5_return_prompt_fade: float = 1.0
+@export var chapter5_return_prompt_text: String = "任意键返回主菜单"
 @export var chapter5_thunder_volume_db: float = -12.0
 @export var chapter5_thunder_fade_duration: float = 3.0
 @export var chapter5_rain_volume_db: float = -10.0
@@ -43,6 +68,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var tutorial_dash_hint_text: String = "Shift键冲刺"
 ## 绿洲骸骨植物柱顶的向下观察教学文案。
 @export var tutorial_look_down_hint_text: String = "长按s键向下观察"
+## 第一处水墙右侧小木平台的向上观察教学文案。
+@export var tutorial_look_up_hint_text: String = "长按上键观察"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
 ## 手机版第一处水墙前的交互教学文案。
@@ -70,6 +97,10 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_group("Level 3 - Outward Scenery", "outward_scenery_")
 ## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
 @export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
+
+@export_group("Level 3 - Return Scenery", "return_scenery_")
+## 第三关返程背景在关卡本地坐标中的显示范围，离开该范围后隐藏全部视差层。
+@export var return_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
 
 @export_group("Camp - Scenery", "camp_scenery_")
 ## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
@@ -104,6 +135,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.0, 30.0, 0.1) var camp_background_smoothing_speed: float = 8.0
 ## Camp 本地边界；镜头取样和背景像素都会限制在此范围内。
 @export var camp_background_local_bounds: Rect2 = Rect2(0.0, 0.0, 2160.0, 1700.0)
+## Camp 背景图顶部继续向上衔接的天空高度；使用原图天空片段镜像拼接，不重复地面。
+@export_range(0.0, 3600.0, 100.0) var camp_background_sky_extension_height: float = 3500.0
 
 @export_group("Level 2 - Blockout", "level2_")
 ## 物品提示出现距离，像素。
@@ -669,6 +702,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1.0, 0.01) var oasis_boss_tint_strength: float = 0.12
 ## 侵蚀细纹与身体偏色使用的颜色，默认暗紫色。
 @export var oasis_boss_corruption_color: Color = Color(0.24, 0.085, 0.31, 1.0)
+## Boss 主体向触手内部延伸的覆盖宽度，避免主体矩形边缘直接露出。
+@export_range(0.0, 480.0, 1.0) var oasis_boss_body_overlap: float = 220.0
+## Boss 主体与触手交界处的不规则消融宽度。
+@export_range(1.0, 480.0, 1.0) var oasis_boss_body_dissolve_width: float = 260.0
+## 主体消融轮廓的噪声强度；0 为柔和渐变，1 为完全不规则轮廓。
+@export_range(0.0, 1.0, 0.01) var oasis_boss_body_dissolve_breakup: float = 0.72
 
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
@@ -693,6 +732,8 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 800.0, 1.0) var player_camera_look_distance: float = 180.0
 ## 观察和松手恢复的指数平滑速率（每秒），越大越快。
 @export_range(0.1, 30.0, 0.1) var player_camera_look_smooth_speed: float = 8.0
+## 手机轮盘相对正上/正下允许触发观察的半角（度），不限制移动或键盘。
+@export_range(0.0, 89.0, 0.5) var player_camera_look_joystick_half_angle: float = 15.0
 
 @export_group("Camera Gate", "camera_gate_")
 ## 设置了 scope_origin_path 的永久边界，仅在玩家处于所属关卡的此局部 Y 范围时启用。
@@ -830,10 +871,20 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Interactive - Signal Door", "signal_door_")
 ## 信号门默认碰撞宽高（像素）。
 @export var signal_door_size: Vector2 = Vector2(32.0, 128.0)
-## 信号门默认开启位移；场景实例可用导出属性覆盖方向和距离。
-@export var signal_door_open_offset: Vector2 = Vector2(0.0, -128.0)
+## 所有按钮全部按下后的门板总视觉升程（门板局部坐标）。
+@export var signal_door_open_offset: Vector2 = Vector2(0.0, -40.0)
+## 尚未全部完成时，每个已按下按钮贡献的门板提示升程（像素）；最终按钮改用完整升程。
+@export_range(0.0, 128.0, 0.5) var signal_door_partial_step_distance: float = 8.0
 ## 信号门开关移动速度（像素/秒）。
 @export_range(1.0, 2000.0, 1.0) var signal_door_move_speed: float = 180.0
+## 每次门板收到新的开启进度时抖动的总时长（秒）。
+@export_range(0.0, 2.0, 0.01) var signal_door_shake_duration: float = 0.24
+## 门板抖动的最大局部偏移（像素），实际世界大小还会受到门实例缩放影响。
+@export_range(0.0, 16.0, 0.1) var signal_door_shake_offset: float = 1.2
+## 每次升门掉落的灰尘颗粒数量。
+@export_range(1, 128, 1) var signal_door_dust_amount: int = 18
+## 灰尘颗粒存活时间（秒）。
+@export_range(0.1, 5.0, 0.05) var signal_door_dust_lifetime: float = 0.7
 
 @export_group("Mobile & Android", "mobile_")
 ## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)
@@ -1065,9 +1116,19 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 旧沙丘跟随参数，保留以兼容已有设置；不再根据镜头高度追加背景偏移。
 @export_range(0.0, 1.0, 0.05) var sunken_scenery_dunes_vertical_follow_ratio: float = 1.0
 ## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
-@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 72.0
+@export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 240.0
 ## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。
-@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 56.0
+@export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 180.0
+
+@export_group("Sunken Palace - Wall Dirt", "sunken_wall_")
+## 第一关墙面灰尘的固定随机种子；修改后会生成另一套排列，同一种子每次进入关卡保持一致。
+@export var sunken_wall_decoration_seed: int = 104729
+## 每块背景墙生成 dirt1 或 dirt2 灰尘的概率。
+@export_range(0.0, 1.0, 0.01) var sunken_wall_detail_chance: float = 0.48
+## 灰尘相对原图的随机缩放范围，X 为最小值、Y 为最大值。
+@export var sunken_wall_detail_scale_range: Vector2 = Vector2(0.72, 1.08)
+## 灰尘可偏离墙格中心的比例，分别相对单格宽度和高度。
+@export var sunken_wall_detail_offset_ratio: Vector2 = Vector2(0.24, 0.2)
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。

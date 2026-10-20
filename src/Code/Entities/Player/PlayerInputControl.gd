@@ -47,6 +47,15 @@ func ConsumeGroundJump() -> void:
 	_coyote_time_left = 0.0
 	_ground_jump_consumed = true
 
+func _can_drop_through_platform() -> bool:
+	if not obj.is_on_floor():
+		return false
+	for index in obj.get_slide_collision_count():
+		var platform := obj.get_slide_collision(index).get_collider() as OneWayDropPlatformComponent
+		if platform != null and platform.CanDropPlayer(obj):
+			return true
+	return false
+
 func _physics_process(delta: float) -> void:
 	if not obj or obj.get("offering_locked") == true:
 		return
@@ -59,8 +68,8 @@ func _physics_process(delta: float) -> void:
 	column_dir = Input.get_axis("up", "down")
 
 	var jump_pressed := Input.is_action_just_pressed("jump")
-	# “下 + 跳跃”专门用于穿过单向平台，不能同时触发普通跳跃或二段跳。
-	var drop_through_pressed := Input.is_action_pressed("down") and jump_pressed
+	# 只有脚下平台确实可以下穿，才消费跳跃；斜下移动不应屏蔽地面跳和二段跳。
+	var drop_through_pressed := jump_pressed and Input.is_action_pressed("down") and _can_drop_through_platform()
 	var normal_jump_pressed := jump_pressed and not drop_through_pressed
 	if not obj.is_on_floor():
 		_ground_jump_consumed = false

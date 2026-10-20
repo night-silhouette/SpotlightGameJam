@@ -9,6 +9,13 @@
 [ext_resource type="Texture2D" uid="uid://751t8dwsf2eq" path="res://Art/New/ui/main_button_quit.png" id="10_menu_quit"]
 [ext_resource type="Texture2D" uid="uid://bqo7kavvguag1" path="res://Art/New/ui/main_settings.png" id="11_menu_settings"]
 
+[ext_resource type="Texture2D" path="res://Art/New/start/start_completed.png" id="completed_background"]
+[ext_resource type="Shader" path="res://Code/Entities/Plot/Chapter5/Chapter5Rain.gdshader" id="completed_rain"]
+
+[sub_resource type="ShaderMaterial" id="CompletedRainMaterial"]
+resource_local_to_scene = true
+shader = ExtResource("completed_rain")
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_clean_background"]
 atlas = ExtResource("3_bg_clean")
 region = Rect2(0, 0, 1917.5, 1073.5)
@@ -80,6 +87,19 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("AtlasTexture_clean_background")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CompletedBackground" type="TextureRect" parent="BackgroundLayers"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("completed_background")
 expand_mode = 1
 stretch_mode = 6
 
@@ -530,3 +550,16 @@ size = Vector2i(320, 110)
 ok_button_text = "确认退出"
 dialog_text = "是否确定退出游戏？"
 cancel_button_text = "取消"
+
+[node name="CompletedWeather" type="CanvasLayer" parent="."]
+layer = 80
+
+[node name="Rain" type="ColorRect" parent="CompletedWeather"]
+visible = false
+material = SubResource("CompletedRainMaterial")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

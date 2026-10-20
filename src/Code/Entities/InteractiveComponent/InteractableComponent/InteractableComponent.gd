@@ -1,6 +1,8 @@
 extends Area2D
 class_name InteractableComponent
 
+const HEAL_AMOUNT: float = 15.0
+
 ## 每次成功交互时触发；interactor 为处于此交互区域内的玩家节点。
 signal Interacted(interactor: Node2D)
 ## 首次交互时触发，按展示顺序传递物体描述文本数组。
@@ -160,6 +162,8 @@ func Interact(interactor: Node2D) -> bool:
 	_dispatching = true
 	var is_description: bool = not _description_requested
 	_description_requested = true
+	if is_description:
+		_heal_interactor(interactor)
 	Interacted.emit(interactor)
 	SignalBus.ComponentInteracted.emit(self, interactor)
 	var lines: Array[String] = []
@@ -177,6 +181,14 @@ func Interact(interactor: Node2D) -> bool:
 			_show_dialog_lines(repeat_dialog_lines)
 	_dispatching = false
 	return true
+
+func _heal_interactor(interactor: Node2D) -> void:
+	var player := interactor as Player
+	if player == null or player.now_HP <= 0.0 or player.now_HP >= player.Max_HP:
+		return
+	if player.move_state_machine.cur_state_name == "died":
+		return
+	player.Heal(HEAL_AMOUNT)
 
 ## 导出交互组件持久化存档数据。
 func ExportSaveData() -> Dictionary:

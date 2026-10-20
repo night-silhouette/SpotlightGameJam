@@ -1,8 +1,11 @@
 extends Node2D
 
+const SaveManagerRef = preload("res://Code/Entities/Setting/SaveManager.gd")
+
 const CHANNEL: StringName = &"chapter5_after_enemy_definition"
 
 @export_node_path("Node2D") var lake_anchor: NodePath
+@export_node_path("Marker2D") var ending_horizon_anchor: NodePath
 @export_node_path("Sprite2D") var stele_path: NodePath
 @export var stele_material: ShaderMaterial
 @onready var _rain: Control = $Presentation/Rain
@@ -34,6 +37,7 @@ var _stele_drying := false
 var _stele_wetness := 0.0
 @onready var _surge: ColorRect = $Presentation/Surge
 @onready var _black: ColorRect = $Presentation/Black
+@onready var _return_prompt: Label = $Presentation/ReturnPrompt
 @onready var _thunder: AudioStreamPlayer = $Thunder
 @onready var _rain_audio: AudioStreamPlayer = $RainAudio
 var _audio_tweens: Array[Tween] = []
@@ -52,6 +56,9 @@ func _ready() -> void:
 	SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
 	SignalBus.DialogPresentationFinished.connect(_on_dialog_finished)
 	SignalBus.CameraShotReady.connect(_on_camera_ready)
+	SignalBus.ReturnToMainMenuFailed.connect(_on_return_failed)
+	_return_prompt.text = ExportSettings.chapter5_return_prompt_text
+	_return_prompt.add_theme_font_size_override("font_size", ExportSettings.chapter5_text_size)
 	_thunder.finished.connect(_loop_audio.bind(_thunder))
 	_rain_audio.finished.connect(_loop_audio.bind(_rain_audio))
 	_resume.pressed.connect(_on_resume_pressed)
@@ -103,7 +110,7 @@ func _process(delta: float) -> void:
 	if _turn_wait and _elapsed > float(_steps[_step].duration) + 2.0:
 		_on_cancelled(self)
 		return
-	if _completed or _dialog_wait or _turn_wait or not _ending_stage.is_empty():
+	if _dialog_wait or _turn_wait or not _ending_stage.is_empty():
 		return
 	if _step >= 0 and _elapsed >= float(_steps[_step].get("duration", ExportSettings.chapter5_beat_duration)):
 		_next_step()
@@ -250,6 +257,8 @@ func _cancel() -> void:
 	_thunder.stop()
 	_rain_audio.stop()
 	_ending_stage = ""
+	_return_prompt.hide()
+	_return_prompt.modulate.a = 0.0
 	_lake_wait = false
 	_surge_audio.stop()
 	_surge.material.set_shader_parameter("progress", 0.0)
@@ -282,7 +291,6 @@ func _cancel() -> void:
 
 func _on_resume_pressed() -> void:
 	_loaded = false
-	_completed = false
 	_pending = true
 	_resume.hide()
 
@@ -299,9 +307,9 @@ func _on_save_loaded(_slot: int) -> void:
 func _exit_tree() -> void:
 	_cancel()
 
-## 导出第五章完成/待续标记；不自动保存，不保存演出瞬间或改写玩家位置。
+## 导出第五章完成/待续标记；完成后不标记待续，不保存演出瞬间或改写玩家位置。
 func ExportSaveData() -> Dictionary:
-	return {"pending": _pending or _active, "completed": _completed}
+	return {"pending": (_pending or _active) and not _completed, "completed": _completed}
 
 ## 读取中断/完成状态后等待显式继续；尚未开始时保留正常章节卡自动衔接。
 func LoadSaveData(data: Dictionary) -> void:
@@ -378,19 +386,20 @@ func _process_ending(delta: float) -> void:
 	match _ending_stage:
 		"surge":
 			var duration := maxf(ExportSettings.chapter5_surge_duration, 0.01)
-			var overlap := minf(fade, duration)
-			var progress := minf(_ending_time / duration, 1.0)
+			var black_at := duration * clampf(ExportSettings.chapter5_black_complete_progress, 0.5, 0.99)
+			var overlap := minf(fade, black_at)
+			var progress := minf(_ending_time / duration, clampf(ExportSettings.chapter5_black_complete_progress, 0.5, 0.99))
 			_surge.material.set_shader_parameter("progress", progress)
 			_surge.material.set_shader_parameter("elapsed", minf(_ending_time, duration))
-			_black.color.a = clampf((_ending_time - (duration - overlap)) / overlap, 0.0, 1.0)
-			if progress >= 1.0:
+			_black.color.a = clampf((_ending_time - (black_at - overlap)) / overlap, 0.0, 1.0)
+			if _ending_time >= black_at:
 				_black.color.a = 1.0
 				_ending_stage = "lake"
 				_ending_time = 0.0
 				_lake_wait = true
 				_surge.hide()
 				SignalBus.Chapter5PlayerRequested.emit(_player, self, &"conceal", {})
-				SignalBus.CameraFixedRequested.emit(_player, get_node(lake_anchor), "", "", Rect2())
+				SignalBus.CameraShotRequested.emit(_player, &"fixed", {"anchor": get_node(ending_horizon_anchor), "frame_bottom": true, "ignore_gate_limits": true})
 		"lake":
 			if not _lake_wait and _ending_time >= ExportSettings.chapter5_black_hold_duration:
 				_ending_stage = "reveal"
@@ -398,6 +407,42 @@ func _process_ending(delta: float) -> void:
 		"reveal":
 			_black.color.a = maxf(1.0 - _ending_time / fade, 0.0)
 			if _black.color.a <= 0.0:
-				_ending_stage = ""
+				_ending_stage = "serenity"
+				_ending_time = 0.0
 				_completed = true
-				# 保持剧情锁和湖泊固定镜头；设置菜单已有返回入口，不抢焦点。
+				if not SaveManagerRef.AutoSave(get_tree()):
+					push_warning("通关存档写入失败；返回菜单时将通过既有通道重试。")
+		"serenity":
+			if _ending_time >= ExportSettings.chapter5_return_delay:
+				_return_prompt.show()
+				_return_prompt.modulate.a = clampf((_ending_time - ExportSettings.chapter5_return_delay) / maxf(ExportSettings.chapter5_return_prompt_fade, 0.01), 0.0, 1.0)
+		"return_black":
+			_black.color.a = minf(_ending_time / fade, 1.0)
+			if _black.color.a >= 1.0:
+				_ending_stage = "return_wait"
+				_thunder.stop()
+				_rain_audio.stop()
+				_surge_audio.stop()
+				SignalBus.ReturnToMainMenuRequested.emit()
+
+func _input(event: InputEvent) -> void:
+	if not _active or _ending_stage.is_empty():
+		return
+	get_viewport().set_input_as_handled()
+	if _ending_stage != "serenity" or _ending_time < ExportSettings.chapter5_return_delay:
+		return
+	var pressed := false
+	if event is InputEventKey:
+		pressed = event.pressed and not event.echo
+	elif event is InputEventMouseButton or event is InputEventJoypadButton or event is InputEventScreenTouch:
+		pressed = event.pressed
+	if pressed:
+		_ending_stage = "return_black"
+		_ending_time = 0.0
+		_return_prompt.hide()
+
+func _on_return_failed(_message: String) -> void:
+	if _ending_stage == "return_wait":
+		_ending_stage = "reveal"
+		_ending_time = 0.0
+		_rain_audio.play()

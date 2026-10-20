@@ -14,6 +14,7 @@ class_name OasisBattlefieldChaser
 @onready var _movement_component: DirectionalChaseMover = $DirectionalChaseMover
 @onready var _chase_backdrop: ColorRect = get_node_or_null("ChaseBackdrop")
 @onready var _corruption_visual: CanvasGroup = $DirectionalChaseMover/CorruptionVisual
+@onready var _body_fill: ColorRect = $DirectionalChaseMover/CorruptionVisual/ColorRect
 
 var _target: Node2D = null
 var _chase_finished: bool = false
@@ -21,6 +22,7 @@ var _initial_global_position: Vector2
 var _chase_origin_x: float = 0.0
 
 func _ready() -> void:
+	_configure_body_blend()
 	_configure_corruption_visual()
 	_initial_global_position = global_position
 	_chase_origin_x = global_position.x
@@ -31,6 +33,20 @@ func _ready() -> void:
 	if is_instance_valid(_target):
 		_movement_component.SetTarget(_target)
 	_update_chase_backdrop()
+
+func _configure_body_blend() -> void:
+	if not is_instance_valid(_body_fill):
+		return
+	var horizontal_scale := maxf(absf(_body_fill.scale.x), 0.001)
+	var overlap := maxf(ExportSettings.oasis_boss_body_overlap, 0.0)
+	_body_fill.size.x += overlap / horizontal_scale
+	var displayed_width := maxf(_body_fill.size.x * horizontal_scale, 1.0)
+	var dissolve_material := _body_fill.material as ShaderMaterial
+	if dissolve_material == null:
+		return
+	var dissolve_ratio := clampf(ExportSettings.oasis_boss_body_dissolve_width / displayed_width, 0.001, 1.0)
+	dissolve_material.set_shader_parameter(&"edge_fade_ratio", dissolve_ratio)
+	dissolve_material.set_shader_parameter(&"edge_breakup", ExportSettings.oasis_boss_body_dissolve_breakup)
 
 func _configure_corruption_visual() -> void:
 	var corruption_material := _corruption_visual.material as ShaderMaterial

@@ -2,6 +2,9 @@ extends AnimatableBody2D
 class_name PressureButton
 
 const PRESSURE_SWITCH_SFX = preload("res://Music/SFX/InteractiveLV3/PressureSwitch.wav")
+const BUTTON_TEXTURE_REGION_WIDTH: float = 212.0
+const UNPRESSED_TEXTURE_REGION_HEIGHT: float = 46.0
+const PRESSED_TEXTURE_REGION_HEIGHT: float = 30.0
 
 ## 按钮状态发生改变时发出（按下为 true，抬起为 false）。
 signal pressed_state_changed(is_pressed: bool)
@@ -15,7 +18,7 @@ var _is_pressed: bool = false
 		return _is_pressed
 	set(value):
 		if is_node_ready():
-			_apply_pressed_state(value, false, true)
+			_apply_pressed_state(value, true)
 		else:
 			_is_pressed = value
 
@@ -30,40 +33,26 @@ var _is_pressed: bool = false
 ## 非空时只接受属于该分组的物理体；留空接受所有 PhysicsBody2D。
 @export var required_body_group: StringName = &""
 
-@export_category("Pressure Button Visuals")
-@export var unpressed_color: Color = Color(0.82, 0.48, 0.18, 1.0)
-@export var pressed_color: Color = Color(0.35, 0.85, 0.45, 1.0)
-
-@onready var _base: Polygon2D = $Base
 @onready var _solid_collision: CollisionShape2D = $SolidCollision
 @onready var _trigger_area: Area2D = $TriggerArea
 @onready var _trigger_collision: CollisionShape2D = $TriggerArea/TriggerCollision
-@onready var _visual: Polygon2D = $Visual
-@onready var _indicator: Polygon2D = $Visual/Indicator
+@onready var _unpressed_sprite: Sprite2D = $UnpressedSprite2D
+@onready var _pressed_sprite: Sprite2D = $PressedSprite2D
 
 var _button_size: Vector2 = Vector2(64.0, 14.0)
-var _press_depth: float = 8.0
-var _move_speed: float = 120.0
-var _rest_position: Vector2 = Vector2.ZERO
 var _pressing_bodies: Dictionary = {}
-var _color_tween: Tween
 var _overlap_refresh_version: int = 0
 
 func _ready() -> void:
 	_sync_from_export_settings()
-	_rest_position = position
 	_pressing_bodies.clear()
 	_trigger_area.collision_mask = pressing_collision_mask
 	_trigger_area.body_entered.connect(_on_body_entered)
 	_trigger_area.body_exited.connect(_on_body_exited)
 	_update_dimensions()
 	# 按下状态是瞬时物理状态，不能继承场景序列化值或上一次实例的状态。
-	_apply_pressed_state(false, false, true)
+	_apply_pressed_state(false, true)
 	_schedule_overlap_refresh()
-
-func _physics_process(delta: float) -> void:
-	var target_position := _rest_position + Vector2.DOWN * (_press_depth if _is_pressed else 0.0)
-	position = position.move_toward(target_position, _move_speed * delta)
 
 func _exit_tree() -> void:
 	_overlap_refresh_version += 1
@@ -77,42 +66,24 @@ func _sync_from_export_settings() -> void:
 		maxf(ExportSettings.pressure_button_size.x, 8.0),
 		maxf(ExportSettings.pressure_button_size.y, 4.0)
 	)
-	_press_depth = maxf(ExportSettings.pressure_button_press_depth, 0.0)
-	_move_speed = maxf(ExportSettings.pressure_button_move_speed, 1.0)
 
 func _update_dimensions() -> void:
 	var solid_shape := RectangleShape2D.new()
 	solid_shape.size = _button_size
 	_solid_collision.shape = solid_shape
+	_solid_collision.position = Vector2.ZERO
 
 	var trigger_shape := RectangleShape2D.new()
 	trigger_shape.size = Vector2(maxf(_button_size.x - 4.0, 4.0), _button_size.y + 8.0)
 	_trigger_collision.shape = trigger_shape
 	_trigger_collision.position = Vector2(0.0, -4.0)
 
-	var half_size := _button_size * 0.5
-	var base_half_width := half_size.x + 4.0
-	_base.position = Vector2(0.0, half_size.y - 1.0)
-	_base.polygon = PackedVector2Array([
-		Vector2(-base_half_width, -5.0),
-		Vector2(base_half_width, -5.0),
-		Vector2(half_size.x, 7.0),
-		Vector2(-half_size.x, 7.0),
-	])
-	_visual.polygon = PackedVector2Array([
-		Vector2(-half_size.x, -half_size.y),
-		Vector2(half_size.x, -half_size.y),
-		Vector2(half_size.x, half_size.y),
-		Vector2(-half_size.x, half_size.y),
-	])
-	var indicator_half_width := maxf(half_size.x - 8.0, 2.0)
-	var indicator_top := -half_size.y + 2.0
-	_indicator.polygon = PackedVector2Array([
-		Vector2(-indicator_half_width, indicator_top),
-		Vector2(indicator_half_width, indicator_top),
-		Vector2(indicator_half_width, indicator_top + 2.0),
-		Vector2(-indicator_half_width, indicator_top + 2.0),
-	])
+	var visual_scale := _button_size.x / BUTTON_TEXTURE_REGION_WIDTH
+	_unpressed_sprite.scale = Vector2.ONE * visual_scale
+	_pressed_sprite.scale = Vector2.ONE * visual_scale
+	_pressed_sprite.position.y = (
+		UNPRESSED_TEXTURE_REGION_HEIGHT - PRESSED_TEXTURE_REGION_HEIGHT
+	) * visual_scale * 0.5
 
 func _on_body_entered(body: Node2D) -> void:
 	if not _can_press(body):
@@ -136,7 +107,7 @@ func _refresh_overlapping_bodies(refresh_version: int) -> void:
 	for body in _trigger_area.get_overlapping_bodies():
 		if _can_press(body):
 			_pressing_bodies[body.get_instance_id()] = body
-	_apply_pressed_state(not _pressing_bodies.is_empty(), false, true)
+	_apply_pressed_state(not _pressing_bodies.is_empty(), true)
 
 func _can_press(body: Node2D) -> bool:
 	# TriggerArea 是按钮自身的子节点，其范围会覆盖本体 SolidCollision；
@@ -150,33 +121,19 @@ func _set_pressed(value: bool) -> void:
 		return
 	if value and not _is_pressed:
 		Util.PlaySFX2D(PRESSURE_SWITCH_SFX, global_position, &"SFX_Interact", 6.0)
-	_apply_pressed_state(value, true)
+	_apply_pressed_state(value)
 
-func _apply_pressed_state(value: bool, animate: bool, force_refresh: bool = false) -> void:
+func _apply_pressed_state(value: bool, force_refresh: bool = false) -> void:
 	if _is_pressed == value and not force_refresh:
 		return
 	_is_pressed = value
-	if not animate:
-		position = _rest_position + (Vector2.DOWN * _press_depth if _is_pressed else Vector2.ZERO)
-	_update_visual_color(animate)
+	_update_visual_state()
 	pressed_state_changed.emit(_is_pressed)
 	_emit_state(_is_pressed)
 
-func _update_visual_color(animate: bool) -> void:
-	var target_color := pressed_color if _is_pressed else unpressed_color
-	var target_indicator_color := target_color.lightened(0.35)
-	if _color_tween and _color_tween.is_valid():
-		_color_tween.kill()
-	if not animate:
-		_visual.color = target_color
-		_indicator.color = target_indicator_color
-		return
-	_color_tween = create_tween()
-	_color_tween.set_parallel(true)
-	_color_tween.set_trans(Tween.TRANS_SINE)
-	_color_tween.set_ease(Tween.EASE_OUT)
-	_color_tween.tween_property(_visual, "color", target_color, 0.15)
-	_color_tween.tween_property(_indicator, "color", target_indicator_color, 0.15)
+func _update_visual_state() -> void:
+	_unpressed_sprite.visible = not _is_pressed
+	_pressed_sprite.visible = _is_pressed
 
 func _emit_state(value: bool) -> void:
 	if output_channel.is_empty():
@@ -189,11 +146,11 @@ func IsPressed() -> bool:
 	return _is_pressed
 
 ## 强制将按钮恢复为未按下状态。
-## 清空当前踩踏实体，并忽略 stay_pressed 锁定；同时立即回弹、刷新视觉并广播未按下状态。
+## 清空当前踩踏实体，并忽略 stay_pressed 锁定；同时恢复抬起形态并广播未按下状态。
 func ResetState() -> void:
 	_overlap_refresh_version += 1
 	_pressing_bodies.clear()
-	_apply_pressed_state(false, false, true)
+	_apply_pressed_state(false, true)
 
 ## 导出按钮的持久化状态。
 ## 返回值包含绑定通道和当前按下状态；新游戏未提供存档数据时仍使用默认未按下状态。
@@ -212,4 +169,4 @@ func LoadSaveData(data: Dictionary) -> void:
 	if previous_channel != output_channel and not previous_channel.is_empty():
 		SignalBus.MechanismChannelStateChanged.emit(previous_channel, false, self)
 	_pressing_bodies.clear()
-	_apply_pressed_state(bool(data.get("is_pressed", false)), false, true)
+	_apply_pressed_state(bool(data.get("is_pressed", false)), true)

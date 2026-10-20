@@ -133,8 +133,14 @@ func _update_dimensions() -> void:
 		water_curtain.position = -area_size * 0.5
 		(water_curtain.material as ShaderMaterial).set_shader_parameter("curtain_size", area_size)
 
-## 判断世界坐标是否落在流水区域可见矩形内；world_point 为鼠标的世界坐标，返回是否命中。
+## 判断世界坐标是否命中当前可交互外观；world_point 为鼠标的世界坐标。
+## 固态且存在 TileMap 时只接受已绘制单元，流体或无 TileMap 时按水幕矩形判断；返回是否命中。
 func ContainsWorldPoint(world_point: Vector2) -> bool:
+	if not is_fluid and _has_before_visual_content():
+		var tile_local_point := before_visual.to_local(world_point)
+		var tile_coordinates := before_visual.local_to_map(tile_local_point)
+		return before_visual.get_cell_source_id(tile_coordinates) != -1
+
 	var local_point = to_local(world_point)
 	return abs(local_point.x) <= area_size.x * 0.5 and abs(local_point.y) <= area_size.y * 0.5
 
@@ -156,6 +162,7 @@ func _apply_state(fluid: bool) -> void:
 		return
 
 	var state_changed := not _has_applied_state or _last_applied_fluid != fluid
+	var uses_tile_collision := _has_before_visual_content()
 	_has_applied_state = true
 	_last_applied_fluid = fluid
 	_update_visual_state(fluid)
@@ -167,8 +174,8 @@ func _apply_state(fluid: bool) -> void:
 		visual_rect.color = Color(0.15, 0.65, 0.95, 0.45)
 		SignalBus.RuneWallConverted.emit(self, Vector2.UP)
 	else:
-		# 恢复为普通刚体：开启实体碰撞，关闭流体感应
-		solid_collision.set_deferred("disabled", false)
+		# TileMap 自带逐格碰撞；矩形实体只作为没有 TileMap 美术时的兜底。
+		solid_collision.set_deferred("disabled", uses_tile_collision)
 		fluid_collision.set_deferred("disabled", true)
 		visual_rect.color = Color(0.28, 0.42, 0.55, 1.0)
 		_clear_all_bodies_in_water()

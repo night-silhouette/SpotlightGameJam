@@ -1,0 +1,43 @@
+[gd_scene format=3]
+
+[sub_resource type="Gradient" id="Gradient_mist_texture"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 1, 1, 0.85, 1, 1, 1, 0.4, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="Texture_mist"]
+gradient = SubResource("Gradient_mist_texture")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_mist_color"]
+offsets = PackedFloat32Array(0, 0.18, 0.7, 1)
+colors = PackedColorArray(0.65, 0.88, 1, 0, 0.65, 0.88, 1, 0.6, 0.82, 0.97, 1, 0.45, 0.9, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_mist_scale"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(0.25, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="InteractionHealMist" type="CPUParticles2D"]
+z_index = 2
+amount = 48
+lifetime = 1.0
+one_shot = true
+explosiveness = 0.8
+randomness = 0.2
+texture = SubResource("Texture_mist")
+emission_shape = 2
+emission_sphere_radius = 42.0
+spread = 180.0
+gravity = Vector2(0, 0)
+radial_accel_min = -95.0
+radial_accel_max = -85.0
+tangential_accel_min = 10.0
+tangential_accel_max = 16.0
+scale_amount_min = 0.35
+scale_amount_max = 0.8
+scale_amount_curve = SubResource("Curve_mist_scale")
+color_ramp = SubResource("Gradient_mist_color")

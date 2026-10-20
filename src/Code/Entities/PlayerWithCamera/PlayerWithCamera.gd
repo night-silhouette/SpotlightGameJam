@@ -48,7 +48,9 @@ var _look_offset: float = 0.0
 var _look_framed: bool = false
 var _look_frame_origin: float = 0.0
 var _look_dead_zone_height: float = 0.0
+var _look_joystick_pressed: bool = false
 @onready var _player: CharacterBody2D = $Player
+@onready var _look_joystick: VirtualJoystick = _player.get_node_or_null("PlayerUI/Control/VirtualJoystick")
 @onready var _base: PhantomCamera2D = $PhantomCamera2D
 @onready var _presentation: CanvasLayer = $CameraPresentation
 
@@ -67,6 +69,9 @@ func _enter_tree() -> void:
 
 func _ready() -> void:
 	hp_drain_rate = ExportSettings.player_hp_drain_rate
+	if _look_joystick != null:
+		_look_joystick.pressed.connect(_on_look_joystick_pressed)
+		_look_joystick.released.connect(_on_look_joystick_released)
 	_sync_player_properties()
 	_active = _base
 	_target = _player
@@ -97,6 +102,7 @@ func _ready() -> void:
 	SignalBus.CameraGateSideRemoved.connect(_on_camera_gate_side_removed)
 	SignalBus.PlayerRespawned.connect(_on_player_respawned)
 	SignalBus.SaveSlotLoaded.connect(_reset_look)
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
 	if is_hp_draining:
 		SignalBus.StartPlayerHpDrain.emit(_player.hp_drain_rate)
 
@@ -149,11 +155,33 @@ func _can_look() -> bool:
 	return get_viewport().gui_get_focus_owner() == null and (settings == null or not settings.is_visible_in_tree()) and get_window().has_focus()
 
 
+func _on_look_joystick_pressed() -> void:
+	_look_joystick_pressed = true
+
+
+func _on_look_joystick_released(_input_vector: Vector2) -> void:
+	_look_joystick_pressed = false
+
+
+func _is_joystick_look_allowed() -> bool:
+	if not _look_joystick_pressed or _look_joystick == null or not _look_joystick.is_visible_in_tree():
+		return true
+	# 原始强度保留横轴小分量，不能使用带轴死区的 Input.get_vector。
+	var axis := Vector2(
+		Input.get_action_raw_strength(_look_joystick.action_right) - Input.get_action_raw_strength(_look_joystick.action_left),
+		Input.get_action_raw_strength(_look_joystick.action_down) - Input.get_action_raw_strength(_look_joystick.action_up)
+	)
+	var half_angle: float = deg_to_rad(clampf(ExportSettings.player_camera_look_joystick_half_angle, 0.0, 89.0))
+	var max_horizontal: float = absf(axis.y) * tan(half_angle)
+	return axis.y != 0.0 and (absf(axis.x) <= max_horizontal or is_equal_approx(absf(axis.x), max_horizontal))
+
+
 func _update_look(delta: float) -> void:
 	var direction: int = 0
 	if _can_look():
-		var down: bool = Input.is_physical_key_pressed(KEY_S) or Input.is_action_pressed(&"down")
-		var up: bool = Input.is_physical_key_pressed(KEY_W) or Input.is_action_pressed(&"up")
+		var joystick_allowed: bool = _is_joystick_look_allowed()
+		var down: bool = Input.is_physical_key_pressed(KEY_S) or (joystick_allowed and Input.is_action_pressed(&"down"))
+		var up: bool = Input.is_physical_key_pressed(KEY_W) or (joystick_allowed and Input.is_action_pressed(&"up"))
 		direction = int(down) - int(up)
 	if direction != _look_direction:
 		_look_direction = direction
@@ -366,7 +394,7 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 			axis_lock = PhantomCamera2D.FollowLockAxis.Y
 		&"fixed":
 			zoom_value = float(_options.get("zoom", ExportSettings.camera_fixed_zoom))
-			_set_fixed_target(next, (_options.anchor as Node2D).global_position)
+			_set_fixed_target(next, _fixed_anchor_position(zoom_value))
 		&"ritual":
 			next.follow_damping = false
 			zoom_value = ExportSettings.camera_ritual_close_zoom
@@ -408,6 +436,19 @@ func _start_camera(mode: StringName, instant: bool = false) -> void:
 func _check_activation(generation: int) -> void:
 	if generation == _generation and _pending and not _active.is_active():
 		_on_camera_interrupted(_active)
+
+
+func _fixed_anchor_position(zoom_value: float) -> Vector2:
+	var position_value: Vector2 = (_options.anchor as Node2D).global_position
+	if bool(_options.get("frame_bottom", false)):
+		position_value.y -= get_viewport_rect().size.y / (2.0 * maxf(zoom_value, 0.05))
+	return position_value
+
+
+func _on_viewport_size_changed() -> void:
+	if current_mode == &"fixed" and bool(_options.get("frame_bottom", false)):
+		_set_fixed_target(_active, _fixed_anchor_position(_active.zoom.y))
+		_active.teleport_position()
 
 
 func _set_fixed_target(camera: PhantomCamera2D, position_value: Vector2) -> void:
@@ -516,6 +557,12 @@ func _apply_gate_limits() -> void:
 		var top: int = bounds.y
 		var right: int = bounds.z
 		var bottom: int = bounds.w
+		if camera != _base and current_mode == &"fixed" and bool(_options.get("ignore_gate_limits", false)):
+			camera.limit_left = left
+			camera.limit_top = top
+			camera.limit_right = right
+			camera.limit_bottom = bottom
+			continue
 		for gate: Area2D in _gate_limits:
 			var limit: Vector2 = _gate_limits[gate]
 			if not _gate_overlaps_view(gate, int(limit.x), view):
