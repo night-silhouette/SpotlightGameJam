@@ -1165,8 +1165,10 @@ region_enabled = true
 region_rect = Rect2(0, 0, 502, 496)
 
 [node name="PictureBook" parent="story/c2/残缺的绘本" unique_id=85174331 instance=ExtResource("17_picture_book")]
-close_monologue_expressions = Dictionary[int, String]({0: "惊讶"})
 pages = Array[String](["一页一页翻着，前半部分日族与月族一起出现，他们聊天、游戏、交换食物，画面看着暖融融的。", "可翻到最后几页，画面变了。笑脸被改成了哭脸，空着的手上被添上了刀剑和长矛。最后一页，原本似乎是一起庆祝节日的集会。但现在，每个人的表情都被改了。整张画上找不到一双笑的眼睛。"])
+close_monologue_expressions = Dictionary[int, String]({
+0: "惊讶"
+})
 close_monologues = Array[String](["！这些月族人……有和我一样的耳朵和尾巴。", "他们曾毫无嫌隙地活在同一片天空下，后来呢，究竟发生了什么？"])
 
 [node name="刻有谚语的石碑" parent="story/c2" unique_id=1341038314 instance=ExtResource("12_terh4")]
@@ -1193,10 +1195,13 @@ scale = Vector2(0.23820065, 0.2106858)
 texture = ExtResource("23_vqyf3")
 
 [node name="ScholarNotebook" parent="story/c2/学者的笔记" unique_id=137594361 instance=ExtResource("17_picture_book")]
-page_monologue_expressions = Dictionary[int, String]({2: "平静", 5: "惊讶"})
 book_title = "学者的笔记"
 pages = Array[String](["我们曾经共同生活在这片土地上。日族守护白昼，在阳光下耕种、劳作；月族行走长夜，循着月色寻找水源。水像一条看不见的线，将昼与夜缝在一起，我们从未觉得彼此有什么不同。", "最初，我们只是拥有不同的分工。后来，白昼与长夜，将我们带向不同的道路，也让我们渐渐习惯只与自己的族人同行。我们开始用不同的名字称呼自己，自然而然形成了界限，我们站在这界限的两边，互相推搡。", "后来，我们惊讶地发现昼与夜并非永恒。日族越强，白昼便越长；月族越强，长夜便越长。若让另一方永远消失，世界是否就永远属于我们？当第一次有人指出这问题时，一切都失控了。", "可这个世界不属于日，也不属于月。昼与夜彼此成全，水与土地相互依存。一方存在的意义，从来都不在自己之中。可当我终于看清这一点时，已经太迟了。", "决战只剩两日。世界将会朝一边倾覆，而另一边同样得不到幸福。", "他们同时拥有……同生于这片天地……新世界……"])
 page_monologues = Array[String](["", "", "原来如此……", "", "日族宫殿里未完成的壁画，还有这里留下的文字，都指向了同一场战争。那次决战应该是以月族完败告终，从那之后，这里只剩下白昼，水源急剧减少，最终……", "这说得是我吧……“他们”？还有很多和我一样的人吗？使者又是什么意思……"])
+page_monologue_expressions = Dictionary[int, String]({
+2: "平静",
+5: "惊讶"
+})
 close_monologues = Array[String]([])
 
 [node name="GradualTextTrigger" parent="story/c2" unique_id=1879339704 instance=ExtResource("20_m8xep")]
