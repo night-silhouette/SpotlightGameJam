@@ -29,6 +29,9 @@ signal Level2StateRequested
 ## 第二关喷泉返程结束；世界管理器可监听并连接真正主城入口。
 signal Level2Completed(level: Node2D, player: Node2D)
 
+## 第三关去返程阶段变化；source 为绿洲战场实例，in_return_phase 为 true 时已进入返程。
+signal OasisReturnPhaseChanged(source: Node2D, in_return_phase: bool)
+
 ## 请求玩家在第一关开场独白期间锁定操作，并将起身动画停在第0帧。
 signal PlayerOpeningHoldRequested
 ## 请求玩家从第0帧完整播放第一关开场起身动画。

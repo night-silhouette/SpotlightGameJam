@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://jtgddvdqnlf8"]
 
-[ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/PressureButton/PressureButton.gd" id="1_button"]
+[ext_resource type="Script" uid="uid://csd4x7tj27r16" path="res://Code/Entities/InteractiveComponent/PressureButton/PressureButton.gd" id="1_button"]
+[ext_resource type="Texture2D" uid="uid://ekyijlt2bnwp" path="res://Art/New/component/game1/陶罐、按钮/IMG_9886.PNG" id="2_p3xs4"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_button"]
 size = Vector2(64, 14)
@@ -8,35 +9,36 @@ size = Vector2(64, 14)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
 size = Vector2(60, 22)
 
-[node name="PressureButton" type="AnimatableBody2D" groups=["pressure_button"]]
-collision_layer = 1
+[sub_resource type="AtlasTexture" id="AtlasTexture_unpressed"]
+atlas = ExtResource("2_p3xs4")
+region = Rect2(171, 242, 212, 46)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pressed"]
+atlas = ExtResource("2_p3xs4")
+region = Rect2(171, 339, 212, 30)
+
+[node name="PressureButton" type="AnimatableBody2D" unique_id=182787279 groups=["pressure_button"]]
 collision_mask = 0
-sync_to_physics = true
 script = ExtResource("1_button")
 
-[node name="Base" type="Polygon2D" parent="."]
-z_index = -1
-position = Vector2(0, 6)
-polygon = PackedVector2Array(-36, -5, 36, -5, 32, 7, -32, 7)
-color = Color(0.2, 0.15, 0.11, 1)
-
-[node name="SolidCollision" type="CollisionShape2D" parent="."]
+[node name="SolidCollision" type="CollisionShape2D" parent="." unique_id=1393782497]
 shape = SubResource("RectangleShape2D_button")
 
-[node name="TriggerArea" type="Area2D" parent="."]
+[node name="TriggerArea" type="Area2D" parent="." unique_id=1098372609]
 collision_layer = 0
 collision_mask = 4294967295
-monitoring = true
 monitorable = false
 
-[node name="TriggerCollision" type="CollisionShape2D" parent="TriggerArea"]
+[node name="TriggerCollision" type="CollisionShape2D" parent="TriggerArea" unique_id=2021213995]
 position = Vector2(0, -4)
 shape = SubResource("RectangleShape2D_trigger")
 
-[node name="Visual" type="Polygon2D" parent="."]
-polygon = PackedVector2Array(-32, -7, 32, -7, 32, 7, -32, 7)
-color = Color(0.82, 0.48, 0.18, 1)
+[node name="UnpressedSprite2D" type="Sprite2D" parent="." unique_id=2590824]
+scale = Vector2(0.301887, 0.301887)
+texture = SubResource("AtlasTexture_unpressed")
 
-[node name="Indicator" type="Polygon2D" parent="Visual"]
-polygon = PackedVector2Array(-24, -5, 24, -5, 24, -3, -24, -3)
-color = Color(0.883, 0.662, 0.467, 1)
+[node name="PressedSprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 2.41509)
+scale = Vector2(0.301887, 0.301887)
+texture = SubResource("AtlasTexture_pressed")

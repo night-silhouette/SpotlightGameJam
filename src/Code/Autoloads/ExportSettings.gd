@@ -98,6 +98,10 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
 @export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
 
+@export_group("Level 3 - Return Scenery", "return_scenery_")
+## 第三关返程背景在关卡本地坐标中的显示范围，离开该范围后隐藏全部视差层。
+@export var return_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
+
 @export_group("Camp - Scenery", "camp_scenery_")
 ## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
 @export var camp_scenery_enabled: bool = true
@@ -131,6 +135,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(0.0, 30.0, 0.1) var camp_background_smoothing_speed: float = 8.0
 ## Camp 本地边界；镜头取样和背景像素都会限制在此范围内。
 @export var camp_background_local_bounds: Rect2 = Rect2(0.0, 0.0, 2160.0, 1700.0)
+## Camp 背景图顶部继续向上衔接的天空高度；使用原图天空片段镜像拼接，不重复地面。
+@export_range(0.0, 3600.0, 100.0) var camp_background_sky_extension_height: float = 3500.0
 
 @export_group("Level 2 - Blockout", "level2_")
 ## 物品提示出现距离，像素。
@@ -661,6 +667,12 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1.0, 0.01) var oasis_boss_tint_strength: float = 0.12
 ## 侵蚀细纹与身体偏色使用的颜色，默认暗紫色。
 @export var oasis_boss_corruption_color: Color = Color(0.24, 0.085, 0.31, 1.0)
+## Boss 主体向触手内部延伸的覆盖宽度，避免主体矩形边缘直接露出。
+@export_range(0.0, 480.0, 1.0) var oasis_boss_body_overlap: float = 220.0
+## Boss 主体与触手交界处的不规则消融宽度。
+@export_range(1.0, 480.0, 1.0) var oasis_boss_body_dissolve_width: float = 260.0
+## 主体消融轮廓的噪声强度；0 为柔和渐变，1 为完全不规则轮廓。
+@export_range(0.0, 1.0, 0.01) var oasis_boss_body_dissolve_breakup: float = 0.72
 
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
@@ -824,10 +836,20 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Interactive - Signal Door", "signal_door_")
 ## 信号门默认碰撞宽高（像素）。
 @export var signal_door_size: Vector2 = Vector2(32.0, 128.0)
-## 信号门默认开启位移；场景实例可用导出属性覆盖方向和距离。
-@export var signal_door_open_offset: Vector2 = Vector2(0.0, -128.0)
+## 所有按钮全部按下后的门板总视觉升程（门板局部坐标）。
+@export var signal_door_open_offset: Vector2 = Vector2(0.0, -40.0)
+## 尚未全部完成时，每个已按下按钮贡献的门板提示升程（像素）；最终按钮改用完整升程。
+@export_range(0.0, 128.0, 0.5) var signal_door_partial_step_distance: float = 8.0
 ## 信号门开关移动速度（像素/秒）。
 @export_range(1.0, 2000.0, 1.0) var signal_door_move_speed: float = 180.0
+## 每次门板收到新的开启进度时抖动的总时长（秒）。
+@export_range(0.0, 2.0, 0.01) var signal_door_shake_duration: float = 0.24
+## 门板抖动的最大局部偏移（像素），实际世界大小还会受到门实例缩放影响。
+@export_range(0.0, 16.0, 0.1) var signal_door_shake_offset: float = 1.2
+## 每次升门掉落的灰尘颗粒数量。
+@export_range(1, 128, 1) var signal_door_dust_amount: int = 18
+## 灰尘颗粒存活时间（秒）。
+@export_range(0.1, 5.0, 0.05) var signal_door_dust_lifetime: float = 0.7
 
 @export_group("Mobile & Android", "mobile_")
 ## 是否在非安卓环境下强制开启虚拟按键与摇杆 (方便在 PC 编辑器测试)
@@ -1059,9 +1081,19 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 旧沙丘跟随参数，保留以兼容已有设置；不再根据镜头高度追加背景偏移。
 @export_range(0.0, 1.0, 0.05) var sunken_scenery_dunes_vertical_follow_ratio: float = 1.0
 ## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
-@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 72.0
+@export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 240.0
 ## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。
-@export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 56.0
+@export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_height: float = 180.0
+
+@export_group("Sunken Palace - Wall Dirt", "sunken_wall_")
+## 第一关墙面灰尘的固定随机种子；修改后会生成另一套排列，同一种子每次进入关卡保持一致。
+@export var sunken_wall_decoration_seed: int = 104729
+## 每块背景墙生成 dirt1 或 dirt2 灰尘的概率。
+@export_range(0.0, 1.0, 0.01) var sunken_wall_detail_chance: float = 0.48
+## 灰尘相对原图的随机缩放范围，X 为最小值、Y 为最大值。
+@export var sunken_wall_detail_scale_range: Vector2 = Vector2(0.72, 1.08)
+## 灰尘可偏离墙格中心的比例，分别相对单格宽度和高度。
+@export var sunken_wall_detail_offset_ratio: Vector2 = Vector2(0.24, 0.2)
 
 @export_group("Sunken Palace - Lift Rope", "sunken_lift_rope_")
 ## 横绳左端固定点，使用沉没宫殿 MovePl 父空间坐标。

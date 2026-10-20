@@ -14,7 +14,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("interact"):
 		var mouse_world_position = get_global_mouse_position()
 		for node in get_tree().get_nodes_in_group("water_flow"):
-			if node is WaterFlowArea and node.ContainsWorldPoint(mouse_world_position):
+			if node is WaterFlowArea and node.is_visible_in_tree() and node.can_process() and node.ContainsWorldPoint(mouse_world_position):
 				if TryActivateTargetArea(node):
 					get_viewport().set_input_as_handled()
 				return
@@ -28,6 +28,8 @@ func ResetCooldown() -> void:
 ## 尝试切换指定流水区域；target_area 为鼠标点中的区域，返回是否成功激活。
 func TryActivateTargetArea(target_area: WaterFlowArea) -> bool:
 	if get_parent().get("offering_locked") == true or not is_instance_valid(target_area):
+		return false
+	if not target_area.is_visible_in_tree() or not target_area.can_process():
 		return false
 
 	target_area.ToggleRuneFluid()
