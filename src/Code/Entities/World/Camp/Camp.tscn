@@ -6,7 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://kltw4unihbsh" path="res://Code/Entities/Plot/Chapter1.tscn" id="5_chapter"]
 [ext_resource type="Script" uid="uid://bfra5n80onwqv" path="res://Code/Entities/Plot/PlotDialogLine.gd" id="6_qv0jn"]
 [ext_resource type="PackedScene" uid="uid://bgmsq6p2vupnu" path="res://Code/Entities/InteractiveComponent/OneWayDropPlatformComponent/OneWayDropPlatformComponent.tscn" id="6_wx588"]
-[ext_resource type="Shader" uid="uid://cgvndcurji3r6" path="res://Code/Entities/InteractiveComponent/Lake/OfferingDissolve.gdshader" id="7_v13fp"]
 [ext_resource type="PackedScene" uid="uid://bufrvjp0xqq8m" path="res://Code/Entities/InteractiveComponent/InteractableComponent/InteractableComponent.tscn" id="10_na041"]
 [ext_resource type="Texture2D" uid="uid://c1pt0dl15p118" path="res://Art/New/map0/well_back.png" id="12_a07x8"]
 [ext_resource type="Texture2D" uid="uid://bim1i3llsdill" path="res://Art/New/map0/back.PNG" id="13_a07x8"]
@@ -25,14 +24,9 @@ text = "这帐篷……是用无数片颜色各异的碎布料，拼凑缝补起
 "
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_1sy50"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fdr8k"]
 resource_local_to_scene = true
 size = Vector2(169.84523, 144.98253)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kogey"]
-resource_local_to_scene = true
-shader = ExtResource("7_v13fp")
-shader_parameter/progress = 0.0
 
 [sub_resource type="Resource" id="Line_1_1"]
 script = ExtResource("6_qv0jn")
@@ -90,7 +84,7 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="Resource" id="Resource_a07x8"]
 script = ExtResource("6_qv0jn")
-text = "慢慢找回呼吸的节奏了……虽然不知道为什么，但看来得一直保持身体里的水分才行。一旦缺水，恐怕行动都会成问题。"
+text = "吁……虽然不知道为什么，但看来得一直保持身体里的水分才行。一旦缺水，恐怕行动都会成问题。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_camp_sky_extension"]
@@ -135,10 +129,7 @@ position = Vector2(1289, 1593)
 scale = Vector2(1.6936214, 1.6936214)
 
 [node name="CollisionShape2D" parent="Lake" index="3" unique_id=1216154260]
-shape = SubResource("RectangleShape2D_1sy50")
-
-[node name="OfferingVisual" parent="Lake" index="5"]
-material = SubResource("ShaderMaterial_kogey")
+shape = SubResource("RectangleShape2D_fdr8k")
 
 [node name="Chapter1" parent="." unique_id=257404343 instance=ExtResource("5_chapter")]
 position = Vector2(-116, 4)
@@ -167,6 +158,7 @@ enter_dialog_once = true
 story_lines = Array[ExtResource("6_qv0jn")]([])
 
 [node name="lakestory" parent="." unique_id=1000769939 instance=ExtResource("10_na041")]
+visible = false
 position = Vector2(1284, 1561)
 scale = Vector2(5.5378385, 1.3458601)
 disable_movement_during_dialog = true
