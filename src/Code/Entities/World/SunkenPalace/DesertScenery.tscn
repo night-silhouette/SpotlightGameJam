@@ -11,7 +11,7 @@
 [node name="DesertScenery" type="Node2D" unique_id=606180320]
 position = Vector2(0, -320)
 script = ExtResource("1_script")
-metadata/_editor_description_ = "SunkenPalace 专属沙漠景物场景。直接拖动本节点即可同步调整整套背景与前景；运行时保留区域判断，根节点或各图层的 visible 可用于决定是否启用。"
+metadata/_editor_description_ = "SunkenPalace 专属沙漠背景。原位置保留完整沙漠景物，仅由蓝天向上连续补齐宫殿高处空窗。"
 
 [node name="CoverageBounds" type="Control" parent="." unique_id=113828477]
 layout_mode = 3
@@ -28,18 +28,14 @@ top_level = true
 z_index = -35
 scroll_scale = Vector2(0.01, 1)
 scroll_offset = Vector2(19.876448, -33.631958)
-metadata/_editor_description_ = "最远天空层；仅产生极轻微横向视差，纵向固定世界高度，不跟随镜头升降。"
+repeat_size = Vector2(1600, 832)
+repeat_times = 3
+metadata/_editor_description_ = "最远天空层；按原画尺寸横纵重复，覆盖宫殿全部空窗；仅产生极轻微横向视差，纵向固定世界高度。"
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=581938210]
 position = Vector2(-4.5261054, -230.82872)
 texture = ExtResource("2_dessert_back")
 centered = false
-
-[node name="SkyVerticalJoin" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=237455499]
-position = Vector2(-4.5261054, -1062.8287)
-texture = ExtResource("2_dessert_back")
-centered = false
-flip_v = true
 
 [node name="MesaRocks" type="Parallax2D" parent="CoverageBounds" unique_id=225151614]
 top_level = true
@@ -80,7 +76,7 @@ z_index = -10
 z_as_relative = false
 scroll_scale = Vector2(0.12, 1)
 scroll_offset = Vector2(19.876448, -33.631958)
-metadata/_editor_description_ = "中景沙丘保留横向视差；纵向固定世界高度，不再根据镜头高度追加偏移。"
+metadata/_editor_description_ = "中景沙丘保留原位置与横向构图，不进行纵向重复；更高处由蓝天层补齐。"
 
 [node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=290336486]
 position = Vector2(1357.0945, -41.910088)

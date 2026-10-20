@@ -1,15 +1,35 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://WaterSurface.gd" id="1_script"]
 [ext_resource type="Shader" path="res://water_scroll.gdshader" id="2_shader"]
+[ext_resource type="Shader" path="res://water_side_blur.gdshader" id="3_blur"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_water"]
 shader = ExtResource("2_shader")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_left"]
+shader = ExtResource("3_blur")
+shader_parameter/side_direction = -1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_right"]
+shader = ExtResource("3_blur")
+shader_parameter/side_direction = 1.0
 
 [node name="WaterSurface" type="Node2D"]
 script = ExtResource("1_script")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_water")
+offset_right = 665.0
+offset_bottom = 665.0
+
+[node name="LeftSideBlur" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_left")
+offset_right = 96.0
+offset_bottom = 665.0
+
+[node name="RightSideBlur" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_right")
+offset_left = 569.0
 offset_right = 665.0
 offset_bottom = 665.0

@@ -602,6 +602,16 @@ shader_parameter/pulse_speed = 0.7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2qdte"]
 resource_local_to_scene = true
+shader = ExtResource("22_gcgcm")
+shader_parameter/glow_color = Color(1, 0.92, 0.72, 1)
+shader_parameter/core_opacity = 1.0
+shader_parameter/halo_opacity = 0.72
+shader_parameter/edge_softness = 0.28
+shader_parameter/pulse_strength = 0.08
+shader_parameter/pulse_speed = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hbfrq"]
+resource_local_to_scene = true
 shader = ExtResource("20_mid21")
 shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
 shader_parameter/opacity = 0.82
@@ -1607,8 +1617,19 @@ offset_right = 2430.5625
 offset_bottom = 154.59924
 scale = Vector2(0.6034397, 0.71148044)
 
-[node name="LevelTransitionBlack" parent="mask" unique_id=893587310 instance=ExtResource("19_4ei61")]
+[node name="LevelTransitionGlow3" parent="mask" unique_id=1577644512 instance=ExtResource("21_5kn67")]
 material = SubResource("ShaderMaterial_2qdte")
+visible = false
+layout_mode = 0
+offset_left = 1000.0
+offset_top = -2075.0
+offset_right = 1512.0
+offset_bottom = -1819.0
+scale = Vector2(0.60030395, 1.7912643)
+reveal_after_blocker_path = NodePath("../../SunkenPalace/collisionlayer/SignalVanishBlocker")
+
+[node name="LevelTransitionBlack" parent="mask" unique_id=893587310 instance=ExtResource("19_4ei61")]
+material = SubResource("ShaderMaterial_hbfrq")
 layout_mode = 0
 offset_left = -141.93881
 offset_top = -1382.0851
