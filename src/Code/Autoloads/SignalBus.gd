@@ -41,6 +41,8 @@ signal PlayerOpeningReleaseRequested
 
 ## 请求显示剧情对话框；type 传 &"旁白" 或 &"独白"，content 为要显示的文字。
 signal DialogBox(type: StringName, content: String)
+## 请求显示可配置的剧情台词；line 包含类型、文字及独白表情，不得传空资源。
+signal PlotDialogLineRequested(line: PlotDialogLine)
 
 ## 请求显示非模态教学字幕；text 为完整文案，空字符串清除当前字幕，不锁定玩家操作。
 signal TutorialSubtitleRequested(text: String)

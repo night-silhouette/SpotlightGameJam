@@ -218,7 +218,7 @@ func _show_dialog_lines(lines: Array[PlotDialogLine]) -> void:
 			var dialog_type := StringName(line.dialog_type)
 			if disable_movement_during_dialog and _dialog_box != null and dialog_type in [&"旁白", &"独白"]:
 				_lock_players()
-			SignalBus.DialogBox.emit(dialog_type, line.text)
+			SignalBus.PlotDialogLineRequested.emit(line)
 
 func _lock_players() -> void:
 	for candidate in get_tree().get_nodes_in_group("player"):

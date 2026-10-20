@@ -1,5 +1,40 @@
 extends Node
 
+@export_group("Crown Flood", "crown_flood_")
+@export var crown_flood_enabled: bool = true
+## 以下范围均为 SunkenPalace 本地坐标；World 覆盖地图的左出口须先越过地板外缘再下落。
+@export var crown_flood_room: Rect2 = Rect2(-1292.055737, -1938.391016, 1310.05, 558.6)
+@export var crown_flood_opening: Vector2 = Vector2(-1006.105737, -819.905737)
+@export var crown_flood_exit_top: float = -1568.23
+@export var crown_flood_floor_edge: float = -1564.705737
+@export var crown_flood_drop_left: float = -1648.0
+@export var crown_flood_turn_x: float = -1584.0
+@export var crown_flood_drop_center: float = -1606.0
+@export var crown_flood_clear_y: float = -1250.0
+@export var crown_flood_fill_duration: float = 5.0
+@export var crown_flood_surge_duration: float = 6.0
+@export var crown_flood_jet_speed: float = 1450.0
+@export var crown_flood_min_speed: float = 18.0
+@export var crown_flood_max_speed: float = 320.0
+@export var crown_flood_down_speed: float = 360.0
+@export var crown_flood_down_acceleration: float = 1400.0
+@export var crown_flood_steer_gain: float = 5.0
+@export var crown_flood_steer_speed: float = 85.0
+@export var crown_flood_player_half_height: float = 24.0
+@export var crown_flood_resume_progress: float = 0.65
+@export var crown_flood_z_index: int = 8
+@export var crown_flood_water_color: Color = Color(0.24, 0.55, 0.64, 0.28)
+@export var crown_flood_foam_color: Color = Color(0.76, 0.92, 0.94, 0.58)
+@export var crown_flood_sand_color: Color = Color(0.47, 0.39, 0.24, 0.35)
+@export var crown_flood_wave_height: float = 6.0
+@export var crown_flood_wave_length: float = 66.0
+@export var crown_flood_visual_flow_speed: float = 190.0
+@export var crown_flood_foam_width: float = 8.0
+@export var crown_flood_detail_density: float = 0.14
+@export var crown_flood_audio_start_db: float = -32.0
+@export var crown_flood_audio_peak_db: float = 0.0
+@export_range(0.01, 20.0, 0.1) var crown_flood_audio_fade_duration: float = 5.0
+
 @export_group("Ability Acquire Card", "ability_acquire_")
 ## 能力展示淡入、停留和淡出时长，单位秒；不暂停世界或锁定输入。
 @export_range(0.0, 10.0, 0.05) var ability_acquire_fade_in: float = 0.7

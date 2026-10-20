@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/SunkenPalace/CrownFlood/CrownFlood.gd" id="1_script"]
+[ext_resource type="Shader" path="res://Code/Entities/World/SunkenPalace/CrownFlood/CrownFlood.gdshader" id="2_shader"]
+
+[ext_resource type="AudioStream" path="res://Music/SFX/fiveC/WorldFlood1(1).wav" id="3_flood_audio"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_water"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+
+[node name="CrownFlood" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Water" type="Polygon2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_water")
+
+[node name="FloodAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_flood_audio")

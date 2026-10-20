@@ -1,5 +1,6 @@
 [gd_scene format=4 uid="uid://dklah3ylrtypq"]
 
+[ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/CrownFlood/CrownFlood.tscn" id="36_crown_flood"]
 [ext_resource type="PackedScene" uid="uid://c8efujb25b40s" path="res://Code/Entities/World/SunkenPalace/DesertScenery.tscn" id="2_4lyra"]
 [ext_resource type="PackedScene" uid="uid://cddcd2odxcuvu" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout1.tscn" id="2_rune1"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/RuneLayouts/WaterFlowRuneLayout2.tscn" id="2_rune2"]
@@ -679,6 +680,8 @@ position = Vector2(-1818.4246, 869.71387)
 
 [node name="fire9" parent="visuallayer/fire" unique_id=2099361891 instance=ExtResource("35_ysst7")]
 position = Vector2(3291.5647, 264.19995)
+
+[node name="CrownFlood" parent="." instance=ExtResource("36_crown_flood")]
 
 [node name="biglake" parent="." unique_id=762146871 instance=ExtResource("36_n1l0m")]
 z_index = -1

@@ -2335,7 +2335,7 @@ scale = Vector2(0.44462794, 0.6309766)
 texture = ExtResource("10_10p2q")
 
 [node name="InteractableComponent" parent="." unique_id=1000769939 instance=ExtResource("36_abmis")]
-position = Vector2(2043, 1974.0001)
+position = Vector2(3708, 1779.0001)
 scale = Vector2(1.1128523, 2.4469175)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("37_mohoi")]([SubResource("Resource_3t6bi")])
@@ -2343,7 +2343,7 @@ show_repeat_dialog = true
 repeat_dialog_lines = Array[ExtResource("37_mohoi")]([SubResource("Resource_nl7j5")])
 
 [node name="WolfStatue" parent="InteractableComponent" unique_id=463762242 instance=ExtResource("33_r2dul")]
-position = Vector2(1501.547, -32.694153)
+position = Vector2(5.3915405, 46.997845)
 rotation = -3.1415925
 scale = Vector2(1.059869, -0.50429654)
 

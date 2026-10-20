@@ -50,7 +50,7 @@ func _run_opening() -> void:
 	var generation := _generation
 	while _line_index < opening_lines.size():
 		var line := opening_lines[_line_index]
-		SignalBus.DialogBox.emit(StringName(line.dialog_type), line.text)
+		SignalBus.PlotDialogLineRequested.emit(line)
 		await _dialog_box.Closed
 		if generation != _generation or not is_inside_tree():
 			return

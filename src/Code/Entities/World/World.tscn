@@ -48,10 +48,9 @@
 [ext_resource type="Texture2D" uid="uid://rdldvvu186a" path="res://Art/New/component/extracted/prop_book_horizontal_3.png" id="33_vqyf3"]
 [ext_resource type="Texture2D" uid="uid://dp4b312poaelq" path="res://Art/New/component/extracted/prop_desk_scholar_standalone.png" id="34_2flee"]
 [ext_resource type="Texture2D" uid="uid://ds3r00oipjgsn" path="res://Art/New/component/game2/IMG_9866.PNG" id="36_2flee"]
-[ext_resource type="PackedScene" uid="uid://dwjop3ymk4ya5" path="res://Code/Entities/Plot/Chapter5/Chapter5.tscn" id="37_chapter5"]
+[ext_resource type="PackedScene" path="res://Code/Entities/Plot/Chapter5/Chapter5.tscn" id="37_chapter5"]
 [ext_resource type="Shader" uid="uid://vviukv6rqwt8" path="res://Code/Entities/Plot/Chapter5/Chapter5Stele.gdshader" id="39_5kn67"]
 [ext_resource type="Script" uid="uid://c18ygyrlwnpgc" path="res://Code/Entities/World/OasisBattlefield/OasisStoryVisibility.gd" id="40_oasis_story_visibility"]
-
 [ext_resource type="PackedScene" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/EntryOcclusion/EntryOcclusion.tscn" id="entry_occlusion"]
 
 [sub_resource type="Shader" id="Shader_dash_afterimage"]
@@ -62,7 +61,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_dsxhb"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gurr7"]
 resource_local_to_scene = true
 shader = SubResource("Shader_dash_afterimage")
 shader_parameter/afterimage_color = Color(1, 0.94, 0.65, 0.65)
@@ -114,7 +113,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gurr7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_m60ys"]
 resource_local_to_scene = true
 shader = SubResource("Shader_low_water_outline")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -153,7 +152,7 @@ void fragment() {
 }
 "
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m60ys"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o3wgv"]
 resource_local_to_scene = true
 shader = SubResource("Shader_o2yww")
 shader_parameter/outline_color = Color(0, 0, 0, 1)
@@ -170,25 +169,14 @@ script = ExtResource("2_mkscu")
 [sub_resource type="Resource" id="Resource_yocbw"]
 script = ExtResource("2_mkscu")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3wgv"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8apt3"]
 resource_local_to_scene = true
 size = Vector2(169.84523, 144.98253)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8apt3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1eeg"]
 resource_local_to_scene = true
 shader = ExtResource("8_u3ot4")
 shader_parameter/progress = 0.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1eeg"]
-resource_local_to_scene = true
-shader = ExtResource("7_l2oj5")
-shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
-shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
-shader_parameter/flow_speed = 1.0
-shader_parameter/detail_scale = 1.0
-shader_parameter/curtain_size = Vector2(160, 240)
-shader_parameter/impact_position = Vector2(0.5, 0.5)
-shader_parameter/impact_strength = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sakf5"]
 resource_local_to_scene = true
@@ -234,6 +222,17 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6my6a"]
+resource_local_to_scene = true
+shader = ExtResource("7_l2oj5")
+shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
+shader_parameter/light_color = Color(0.75, 0.88, 0.91, 0.9)
+shader_parameter/flow_speed = 1.0
+shader_parameter/detail_scale = 1.0
+shader_parameter/curtain_size = Vector2(160, 240)
+shader_parameter/impact_position = Vector2(0.5, 0.5)
+shader_parameter/impact_strength = 0.0
+
 [sub_resource type="Resource" id="C3_2_20"]
 script = ExtResource("5_acpp2")
 text = "蛇身雕塑附近掉落着一顶王冠，通体鎏金，刻着繁复而规整的纹饰，仍保留着庄严而肃穆的形制，散发着一种神秘的威严。"
@@ -246,6 +245,7 @@ text = "这王冠散发着一种说不清道不明的力量，似乎不是普通
 [sub_resource type="Resource" id="C3_2_21_b"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
+monologue_expression = "平静"
 text = "……先带走吧，感觉之后会用得到呢。"
 
 [sub_resource type="Resource" id="C3_2_22"]
@@ -255,16 +255,17 @@ text = "突然，位于高处的巨型蓄水池发出一声低沉而绝望的悲
 [sub_resource type="Resource" id="C3_2_23"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
+monologue_expression = "惊讶"
 text = "得快点躲开！
 这么多水，怎么会……这里不是已经荒废了吗？"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6my6a"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlrmx"]
 resource_local_to_scene = true
 shader = ExtResource("13_m0d35")
 shader_parameter/fade_width_pixels = 240.0
 shader_parameter/fade_height_pixels = 180.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tlrmx"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_aaoi6"]
 resource_local_to_scene = true
 shader = ExtResource("7_l2oj5")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -275,7 +276,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_aaoi6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wjack"]
 resource_local_to_scene = true
 shader = ExtResource("13_2flee")
 shader_parameter/repeat_width = 4831.0
@@ -288,7 +289,6 @@ dialog_type = "独白"
 text = "这里的氛围与外面全然不同，却并不让人觉得逼仄，反而有一种……说不出的庄严。
 "
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
-
 
 [sub_resource type="Resource" id="Resource_d0knf"]
 script = ExtResource("5_acpp2")
@@ -430,6 +430,7 @@ metadata/_custom_type_script = "uid://bfra5n80onwqv"
 [sub_resource type="Resource" id="Resource_kdjvc"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
+monologue_expression = "惊讶"
 text = "这太阳……让人有一种很不安的感觉，像是要将一切吞没。"
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
 
@@ -469,6 +470,7 @@ text = "尾巴尖好像还被反复修缮过……
 [sub_resource type="Resource" id="C3_2_19"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
+monologue_expression = "惊讶"
 text = "啊！雕塑头顶的纹饰，和我脸上的一模一样……"
 
 [sub_resource type="Resource" id="C4_2"]
@@ -501,6 +503,7 @@ text = "看来，这里就是那场最终战役的战场了。那么多交错的
 [sub_resource type="Resource" id="Resource_4onqo"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
+monologue_expression = "平静"
 text = "不过奇怪的是，这里并没有腐朽和绝望的气息。
 "
 metadata/_custom_type_script = "uid://bfra5n80onwqv"
@@ -531,6 +534,7 @@ text = "光点或浮游在风中，或沉入水面，或没入泥土，或停留
 [sub_resource type="Resource" id="C4_18"]
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
+monologue_expression = "平静"
 text = "原来这些绿洲是这样出现的……曾经水火不容的两族，那些愤怒的灵魂，连同他们遗留的血肉、骨骼，一同归还给了这片土地，孕育出了这片葱茏……"
 
 [sub_resource type="Resource" id="C4_19"]
@@ -538,7 +542,7 @@ script = ExtResource("5_acpp2")
 dialog_type = "独白"
 text = "走吧，该离开这里了，把这片绿洲的故事……带回去。"
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wjack"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wdil6"]
 resource_local_to_scene = true
 shader = ExtResource("39_5kn67")
 shader_parameter/elapsed = 0.0
@@ -560,7 +564,7 @@ size = Vector2(858.2285, 829.8208)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_k318m"]
 size = Vector2(143.94089, 192.96324)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wdil6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p6fui"]
 resource_local_to_scene = true
 shader = ExtResource("20_mid21")
 shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
@@ -569,29 +573,9 @@ shader_parameter/edge_softness = 0.22
 shader_parameter/fog_amount = 0.12
 shader_parameter/fog_scale = 4.0
 shader_parameter/fog_speed = 0.08
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_p6fui"]
-resource_local_to_scene = true
-shader = ExtResource("22_gcgcm")
-shader_parameter/glow_color = Color(1, 0.92, 0.72, 1)
-shader_parameter/core_opacity = 1.0
-shader_parameter/halo_opacity = 0.72
-shader_parameter/edge_softness = 0.28
-shader_parameter/pulse_strength = 0.08
-shader_parameter/pulse_speed = 0.7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_18ihu"]
 resource_local_to_scene = true
-shader = ExtResource("20_mid21")
-shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
-shader_parameter/opacity = 0.82
-shader_parameter/edge_softness = 0.22
-shader_parameter/fog_amount = 0.12
-shader_parameter/fog_scale = 4.0
-shader_parameter/fog_speed = 0.08
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_8g4ce"]
-resource_local_to_scene = true
 shader = ExtResource("22_gcgcm")
 shader_parameter/glow_color = Color(1, 0.92, 0.72, 1)
 shader_parameter/core_opacity = 1.0
@@ -599,6 +583,16 @@ shader_parameter/halo_opacity = 0.72
 shader_parameter/edge_softness = 0.28
 shader_parameter/pulse_strength = 0.08
 shader_parameter/pulse_speed = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8g4ce"]
+resource_local_to_scene = true
+shader = ExtResource("20_mid21")
+shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
+shader_parameter/opacity = 0.82
+shader_parameter/edge_softness = 0.22
+shader_parameter/fog_amount = 0.12
+shader_parameter/fog_scale = 4.0
+shader_parameter/fog_speed = 0.08
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2qdte"]
 resource_local_to_scene = true
@@ -611,6 +605,16 @@ shader_parameter/pulse_strength = 0.08
 shader_parameter/pulse_speed = 0.7
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hbfrq"]
+resource_local_to_scene = true
+shader = ExtResource("22_gcgcm")
+shader_parameter/glow_color = Color(1, 0.92, 0.72, 1)
+shader_parameter/core_opacity = 1.0
+shader_parameter/halo_opacity = 0.72
+shader_parameter/edge_softness = 0.28
+shader_parameter/pulse_strength = 0.08
+shader_parameter/pulse_speed = 0.7
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2cekn"]
 resource_local_to_scene = true
 shader = ExtResource("20_mid21")
 shader_parameter/mist_color = Color(0.19, 0.13, 0.075, 1)
@@ -651,19 +655,19 @@ position = Vector2(1.3272558, 6.636482)
 scale = Vector2(1.2, 1.2)
 
 [node name="DashAfterimages" parent="PlayerWithCamera/Player" index="21" unique_id=603190475]
-material = SubResource("ShaderMaterial_dsxhb")
-
-[node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
 material = SubResource("ShaderMaterial_gurr7")
 
-[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
+[node name="sprite" parent="PlayerWithCamera/Player" index="22" unique_id=1048294822]
 material = SubResource("ShaderMaterial_m60ys")
+
+[node name="Standbytime" parent="PlayerWithCamera/Player/sprite" index="0" unique_id=1632125495]
+material = SubResource("ShaderMaterial_o3wgv")
 
 [node name="Walk" parent="PlayerWithCamera/Player/sprite" index="1" unique_id=1352150479]
-material = SubResource("ShaderMaterial_m60ys")
+material = SubResource("ShaderMaterial_o3wgv")
 
 [node name="Action" parent="PlayerWithCamera/Player/sprite" index="2" unique_id=1352150480]
-material = SubResource("ShaderMaterial_m60ys")
+material = SubResource("ShaderMaterial_o3wgv")
 
 [node name="Camera2D" parent="PlayerWithCamera" index="1" unique_id=1441820774]
 position = Vector2(1701, 0)
@@ -679,7 +683,7 @@ tween_resource = SubResource("Resource_35sqx")
 [node name="ShotB" parent="PlayerWithCamera" index="4" unique_id=1440358054]
 tween_resource = SubResource("Resource_yocbw")
 
-[node name="GrappleHint" parent="." instance=ExtResource("31_tutorial_hint")]
+[node name="GrappleHint" parent="." unique_id=1828179467 instance=ExtResource("31_tutorial_hint")]
 position = Vector2(315, -14)
 scale = Vector2(1, 0.5)
 hint_kind = "grapple"
@@ -693,13 +697,12 @@ metadata/_edit_lock_ = true
 [node name="CollisionShape2D" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="3" unique_id=1216154260]
 position = Vector2(-8.8567505, -56.68327)
 scale = Vector2(1.0168765, 0.68783075)
-shape = SubResource("RectangleShape2D_o3wgv")
+shape = SubResource("RectangleShape2D_8apt3")
 
 [node name="OfferingVisual" parent="Camp/Lake" parent_id_path=PackedInt32Array(1903763566, 231864433) index="5"]
-material = SubResource("ShaderMaterial_8apt3")
+material = SubResource("ShaderMaterial_x1eeg")
 
 [node name="BrokenStele" parent="Camp/Chapter1/SteleStory_1_12_to_1_14" parent_id_path=PackedInt32Array(1903763566, 257404343, 28622851) index="2" unique_id=1866377039]
-z_index = -1
 scale = Vector2(0.51655513, 0.51655513)
 
 [node name="SunkenPalace" parent="." unique_id=1497400001 instance=ExtResource("2_palace")]
@@ -720,7 +723,7 @@ metadata/_edit_lock_ = true
 position = Vector2(5397, -60)
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="5"]
-material = SubResource("ShaderMaterial_x1eeg")
+material = SubResource("ShaderMaterial_sakf5")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea" parent_id_path=PackedInt32Array(1497400001, 314159265) index="6" unique_id=424886505]
 position = Vector2(5397.757, -45.70826)
@@ -737,7 +740,7 @@ tile_map_data = PackedByteArray("AAD/////BgABAAAAAAAAAP//BgACAAAAAAABAP//BgADAAA
 visible = true
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" index="5"]
-material = SubResource("ShaderMaterial_sakf5")
+material = SubResource("ShaderMaterial_3c750")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea2" index="6" unique_id=424886505]
 position = Vector2(4211, -1241)
@@ -777,7 +780,7 @@ position = Vector2(4372.8003, -2664.7942)
 tile_map_data = PackedByteArray("AAD7////BgABAAEAAAD8////BgACAAEAAAD7/wAABgABAAIAAAD9////BgACAAEAAAD+////BgACAAEAAAD/////BgACAAEAAAAAAP//BgACAAEAAAABAP//BgACAAEAAAACAP//BgACAAEAAAADAP//BgACAAEAAAD8/wAABgACAAIAAAD9/wAABgACAAIAAAD+/wAABgACAAIAAAD//wAABgACAAIAAAAAAAAABgACAAIAAAABAAAABgACAAIAAAACAAAABgACAAIAAAADAAAABgACAAIAAAAEAP//BgADAAEAAAAEAAAABgADAAIAAAD7//7/BgABAAQAABD6//7/BgACAAAAADD8//7/BgACAAEAAAD9//7/BgACAAEAAAD+//7/BgACAAEAAAD///7/BgACAAEAAAABAP7/BgACAAEAAAAAAP7/BgACAAEAAAACAP7/BgABAAQAACADAP7/BgACAAAAAAAEAP7/BgADAAAAAAACAP3/BgADAAEAAAABAP3/BgACAAEAAAAAAP3/BgACAAEAAAD///3/BgACAAEAAAD+//3/BgACAAEAAAD9//3/BgACAAEAAAD8//3/BgACAAEAAAD7//3/BgACAAEAAAD6//3/BgACAAEAAAD5//3/BgACAAEAAAD5//7/BgACAAAAACACAPz/BgADAAEAAAABAPz/BgACAAEAAAAAAPz/BgACAAEAAAD///z/BgACAAEAAAD+//z/BgACAAEAAAD8//z/BgACAAEAAAD7//z/BgACAAEAAAD6//z/BgACAAEAAAD9//z/BgACAAEAAAD5//z/BgACAAEAAAA=")
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" index="5"]
-material = SubResource("ShaderMaterial_3c750")
+material = SubResource("ShaderMaterial_cyga3")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea3" index="6" unique_id=424886505]
 position = Vector2(4399.223, -2687.1318)
@@ -787,7 +790,7 @@ position = Vector2(3442, -3411)
 tile_map_data = PackedByteArray("AAD///v/BgACAAAAAAAAAPv/BgACAAAAAAD///z/BgACAAEAAAD///3/BgACAAEAAAD///7/BgACAAEAAAD/////BgACAAEAAAD//wAABgACAAEAAAD//wEABgACAAEAAAD//wIABgACAAEAAAD//wMABgACAAEAAAD//wQABgACAAIAAAAAAAQABgACAAIAAAAAAAMABgACAAEAAAAAAAIABgADAAYAABAAAAEABgADAAEAAAAAAAAABgADAAEAAAAAAP//BgADAAEAAAAAAP7/BgADAAYAADAAAP3/BgACAAEAAAAAAPz/BgACAAEAAAD+//v/BgACAAAAAAD+//z/BgACAAEAAAD+//3/BgACAAEAAAD+//7/BgACAAEAAAD+////BgACAAEAAAD+/wAABgACAAEAAAD+/wEABgACAAEAAAD+/wIABgACAAEAAAD+/wMABgACAAEAAAD+/wQABgACAAIAAAABAPv/BgACAAAAAAABAPz/BgACAAEAAAABAP3/BgACAAEAAAABAP7/BgACAAIAAAABAAIABgACAAAAAAABAAMABgACAAEAAAABAAQABgADAAQAAAA=")
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="5"]
-material = SubResource("ShaderMaterial_cyga3")
+material = SubResource("ShaderMaterial_o7spd")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea4" parent_id_path=PackedInt32Array(1497400001, 1223072001) index="6" unique_id=424886505]
 position = Vector2(3432, -3398.9998)
@@ -802,7 +805,7 @@ position = Vector2(1667.9999, -2574.0002)
 tile_map_data = PackedByteArray("AAAAAAIABgACAAIAAAAAAAEABgACAAEAAAAAAP3/BgACAAAAAAAAAP7/BgACAAEAAAAAAP//BgACAAEAAAAAAAAABgACAAEAAAABAP3/BgACAAAAAAABAP7/BgACAAEAAAABAP//BgACAAEAAAABAAAABgACAAEAAAABAAEABgACAAEAAAABAAIABgACAAIAAAD//wIABgACAAIAAAD//wEABgACAAEAAAD//wAABgACAAEAAAD/////BgACAAEAAAD///7/BgACAAEAAAD///3/BgABAAYAAAACAP3/BgACAAAAAAACAP7/BgACAAEAAAACAP//BgACAAEAAAACAAAABgACAAEAAAACAAEABgACAAEAAAACAAIABgACAAIAAAA=")
 
 [node name="WaterCurtain" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" index="5"]
-material = SubResource("ShaderMaterial_o7spd")
+material = SubResource("ShaderMaterial_6my6a")
 
 [node name="BeforeSpriteVisuals" parent="SunkenPalace/collisionlayer/WaterFl/WaterFlowArea5" index="6" unique_id=424886505]
 position = Vector2(1718.5127, -2585.0002)
@@ -831,7 +834,7 @@ position = Vector2(397, -1369.7144)
 position = Vector2(2258.7808, -2484.6602)
 
 [node name="visualplayer" parent="SunkenPalace" index="16" unique_id=1788018380]
-material = SubResource("ShaderMaterial_6my6a")
+material = SubResource("ShaderMaterial_tlrmx")
 
 [node name="DepthsLibrary" parent="." unique_id=1865857761 instance=ExtResource("3_library")]
 position = Vector2(-118, 3250)
@@ -874,10 +877,10 @@ position = Vector2(-0.5776968, 1.8656788)
 visible = true
 
 [node name="WaterCurtain" parent="OasisBattlefield/OutwardPhase/WaterFlowArea6" parent_id_path=PackedInt32Array(958829481, 135291713, 854148023) index="5"]
-material = SubResource("ShaderMaterial_tlrmx")
+material = SubResource("ShaderMaterial_aaoi6")
 
 [node name="GreenDecoration" parent="OasisBattlefield/OutwardPhase/OutwardScenery/ForegroundLoop" parent_id_path=PackedInt32Array(958829481, 135291713, 1852138962, 1710055464) index="0" unique_id=625607659]
-material = SubResource("ShaderMaterial_aaoi6")
+material = SubResource("ShaderMaterial_wjack")
 
 [node name="ForegroundSprite7" type="Sprite2D" parent="OasisBattlefield/OutwardPhase/OutwardScenery/ForegroundLoop/Foreground3" parent_id_path=PackedInt32Array(958829481, 135291713, 365900725) index="2" unique_id=1659027958]
 position = Vector2(56435.586, 118.16598)
@@ -1015,7 +1018,7 @@ region_enabled = true
 region_rect = Rect2(0, 0, 4831, 1296)
 region_filter_clip_enabled = true
 
-[node name="Level2EntryOcclusion" parent="." instance=ExtResource("entry_occlusion")]
+[node name="Level2EntryOcclusion" parent="." unique_id=703286164 instance=ExtResource("entry_occlusion")]
 
 [node name="CameraNode" type="Node2D" parent="." unique_id=848259585]
 
@@ -1163,6 +1166,9 @@ region_rect = Rect2(0, 0, 502, 496)
 
 [node name="PictureBook" parent="story/c2/残缺的绘本" unique_id=85174331 instance=ExtResource("17_picture_book")]
 pages = Array[String](["一页一页翻着，前半部分日族与月族一起出现，他们聊天、游戏、交换食物，画面看着暖融融的。", "可翻到最后几页，画面变了。笑脸被改成了哭脸，空着的手上被添上了刀剑和长矛。最后一页，原本似乎是一起庆祝节日的集会。但现在，每个人的表情都被改了。整张画上找不到一双笑的眼睛。"])
+close_monologue_expressions = Dictionary[int, String]({
+0: "惊讶"
+})
 close_monologues = Array[String](["！这些月族人……有和我一样的耳朵和尾巴。", "他们曾毫无嫌隙地活在同一片天空下，后来呢，究竟发生了什么？"])
 
 [node name="刻有谚语的石碑" parent="story/c2" unique_id=1341038314 instance=ExtResource("12_terh4")]
@@ -1192,6 +1198,10 @@ texture = ExtResource("23_vqyf3")
 book_title = "学者的笔记"
 pages = Array[String](["我们曾经共同生活在这片土地上。日族守护白昼，在阳光下耕种、劳作；月族行走长夜，循着月色寻找水源。水像一条看不见的线，将昼与夜缝在一起，我们从未觉得彼此有什么不同。", "最初，我们只是拥有不同的分工。后来，白昼与长夜，将我们带向不同的道路，也让我们渐渐习惯只与自己的族人同行。我们开始用不同的名字称呼自己，自然而然形成了界限，我们站在这界限的两边，互相推搡。", "后来，我们惊讶地发现昼与夜并非永恒。日族越强，白昼便越长；月族越强，长夜便越长。若让另一方永远消失，世界是否就永远属于我们？当第一次有人指出这问题时，一切都失控了。", "可这个世界不属于日，也不属于月。昼与夜彼此成全，水与土地相互依存。一方存在的意义，从来都不在自己之中。可当我终于看清这一点时，已经太迟了。", "决战只剩两日。世界将会朝一边倾覆，而另一边同样得不到幸福。", "他们同时拥有……同生于这片天地……新世界……"])
 page_monologues = Array[String](["", "", "原来如此……", "", "日族宫殿里未完成的壁画，还有这里留下的文字，都指向了同一场战争。那次决战应该是以月族完败告终，从那之后，这里只剩下白昼，水源急剧减少，最终……", "这说得是我吧……“他们”？还有很多和我一样的人吗？使者又是什么意思……"])
+page_monologue_expressions = Dictionary[int, String]({
+2: "平静",
+5: "惊讶"
+})
 close_monologues = Array[String]([])
 
 [node name="GradualTextTrigger" parent="story/c2" unique_id=1879339704 instance=ExtResource("20_m8xep")]
@@ -1436,7 +1446,7 @@ request_channel = &"chapter5_after_enemy_definition"
 lake_anchor = NodePath("../Camp/Lake")
 ending_horizon_anchor = NodePath("../Camp/EndingHorizon")
 stele_path = NodePath("../Camp/Chapter1/SteleStory_1_12_to_1_14/BrokenStele")
-stele_material = SubResource("ShaderMaterial_wjack")
+stele_material = SubResource("ShaderMaterial_wdil6")
 
 [node name="Node2D" type="Node2D" parent="." unique_id=671045226]
 position = Vector2(130, 7)
@@ -1581,7 +1591,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="LevelTransitionBlack3" parent="mask" unique_id=47024789 instance=ExtResource("19_4ei61")]
-material = SubResource("ShaderMaterial_wdil6")
+material = SubResource("ShaderMaterial_p6fui")
 layout_mode = 0
 offset_left = 2039.0781
 offset_top = -1462.7448
@@ -1590,7 +1600,7 @@ offset_bottom = -1206.7448
 scale = Vector2(0.11266449, 5.486389)
 
 [node name="LevelTransitionGlow" parent="mask" unique_id=139142780 instance=ExtResource("21_5kn67")]
-material = SubResource("ShaderMaterial_p6fui")
+material = SubResource("ShaderMaterial_18ihu")
 layout_mode = 0
 offset_left = -321.02695
 offset_top = -618.724
@@ -1599,7 +1609,7 @@ offset_bottom = -362.724
 scale = Vector2(1.0188323, 1.0174156)
 
 [node name="LevelTransitionBlack2" parent="mask" unique_id=400412874 instance=ExtResource("19_4ei61")]
-material = SubResource("ShaderMaterial_18ihu")
+material = SubResource("ShaderMaterial_8g4ce")
 layout_mode = 0
 offset_left = -136.64584
 offset_top = -506.72998
@@ -1608,7 +1618,7 @@ offset_bottom = -250.72998
 scale = Vector2(0.17020535, 3.670147)
 
 [node name="LevelTransitionGlow2" parent="mask" unique_id=1069617235 instance=ExtResource("21_5kn67")]
-material = SubResource("ShaderMaterial_8g4ce")
+material = SubResource("ShaderMaterial_2qdte")
 layout_mode = 0
 offset_left = 1918.5626
 offset_top = -101.40076
@@ -1617,8 +1627,8 @@ offset_bottom = 154.59924
 scale = Vector2(0.6034397, 0.71148044)
 
 [node name="LevelTransitionGlow3" parent="mask" unique_id=1577644512 instance=ExtResource("21_5kn67")]
-material = SubResource("ShaderMaterial_2qdte")
 visible = false
+material = SubResource("ShaderMaterial_hbfrq")
 layout_mode = 0
 offset_left = 1000.0
 offset_top = -2075.0
@@ -1628,7 +1638,7 @@ scale = Vector2(0.60030395, 1.7912643)
 reveal_after_blocker_path = NodePath("../../SunkenPalace/collisionlayer/SignalVanishBlocker")
 
 [node name="LevelTransitionBlack" parent="mask" unique_id=893587310 instance=ExtResource("19_4ei61")]
-material = SubResource("ShaderMaterial_hbfrq")
+material = SubResource("ShaderMaterial_2cekn")
 layout_mode = 0
 offset_left = -141.93881
 offset_top = -1382.0851
