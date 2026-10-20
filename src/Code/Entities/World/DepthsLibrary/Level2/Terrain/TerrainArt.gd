@@ -1,6 +1,6 @@
 @tool
 extends Node2D
-## 读取各房间 Terrain，统一绘制蓝边黑芯地形；外侧填充仅用于美术，不改变碰撞。
+## 读取各房间 Terrain，统一绘制蓝边黑芯地形；折返井左侧补格同步实体碰撞，其余外侧填充仅用于美术。
 const SURFACE = preload("res://Code/Entities/World/DepthsLibrary/Level2/Terrain/StoneSurface.gd")
 const SETTINGS: Script = preload("res://Code/Autoloads/ExportSettings.gd")
 const SETTINGS_SCENE: PackedScene = preload("res://Code/Autoloads/ExportSettings.tscn")
@@ -9,6 +9,9 @@ var _mesh: Dictionary = {}
 var _signature: int = 0
 var _poll_left: float = 0.0
 var _draw_signature: int = 0
+var _extension_signature: int = 0
+var _extension_layer: int = 0
+var _extension_body: StaticBody2D
 
 func _ready() -> void:
 	_refresh_sources()
@@ -20,6 +23,8 @@ func _exit_tree() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_VISIBILITY_CHANGED and is_inside_tree():
 		_sync_source_visibility()
+		if is_instance_valid(_extension_body):
+			_extension_body.collision_layer = _extension_layer if _art_enabled() else 0
 		queue_redraw()
 
 func _process(delta: float) -> void:
@@ -43,6 +48,7 @@ func _art_enabled() -> bool:
 func _refresh_sources() -> void:
 	var rooms := get_parent().get_node_or_null("Rooms")
 	if rooms == null:
+		_sync_extension_collision([], 0, 0)
 		_restore_sources()
 		_sources.clear()
 		if not _mesh.is_empty():
@@ -51,6 +57,9 @@ func _refresh_sources() -> void:
 		return
 	var found: Array[TileMapLayer] = []
 	var rectangles: Array[Rect2] = []
+	var extension_rectangles: Array[Rect2] = []
+	var extension_layer := 0
+	var extension_mask := 0
 	for room in rooms.get_children():
 		var terrain := room.get_node_or_null("Terrain") as TileMapLayer
 		if terrain == null or terrain.tile_set == null:
@@ -68,7 +77,12 @@ func _refresh_sources() -> void:
 					for step in range(1, extra + 1):
 						outer.append(cell + Vector2i.LEFT * step)
 			cells.append_array(outer)
+			if terrain.collision_enabled and terrain.tile_set.get_physics_layers_count() > 0:
+				extension_rectangles.append_array(_terrain_rectangles(terrain, outer))
+				extension_layer = terrain.tile_set.get_physics_layer_collision_layer(0)
+				extension_mask = terrain.tile_set.get_physics_layer_collision_mask(0)
 		rectangles.append_array(_terrain_rectangles(terrain, cells))
+	_sync_extension_collision(extension_rectangles, extension_layer, extension_mask)
 	for terrain in _sources:
 		if is_instance_valid(terrain) and not found.has(terrain):
 			RenderingServer.canvas_item_set_visible(terrain.get_canvas_item(), terrain.visible)
@@ -85,6 +99,39 @@ func _refresh_sources() -> void:
 	if mesh_changed or draw_signature != _draw_signature:
 		_draw_signature = draw_signature
 		queue_redraw()
+
+func _sync_extension_collision(rectangles: Array[Rect2], layer: int, mask: int) -> void:
+	# @tool 热重载不会重新执行旧实例的 @onready；旧场景也可能还没有新增子节点。
+	# 每次先恢复引用，必要时补建，避免必须重开编辑器才能生成碰撞。
+	if not is_instance_valid(_extension_body):
+		_extension_body = get_node_or_null("StairwellLeftCollision") as StaticBody2D
+		if _extension_body == null:
+			_extension_body = StaticBody2D.new()
+			_extension_body.name = "StairwellLeftCollision"
+			_extension_body.collision_layer = 0
+			_extension_body.collision_mask = 0
+			add_child(_extension_body)
+		_extension_signature = -1
+	# 和补画使用同一批格子、同一局部坐标；不把井道之间的大块装饰填充变成实体。
+	_extension_layer = layer
+	_extension_body.collision_layer = layer if _art_enabled() else 0
+	_extension_body.collision_mask = mask
+	var signature := hash(rectangles)
+	if signature == _extension_signature:
+		return
+	_extension_signature = signature
+	for child in _extension_body.get_children():
+		if child is CollisionShape2D:
+			child.disabled = true
+			child.queue_free()
+	for rect in rectangles:
+		var shape := RectangleShape2D.new()
+		shape.size = rect.size
+		var collider := CollisionShape2D.new()
+		collider.position = rect.get_center()
+		collider.shape = shape
+		# 自动生成、不保存进场景；修改 Terrain 或补格数量后由轮询重新生成。
+		_extension_body.add_child(collider)
 
 func _terrain_rectangles(terrain: TileMapLayer, cells: Array[Vector2i]) -> Array[Rect2]:
 	var result: Array[Rect2] = []

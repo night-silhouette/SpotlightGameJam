@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/DepthsLibrary/Level2/Scenery/EntryOcclusion/EntryOcclusion.gd" id="script"]
+
+[node name="Level2EntryOcclusion" type="Node"]
+script = ExtResource("script")
+upper_terrain_path = NodePath("../Camp/collision_layer/TileMapLayer3")
+entry_background_path = NodePath("../DepthsLibrary/Level2Map/Scenery/HorizontalEntry")
+boundary_path = NodePath("../CameraNode/CameraGate3")
+lower_terrain_paths = Array[NodePath]([NodePath("../DepthsLibrary/Level2Map/TileMapLayer"), NodePath("../DepthsLibrary/Level2Map/TerrainArt")])

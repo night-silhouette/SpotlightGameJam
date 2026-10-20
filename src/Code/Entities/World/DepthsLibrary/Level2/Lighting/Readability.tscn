@@ -56,3 +56,14 @@ range_item_cull_mask = 262144
 range_layer_min = 0
 range_layer_max = 0
 shadow_enabled = false
+
+[node name="PropFill" type="PointLight2D" parent="."]
+enabled = false
+texture = SubResource("FillTexture")
+texture_scale = 8192.0
+height = 16000.0
+energy = 0.0
+range_item_cull_mask = 1048576
+range_layer_min = 0
+range_layer_max = 0
+shadow_enabled = false
