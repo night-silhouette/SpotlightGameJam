@@ -30,6 +30,8 @@ func _refresh() -> void:
 	# 独立测试场景使用附加节点；装入 World 后只由 World 根控制，避免互相抢歌。
 	if self != get_tree().current_scene and get_parent() != get_tree().current_scene:
 		return
+	if is_instance_valid(_oasis) and not is_instance_valid(_bone):
+		_bone = _oasis.get_node_or_null("OutwardPhase/InteractableComponent") as Node2D
 	var player := get_tree().get_first_node_in_group(&"player") as Node2D
 	var audio := get_node("/root/Util")
 	var next_mode: StringName = &"normal"

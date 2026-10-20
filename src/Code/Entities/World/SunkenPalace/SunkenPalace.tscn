@@ -123,8 +123,8 @@ shader_parameter/impact_strength = 0.0
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_visual_player_fade"]
 resource_local_to_scene = true
 shader = ExtResource("28_visual_fade_shader")
-shader_parameter/fade_width_pixels = 72.0
-shader_parameter/fade_height_pixels = 56.0
+shader_parameter/fade_width_pixels = 240.0
+shader_parameter/fade_height_pixels = 180.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mxtox"]
 texture = ExtResource("22_k6gi6")
@@ -564,8 +564,8 @@ z_index = -1
 material = SubResource("ShaderMaterial_visual_player_fade")
 position = Vector2(1341.9999, -1162)
 scale = Vector2(0.19822538, 0.19822538)
-fit_margin = 168.0
-clear_margin = 168.0
+fit_margin = 1227.0
+clear_margin = 1227.0
 script = ExtResource("27_visual_fade_script")
 
 [node name="TileMapLayer" type="TileMapLayer" parent="visualplayer" unique_id=1592384472]

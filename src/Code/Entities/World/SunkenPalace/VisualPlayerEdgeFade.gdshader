@@ -2,8 +2,8 @@ shader_type canvas_item;
 render_mode unshaded;
 
 uniform sampler2D group_texture : hint_screen_texture, repeat_disable, filter_linear;
-uniform float fade_width_pixels : hint_range(0.0, 160.0, 1.0) = 72.0;
-uniform float fade_height_pixels : hint_range(0.0, 160.0, 1.0) = 56.0;
+uniform float fade_width_pixels : hint_range(0.0, 480.0, 1.0) = 240.0;
+uniform float fade_height_pixels : hint_range(0.0, 480.0, 1.0) = 180.0;
 
 void fragment() {
 	vec4 group_color = textureLod(group_texture, SCREEN_UV, 0.0);

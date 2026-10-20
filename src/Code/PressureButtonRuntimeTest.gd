@@ -30,7 +30,13 @@ func _test_initial_and_sunken_palace_state() -> void:
 	await get_tree().process_frame
 	_expect(not button.IsPressed(), "Button must ignore serialized is_pressed=true on ready.")
 	_expect(button.position == Vector2.ZERO, "Unpressed button must be at its rest position.")
-	_expect(button.get_node("Visual").color.is_equal_approx(button.unpressed_color), "Unpressed button must use unpressed_color.")
+	_expect(button.get_node("UnpressedSprite2D").visible, "Unpressed button must show the raised texture state.")
+	_expect(not button.get_node("PressedSprite2D").visible, "Unpressed button must hide the pressed texture state.")
+	var raised_sprite := button.get_node("UnpressedSprite2D") as Sprite2D
+	var compressed_sprite := button.get_node("PressedSprite2D") as Sprite2D
+	var raised_bottom := raised_sprite.position.y + raised_sprite.texture.get_height() * raised_sprite.scale.y * 0.5
+	var compressed_bottom := compressed_sprite.position.y + compressed_sprite.texture.get_height() * compressed_sprite.scale.y * 0.5
+	_expect(is_equal_approx(raised_bottom, compressed_bottom), "Both texture states must share the same bottom edge.")
 	button.queue_free()
 	await get_tree().process_frame
 
@@ -53,6 +59,8 @@ func _test_physics_press_release_and_reset() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	_expect(not button.IsPressed(), "Button without an overlapping body must remain unpressed.")
+	var rest_position := button.position
+	var solid_bottom := _get_solid_collision_bottom(button)
 
 	var body := StaticBody2D.new()
 	var collision := CollisionShape2D.new()
@@ -65,11 +73,19 @@ func _test_physics_press_release_and_reset() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	_expect(button.IsPressed(), "Overlapping PhysicsBody2D must press the button.")
+	_expect(button.position == rest_position, "Pressing must not move the button node.")
+	_expect(is_equal_approx(_get_solid_collision_bottom(button), solid_bottom), "Pressing must keep the collision bottom fixed.")
+	_expect(not button.get_node("UnpressedSprite2D").visible, "Pressed button must hide the raised texture state.")
+	_expect(button.get_node("PressedSprite2D").visible, "Pressed button must show the compressed texture state.")
 
 	body.position = Vector2(300.0, 300.0)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	_expect(not button.IsPressed(), "Non-latching button must release after the body exits.")
+	_expect(button.position == rest_position, "Releasing must not move the button node.")
+	_expect(is_equal_approx(_get_solid_collision_bottom(button), solid_bottom), "Releasing must keep the collision bottom fixed.")
+	_expect(button.get_node("UnpressedSprite2D").visible, "Released button must restore the raised texture state.")
+	_expect(not button.get_node("PressedSprite2D").visible, "Released button must hide the compressed texture state.")
 
 	button.stay_pressed = true
 	body.position = Vector2(0.0, -4.0)
@@ -80,6 +96,7 @@ func _test_physics_press_release_and_reset() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 	_expect(button.IsPressed(), "stay_pressed=true must retain runtime latch until ResetState.")
+	_expect(button.position == rest_position, "A latched button must stay at its original position.")
 	button.ResetState()
 	_expect(not button.IsPressed(), "ResetState must force a latched button to release.")
 	_expect(button.position == Vector2.ZERO, "ResetState must immediately restore rest position.")
@@ -121,3 +138,8 @@ func _test_save_load_migration_and_door_sync() -> void:
 func _expect(condition: bool, message: String) -> void:
 	if not condition:
 		_failures.append(message)
+
+func _get_solid_collision_bottom(button: PressureButton) -> float:
+	var collision := button.get_node("SolidCollision") as CollisionShape2D
+	var shape := collision.shape as RectangleShape2D
+	return collision.position.y + shape.size.y * 0.5
