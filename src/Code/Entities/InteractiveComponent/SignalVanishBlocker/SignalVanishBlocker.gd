@@ -163,6 +163,11 @@ func _finish_vanish() -> void:
 	else:
 		hide()
 
+## 返回该挡板是否已经进入不可逆的消失状态。
+## @return 已触发消失流程或已从存档恢复为消失态时返回 true，否则返回 false。
+func IsVanished() -> bool:
+	return _is_vanished
+
 ## 导出障碍物是否已消失，用于存档恢复。
 ## @return 包含 vanished 状态的字典。
 func ExportSaveData() -> Dictionary:

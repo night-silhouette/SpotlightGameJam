@@ -618,6 +618,14 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 穿过流水区域音效所使用的音频总线
 @export var water_flow_audio_bus: StringName = &"SFX_Interact"
 
+@export_group("Interactive - Water Surface", "water_surface_")
+## 水面左右两端应用横向模糊的宽度，单位为水面组件的本地像素；不会改变透明度或影响上、下边缘。
+@export_range(0.0, 256.0, 1.0) var water_surface_side_blur_width: float = 96.0
+## 水面左右边缘的横向模糊采样半径，单位为原始纹理像素。
+@export_range(0.0, 32.0, 0.5) var water_surface_side_blur_radius: float = 8.0
+## 水面左右边缘的模糊混合强度；0 为关闭模糊，1 为完整模糊。
+@export_range(0.0, 1.0, 0.05) var water_surface_side_blur_strength: float = 1.0
+
 @export_group("Interactive - Spikes", "spikes_")
 ## 通用地刺基础伤害值
 @export var spikes_damage: float = 40.0
@@ -642,7 +650,7 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 小圣杯补水百分比 (1.0 即 100% 满水)
 @export var chalice_heal_ratio: float = 1.0
 ## 玩家距圣杯图像边缘的最大交互距离（世界像素），不要求身体进入点击区域。
-@export_range(0.0, 300.0, 1.0) var chalice_interact_distance: float = 85.0
+@export_range(0.0, 300.0, 1.0) var chalice_interact_distance: float = 160.0
 
 @export_group("Interactive - Tent", "tent_")
 ## 帐篷重生延迟时长 (秒，玩家死亡后多久在帐篷重生)
@@ -1087,7 +1095,9 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Sunken Palace - Scenery", "sunken_scenery_")
 ## 沉没宫殿本地 X 坐标的背景显示范围，避免第一关背景覆盖其他关卡。
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
-## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
+## 沉没宫殿本地 Y 坐标的背景显示范围；向上覆盖高层空窗，向下在第二关前关闭。
+@export var sunken_scenery_camera_y_bounds: Vector2 = Vector2(-5200.0, 2000.0)
+## 旧的对称 Y 距离参数，保留以兼容已有设置；背景显隐改用 sunken_scenery_camera_y_bounds。
 @export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
 ## 背景纵向视差：1 固定在世界中，不跟随人物或镜头升降；0 贴住屏幕。横向视差沿用各层配置。
 @export_range(0.0, 1.0, 0.05) var sunken_scenery_vertical_scroll_scale: float = 1.0

@@ -28,6 +28,30 @@ func _update_size() -> void:
 	var tr = get_node_or_null("TextureRect") as TextureRect
 	if tr:
 		tr.size = Vector2(width, height)
+	_update_side_blur()
+
+func _update_side_blur() -> void:
+	var left_edge := get_node_or_null("LeftSideBlur") as ColorRect
+	var right_edge := get_node_or_null("RightSideBlur") as ColorRect
+	if left_edge == null or right_edge == null:
+		return
+	var blur_width := clampf(ExportSettings.water_surface_side_blur_width, 0.0, width * 0.5)
+	left_edge.position = Vector2.ZERO
+	left_edge.size = Vector2(blur_width, height)
+	right_edge.position = Vector2(width - blur_width, 0.0)
+	right_edge.size = Vector2(blur_width, height)
+	left_edge.visible = blur_width > 0.0
+	right_edge.visible = blur_width > 0.0
+	_set_side_blur_material(left_edge, -1.0)
+	_set_side_blur_material(right_edge, 1.0)
+
+func _set_side_blur_material(edge: ColorRect, side_direction: float) -> void:
+	var shader_material := edge.material as ShaderMaterial
+	if shader_material == null:
+		return
+	shader_material.set_shader_parameter(&"blur_radius", ExportSettings.water_surface_side_blur_radius)
+	shader_material.set_shader_parameter(&"blur_strength", ExportSettings.water_surface_side_blur_strength)
+	shader_material.set_shader_parameter(&"side_direction", side_direction)
 
 func _process(delta: float) -> void:
 	var tr = get_node_or_null("TextureRect") as TextureRect

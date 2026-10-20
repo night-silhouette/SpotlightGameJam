@@ -8,6 +8,13 @@ export.cfg
 export_credentials.cfg
 *.tmp
 
+# Build and archive artifacts (keep source assets, not packaging copies)
+*.zip
+*.rar
+*.7z
+*.tar
+*.gz
+
 # Imported translations (automatically generated from CSV files)
 *.translation
 
