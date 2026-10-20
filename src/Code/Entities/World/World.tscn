@@ -248,6 +248,16 @@ script = ExtResource("5_acpp2")
 dialog_type = "独白"
 text = "……先带走吧，感觉之后会用得到呢。"
 
+[sub_resource type="Resource" id="C3_2_22"]
+script = ExtResource("5_acpp2")
+text = "突然，位于高处的巨型蓄水池发出一声低沉而绝望的悲鸣，随即崩塌。积蓄已久的水裹挟着沙土与碎石倾泻而下，脚下的地板也随之崩裂，轰鸣声在殿宇间来回冲撞。"
+
+[sub_resource type="Resource" id="C3_2_23"]
+script = ExtResource("5_acpp2")
+dialog_type = "独白"
+text = "得快点躲开！
+这么多水，怎么会……这里不是已经荒废了吗？"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6my6a"]
 resource_local_to_scene = true
 shader = ExtResource("13_m0d35")
@@ -460,16 +470,6 @@ text = "尾巴尖好像还被反复修缮过……
 script = ExtResource("5_acpp2")
 dialog_type = "独白"
 text = "啊！雕塑头顶的纹饰，和我脸上的一模一样……"
-
-[sub_resource type="Resource" id="C3_2_22"]
-script = ExtResource("5_acpp2")
-text = "突然，位于高处的巨型蓄水池发出一声低沉而绝望的悲鸣，随即崩塌。积蓄已久的水裹挟着沙土与碎石倾泻而下，脚下的地板也随之崩裂，轰鸣声在殿宇间来回冲撞。"
-
-[sub_resource type="Resource" id="C3_2_23"]
-script = ExtResource("5_acpp2")
-dialog_type = "独白"
-text = "得快点躲开！
-这么多水，怎么会……这里不是已经荒废了吗？"
 
 [sub_resource type="Resource" id="C4_2"]
 script = ExtResource("5_acpp2")
@@ -1251,7 +1251,7 @@ scale = Vector2(0.14981982, 0.14981982)
 texture = ExtResource("33_3lcmj")
 
 [node name="工具农具_2_7至2_8" parent="story/c3" unique_id=734180189 instance=ExtResource("12_terh4")]
-position = Vector2(6019, -11)
+position = Vector2(6028, 3)
 scale = Vector2(1.6191423, 1.6191423)
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("C3_2_7"), SubResource("C3_2_8")])
@@ -1380,7 +1380,7 @@ position = Vector2(-18651.559, -582.4204)
 scale = Vector2(3.9478683, 4.6546264)
 disable_movement_during_dialog = true
 show_enter_dialog = true
-enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_qpp1c"), SubResource("Resource_o0b1u")])
+enter_dialog_lines = Array[ExtResource("5_acpp2")]([SubResource("Resource_qpp1c"), SubResource("Resource_o0b1u"), SubResource("Resource_6ywoy")])
 enter_dialog_once = true
 metadata/interaction_dot_hidden = true
 metadata/_editor_description_ = "靠近原有骨头前置观察/对白；不新增可拾取骨头，也不触发拔骨机制，请在编辑器核对原有骨头位置。"
