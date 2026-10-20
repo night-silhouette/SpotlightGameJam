@@ -35,7 +35,7 @@ height = 32.59961
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lvx6x"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4l4s"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v0dy6"]
 resource_local_to_scene = true
 shader = ExtResource("16_g4l4s")
 shader_parameter/deep_color = Color(0.55, 0.72, 0.77, 0.88)
@@ -46,7 +46,7 @@ shader_parameter/curtain_size = Vector2(160, 240)
 shader_parameter/impact_position = Vector2(0.5, 0.5)
 shader_parameter/impact_strength = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_6rans"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4l4s"]
 resource_local_to_scene = true
 shader = ExtResource("18_ueiw8")
 shader_parameter/repeat_width = 4831.0
@@ -59,7 +59,7 @@ metadata/_edit_lock_ = true
 [node name="OasisBoat" parent="." unique_id=1388656376 instance=ExtResource("1_qk5k4")]
 position = Vector2(15490, 1288.608)
 curve = SubResource("Curve2D_1ev11")
-speed = 150.0
+speed = 200.0
 use_battlefield_stop_points = true
 metadata/_edit_lock_ = true
 
@@ -105,15 +105,17 @@ metadata/_edit_lock_ = true
 
 [node name="VanishingBlockerComponent" parent="." unique_id=1842021402 node_paths=PackedStringArray("target_area", "sink_follower") instance=ExtResource("5_368s4")]
 position = Vector2(6905, 1318)
-scale = Vector2(4.291459, 7.029553)
 target_area = NodePath("../VanishingArea")
 sink_follower = NodePath("../Spikes")
 
 [node name="BeforeVisual" parent="VanishingBlockerComponent" index="0"]
-position = Vector2(6905, 1318)
 scale = Vector2(0.14, 0.14)
-tile_map_data = PackedByteArray("AAD///3/BwACAAEAAAD+//3/CQABAAEAAAAAAP3/CAADAAEAAAD+//7/CQABAAIAAAD+////CQABAAMAAAAAAP7/CAADAAIAAAAAAP//CAADAAMAAAD/////CAACAAMAAAD///7/CAACAAIAAAATAPf/CAADAAIAAAATAPj/CAADAAIAAAATAPn/CAADAAIAAAATAPr/CAADAAIAAAATAPv/CAADAAIAAAATAPz/CAADAAIAAAATAP3/CAADAAIAAAATAP7/CAADAAMAAAASAP7/CAACAAMAAAARAP7/CAACAAMAAAAQAP7/CAABAAMAAAAQAP3/CAABAAIAAAAQAPz/CAABAAIAAAAQAPv/CAABAAIAAAAQAPr/CAABAAIAAAAQAPn/CAABAAIAAAAQAPj/CAABAAIAAAAQAPf/CAABAAIAAAAQAPb/CAABAAEAAAARAPb/CAACAAEAAAASAPb/CAACAAEAAAATAPb/CAADAAEAAAARAPf/CAACAAIAAAARAPj/CAACAAIAAAARAPn/CAACAAIAAAARAPr/CAACAAIAAAARAPv/CAACAAIAAAARAPz/CAACAAIAAAARAP3/CAACAAIAAAASAPf/CAACAAIAAAASAPj/CAACAAIAAAASAPn/CAACAAIAAAASAPr/CAACAAIAAAASAPv/CAACAAIAAAASAPz/CAACAAIAAAASAP3/CAACAAIAAAAOAPX/CAACAAEAAAANAPX/CAACAAEAAAAMAPX/CAACAAEAAAALAPX/CAACAAEAAAAKAPX/CAACAAEAAAAPAPX/CAADAAEAAAAPAPb/CAADAAMAAAAOAPb/CAACAAMAAAANAPb/CAACAAMAAAAMAPb/CAACAAMAAAALAPb/CAACAAMAAAAKAPb/CQACAAMAAAAJAPb/CQACAAMAAAAIAPb/CQACAAMAAAAHAPb/CQABAAMAAAAHAPX/CQABAAIAAAAHAPT/CQABAAIAAAAHAPP/CQABAAIAAAAHAPL/CQABAAIAAAAIAO//CAACAAEAAAAJAO//CAADAAEAAAAJAPD/CAADAAIAAAAJAPH/CAADAAIAAAAJAPL/CAADAAIAAAAJAPP/CAADAAIAAAAJAPT/CAADAAIAAAAHAO//CAABAAEAAAAHAPH/CAABAAIAAAAHAPD/CAABAAIAAAAIAPD/CAACAAIAAAAIAPH/CAACAAIAAAAIAPL/CAACAAIAAAAIAPP/CAACAAIAAAAIAPT/CAACAAIAAAAIAPX/CAACAAIAAAAJAPX/CAAEAAEAACA=")
+tile_map_data = PackedByteArray("AAD///3/BwACAAEAAAD+//3/CQABAAEAAAAAAP3/CAADAAEAAAD+//7/CQABAAIAAAD+////CQABAAMAAAAAAP7/CAADAAIAAAAAAP//CAADAAMAAAD/////CAACAAMAAAD///7/CAACAAIAAAA=")
 tile_set = ExtResource("3_gc2m3")
+collision_enabled = false
+
+[node name="CollisionShape2D" parent="VanishingBlockerComponent" index="1"]
+scale = Vector2(4.291459, 7.029553)
 
 [node name="Vs_spike" type="Node2D" parent="VanishingBlockerComponent/BeforeVisual" index="0" unique_id=558502419]
 z_index = -1
@@ -248,14 +250,13 @@ metadata/_edit_lock_ = true
 
 [node name="BeforeVisual" parent="WaterFlowArea6" index="0"]
 visible = true
-visibility_layer = 1
 position = Vector2(8625, 821)
 scale = Vector2(0.14, 0.14)
 tile_map_data = PackedByteArray("AAD+//z/CAABAAEAAAABAPz/CAADAAEAAAD///z/CAACAAEAAAAAAPz/CAACAAEAAAD+//3/CAABAAIAAAD+//7/CAABAAIAAAD+////CAABAAIAAAD+/wAACAABAAIAAAD+/wEACAABAAIAAAD+/wIACAABAAIAAAD+/wMACAABAAIAAAD//wMACAACAAIAAAD+/wQACAABAAMAAAD//wQACAACAAMAAAAAAAQACAACAAMAAAABAAQACAADAAMAAAABAAMACAADAAIAAAABAAIACAADAAIAAAABAAEACAADAAIAAAABAAAACAADAAIAAAABAP//CAADAAIAAAABAP7/CAADAAIAAAABAP3/CAADAAIAAAD///3/CAACAAIAAAAAAP3/CAACAAIAAAAAAP7/CAACAAIAAAAAAP//CAACAAIAAAD/////CAACAAIAAAD///7/CAACAAIAAAD//wAACAACAAIAAAD//wEACAACAAIAAAD//wIACAACAAIAAAAAAAMACAACAAIAAAAAAAIACAACAAIAAAAAAAEACAACAAIAAAAAAAAACAACAAIAAAA=")
 tile_set = ExtResource("3_gc2m3")
 
 [node name="WaterCurtain" parent="WaterFlowArea6" index="5"]
-material = SubResource("ShaderMaterial_g4l4s")
+material = SubResource("ShaderMaterial_v0dy6")
 
 [node name="BeforeSpriteVisuals" parent="WaterFlowArea6" index="6" unique_id=424886505]
 position = Vector2(8600, 826)
@@ -303,7 +304,7 @@ position = Vector2(-1253.1809, -669.5981)
 
 [node name="GreenDecoration" parent="OutwardScenery/ForegroundLoop" index="0" unique_id=625607659]
 visible = false
-material = SubResource("ShaderMaterial_6rans")
+material = SubResource("ShaderMaterial_g4l4s")
 position = Vector2(13599.693, 777.1195)
 scale = Vector2(0.60270095, 0.60270095)
 

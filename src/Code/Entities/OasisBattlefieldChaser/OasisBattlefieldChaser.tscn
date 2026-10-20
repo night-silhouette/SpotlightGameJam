@@ -3,6 +3,11 @@
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/DirectionalChaseMover/DirectionalChaseMover.tscn" id="1_mover"]
 [ext_resource type="Script" uid="uid://b7oitni6r78l8" path="res://Code/Entities/OasisBattlefieldChaser/OasisBattlefieldChaser.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dy66lpd2f3gnj" path="res://Art/New/boss/boss.png" id="3_vksdr"]
+[ext_resource type="Shader" path="res://Code/Entities/OasisBattlefieldChaser/ChaserCorruption.gdshader" id="4_corruption"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_corruption"]
+resource_local_to_scene = true
+shader = ExtResource("4_corruption")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6mnh7"]
 atlas = ExtResource("3_vksdr")
@@ -79,7 +84,12 @@ visible = false
 [node name="LeadingEdge" parent="DirectionalChaseMover" index="3"]
 visible = false
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1992068783]
+[node name="CorruptionVisual" type="CanvasGroup" parent="DirectionalChaseMover"]
+material = SubResource("ShaderMaterial_corruption")
+fit_margin = 12.0
+clear_margin = 16.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1992068783]
 position = Vector2(136.05711, -412.3118)
 rotation = 1.5707964
 scale = Vector2(0.7612028, 0.7612028)
@@ -87,7 +97,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.060472883
 
-[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=2099503861]
+[node name="AnimatedSprite2D2" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=2099503861]
 position = Vector2(140.63103, 392.78598)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -95,7 +105,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.871556
 
-[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1032007072]
+[node name="AnimatedSprite2D9" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1032007072]
 position = Vector2(55.999996, -665.03687)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -104,7 +114,7 @@ autoplay = "default"
 frame_progress = 0.7822959
 flip_h = true
 
-[node name="AnimatedSprite2D10" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=45699029]
+[node name="AnimatedSprite2D10" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=45699029]
 position = Vector2(55.999996, 663.56726)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -113,7 +123,7 @@ autoplay = "default"
 frame_progress = 0.7116036
 flip_h = true
 
-[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1316026563]
+[node name="AnimatedSprite2D6" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1316026563]
 position = Vector2(103.11394, 787.7095)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -121,7 +131,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.42962825
 
-[node name="AnimatedSprite2D11" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=894748125]
+[node name="AnimatedSprite2D11" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=894748125]
 position = Vector2(126.78667, 252.11426)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -129,7 +139,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.27161717
 
-[node name="AnimatedSprite2D12" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=323952200]
+[node name="AnimatedSprite2D12" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=323952200]
 position = Vector2(134.67752, -227.25836)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -137,7 +147,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.15039736
 
-[node name="AnimatedSprite2D13" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1825956639]
+[node name="AnimatedSprite2D13" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1825956639]
 position = Vector2(103.11392, -638.7899)
 rotation = 1.5707964
 scale = Vector2(-0.8370868, 0.7733525)
@@ -145,7 +155,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.22761738
 
-[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1329412585]
+[node name="AnimatedSprite2D3" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1329412585]
 position = Vector2(101.97661, 120.24017)
 rotation = 1.5707964
 scale = Vector2(-0.55012846, 0.50824267)
@@ -153,7 +163,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.7434966
 
-[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=739585874]
+[node name="AnimatedSprite2D8" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=739585874]
 position = Vector2(55.99999, 576.00006)
 rotation = 1.5707964
 scale = Vector2(-0.55012846, 0.50824267)
@@ -161,7 +171,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.7631639
 
-[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1880946854]
+[node name="AnimatedSprite2D4" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1880946854]
 position = Vector2(67.024185, -117.51436)
 rotation = 1.8325958
 scale = Vector2(-0.55012846, 0.50824267)
@@ -169,7 +179,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.9754087
 
-[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=640771443]
+[node name="AnimatedSprite2D7" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=640771443]
 position = Vector2(104.57167, -452.5537)
 rotation = 1.8325958
 scale = Vector2(-0.55012846, 0.50824267)
@@ -177,7 +187,7 @@ sprite_frames = SubResource("SpriteFrames_lvx6x")
 autoplay = "default"
 frame_progress = 0.97211343
 
-[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="DirectionalChaseMover" unique_id=1933442660]
+[node name="AnimatedSprite2D5" type="AnimatedSprite2D" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1933442660]
 position = Vector2(11.0242, -77.09236)
 rotation = 0.7853982
 scale = Vector2(-0.55012846, 0.50824267)
@@ -186,7 +196,7 @@ autoplay = "default"
 frame_progress = 0.49953458
 flip_h = true
 
-[node name="ColorRect" type="ColorRect" parent="DirectionalChaseMover" unique_id=1168009893]
+[node name="ColorRect" type="ColorRect" parent="DirectionalChaseMover/CorruptionVisual" unique_id=1168009893]
 offset_left = -566.8805
 offset_top = -897.73413
 offset_right = -526.8805

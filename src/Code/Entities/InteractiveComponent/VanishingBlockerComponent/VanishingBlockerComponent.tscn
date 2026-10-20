@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/VanishingBlockerComponent/VanishingBlockerComponent.gd" id="1"]
+[ext_resource type="TileSet" uid="uid://c2kfbr6u44m8m" path="res://Code/Entities/World/collision_tile_set.tres" id="2_collision"]
 
 [sub_resource type="RectangleShape2D" id="Shape"]
 size = Vector2(64, 64)
@@ -11,13 +12,9 @@ collision_mask = 2
 script = ExtResource("1")
 
 [node name="BeforeVisual" type="TileMapLayer" parent="."]
-top_level = true
-collision_enabled = false
+collision_enabled = true
 navigation_enabled = false
-
-[node name="BeforeVisualTransform" type="RemoteTransform2D" parent="."]
-remote_path = NodePath("../BeforeVisual")
-update_scale = false
+tile_set = ExtResource("2_collision")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("Shape")

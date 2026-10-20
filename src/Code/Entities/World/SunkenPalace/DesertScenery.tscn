@@ -16,19 +16,19 @@ metadata/_editor_description_ = "SunkenPalace 专属沙漠景物场景。直接�
 [node name="CoverageBounds" type="Control" parent="." unique_id=113828477]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 4.5261054
-offset_top = 550.82874
-offset_right = 1581.489
-offset_bottom = 1105.7225
+offset_left = 19.876448
+offset_top = 286.36804
+offset_right = 1596.8394
+offset_bottom = 841.26184
 mouse_filter = 2
 metadata/_editor_description_ = "仅作为分层容器，不裁剪、不限制背景绘制范围。"
 
 [node name="BaseSky" type="Parallax2D" parent="CoverageBounds" unique_id=184920152]
 top_level = true
 z_index = -35
-scroll_scale = Vector2(0.01, 0)
-scroll_offset = Vector2(4.5261054, 230.82874)
-metadata/_editor_description_ = "最远天空层；仅产生极轻微横向视差，纵向锁定。"
+scroll_scale = Vector2(0.01, 1)
+scroll_offset = Vector2(19.876448, -33.631958)
+metadata/_editor_description_ = "最远天空层；仅产生极轻微横向视差，纵向固定世界高度，不跟随镜头升降。"
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/BaseSky" unique_id=581938210]
 position = Vector2(-4.5261054, -230.82872)
@@ -44,8 +44,8 @@ flip_v = true
 [node name="MesaRocks" type="Parallax2D" parent="CoverageBounds" unique_id=225151614]
 top_level = true
 z_index = -25
-scroll_scale = Vector2(0.05, 0)
-scroll_offset = Vector2(4.5261054, 230.82874)
+scroll_scale = Vector2(0.05, 1)
+scroll_offset = Vector2(19.876448, -33.631958)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/MesaRocks" unique_id=729708152]
 position = Vector2(-4.5261054, -230.82872)
@@ -55,8 +55,8 @@ centered = false
 [node name="RockPillars" type="Parallax2D" parent="CoverageBounds" unique_id=26551239]
 top_level = true
 z_index = -20
-scroll_scale = Vector2(0.08, 0)
-scroll_offset = Vector2(4.5261054, 230.82874)
+scroll_scale = Vector2(0.08, 1)
+scroll_offset = Vector2(19.876448, -33.631958)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/RockPillars" unique_id=1074729834]
 position = Vector2(-4.5261054, -230.82872)
@@ -66,8 +66,8 @@ centered = false
 [node name="CactusFar" type="Parallax2D" parent="CoverageBounds" unique_id=1394888404]
 top_level = true
 z_index = -15
-scroll_scale = Vector2(0.12, 0)
-scroll_offset = Vector2(4.5261054, 230.82874)
+scroll_scale = Vector2(0.12, 1)
+scroll_offset = Vector2(19.876448, -33.631958)
 
 [node name="Sprite" type="Sprite2D" parent="CoverageBounds/CactusFar" unique_id=844295087]
 position = Vector2(-4.5261054, -230.82872)
@@ -78,9 +78,9 @@ centered = false
 top_level = true
 z_index = -10
 z_as_relative = false
-scroll_scale = Vector2(0.12, 0)
-scroll_offset = Vector2(4.5261054, 230.82874)
-metadata/_editor_description_ = "中景沙丘使用背景式横向视差；镜头上升超过 ExportSettings 阈值后停止纵向紧跟，避免露出素材下边界。"
+scroll_scale = Vector2(0.12, 1)
+scroll_offset = Vector2(19.876448, -33.631958)
+metadata/_editor_description_ = "中景沙丘保留横向视差；纵向固定世界高度，不再根据镜头高度追加偏移。"
 
 [node name="SpriteMirrored" type="Sprite2D" parent="CoverageBounds/DunesMid" unique_id=290336486]
 position = Vector2(1357.0945, -41.910088)

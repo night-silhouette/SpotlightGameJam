@@ -45,6 +45,8 @@ func _ready() -> void:
 		SignalBus.PlayerRelicConsumeRequested.connect(_on_relic_consumed)
 	if not SignalBus.SaveSlotLoaded.is_connected(_on_save_loaded):
 		SignalBus.SaveSlotLoaded.connect(_on_save_loaded)
+	if not SignalBus.PlayerEnteredSlowWater.is_connected(_on_player_entered_slow_water):
+		SignalBus.PlayerEnteredSlowWater.connect(_on_player_entered_slow_water)
 	if not _get_boat_area.body_entered.is_connected(_on_get_boat_body_entered):
 		_get_boat_area.body_entered.connect(_on_get_boat_body_entered)
 	if not _the_end_area.body_entered.is_connected(_on_the_end_body_entered):
@@ -223,6 +225,16 @@ func _on_save_loaded(_slot: int) -> void:
 		_in_return_phase = false
 		_set_phase_enabled(return_phase, false)
 		_set_phase_enabled(outward_phase, true)
+
+
+func _on_player_entered_slow_water(player: Node2D, water_source: Node2D) -> void:
+	if not ExportSettings.oasis_outward_water_full_heal_on_enter or _in_return_phase:
+		return
+	if not is_instance_valid(player) or not is_instance_valid(water_source):
+		return
+	if not outward_phase.is_ancestor_of(water_source):
+		return
+	SignalBus.PlayerFullHealRequested.emit(player)
 
 
 func _set_phase_enabled(phase: Node2D, enabled: bool) -> void:

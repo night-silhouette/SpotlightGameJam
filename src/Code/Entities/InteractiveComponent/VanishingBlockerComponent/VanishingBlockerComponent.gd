@@ -17,6 +17,7 @@ signal Vanished
 var _vanishing: bool = false
 
 func _ready() -> void:
+	_set_tilemap_collisions_enabled(self, true)
 	if use_export_settings:
 		vanish_zone_group = ExportSettings.vanishing_blocker_zone_group
 		fade_duration = ExportSettings.vanishing_blocker_fade_duration
@@ -116,3 +117,10 @@ func _disable_collision_tree(node: Node, block_collision_signals: bool) -> void:
 		node.set_deferred("disabled", true)
 	for child in node.get_children():
 		_disable_collision_tree(child, block_collision_signals)
+
+
+func _set_tilemap_collisions_enabled(node: Node, enabled: bool) -> void:
+	if node is TileMapLayer:
+		(node as TileMapLayer).collision_enabled = enabled
+	for child in node.get_children():
+		_set_tilemap_collisions_enabled(child, enabled)
