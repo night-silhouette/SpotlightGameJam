@@ -34,7 +34,7 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Credits", "credits_")
 ## 参与早期版本测试游玩的玩家名单，可在数组中继续添加。
-@export var credits_early_playtesters: PackedStringArray = ["YBBBY", "君问归期未有期"]
+@export var credits_early_playtesters: PackedStringArray = ["YBBBY", "君问归期未有期", "LongDaling", "atomo_muzic"]
 
 @export_group("Tutorial Subtitle", "tutorial_")
 ## 跳跃教学区域每次重新进入时请求的文案。

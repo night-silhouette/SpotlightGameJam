@@ -8,9 +8,11 @@ var _sources: Array[TileMapLayer] = []
 var _mesh: Dictionary = {}
 var _signature: int = 0
 var _poll_left: float = 0.0
+var _draw_signature: int = 0
 
 func _ready() -> void:
 	_refresh_sources()
+	_poll_left = 0.25
 
 func _exit_tree() -> void:
 	_restore_sources()
@@ -43,8 +45,9 @@ func _refresh_sources() -> void:
 	if rooms == null:
 		_restore_sources()
 		_sources.clear()
-		_mesh.clear()
-		queue_redraw()
+		if not _mesh.is_empty():
+			_mesh.clear()
+			queue_redraw()
 		return
 	var found: Array[TileMapLayer] = []
 	var rectangles: Array[Rect2] = []
@@ -65,10 +68,7 @@ func _refresh_sources() -> void:
 					for step in range(1, extra + 1):
 						outer.append(cell + Vector2i.LEFT * step)
 			cells.append_array(outer)
-		var tile_size := Vector2(terrain.tile_set.tile_size)
-		var local_transform := global_transform.affine_inverse() * terrain.global_transform
-		for cell in cells:
-			rectangles.append(local_transform * Rect2(terrain.map_to_local(cell) - tile_size * 0.5, tile_size))
+		rectangles.append_array(_terrain_rectangles(terrain, cells))
 	for terrain in _sources:
 		if is_instance_valid(terrain) and not found.has(terrain):
 			RenderingServer.canvas_item_set_visible(terrain.get_canvas_item(), terrain.visible)
@@ -76,11 +76,37 @@ func _refresh_sources() -> void:
 	rectangles.append_array(_build_exterior(rooms))
 	rectangles.append_array(_death_rectangles())
 	var signature := hash(rectangles)
-	if signature != _signature or _mesh.is_empty():
+	var mesh_changed := signature != _signature or _mesh.is_empty()
+	if mesh_changed:
 		_signature = signature
 		_mesh = SURFACE.Build(rectangles)
 	_sync_source_visibility()
-	queue_redraw()
+	var draw_signature := hash([_art_enabled(), _setting(&"level2_terrain_art_border_ratio")])
+	if mesh_changed or draw_signature != _draw_signature:
+		_draw_signature = draw_signature
+		queue_redraw()
+
+func _terrain_rectangles(terrain: TileMapLayer, cells: Array[Vector2i]) -> Array[Rect2]:
+	var result: Array[Rect2] = []
+	var tile_size := Vector2(terrain.tile_set.tile_size)
+	var local_transform := global_transform.affine_inverse() * terrain.global_transform
+	# 非方格或斜向变换仍逐格处理，避免合并后的包围盒改变原有轮廓。
+	if terrain.tile_set.tile_shape != TileSet.TILE_SHAPE_SQUARE or (local_transform.x.x != 0.0 and local_transform.x.y != 0.0):
+		for cell in cells:
+			result.append(local_transform * Rect2(terrain.map_to_local(cell) - tile_size * 0.5, tile_size))
+		return result
+	cells.sort_custom(func(a: Vector2i, b: Vector2i) -> bool: return a.y < b.y or (a.y == b.y and a.x < b.x))
+	var index := 0
+	while index < cells.size():
+		var start := cells[index]
+		var end := start
+		index += 1
+		while index < cells.size() and cells[index].y == start.y and cells[index].x <= end.x + 1:
+			end = cells[index]
+			index += 1
+		result.append(local_transform * Rect2(terrain.map_to_local(start) - tile_size * 0.5,
+			Vector2((end.x - start.x + 1) * tile_size.x, tile_size.y)))
+	return result
 
 func _sync_source_visibility() -> void:
 	var active := _art_enabled()
