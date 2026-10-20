@@ -185,7 +185,9 @@ func _update_visual_state(fluid: bool) -> void:
 	var has_before_content := has_tile_content or has_sprite_content
 
 	if before_visual:
-		before_visual.visible = not fluid and has_tile_content
+		var tile_visual_enabled := not fluid and has_tile_content
+		before_visual.visible = tile_visual_enabled
+		before_visual.collision_enabled = tile_visual_enabled
 	if before_sprite_visuals:
 		before_sprite_visuals.visible = not fluid and has_sprite_content
 	if after_visual:

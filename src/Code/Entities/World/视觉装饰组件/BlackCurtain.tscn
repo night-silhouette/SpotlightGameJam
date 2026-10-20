@@ -1,23 +1,20 @@
-[gd_scene format=3 uid="uid://lltd8w7jtyho"]
+[gd_scene load_steps=3 format=3 uid="uid://lltd8w7jtyho"]
 
-[ext_resource type="Script" uid="uid://dpvlbpn66lqp5" path="res://Code/Entities/World/视觉装饰组件/BlackCurtain.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://Code/Entities/World/视觉装饰组件/GradientBlackCurtain.tscn" id="2_nhgre"]
+[ext_resource type="Shader" path="res://Code/Entities/World/视觉装饰组件/BlackAbyssMask.gdshader" id="1_shader"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_curtain"]
-size = Vector2(512, 256)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_abyss"]
+resource_local_to_scene = true
+shader = ExtResource("1_shader")
 
-[node name="BlackCurtain" type="Area2D" unique_id=1021218863]
+[node name="BlackCurtain" type="Node2D" unique_id=1021218863]
 z_index = 10
-collision_layer = 0
-collision_mask = 2
-script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=58919221]
-shape = SubResource("RectangleShape2D_curtain")
-
-[node name="GradientBlackCurtain" parent="." unique_id=1953226883 instance=ExtResource("2_nhgre")]
+[node name="GradientBlackCurtain" type="ColorRect" parent="." unique_id=1953226883]
+material = SubResource("ShaderMaterial_abyss")
 offset_left = -310.00003
 offset_top = -157.0
 offset_right = 201.99997
 offset_bottom = 99.0
 scale = Vector2(1.2084255, 1.2126315)
+mouse_filter = 2
+color = Color(1, 1, 1, 1)

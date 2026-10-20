@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://c7t8r2m4vy3p1"]
+[gd_scene load_steps=6 format=3 uid="uid://c7t8r2m4vy3p1"]
 
 [ext_resource type="Script" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterFlowArea.gd" id="1_water"]
 [ext_resource type="PackedScene" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.tscn" id="2_curtain"]
+[ext_resource type="TileSet" uid="uid://c2kfbr6u44m8m" path="res://Code/Entities/World/collision_tile_set.tres" id="3_collision"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_solid"]
 size = Vector2(160, 100)
@@ -16,8 +17,9 @@ script = ExtResource("1_water")
 [node name="BeforeVisual" type="TileMapLayer" parent="."]
 visible = false
 top_level = true
-collision_enabled = false
+collision_enabled = true
 navigation_enabled = false
+tile_set = ExtResource("3_collision")
 
 [node name="AfterVisual" type="NinePatchRect" parent="."]
 visible = false

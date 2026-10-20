@@ -278,6 +278,6 @@ position = Vector2(-0.57468796, -15.446495)
 rotation = 1.5707964
 scale = Vector2(0.08714287, 0.08714287)
 sprite_frames = SubResource("SpriteFrames_lvx6x")
-frame_progress = 0.6254219
+autoplay = "default"
 flip_h = true
 flip_v = true

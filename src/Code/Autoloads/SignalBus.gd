@@ -217,6 +217,9 @@ signal WaterRuneActivated(area_node: Node2D, is_fluid: bool)
 ## 玩家游入水膜内部时触发 (重置冲刺/钩锁)
 signal PlayerEnteredWaterWall
 
+## 玩家进入减速水体时触发；player 为进入水体的玩家，water_source 为触发事件的减速水体节点。
+signal PlayerEnteredSlowWater(player: Node2D, water_source: Node2D)
+
 ## 玩家破水喷射而出时触发
 ## @param eject_direction 弹出速度/冲刺方向
 signal PlayerExitedWaterWall(eject_direction: Vector2)

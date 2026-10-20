@@ -2,7 +2,7 @@ extends Node
 
 @export_group("Debug", "debug_")
 ## 是否显示玩家界面的调试能力面板。
-@export var debug_panel_enabled: bool = false
+@export var debug_panel_enabled: bool = true
 
 @export_group("Chapter 5", "chapter5_")
 ## 地面位移相对当前脚下坐标和真实湖中心，单位世界像素。
@@ -90,6 +90,18 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 前景透明度及人物周围淡出半径，防止草石挡住玩家。
 @export_range(0.0, 1.0) var camp_scenery_foreground_opacity: float = 1.0
 @export var camp_scenery_player_clear_radius: float = 100.0
+
+@export_group("Camp - Background Parallax", "camp_background_")
+## Sprite2D2 背景相对镜头位移的跟随比例；数值越小，远景移动越慢。
+@export_range(0.0, 1.0, 0.01) var camp_background_follow_x: float = 0.12
+## 纵向跟随比例，默认明显低于横向，避免跳跃时背景大幅上下移动。
+@export_range(0.0, 1.0, 0.01) var camp_background_follow_y: float = 0.03
+## 背景相对场景中原始位置允许移动的最大像素，分别对应 X / Y。
+@export var camp_background_max_offset: Vector2 = Vector2(120.0, 18.0)
+## 背景跟随到目标位置的平滑速度；0 表示立即到位。
+@export_range(0.0, 30.0, 0.1) var camp_background_smoothing_speed: float = 8.0
+## Camp 本地边界；镜头取样和背景像素都会限制在此范围内。
+@export var camp_background_local_bounds: Rect2 = Rect2(0.0, 0.0, 2160.0, 1700.0)
 
 @export_group("Level 2 - Blockout", "level2_")
 ## 物品提示出现距离，像素。
@@ -605,6 +617,22 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 玩家领先较远时的速度倍率；保持轻微提升，避免突兀追赶。
 @export_range(1.0, 1.5, 0.01) var chase_mover_far_speed_multiplier: float = 1.16
 
+@export_group("Oasis Boss Corruption", "oasis_boss_")
+## 第三关 Boss 整体扭曲效果开关；只影响画面。
+@export var oasis_boss_corruption_enabled: bool = true
+## 整体邪化强度，0 为原始画面，1 为完整效果。
+@export_range(0.0, 1.0, 0.01) var oasis_boss_corruption_strength: float = 0.65
+## 蠕动扭曲的最大屏幕像素偏移，不改变碰撞轮廓。
+@export_range(0.0, 8.0, 0.1) var oasis_boss_distortion_pixels: float = 3.5
+## 侵蚀纹理与呼吸变化的流动速度；0 为静止。
+@export_range(0.0, 3.0, 0.05) var oasis_boss_flow_speed: float = 0.65
+## 暗色身体上浮现的侵蚀细纹强度。
+@export_range(0.0, 1.0, 0.01) var oasis_boss_vein_strength: float = 0.2
+## 身体向邪化色偏移的混色比例。
+@export_range(0.0, 1.0, 0.01) var oasis_boss_tint_strength: float = 0.12
+## 侵蚀细纹与身体偏色使用的颜色，默认暗紫色。
+@export var oasis_boss_corruption_color: Color = Color(0.24, 0.085, 0.31, 1.0)
+
 @export_group("Interactive - Slick Wall", "slick_wall_")
 ## 光滑滑石墙摩擦系数 (极度光滑)
 @export var slick_wall_friction: float = 0.0
@@ -885,6 +913,10 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 返程画面从全黑淡出的时长，单位秒；淡出完成后开始追逐。
 @export_range(0.0, 5.0, 0.05) var oasis_phase_transition_fade_out: float = 0.45
 
+@export_group("Oasis Outward Water", "oasis_outward_water_")
+## 玩家进入第三关去程水体时是否立即回满水量。
+@export var oasis_outward_water_full_heal_on_enter: bool = true
+
 @export_group("Interactable Component", "interactable_")
 @export var interactable_action: StringName = &"interact"
 @export var interactable_description_lines: Array[String] = []
@@ -983,9 +1015,11 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var sunken_scenery_camera_bounds: Vector2 = Vector2(-515.0, 4500.0)
 ## 镜头与沉没宫殿原点在 Y 轴上的最大距离；超出后隐藏宫殿背景。
 @export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
-## 镜头升到沉没宫殿原点上方多少像素后，中景沙丘停止纵向紧跟；更高时沙丘会相对画面向下移动，避免露出下边界。
+## 背景纵向视差：1 固定在世界中，不跟随人物或镜头升降；0 贴住屏幕。横向视差沿用各层配置。
+@export_range(0.0, 1.0, 0.05) var sunken_scenery_vertical_scroll_scale: float = 1.0
+## 旧沙丘阈值参数，保留以兼容已有设置；背景已统一使用 sunken_scenery_vertical_scroll_scale。
 @export_range(0.0, 3000.0, 10.0, "or_greater") var sunken_scenery_dunes_stop_follow_height: float = 320.0
-## 中景沙丘在停止高度以内的纵向跟随比例：1 完全贴随画面，0 完全按世界位置移动。
+## 旧沙丘跟随参数，保留以兼容已有设置；不再根据镜头高度追加背景偏移。
 @export_range(0.0, 1.0, 0.05) var sunken_scenery_dunes_vertical_follow_ratio: float = 1.0
 ## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
 @export_range(0.0, 160.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 72.0
