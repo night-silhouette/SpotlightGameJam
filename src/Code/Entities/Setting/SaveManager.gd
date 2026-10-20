@@ -5,9 +5,13 @@ extends RefCounted
 const MAX_SLOTS: int = 5
 const DEFAULT_PATH_PREFIX: String = "user://Saves/save_slot_"
 const LEGACY_PATH_PREFIX: String = "res://Code/Entities/Setting/Saves/save_slot_"
+const SCENE_TRANSITION_COVER = preload("res://Code/Entities/Setting/SceneTransitionCover.tscn")
 
 static var active_slot: int = 1
 static var _changing_scene: bool = false
+static var _world_scene_path: String = ""
+static var _world_scene: PackedScene = null
+static var _scene_requests: Dictionary = {}
 
 ## 返回当前活跃槽位编号，未设置时返回1。
 static func GetActiveSlot() -> int:
@@ -124,25 +128,21 @@ static func _write_atomic(path: String, data: Dictionary) -> bool:
 		return false
 	return true
 
+## 后台预加载配置的World及其传递依赖；不实例化场景、不触发剧情或存档。
+## tree 为当前场景树，仅用于非阻塞等待资源线程完成。
+static func PreloadWorld(tree: SceneTree) -> void:
+	if not tree:
+		return
+	await _load_scene_async(tree, _get_configured_world_path())
+
 ## 新建slot_index（1至5）并进入target_scene_path（空时取配置）；可等待intro_tween。
 ## 必须await；返回true时场景已就绪并发出SaveSlotLoaded，失败不切换活跃槽位。
 static func StartNewGameInSlot(tree: SceneTree, slot_index: int, target_scene_path: String = "", intro_tween: Tween = null) -> bool:
 	if _changing_scene or not tree or slot_index < 1 or slot_index > MAX_SLOTS:
 		return false
-	var world_path = target_scene_path if target_scene_path != "" else ExportSettings.start_menu_world_scene_path
-	if not ResourceLoader.exists(world_path, "PackedScene"):
-		return false
+	var world_path = target_scene_path if target_scene_path != "" else _get_configured_world_path()
 	_changing_scene = true
-	var request_error = ResourceLoader.load_threaded_request(world_path, "PackedScene")
-	if request_error != OK:
-		_changing_scene = false
-		return false
-	while ResourceLoader.load_threaded_get_status(world_path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
-		await tree.process_frame
-	if ResourceLoader.load_threaded_get_status(world_path) != ResourceLoader.THREAD_LOAD_LOADED:
-		_changing_scene = false
-		return false
-	var scene = ResourceLoader.load_threaded_get(world_path) as PackedScene
+	var scene: PackedScene = await _load_scene_async(tree, world_path)
 	if not scene or not scene.can_instantiate():
 		_changing_scene = false
 		return false
@@ -178,16 +178,69 @@ static func LoadFromSlot(tree: SceneTree, slot_index: int) -> bool:
 	if data.is_empty():
 		return false
 	var scene_path: String = data.get("scene_path", "")
-	if scene_path == "" or not ResourceLoader.exists(scene_path):
-		scene_path = ExportSettings.start_menu_world_scene_path
-	var scene = load(scene_path) as PackedScene
-	if not scene or not scene.can_instantiate():
-		return false
+	if scene_path == "" or not ResourceLoader.exists(scene_path, "PackedScene"):
+		scene_path = _get_configured_world_path()
 	_changing_scene = true
+	var scene: PackedScene = await _load_scene_async(tree, scene_path)
+	if not scene or not scene.can_instantiate():
+		_changing_scene = false
+		return false
 	return await _change_and_apply(tree, scene, data.entities, slot_index)
 
+static func _get_configured_world_path() -> String:
+	var path: String = ExportSettings.start_menu_world_scene_path
+	if path != _world_scene_path:
+		_world_scene_path = path
+		_world_scene = null
+	return path
+
+static func _load_scene_async(tree: SceneTree, scene_path: String) -> PackedScene:
+	if not tree or scene_path == "" or not ResourceLoader.exists(scene_path, "PackedScene"):
+		return null
+	var configured_path := _get_configured_world_path()
+	if scene_path == configured_path and _world_scene:
+		return _world_scene
+	if _scene_requests.has(scene_path):
+		var pending: Dictionary = _scene_requests[scene_path]
+		while not pending.done:
+			await tree.process_frame
+		return pending.scene
+	# 每个路径只有请求拥有者取走线程结果；等待者持有同一个结果字典。
+	var request: Dictionary = {"done": false, "scene": null}
+	_scene_requests[scene_path] = request
+	var scene: PackedScene = await _request_scene_async(tree, scene_path)
+	if scene_path == _get_configured_world_path():
+		_world_scene = scene
+	request.scene = scene
+	request.done = true
+	_scene_requests.erase(scene_path)
+	return scene
+
+static func _request_scene_async(tree: SceneTree, scene_path: String) -> PackedScene:
+	var status := ResourceLoader.load_threaded_get_status(scene_path)
+	if status != ResourceLoader.THREAD_LOAD_IN_PROGRESS and status != ResourceLoader.THREAD_LOAD_LOADED:
+		var request_error := ResourceLoader.load_threaded_request(scene_path, "PackedScene")
+		if request_error != OK:
+			status = ResourceLoader.load_threaded_get_status(scene_path)
+			if status != ResourceLoader.THREAD_LOAD_IN_PROGRESS and status != ResourceLoader.THREAD_LOAD_LOADED:
+				return null
+	while ResourceLoader.load_threaded_get_status(scene_path) == ResourceLoader.THREAD_LOAD_IN_PROGRESS:
+		await tree.process_frame
+	status = ResourceLoader.load_threaded_get_status(scene_path)
+	if status != ResourceLoader.THREAD_LOAD_LOADED:
+		if status == ResourceLoader.THREAD_LOAD_FAILED:
+			ResourceLoader.load_threaded_get(scene_path)
+		return null
+	return ResourceLoader.load_threaded_get(scene_path) as PackedScene
+
 static func _change_and_apply(tree: SceneTree, scene: PackedScene, entities: Dictionary, slot_index: int) -> bool:
+	var cover := SCENE_TRANSITION_COVER.instantiate()
+	# 不属于current_scene，旧菜单销毁时仍覆盖整个视口；先确认黑幕实际绘制。
+	tree.root.add_child(cover)
+	await tree.process_frame
+	await RenderingServer.frame_post_draw
 	if tree.change_scene_to_packed(scene) != OK:
+		cover.free()
 		_changing_scene = false
 		return false
 	# 静态服务持有协程，不依赖即将释放的菜单/设置节点继续执行。
@@ -196,13 +249,19 @@ static func _change_and_apply(tree: SceneTree, scene: PackedScene, entities: Dic
 	await tree.process_frame
 	var root = tree.current_scene
 	if not is_instance_valid(root):
+		cover.free()
 		_changing_scene = false
 		return false
 	if not _apply_save_data_smart(root, entities):
+		cover.free()
 		_changing_scene = false
 		return false
 	SetActiveSlot(slot_index)
 	_emit_signal_bus("SaveSlotLoaded", [slot_index])
+	# 包含读档信号触发的延迟恢复，直至新场景真实绘制后才交还OpeningFade。
+	await tree.process_frame
+	await RenderingServer.frame_post_draw
+	cover.free()
 	_changing_scene = false
 	return true
 

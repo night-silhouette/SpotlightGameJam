@@ -65,6 +65,11 @@ func _ready() -> void:
 	SignalBus.SaveSlotSaved.connect(_refresh_completed_background)
 	SignalBus.SaveSlotDeleted.connect(_refresh_completed_background)
 	_refresh_completed_background()
+	call_deferred("_preload_world_after_first_frame")
+
+func _preload_world_after_first_frame() -> void:
+	await get_tree().process_frame
+	SaveManagerRef.PreloadWorld(get_tree())
 
 func _refresh_completed_background(_slot: int = 0) -> void:
 	var completed := SaveManagerRef.HasCompletedSlot()

@@ -607,6 +607,12 @@ tween_resource = SubResource("Resource_35sqx")
 [node name="ShotB" parent="PlayerWithCamera" index="4" unique_id=1440358054]
 tween_resource = SubResource("Resource_yocbw")
 
+[node name="GrappleHint" parent="." instance=ExtResource("31_tutorial_hint")]
+position = Vector2(315, -14)
+scale = Vector2(1, 0.5)
+hint_kind = "grapple"
+metadata/_editor_description_ = "营地旗杆前、左侧高墙右下方石头平台上的钩锁教学；范围 240×100。"
+
 [node name="Camp" parent="." unique_id=1903763566 instance=ExtResource("1_camp")]
 z_index = -1
 position = Vector2(-96, -1560)

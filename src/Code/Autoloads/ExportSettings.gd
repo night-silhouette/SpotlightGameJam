@@ -70,6 +70,8 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var tutorial_look_down_hint_text: String = "长按s键向下观察"
 ## 第一处水墙右侧小木平台的向上观察教学文案。
 @export var tutorial_look_up_hint_text: String = "长按上键观察"
+## 钩锁教学区域每次重新进入时请求的文案。
+@export var tutorial_grapple_hint_text: String = "右键点按或者长按钩锁"
 ## 第一处水墙前的交互教学文案。
 @export var tutorial_water_wall_hint_text: String = "左键交互水墙"
 ## 手机版第一处水墙前的交互教学文案。
@@ -171,10 +173,10 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_range(80.0, 1000.0, 10.0) var level2_descent_fall_speed: float = 260.0
 ## 进入竖井后的减速强度，像素/秒平方。
 @export_range(1000.0, 10000.0, 100.0) var level2_descent_braking: float = 3200.0
-## 井口和井底的渐变距离，像素。
-@export_range(32.0, 800.0, 16.0) var level2_descent_edge_fade: float = 240.0
 ## 井口、井底过渡区的宽松限速，像素/秒；离开区域后取消限速。
 @export_range(260.0, 3000.0, 20.0) var level2_descent_edge_speed: float = 1200.0
+## 井口和井底的渐变距离，像素。
+@export_range(32.0, 800.0, 16.0) var level2_descent_edge_fade: float = 240.0
 ## 两层循环柱子额外向上滚动的基础速度，像素/秒；远柱为其 0.65 倍。
 @export_range(0.0, 2400.0, 20.0) var level2_descent_background_speed: float = 900.0
 ## 正式世界竖井镜头中人物的纵向位置，0.5 为中央。
@@ -185,10 +187,6 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export_group("Level 2 - Terrain Art", "level2_terrain_art_")
 ## 第二关石砖外观总开关；关闭后恢复原有灰盒显示，碰撞不变。
 @export var level2_terrain_art_enabled: bool = true
-## 兼容旧场景的透明平台参数；新版地形统一使用蓝边黑芯，此项不再参与绘制。
-@export var level2_terrain_art_glass_platforms: bool = false
-## 兼容旧场景保留；新版统一砖块不再按厚度切换透明材质。
-@export_range(1, 4, 1) var level2_terrain_art_glass_max_rows: int = 2
 ## 石墙边缘宽度占一格的比例；包含蓝色石边与向黑色内层过渡的碎石。
 @export_range(0.15, 0.48, 0.01) var level2_terrain_art_border_ratio: float = 0.44
 ## 折返阶梯竖井左墙向外增加的美术厚度（格）；0 恢复原宽，不改变碰撞。
@@ -334,7 +332,6 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 @export var lake_player_visual_height: float = 175.0
 ## 预置手部 Marker 的附加局部偏移；Marker 也可逐种在场景手调。
 @export var lake_hand_offset: Vector2 = Vector2.ZERO
-
 
 func _ready() -> void:
 	if sunken_crown_texture == null:
@@ -569,8 +566,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 3000.0, 10.0) var water_flow_swim_drag: float = 180.0
 ## 流水区域内主动游泳的目标速度；入水爆发速度会逐渐回落而非直接截断
 @export_range(0.0, 2000.0, 10.0) var water_flow_swim_max_speed: float = 360.0
-## 水符文石交互激活有效距离
-@export var water_flow_interact_distance: float = 130.0
 ## 水符文激活技能冷却时间 (秒)
 @export var water_rune_cooldown: float = 2.0
 ## 穿过流水区域时划水音效音量分贝 (dB)
@@ -620,16 +615,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 ## 震颤剧烈程度幅度 (像素)
 @export var crumble_shake_offset: float = 2.5
 
-@export_group("Interactive - Moving Platform", "moving_platform_")
-## 移动平台默认尺寸 (宽, 高)
-@export var moving_platform_size: Vector2 = Vector2(112.0, 20.0)
-## 移动平台默认移动速度 (像素/秒)
-@export var moving_platform_speed: float = 90.0
-## 移动平台抵达路径端点后的默认停顿时间 (秒)
-@export var moving_platform_endpoint_wait_time: float = 0.45
-## 移动平台抵达另一端后是否默认反向循环
-@export var moving_platform_loop: bool = true
-
 @export_group("Interactive - Directional Chase Mover", "chase_mover_")
 ## 第一阶段持续时间，作为玩家熟悉追逐节奏的热身段。
 @export var chase_mover_stage_1_duration: float = 28.0
@@ -673,10 +658,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(1.0, 480.0, 1.0) var oasis_boss_body_dissolve_width: float = 260.0
 ## 主体消融轮廓的噪声强度；0 为柔和渐变，1 为完全不规则轮廓。
 @export_range(0.0, 1.0, 0.01) var oasis_boss_body_dissolve_breakup: float = 0.72
-
-@export_group("Interactive - Slick Wall", "slick_wall_")
-## 光滑滑石墙摩擦系数 (极度光滑)
-@export var slick_wall_friction: float = 0.0
 
 @export_group("Player Camera", "player_camera_")
 ## 玩家跟随镜头的优先级；后续关卡镜头可使用更高优先级接管。
@@ -828,10 +809,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Interactive - Pressure Button", "pressure_button_")
 ## 压力按钮默认宽高（像素）。
 @export var pressure_button_size: Vector2 = Vector2(64.0, 14.0)
-## 压力按钮完全按下时向下移动的距离（像素）。
-@export_range(0.0, 32.0, 0.5) var pressure_button_press_depth: float = 8.0
-## 压力按钮按下与回弹速度（像素/秒）。
-@export_range(1.0, 1000.0, 1.0) var pressure_button_move_speed: float = 120.0
 
 @export_group("Interactive - Signal Door", "signal_door_")
 ## 信号门默认碰撞宽高（像素）。
@@ -870,8 +847,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1.0, 0.01) var audio_master_volume: float = 0.5
 ## 音乐默认音量 (0.0-1.0)
 @export_range(0.0, 1.0, 0.01) var audio_music_volume: float = 1.0
-## 全游戏背景音乐启动渐入时长，单位为秒；0 表示立即播放。
-@export_range(0.0, 10.0, 0.1) var audio_bgm_fade_in_duration: float = 2.0
 ## 全游戏背景音乐的基础音量，单位为分贝；叠加音乐及总音量设置。
 @export_range(-40.0, 6.0, 0.01) var audio_bgm_volume_db: float = -10.0
 ## 音效默认音量 (0.0-1.0)
@@ -900,7 +875,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var setting_auto_load_slot_1: bool = false
 ## 存档文件路径前缀（仅user://可写目录；res://旧档由SaveManager只读兼容）。
 @export var setting_save_path_prefix: String = "user://Saves/save_slot_"
-
 ## 按键绑定持久化文件路径 (独立于存档槽位)
 @export var setting_keybinds_path: String = "user://custom_keybinds.json"
 ## 设置界面背景透明度
@@ -931,8 +905,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_group("Start Menu", "start_menu_")
 ## 游戏主游玩场景路径 (新开存档或载入进入的目标世界场景)
 @export var start_menu_world_scene_path: String = "res://Code/Entities/World/World.tscn"
-## 开始菜单背景音乐总线
-@export var start_menu_music_bus: StringName = &"MUS_StartMenu"
 ## 首次按键后主菜单界面的淡入时长，单位为秒。
 @export_range(0.0, 3.0, 0.05) var start_menu_ui_fade_duration: float = 0.8
 
@@ -1016,8 +988,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export var level2_death_boundary_sun_visual_enabled: bool = false
 ## 月影水道底部死亡区域的石边与黑色外观；关闭后仍保留死亡判定。
 @export var level2_death_boundary_moon_visual_enabled: bool = false
-## 兼容旧场景保留；新版死亡砖边框统一使用 level2_terrain_art_border_ratio。
-@export_range(32.0, 256.0, 8.0) var level2_death_boundary_texture_size: float = 96.0
 ## 月影水道死亡砖块向下衔接天花板的美术高度；仅合并外观，不扩大死亡碰撞。
 @export_range(0.0, 64.0, 1.0) var level2_death_boundary_moon_join_depth: float = 32.0
 ## 调试飞行时不触发边界，方便查看与搭建地图。
@@ -1076,10 +1046,6 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 10000.0, 10.0, "or_greater") var sunken_scenery_camera_y_distance: float = 2000.0
 ## 背景纵向视差：1 固定在世界中，不跟随人物或镜头升降；0 贴住屏幕。横向视差沿用各层配置。
 @export_range(0.0, 1.0, 0.05) var sunken_scenery_vertical_scroll_scale: float = 1.0
-## 旧沙丘阈值参数，保留以兼容已有设置；背景已统一使用 sunken_scenery_vertical_scroll_scale。
-@export_range(0.0, 3000.0, 10.0, "or_greater") var sunken_scenery_dunes_stop_follow_height: float = 320.0
-## 旧沙丘跟随参数，保留以兼容已有设置；不再根据镜头高度追加背景偏移。
-@export_range(0.0, 1.0, 0.05) var sunken_scenery_dunes_vertical_follow_ratio: float = 1.0
 ## visualplayer 宫殿墙面与下层沙漠背景交界处的水平羽化宽度，单位为屏幕像素；0 表示关闭。
 @export_range(0.0, 480.0, 1.0) var sunken_scenery_visual_player_fade_width: float = 240.0
 ## visualplayer 宫殿墙面上、下横向切线的垂直羽化高度，单位为屏幕像素；0 表示关闭。

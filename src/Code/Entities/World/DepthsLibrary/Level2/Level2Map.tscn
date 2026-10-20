@@ -462,13 +462,13 @@ material = SubResource("ours_ShaderMaterial_ek66h")
 scale = Vector2(0.15, 0.15)
 texture = ExtResource("7_kfeio")
 
-[node name="Caption" parent="Rooms/SunStacks/SunKey" parent_id_path=PackedInt32Array(1116939039, 1465730816) index="3" unique_id=699870891]
+[node name="Caption" parent="Rooms/SunStacks/SunKey" parent_id_path=PackedInt32Array(1116939039, 1465730816) index="3"]
 offset_left = -113.0
 offset_top = 14.0
 offset_right = 117.0
 offset_bottom = 42.0
 
-[node name="PromptContainer" parent="Rooms/SunStacks/SunKey" parent_id_path=PackedInt32Array(1116939039, 1465730816) index="4" unique_id=552986209]
+[node name="PromptContainer" parent="Rooms/SunStacks/SunKey" parent_id_path=PackedInt32Array(1116939039, 1465730816) index="4"]
 offset_left = -91.0
 offset_top = -112.0
 offset_right = 109.0
@@ -645,11 +645,11 @@ visible = true
 [node name="EndMarker" parent="Rooms/MoonAqueduct/FerryB" index="5" unique_id=1228134724]
 visible = true
 
-[node name="Caption" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="3" unique_id=699870891]
+[node name="Caption" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="3"]
 offset_top = 0.0
 offset_bottom = 28.0
 
-[node name="PromptContainer" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="4" unique_id=552986209]
+[node name="PromptContainer" parent="Rooms/MoonAqueduct/MoonKey" parent_id_path=PackedInt32Array(903562269, 1522929699) index="4"]
 visible = true
 offset_left = -89.0
 offset_top = -133.0
@@ -702,7 +702,7 @@ self_modulate = Color(0.73929507, 1, 1, 1)
 material = SubResource("CanvasItemMaterial_yjgml")
 texture = ExtResource("13_j2bs3")
 
-[node name="PromptContainer" parent="Rooms/WeaveArchive/MoonRune" parent_id_path=PackedInt32Array(373735795, 501208198) index="5" unique_id=552986209]
+[node name="PromptContainer" parent="Rooms/WeaveArchive/MoonRune" parent_id_path=PackedInt32Array(373735795, 501208198) index="5"]
 offset_left = -101.0
 offset_top = -126.0
 offset_right = 99.0
@@ -719,10 +719,10 @@ self_modulate = Color(0.73929507, 1, 1, 1)
 material = SubResource("CanvasItemMaterial_r2lkc")
 texture = ExtResource("13_ewexw")
 
-[node name="Caption" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="4" unique_id=699870891]
+[node name="Caption" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="4"]
 visible = false
 
-[node name="PromptContainer" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="5" unique_id=552986209]
+[node name="PromptContainer" parent="Rooms/WeaveArchive/SunRune" parent_id_path=PackedInt32Array(373735795, 122547033) index="5"]
 offset_left = -92.0
 offset_top = -121.0
 offset_right = 108.0
@@ -739,10 +739,10 @@ self_modulate = Color(0.73929507, 1, 1, 1)
 material = SubResource("CanvasItemMaterial_8botp")
 texture = ExtResource("15_kfeio")
 
-[node name="Caption" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="4" unique_id=699870891]
+[node name="Caption" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="4"]
 visible = false
 
-[node name="PromptContainer" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="5" unique_id=552986209]
+[node name="PromptContainer" parent="Rooms/WeaveArchive/WeaveRune" parent_id_path=PackedInt32Array(373735795, 2273315) index="5"]
 offset_left = -101.0
 offset_top = -127.0
 offset_right = 99.0
@@ -755,13 +755,13 @@ position = Vector2(351, 404)
 position = Vector2(43, 309)
 scale = Vector2(0.44, 0.44)
 
-[node name="Caption" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="3" unique_id=699870891]
+[node name="Caption" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="3"]
 offset_left = -107.0
 offset_top = -16.0
 offset_right = 123.0
 offset_bottom = 12.0
 
-[node name="PromptContainer" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="4" unique_id=552986209]
+[node name="PromptContainer" parent="Rooms/WeaveArchive/WeaveKey" parent_id_path=PackedInt32Array(373735795, 1742752757) index="4"]
 offset_left = -96.0
 offset_top = -147.0
 offset_right = 104.0

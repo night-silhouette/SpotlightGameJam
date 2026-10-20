@@ -139,15 +139,16 @@ position = Vector2(-116, 4)
 opening_lines = Array[ExtResource("6_qv0jn")]([SubResource("Line_1_1"), SubResource("Line_1_2"), SubResource("Resource_yo42o")])
 
 [node name="SteleStory_1_12_to_1_14" parent="Chapter1" index="0" unique_id=28622851]
-position = Vector2(1676, 1579)
+position = Vector2(1676, 1640.09367)
 enable_interaction = true
 disable_movement_during_dialog = true
 show_first_dialog = true
 first_dialog_lines = Array[ExtResource("6_qv0jn")]([SubResource("Resource_1khv5"), SubResource("Resource_wx588"), SubResource("Resource_na041"), SubResource("Resource_0yts4")])
 story_lines = Array[ExtResource("6_qv0jn")]([])
-metadata/placement_note = "残碑使用同目录残碑_右.png，位于湖泊右侧、帐篷左侧，主体底部对齐地面。"
+metadata/placement_note = "残碑在原埋地位置上累计抬高40像素。"
 
 [node name="BrokenStele" parent="Chapter1/SteleStory_1_12_to_1_14" index="2" unique_id=1866377039]
+z_index = -1
 position = Vector2(0, -86.125)
 scale = Vector2(0.65, 0.65)
 texture = ExtResource("SteleRight")
