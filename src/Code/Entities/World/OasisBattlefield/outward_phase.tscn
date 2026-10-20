@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://blpltt0tkgjce" path="res://Code/Entities/InteractiveComponent/SlowWaterArea/SlowWaterArea.tscn" id="12_ueiw8"]
 [ext_resource type="PackedScene" uid="uid://cff62entx013e" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisWaterFlowArea.tscn" id="14_efes3"]
 [ext_resource type="PackedScene" uid="uid://dkw1ajux37wt4" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardScenery.tscn" id="15_bmeg8"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardAtmosphere.tscn" id="15_outward_atmosphere"]
 [ext_resource type="Texture2D" uid="uid://d1rkg5mk3dhrp" path="res://Art/Archived/platforms/waterpattern.png" id="16_02f1c"]
 [ext_resource type="Shader" uid="uid://cpof6wf6vdm42" path="res://Code/Entities/InteractiveComponent/WaterFlowArea/WaterCurtain.gdshader" id="16_g4l4s"]
 [ext_resource type="Shader" uid="uid://cxke4sshjkdxe" path="res://Code/Entities/ParallaxScenery/GreenSeamTransition.gdshader" id="18_ueiw8"]
@@ -415,6 +416,8 @@ flip_h = true
 region_enabled = true
 region_rect = Rect2(0, 0, 4831, 1296)
 region_filter_clip_enabled = true
+
+[node name="OutwardAtmosphere" parent="." instance=ExtResource("15_outward_atmosphere")]
 
 [node name="BlackCurtain" parent="." unique_id=1021218863 instance=ExtResource("21_g4l4s")]
 position = Vector2(340.06445, 1474.7517)

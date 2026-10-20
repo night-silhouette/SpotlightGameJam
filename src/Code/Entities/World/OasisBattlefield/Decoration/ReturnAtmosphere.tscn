@@ -1,0 +1,160 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/OasisBattlefield/Decoration/ReturnAtmosphere.gd" id="1_script"]
+[ext_resource type="Shader" path="res://Code/Entities/World/OasisBattlefield/Decoration/ReturnAtmosphere.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_matte"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+
+[sub_resource type="Gradient" id="Gradient_mote_texture"]
+offsets = PackedFloat32Array(0, 0.34, 0.72, 1)
+colors = PackedColorArray(1, 1, 1, 0.9, 1, 1, 1, 0.72, 1, 1, 1, 0.2, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mote"]
+gradient = SubResource("Gradient_mote_texture")
+width = 48
+height = 48
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_mote_lifetime"]
+offsets = PackedFloat32Array(0, 0.16, 0.72, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.72, 1, 1, 1, 0.5, 1, 1, 1, 0)
+
+[sub_resource type="Curve" id="Curve_mote_scale"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.3), 0.0, 2.5, 0, 0, Vector2(0.2, 1), 0.8, 0.0, 0, 0, Vector2(0.78, 0.74), 0.0, -0.8, 0, 0, Vector2(1, 0.08), -2.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_mix"]
+blend_mode = 0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_glow_texture"]
+offsets = PackedFloat32Array(0, 0.28, 0.68, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.72, 1, 1, 1, 0.16, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_glow"]
+gradient = SubResource("Gradient_glow_texture")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_glow_lifetime"]
+offsets = PackedFloat32Array(0, 0.18, 0.7, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.85, 1, 1, 1, 0.42, 1, 1, 1, 0)
+
+[node name="ReturnAtmosphere" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="MatteLayer" type="CanvasLayer" parent="."]
+layer = 0
+
+[node name="MatteWash" type="ColorRect" parent="MatteLayer"]
+material = SubResource("ShaderMaterial_matte")
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="DarkMotes" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_mix")
+z_index = -1
+position = Vector2(9244, 700)
+amount = 760
+lifetime = 9.0
+preprocess = 9.0
+randomness = 0.88
+texture = SubResource("GradientTexture2D_mote")
+emission_shape = 3
+emission_rect_extents = Vector2(9756, 1100)
+direction = Vector2(-1, 0.08)
+spread = 26.0
+gravity = Vector2(-0.7, 0.35)
+initial_velocity_min = 7.0
+initial_velocity_max = 18.0
+angular_velocity_min = -18.0
+angular_velocity_max = 18.0
+scale_amount_min = 0.3
+scale_amount_max = 0.9
+scale_amount_curve = SubResource("Curve_mote_scale")
+color_ramp = SubResource("Gradient_mote_lifetime")
+local_coords = false
+
+[node name="GlowMotes" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+z_index = -1
+position = Vector2(9244, 700)
+amount = 420
+lifetime = 7.0
+preprocess = 7.0
+randomness = 0.92
+texture = SubResource("GradientTexture2D_glow")
+emission_shape = 3
+emission_rect_extents = Vector2(9756, 1100)
+direction = Vector2(-0.72, -0.22)
+spread = 42.0
+gravity = Vector2(-0.25, -0.45)
+initial_velocity_min = 3.0
+initial_velocity_max = 10.0
+angular_velocity_min = -12.0
+angular_velocity_max = 12.0
+scale_amount_min = 0.08
+scale_amount_max = 0.28
+scale_amount_curve = SubResource("Curve_mote_scale")
+color_ramp = SubResource("Gradient_glow_lifetime")
+local_coords = false
+
+[node name="MotionTrail" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+z_index = -1
+emitting = false
+amount = 3
+lifetime = 0.8
+randomness = 0.7
+texture = SubResource("GradientTexture2D_glow")
+emission_shape = 1
+emission_sphere_radius = 18.0
+direction = Vector2(-1, 0)
+spread = 38.0
+initial_velocity_min = 4.0
+initial_velocity_max = 16.0
+scale_amount_min = 0.08
+scale_amount_max = 0.24
+scale_amount_curve = SubResource("Curve_mote_scale")
+color_ramp = SubResource("Gradient_glow_lifetime")
+local_coords = false
+
+[node name="ActionBurst" type="CPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_add")
+z_index = -1
+emitting = false
+amount = 3
+lifetime = 0.58
+one_shot = true
+explosiveness = 0.92
+randomness = 0.78
+texture = SubResource("GradientTexture2D_glow")
+emission_shape = 1
+emission_sphere_radius = 22.0
+direction = Vector2(0, -1)
+spread = 58.0
+initial_velocity_min = 30.0
+initial_velocity_max = 72.0
+scale_amount_min = 0.1
+scale_amount_max = 0.3
+scale_amount_curve = SubResource("Curve_mote_scale")
+color_ramp = SubResource("Gradient_glow_lifetime")
+local_coords = false
+
+[node name="MotionLight" type="PointLight2D" parent="."]
+color = Color(0.52, 0.35, 0.82, 0.48)
+energy = 0.0
+texture = SubResource("GradientTexture2D_glow")
+texture_scale = 1.75

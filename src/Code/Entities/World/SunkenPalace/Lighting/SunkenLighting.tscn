@@ -1,0 +1,182 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://Code/Entities/World/SunkenPalace/Lighting/SunkenLighting.gd" id="1_script"]
+[ext_resource type="Shader" path="res://Code/Entities/World/SunkenPalace/Lighting/WindowBeam.gdshader" id="2_beam"]
+
+[sub_resource type="Gradient" id="Gradient_light"]
+offsets = PackedFloat32Array(0, 0.25, 0.68, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.72, 0.72, 0.72, 1, 0.16, 0.16, 0.16, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="Texture_light"]
+gradient = SubResource("Gradient_light")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_white"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="Texture_beam"]
+gradient = SubResource("Gradient_white")
+width = 2
+height = 2
+
+[sub_resource type="ShaderMaterial" id="Material_beam"]
+shader = ExtResource("2_beam")
+shader_parameter/edge_softness = 0.22
+
+[node name="SunkenLighting" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Ambient" type="CanvasModulate" parent="."]
+visible = false
+
+[node name="OutdoorSunlight" type="DirectionalLight2D" parent="."]
+enabled = false
+rotation = -0.61086524
+color = Color(1, 0.91, 0.72, 1)
+energy = 0.16
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torches" type="Node2D" parent="."]
+
+[node name="Torch01" type="PointLight2D" parent="Torches"]
+position = Vector2(1598.666, -1364.753)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch02" type="PointLight2D" parent="Torches"]
+position = Vector2(3117.664, -2719.297)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch03" type="PointLight2D" parent="Torches"]
+position = Vector2(1363.219, -3031.994)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch04" type="PointLight2D" parent="Torches"]
+position = Vector2(2207.907, -3672.65)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch05" type="PointLight2D" parent="Torches"]
+position = Vector2(336.266, -3693.849)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch06" type="PointLight2D" parent="Torches"]
+position = Vector2(-108.431, -2344.77)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch07" type="PointLight2D" parent="Torches"]
+position = Vector2(972.216, -2025.994)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch08" type="PointLight2D" parent="Torches"]
+position = Vector2(689.454, -929.896)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Torch09" type="PointLight2D" parent="Torches"]
+position = Vector2(3244.449, -1232.653)
+texture = SubResource("Texture_light")
+texture_scale = 2.03125
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="Windows" type="Node2D" parent="."]
+
+[node name="WindowLowerWest" type="PointLight2D" parent="Windows"]
+position = Vector2(1065, -1120)
+color = Color(0.72, 0.84, 1, 1)
+energy = 0.62
+texture = SubResource("Texture_light")
+texture_scale = 3.75
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="WindowLowerEast" type="PointLight2D" parent="Windows"]
+position = Vector2(2492, -1120)
+color = Color(0.72, 0.84, 1, 1)
+energy = 0.62
+texture = SubResource("Texture_light")
+texture_scale = 3.75
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="WindowUpper" type="PointLight2D" parent="Windows"]
+position = Vector2(1540, -1862)
+color = Color(0.72, 0.84, 1, 1)
+energy = 0.62
+texture = SubResource("Texture_light")
+texture_scale = 3.75
+range_z_min = -10
+range_z_max = 10
+range_layer_min = 0
+range_layer_max = 0
+
+[node name="WindowBeams" type="Node2D" parent="."]
+visible = false
+z_index = -1
+
+[node name="LowerWestBeam" type="Polygon2D" parent="WindowBeams"]
+material = SubResource("Material_beam")
+texture = SubResource("Texture_beam")
+polygon = PackedVector2Array(985, -1245, 1145, -1245, 1425, -610, 735, -610)
+uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
+
+[node name="LowerEastBeam" type="Polygon2D" parent="WindowBeams"]
+material = SubResource("Material_beam")
+texture = SubResource("Texture_beam")
+polygon = PackedVector2Array(2412, -1245, 2572, -1245, 2852, -610, 2162, -610)
+uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)
+
+[node name="UpperBeam" type="Polygon2D" parent="WindowBeams"]
+material = SubResource("Material_beam")
+texture = SubResource("Texture_beam")
+polygon = PackedVector2Array(1460, -1985, 1620, -1985, 1900, -1330, 1210, -1330)
+uv = PackedVector2Array(0, 0, 1, 0, 1, 1, 0, 1)

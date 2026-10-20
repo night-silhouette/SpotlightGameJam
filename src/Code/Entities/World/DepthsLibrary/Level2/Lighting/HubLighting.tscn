@@ -56,6 +56,7 @@ polygon = PackedVector2Array(931, 487, 1063, 487, 1063, 508, 931, 508)
 script = ExtResource("1")
 
 [node name="Ambient" type="CanvasModulate" parent="."]
+visible = false
 color = Color(1, 1, 1, 1)
 
 [node name="Readability" parent="." instance=ExtResource("4_readability")]

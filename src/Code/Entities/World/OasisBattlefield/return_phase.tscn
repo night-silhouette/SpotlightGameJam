@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://br2iafyty2hgj" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisCrumblingPlatform.tscn" id="11_r782m"]
 [ext_resource type="PackedScene" uid="uid://mq6hissr3y35" path="res://Code/Entities/World/OasisBattlefield/Decoration/Components/OasisRisingSpikes.tscn" id="12_t0c8r"]
 [ext_resource type="PackedScene" uid="uid://lltd8w7jtyho" path="res://Code/Entities/World/视觉装饰组件/BlackCurtain.tscn" id="18_jmc82"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/OasisBattlefield/Decoration/ReturnAtmosphere.tscn" id="19_return_atmosphere"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jmc82"]
 resource_local_to_scene = true
@@ -92,6 +93,8 @@ shader_parameter/seam_y_offset = 14.0
 
 [node name="ReturnPhase" type="Node2D" unique_id=1083308710]
 process_mode = 4
+
+[node name="ReturnAtmosphere" parent="." instance=ExtResource("19_return_atmosphere")]
 
 [node name="ReturnTileMap" type="TileMapLayer" parent="." unique_id=259591691]
 position = Vector2(5149.2656, -52.282104)

@@ -100,9 +100,69 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 ## 第三关本地坐标的显示范围；比例及视差统一使用下方 Parallax Scenery 参数。
 @export var outward_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
 
+@export_group("Level 3 - Outward Light", "oasis_outward_light_")
+## 第三关去程环境光与绿色漂浮微粒总开关；不影响返程、碰撞或玩法。
+@export var oasis_outward_light_enabled: bool = true
+## 去程世界空间柔光颜色与强度；强度为加色叠加量。
+@export var oasis_outward_light_glow_color: Color = Color(0.47, 0.92, 0.42, 1.0)
+@export_range(0.0, 0.35, 0.005) var oasis_outward_light_glow_strength: float = 0.16
+## 世界空间粒子场中心高度与覆盖高度，使用第三关去程本地坐标。
+@export var oasis_outward_light_world_x_bounds: Vector2 = Vector2(-512.0, 19000.0)
+@export var oasis_outward_light_world_center_y: float = 650.0
+@export_range(128.0, 5000.0, 16.0) var oasis_outward_light_world_height: float = 2200.0
+## 整段去程地图中同时存在的绿色微粒数量。
+@export_range(1, 1600, 1) var oasis_outward_light_mote_count: int = 900
+## 微粒颜色、完整生命周期（秒）、上浮速度与尺寸倍率范围。
+@export var oasis_outward_light_mote_color: Color = Color(0.58, 1.0, 0.42, 0.8)
+@export_range(0.5, 20.0, 0.1) var oasis_outward_light_mote_lifetime: float = 7.5
+@export_range(0.0, 80.0, 0.5) var oasis_outward_light_mote_speed: float = 18.0
+@export var oasis_outward_light_mote_size: Vector2 = Vector2(0.22, 0.7)
+## 角色快速移动、跳跃或冲刺时是否在附近带起短暂粒子尾流。
+@export var oasis_outward_light_wake_enabled: bool = true
+@export_range(1, 120, 1) var oasis_outward_light_wake_count: int = 3
+@export_range(0.1, 4.0, 0.05) var oasis_outward_light_wake_lifetime: float = 0.85
+@export_range(0.0, 1000.0, 10.0) var oasis_outward_light_wake_min_speed: float = 260.0
+@export_range(0.01, 0.5, 0.01) var oasis_outward_light_wake_speed_ratio: float = 0.12
+
 @export_group("Level 3 - Return Scenery", "return_scenery_")
 ## 第三关返程背景在关卡本地坐标中的显示范围，离开该范围后隐藏全部视差层。
 @export var return_scenery_camera_bounds: Vector2 = Vector2(-512.0, 19000.0)
+
+@export_group("Level 3 - Return Atmosphere", "oasis_return_atmosphere_")
+## 第三关返程暗色哑光与粒子总开关；不影响 HUD、碰撞或追逐逻辑。
+@export var oasis_return_atmosphere_enabled: bool = true
+## 覆盖全场景的暗紫灰哑光颜色、基础强度与边缘压暗强度。
+@export var oasis_return_atmosphere_matte_color: Color = Color(0.055, 0.04, 0.075, 1.0)
+@export_range(0.0, 0.45, 0.005) var oasis_return_atmosphere_matte_strength: float = 0.18
+@export_range(0.0, 0.3, 0.005) var oasis_return_atmosphere_vignette_strength: float = 0.10
+## 中央行动区域从哑光中恢复的比例，1 为最大程度保留道路与玩家可读性。
+@export_range(0.0, 1.0, 0.01) var oasis_return_atmosphere_guide_clear_strength: float = 0.72
+## 屏幕内暗尘数量及颜色。
+@export_range(1, 1200, 1) var oasis_return_atmosphere_mote_count: int = 760
+@export var oasis_return_atmosphere_mote_color: Color = Color(0.045, 0.025, 0.065, 0.48)
+## 暗尘在第三关本地坐标中的纵向铺设范围；横向复用返程背景范围。
+@export var oasis_return_atmosphere_mote_y_bounds: Vector2 = Vector2(-400.0, 1800.0)
+## 暗尘完整生命周期（秒）、横掠速度与尺寸倍率范围。
+@export_range(0.5, 20.0, 0.1) var oasis_return_atmosphere_mote_lifetime: float = 9.0
+@export_range(0.0, 80.0, 0.5) var oasis_return_atmosphere_mote_speed: float = 18.0
+@export var oasis_return_atmosphere_mote_size: Vector2 = Vector2(0.3, 0.9)
+## 整段返程中稀疏的冷紫微光粒子数量、颜色与生命周期。
+@export_range(1, 800, 1) var oasis_return_atmosphere_glow_mote_count: int = 420
+@export var oasis_return_atmosphere_glow_mote_color: Color = Color(0.34, 0.22, 0.58, 0.34)
+@export_range(0.5, 20.0, 0.1) var oasis_return_atmosphere_glow_mote_lifetime: float = 7.0
+## 人物移动尾流粒子数，以及开始搅动环境的最低移动速度。
+@export_range(1, 24, 1) var oasis_return_atmosphere_motion_trail_count: int = 3
+@export_range(0.0, 500.0, 1.0) var oasis_return_atmosphere_motion_speed_threshold: float = 45.0
+## 人物动作反馈的冷紫光颜色、爆发粒子数量与跟随补光半径。
+@export var oasis_return_atmosphere_motion_glow_color: Color = Color(0.52, 0.35, 0.82, 0.48)
+@export_range(1, 24, 1) var oasis_return_atmosphere_action_burst_count: int = 3
+@export_range(16.0, 320.0, 1.0) var oasis_return_atmosphere_motion_light_radius: float = 112.0
+## 人物周围基础补光、速度增量、动作脉冲、衰减速度与响应速度。
+@export_range(0.0, 2.0, 0.01) var oasis_return_atmosphere_motion_light_energy: float = 0.18
+@export_range(0.0, 2.0, 0.01) var oasis_return_atmosphere_motion_light_speed_boost: float = 0.18
+@export_range(0.0, 3.0, 0.01) var oasis_return_atmosphere_action_light_impulse: float = 0.48
+@export_range(0.0, 5.0, 0.05) var oasis_return_atmosphere_action_light_decay: float = 1.65
+@export_range(0.1, 12.0, 0.1) var oasis_return_atmosphere_motion_light_response: float = 4.5
 
 @export_group("Camp - Scenery", "camp_scenery_")
 ## Camp 独立前后景开关；不影响帐篷、湖水和碰撞。
@@ -355,7 +415,7 @@ const TUTORIAL_SKIN = preload("res://Code/Entities/Setting/SettingsSkin.gd")
 
 @export_group("Relics & Lake")
 ## The Sunken Crown 贴图；留空时使用程序生成的临时图标。
-@export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.PNG")
+@export var sunken_crown_texture: Texture2D = preload("res://Art/New/component/game1/ancient_crown.png")
 ## The Starseeker's Codex 贴图；留空时使用程序生成的临时图标。
 @export var starseekers_codex_texture: Texture2D = preload("res://Art/New/component/extracted/rune_circle_emblem.png")
 ## The Scarred Bones 贴图；留空时使用程序生成的临时图标。
@@ -1075,6 +1135,36 @@ func _make_relic_icon(shapes: String) -> Texture2D:
 @export_range(0.0, 1.0, 0.01) var level2_hub_light_shadow_opacity: float = 0.35
 @export_range(0.0, 8.0, 0.1) var level2_hub_light_shadow_smooth: float = 2.0
 @export_range(0.0, 3.0, 0.05) var level2_hub_light_transition_time: float = 0.65
+
+@export_group("Sunken Palace - Lighting", "sunken_lighting_")
+## 第一关室外自然光、室内环境光、火把与破窗光照总开关。
+@export var sunken_lighting_enabled: bool = true
+## 第一关室外沙漠的自然天光底色；接近白色以保持原画可读性。
+@export var sunken_lighting_outdoor_ambient_color: Color = Color(1.0, 0.97, 0.90, 1.0)
+## 宫殿室内的残破灰褐暗调；局部可读性主要由火把和窗光提供。
+@export var sunken_lighting_indoor_ambient_color: Color = Color(0.56, 0.53, 0.49, 1.0)
+## 宫殿本地坐标中的室内范围；不覆盖低处室外入口和开放平台。
+@export var sunken_lighting_indoor_bounds: Rect2 = Rect2(-1498.0, -4620.0, 5000.0, 3800.0)
+## 最上层 biglake 房间的独立亮区与环境色；范围覆盖整间房，不仅是湖面贴图。
+@export var sunken_lighting_lake_room_bounds: Rect2 = Rect2(-1498.0, -4620.0, 5000.0, 1350.0)
+@export var sunken_lighting_lake_room_ambient_color: Color = Color(0.76, 0.77, 0.74, 1.0)
+## 进入第一关、跨越室内外边界时的光照渐变时间（秒）。
+@export_range(0.05, 3.0, 0.05) var sunken_lighting_transition_time: float = 0.65
+## 室外斜射日光颜色与强度；进入室内后随环境过渡淡出。
+@export var sunken_lighting_sun_color: Color = Color(1.0, 0.91, 0.72, 1.0)
+@export_range(0.0, 1.0, 0.01) var sunken_lighting_sun_energy: float = 0.16
+## 九处既有火把的暖光参数，不修改火焰动画或位置。
+@export var sunken_lighting_torch_color: Color = Color(1.0, 0.58, 0.25, 1.0)
+@export_range(0.0, 2.0, 0.01) var sunken_lighting_torch_energy: float = 0.86
+@export_range(32.0, 600.0, 1.0) var sunken_lighting_torch_radius: float = 260.0
+## 火把亮度起伏比例与速度；只改变光，不改变火焰帧率。
+@export_range(0.0, 0.5, 0.01) var sunken_lighting_torch_flicker_amount: float = 0.11
+@export_range(0.0, 20.0, 0.1) var sunken_lighting_torch_flicker_speed: float = 5.2
+## 三处破损窗洞的冷色天光与可见光束参数。
+@export var sunken_lighting_window_color: Color = Color(0.72, 0.84, 1.0, 1.0)
+@export_range(0.0, 2.0, 0.01) var sunken_lighting_window_energy: float = 0.62
+@export_range(64.0, 900.0, 1.0) var sunken_lighting_window_radius: float = 480.0
+@export_range(0.0, 0.3, 0.005) var sunken_lighting_window_beam_opacity: float = 0.09
 
 @export_group("Room Camera Zone", "room_camera_zone_")
 ## 房间固定镜头区域总开关；关闭后恢复普通跟随。

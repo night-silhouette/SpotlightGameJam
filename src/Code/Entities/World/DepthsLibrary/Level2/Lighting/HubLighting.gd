@@ -48,6 +48,8 @@ func _process(delta: float) -> void:
 	_apply_settings()
 
 func _apply_settings() -> void:
+	# 同一 Canvas 只让当前关卡的 CanvasModulate 生效，避免第一关与第二关互相覆盖色调。
+	_ambient.visible = _darkness > 0.001 and _settings.level2_hub_light_enabled
 	_ambient.color = Color.WHITE.lerp(_settings.level2_hub_light_ambient_color, _darkness)
 	visible = _settings.level2_hub_light_enabled
 	_fountain.enabled = visible

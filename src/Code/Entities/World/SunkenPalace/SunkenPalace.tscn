@@ -36,6 +36,7 @@
 [ext_resource type="Texture2D" uid="uid://ds0v2mw0ml8fn" path="res://Art/New/front_sence/map1/chair_1.png" id="34_n1l0m"]
 [ext_resource type="PackedScene" uid="uid://j6f2cmlwpbjt" path="res://Code/Entities/InteractiveComponent/fire/fire.tscn" id="35_ysst7"]
 [ext_resource type="PackedScene" uid="uid://dt3r42d5q12e6" path="res://Code/Entities/World/SunkenPalace/biglake.tscn" id="36_n1l0m"]
+[ext_resource type="PackedScene" path="res://Code/Entities/World/SunkenPalace/Lighting/SunkenLighting.tscn" id="37_lighting"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_7nnfa"]
 texture = ExtResource("5_7nnfa")
@@ -604,6 +605,8 @@ script = ExtResource("29_wall_decoration")
 
 [node name="front_sence" type="Node2D" parent="visualplayer" unique_id=1771127746]
 z_index = 1
+
+[node name="Lighting" parent="." instance=ExtResource("37_lighting")]
 
 [node name="visuallayer" type="Node2D" parent="." unique_id=1387624181]
 z_index = 1

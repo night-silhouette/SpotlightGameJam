@@ -1,0 +1,89 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" uid="uid://dtj05dxpertrj" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardAtmosphere.gd" id="1_script"]
+[ext_resource type="Shader" uid="uid://cxivvcpasjiad" path="res://Code/Entities/World/OasisBattlefield/Decoration/OutwardAtmosphere.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_glow"]
+resource_local_to_scene = true
+shader = ExtResource("2_shader")
+
+[sub_resource type="Gradient" id="Gradient_mote_texture"]
+offsets = PackedFloat32Array(0, 0.22, 0.58, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.82, 1, 0.68, 0.88, 0.42, 0.94, 0.32, 0.32, 0.32, 0.85, 0.24, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_mote"]
+gradient = SubResource("Gradient_mote_texture")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_mote_lifetime"]
+offsets = PackedFloat32Array(0, 0.12, 0.74, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.75, 0.86, 1, 0.72, 0.55, 0.78, 1, 0.66, 0)
+
+[sub_resource type="Curve" id="Curve_mote_scale"]
+_limits = [0.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 0.35), 0.0, 2.4, 0, 0, Vector2(0.22, 1), 0.7, 0.0, 0, 0, Vector2(0.78, 0.82), 0.0, -0.8, 0, 0, Vector2(1, 0.1), -2.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_add"]
+blend_mode = 1
+
+[node name="OutwardAtmosphere" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="AmbientGlow" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_glow")
+z_index = 15
+offset_left = -512.0
+offset_top = -450.0
+offset_right = 19000.0
+offset_bottom = 1750.0
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="Motes" type="CPUParticles2D" parent="."]
+z_index = 16
+position = Vector2(9244, 650)
+amount = 900
+lifetime = 7.5
+preprocess = 7.5
+randomness = 0.82
+texture = SubResource("GradientTexture2D_mote")
+emission_shape = 3
+emission_rect_extents = Vector2(9756, 1100)
+direction = Vector2(0.22, -1)
+spread = 38.0
+gravity = Vector2(-0.8, -1.8)
+initial_velocity_min = 7.0
+initial_velocity_max = 18.0
+angular_velocity_min = -24.0
+angular_velocity_max = 24.0
+scale_amount_min = 0.22
+scale_amount_max = 0.7
+scale_amount_curve = SubResource("Curve_mote_scale")
+color_ramp = SubResource("Gradient_mote_lifetime")
+
+[node name="ActionWake" type="CPUParticles2D" parent="."]
+z_index = 17
+emitting = false
+amount = 3
+lifetime = 0.85
+randomness = 0.72
+local_coords = false
+texture = SubResource("GradientTexture2D_mote")
+emission_shape = 2
+emission_sphere_radius = 24.0
+direction = Vector2(0, -1)
+spread = 55.0
+gravity = Vector2(0, -12)
+initial_velocity_min = 18.0
+initial_velocity_max = 42.0
+angular_velocity_min = -50.0
+angular_velocity_max = 50.0
+scale_amount_min = 0.22
+scale_amount_max = 0.875
+scale_amount_curve = SubResource("Curve_mote_scale")
+color_ramp = SubResource("Gradient_mote_lifetime")
