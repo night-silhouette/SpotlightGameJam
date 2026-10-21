@@ -68,6 +68,8 @@ func _ready() -> void:
 	call_deferred("_preload_world_after_first_frame")
 
 func _preload_world_after_first_frame() -> void:
+	if OS.has_feature("mobile"):
+		return
 	await get_tree().process_frame
 	SaveManagerRef.PreloadWorld(get_tree())
 
